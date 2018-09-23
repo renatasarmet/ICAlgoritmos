@@ -25,8 +25,8 @@ public:
 	int get_id();
 	void set_id(int id);
 	float get_v();
-	void set_v(int v);
-	void aumentar_v(int qtd);
+	void set_v(float v);
+	void aumentar_v(float qtd);
 };
 
 D::D(int id){
@@ -46,12 +46,13 @@ float D::get_v(){
 	return this->v;
 }
 
-void D::set_v(int v){
+void D::set_v(float v){
 	this->v = v;
 }
 
-void D::aumentar_v(int qtd){
+void D::aumentar_v(float qtd){
 	this->v += qtd;
+	cout << "aumentando aqui sim = " << this->v << endl;
 }
 
 
@@ -166,6 +167,9 @@ public:
 	bool eh_vizinho(D vD, F vF);
 	vector<Aresta> get_arestas_d(int id_vD);
 	vector<Aresta> get_arestas();
+	int qtd_vizinho_f(int id_vF);
+	int get_qtd_D();
+	int get_qtd_F();
 };
 
 Grafo::Grafo(int qtd_D, int qtd_F){
@@ -184,6 +188,26 @@ bool Grafo::eh_vizinho(D vD, F vF){
 			return true;
 	}
 	return false;
+}
+
+
+int Grafo::qtd_vizinho_f(int id_vF){
+	int qtd = 0;
+	for(vector<Aresta>::iterator it = arestas.begin() ; it != arestas.end(); ++it){
+		if(it->get_vF().get_id() == id_vF)
+			qtd+=1;
+	}
+	return qtd;
+}
+
+
+int Grafo::get_qtd_D(){
+	return this->qtd_D;
+}
+
+
+int Grafo::get_qtd_F(){
+	return this->qtd_F;
 }
 
 vector<Aresta> Grafo::get_arestas_d(int id_vD){
@@ -258,15 +282,13 @@ int main (){
 
 	// v <- 0, w <- 0 ja acontece na propria inicializacao 
 
-	// Conjunto dos clientes que estamos aumentando as variaveis duais
-	vector<D> s;
-	s = cli; // inicia com todos os clientes
+	
 
 	// Conjunto das instalacoes que possuem desigualdade justa
 	vector<F> t; // inicia vazio
 
 
-	// Grafo contendo somente os clientes ainda em s e todas as instalacoes
+	// Grafo contendo conjunto dos clientes que estamos aumentando as variaveis duais e as instalacoes
 	Grafo g(qtd_clientes,qtd_instalacoes);
 	g = grafo; // inicia com o grafo todo
 
@@ -286,23 +308,61 @@ int main (){
 
 	cout << "menor custo: " << menor.get_custo_atribuicao() << endl;
 
-	// Percorrer todos os clientes para aumentar em todos esse valor
-	for(vector<D>::iterator it = s.begin() ; it != s.end(); ++it){
-		s.aumentar_v(menorC.get_custo_atribuicao());
+	/** NAO TO CONSEGUINDO .. O QUE QUERO EH PERCORRER TODOS OS CLIENTES PRA AUMETNAR ESSE VALOR DE MENOR CUSTO **/
+
+
+
+	// // Percorrer todos os clientes para aumentar em todos esse valor
+	//vector<int> ja_aumentado;
+	// for(vector<Aresta>::iterator it = g.get_arestas().begin() ; it != g.get_arestas().end(); ++it){
+	// 	//if (find(ja_aumentado.begin(), ja_aumentado.end(), it->get_vD().get_id()) == ja_aumentado.end()){
+	// 		//it->get_vD().aumentar_v(menor.get_custo_atribuicao());
+	// 		it->get_vD().aumentar_v(1);
+	// 		cout <<"olha aqui aumentando " << it->get_vD().get_id() << " com " << it->get_vD().get_v() << endl;
+	// 	//}
+	// }
+
+	for(int i=0;i<(g.get_qtd_F() * g.get_qtd_D());i++){
+		g.get_arestas()[i].get_vD().aumentar_v(1);
+		cout <<"olha aqui aumentando " << g.get_arestas()[i].get_vD().get_id() << " com " << g.get_arestas()[i].get_vD().get_v() << endl;
 	}
 
+	// for(vector<D>::iterator it = s.begin() ; it != s.end(); ++it){
+	// 	cout <<"*olha aqui aumentando " << it->get_id() << " com " << it->get_v() << endl;
+	// }
+
+
+
+	cout <<" -- depois olha : " << g.get_arestas()[0].get_vD().get_id() << " com " << g.get_arestas()[0].get_vD().get_v()<< endl;
+
+	/**
+
+	como definir N(j)? se v começa com 0 e depois muda pro valor do menor cij
+
+	**/
 
 	// Aresta auxiliar e variavel auxiliar, inicia com o valor da primeira aresta
 	menor = g.get_arestas()[0];
-	int menor_valor = menor.custo_atribuicao() + menor.w() - menor.get_vD().get_v();
+	int menor_valor = menor.get_custo_atribuicao() + menor.get_w() - menor.get_vD().get_v();
+
+	cout << "temos aqui um valor inicial = " << menor.get_custo_atribuicao() << "+"<< menor.get_w() << "-" << menor.get_vD().get_v() << " = " << menor_valor << endl;
 
 	// Percorrer todas as arestas para ver qual o menor cij + wij - vj (o q ja foi acrescentado anteriormente)
 	for(vector<Aresta>::iterator it = (g.get_arestas().begin()+1) ; it != g.get_arestas().end(); ++it){
-		if(it->get_arestas()[0].custo_atribuicao() + it->get_arestas()[0].w() - it->get_arestas()[0].get_vD().get_v() < menor_valor){
-			menor = it->get_arestas()[0];
-			menor_valor = menor.custo_atribuicao() + menor.w() - menor.get_vD().get_v();
+		if(it->get_custo_atribuicao() + it->get_w() - it->get_vD().get_v() < menor_valor){
+			menor = *it;
+			menor_valor = menor.get_custo_atribuicao() + menor.get_w() - menor.get_vD().get_v();
 		}	
 	}
+
+
+	cout << "menor valor: " << menor_valor << endl;
+
+
+	// // Percorrer todos os clientes para aumentar em todos esse valor
+	// for(vector<D>::iterator it = s.begin() ; it != s.end(); ++it){
+	// 	it->aumentar_v(menor_valor);
+	// }
 
 
 
