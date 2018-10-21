@@ -59,31 +59,28 @@ int main(){
 	for(int i=0;i<qtd_clientes;i++){
 		for(int j=0;j<qtd_instalacoes;j++){
 			arcos[cont] = g.addArc(clientes[i],instalacoes[j]);
-			cont++;
 			custoAtribuicao[arcos[cont]] = 300 - i - j; // cij = numero aleatorio
 			w[arcos[cont]] = 0; // inicialmente nao contribui com nada
+			cont++;
 		}
 	}
 
-	
-	// // Percorrendo por todos os nós
-	// for(ListDigraph::NodeIt v(g); v != INVALID; ++v){
-	// 	cout << "no id: " << g.id(v) << " - tipo: " << tipo[v] << " - label: " << label[v] << endl;
-	// }
-
-
-
-	// PROBLEMA :  CUSTO DE ATRIBUICAO RECEBEU VALORES CORRETOS LA EM CIMA
-	// POREM AQUI NO FOR EMBAIXO ELE PERDE O VALOR, APENAS ALGUNS INDICES PERMANECE
-	// ISSO TAMBEM OCORRE COM O W, POREM COMO JA ERA 0 INICIALMENTE, NAO DA PRA NOTAR
-	// FAÇA O TESTE MUDANDO O VALOR DE W LA EM CIMA
-
+	/*
+	// Percorrendo por todos os nós
+	for(ListDigraph::NodeIt v(g); v != INVALID; ++v){
+		cout << "no id: " << g.id(v) << " - tipo: " << tipo[v] << " - label: " << label[v] << endl;
+	}
 
 	// Percorrendo por todos os arcos
-	cout << "NAO ERA PRA ESTAR COM VALOR 0 O CA! " << endl;
 	for(ListDigraph::ArcIt a(g); a!= INVALID; ++a){
 		cout << "arco id: " << g.id(a) ;
 		cout << " - target: " << g.id(g.target(a)) << " - source: " << g.id(g.source(a));
 		cout<< " - ca: " << custoAtribuicao[a] << " w - " << w[a] << endl;
 	}
+	*/
+
+
+	// v <- 0, w <- 0 ja acontece na inicializacao 
+
+
 }
