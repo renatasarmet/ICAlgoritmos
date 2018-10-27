@@ -19,7 +19,6 @@ int main(){
 	// Grafo que liga os clientes às instalações
 	ListGraph g;
 
-
 	// Label do cliente será o quanto ele vai contribuir (v)
 	// Label da instalação será o custo de instalação (fi)
 	ListGraph::NodeMap<float> label(g);
@@ -27,6 +26,9 @@ int main(){
 
 	// Tipo: 0 para cliente 1 para instalação
 	ListGraph::NodeMap<int> tipo(g);
+
+	// Para identificar cada nó
+	ListGraph::NodeMap<int> nome(g);
 
 
 	// Criação de nós clientes e atribuição de seus labels
@@ -36,6 +38,7 @@ int main(){
 		clientes[i] = g.addNode();
 		label[clientes[i]] = 0; // v = inicialmente nao contribui com nada
 		tipo[clientes[i]] = 0; // indica que é cliente
+		nome[clientes[i]] = i; // nomeia de acordo com a numeracao
 	}
 
 
@@ -46,6 +49,7 @@ int main(){
 		instalacoes[i] = g.addNode();
 		label[instalacoes[i]] = 4+i/3.0; // fi = numero aleatorio
 		tipo[instalacoes[i]] = 1; // indica que é instalação
+		nome[instalacoes[i]] = qtd_clientes + i; // nomeia de acordo com a numeracao
 	}
 
 
@@ -68,16 +72,18 @@ int main(){
 		}
 	}
 
+	ListGraph S; // Grafo que contem os clientes os quais estamos aumentando as variaveis duais
+	graphCopy(g,S).run();
 	
 	// Percorrendo por todos os nós
-	for(ListGraph::NodeIt v(g); v != INVALID; ++v){
-		cout << "no id: " << g.id(v) << " - tipo: " << tipo[v] << " - label: " << label[v] << endl;
+	for(ListGraph::NodeIt v(S); v != INVALID; ++v){
+		cout << "no id: " << S.id(v) << " - tipo: " << tipo[v] << " - nome: " << nome[v] << " - label: " << label[v] << endl;
 	}
 
 	// Percorrendo por todos os arcos
-	for(ListGraph::EdgeIt e(g); e!= INVALID; ++e){
-		cout << "arco id: " << g.id(e) ;
-		cout << " - target: " << g.id(g.v(e)) << " - source: " << g.id(g.u(e));
+	for(ListGraph::EdgeIt e(S); e!= INVALID; ++e){
+		cout << "arco id: " << S.id(e) ;
+		cout << " - cliente: " << S.id(S.v(e)) << " - instalacao: " << S.id(S.u(e));
 		cout<< " - ca: " << custoAtribuicao[e] << " w - " << w[e] << endl;
 	}
 	
@@ -86,27 +92,41 @@ int main(){
 	// v <- 0, w <- 0 ja acontece na inicializacao 
 
 
+	/*
+
+	CRIACAO DE T
+
+	*/
+
 	// grafo com as instalacoes que possuem desigualdade justa
 	ListGraph T; 
 	// f será o custo de instalação (fi)
-	ListGraph::NodeMap<float> f(g);
+	ListGraph::NodeMap<float> f(T);
+	// Criação de nós de instalações em T
+	ListGraph::Node instT[qtd_instalacoes];
+	int qtd_instT = 0; // indica a quantidade de instalacoes ja em T
+
+	// Para identificar cada nó
+	ListGraph::NodeMap<int> nomeT(T);
 
 
-	ListGraph::Edge menor; 
-	custoAtribuicao[menor] = 100000; // TODO: NAO SEI COMO FAZ PRA JA COLOCAR AQUI O VALOR DA PRIMEIRA
+
+	// Aresta auxiliar, inicia com o valor da primeira aresta
+	ListGraph::Edge menor = arcos[0]; 
 
 	// Percorrer todas as arestas para ver qual o menor cij
-	for(ListGraph::EdgeIt e(g); e!= INVALID; ++e){
+	for(ListGraph::EdgeIt e(S); e!= INVALID; ++e){
 		if(custoAtribuicao[e] < custoAtribuicao[menor]){
 			menor = e;
 		}
 	}
 
-	cout << "menor : " << g.id(menor) << " com custo: " << custoAtribuicao[menor] << endl;
+	cout << "menor : " << S.id(menor) << " com custo: " << custoAtribuicao[menor] << endl;
+
 
 
 	// Percorrer todos os clientes para aumentar em todos esse valor
-	for(ListGraph::NodeIt v(g); v != INVALID; ++v){
+	for(ListGraph::NodeIt v(S); v != INVALID; ++v){
 		if (tipo[v]==0) { 			// se for cliente
 			label[v] += custoAtribuicao[menor];
 		}
@@ -115,26 +135,33 @@ int main(){
 
 	// Percorrer todas as arestas para ver quais bateram o custo de atribuicao
 	// Entao, adicionar em T e tirando de g o cliente que bateu o custo de atribuicao
-	for(ListGraph::EdgeIt e(g); e!= INVALID; ++e){
+	for(ListGraph::EdgeIt e(S); e!= INVALID; ++e){
 		if(custoAtribuicao[e] == custoAtribuicao[menor]){
-			T.addNode();
-			f[g.v(e)] = label[g.v(e)];
-			//g.erase(g.u(e)); // ta travando na hora de remover
+			instT[qtd_instT] = T.addNode();
+			f[instT[qtd_instT]] = label[S.u(e)]; // pega o valor da instalacao
+			nomeT[instT[qtd_instT]] = nome[S.u(e)]; // pega o nome da instalacao
+			qtd_instT += 1;
+			S.erase(S.v(e)); // ta travando na hora de remover
 		}
 	}
-	// 
-	
 
-	// // Percorrendo por todos os nós
-	for(ListGraph::NodeIt v(g); v != INVALID; ++v){
-		cout << "no id: " << g.id(v) << " - tipo: " << tipo[v] << " - label: " << label[v] << endl;
+		// Percorrendo por todos os nós
+	for(ListGraph::NodeIt v(S); v != INVALID; ++v){
+		cout << "no id: " << S.id(v) << " - tipo: " << tipo[v] << " - nome: " << nome[v] << " - label: " << label[v] << endl;
 	}
 
-// Percorrendo por todos os arcos
-	for(ListGraph::EdgeIt e(g); e!= INVALID; ++e){
-		cout << "arco id: " << g.id(e) ;
-		cout << " - target: " << g.id(g.v(e)) << " - source: " << g.id(g.u(e));
+
+	// Percorrendo por todos os arcos
+	for(ListGraph::EdgeIt e(S); e!= INVALID; ++e){
+		cout << "arco id: " << S.id(e) ;
+		cout << " - cliente: " << S.id(S.v(e)) << " - instalacao: " << S.id(S.u(e));
 		cout<< " - ca: " << custoAtribuicao[e] << " w - " << w[e] << endl;
 	}
+	
 
+
+	// // Percorrendo por todos os nós de T
+	for(ListGraph::NodeIt v(T); v != INVALID; ++v){
+		cout << "no id: " << T.id(v) << " - nome: " << nomeT[v] << " - f: " << f[v] << endl;
+	}
 }
