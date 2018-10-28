@@ -169,6 +169,27 @@ int main(){
 
 	
 
+
+	/*
+
+	CRIACAO DE T
+
+	*/
+
+	// grafo com as instalacoes que possuem desigualdade justa
+	ListGraph T; 
+	// f será o custo de instalação (fi)
+	ListGraph::NodeMap<float> f(T);
+	// Criação de nós de instalações em T
+	ListGraph::Node instT[qtd_instalacoes];
+	int qtd_instT = 0; // indica a quantidade de instalacoes ja em T
+
+	// Para identificar cada nó
+	ListGraph::NodeMap<int> nomeT(T);
+
+
+
+
 	// ****** A partir daqui deve estar em um loop até nao ter mais clientes ativos:
 
 
@@ -231,29 +252,21 @@ int main(){
 	cout << "temos a qtd menor na parte B: " << qtd_menorB << endl;
 
 
-	// // SE FOR O CASO A
-	// if(qtd_menorA < qtd_menorB){
+	// SE FOR O CASO A: verificar se a instalação que aquele cliente alcançou ja estava aberta, se sim, remover ele dos ativos
+	if(qtd_menorA < qtd_menorB){
+		cout << "Caso A!" << endl;
+	}
+	// SE FOR O CASO B: caso B seja o menor valor: abrir a instalação i e remover os seus contribuintes dos clientes ativos (lembrando de remover eles das listas de contribuintes das outras instalações (talvez só fazer uma tag se está ativo ou não)
+	else if(qtd_menorA > qtd_menorB){ 
+		cout << "Caso B!" << endl;
+	}
+	// SENAO: EMPATE
+	else{
+		cout << "Empatou! Ver o que fazer" << endl;
+	}
 
-	// }
 
 
-
-	/*
-
-	CRIACAO DE T
-
-	*/
-
-	// // grafo com as instalacoes que possuem desigualdade justa
-	// ListGraph T; 
-	// // f será o custo de instalação (fi)
-	// ListGraph::NodeMap<float> f(T);
-	// // Criação de nós de instalações em T
-	// ListGraph::Node instT[qtd_instalacoes];
-	// int qtd_instT = 0; // indica a quantidade de instalacoes ja em T
-
-	// // Para identificar cada nó
-	// ListGraph::NodeMap<int> nomeT(T);
 
 
 	// // Percorrer todas as arestas para ver quais bateram o custo de atribuicao
