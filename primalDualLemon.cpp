@@ -15,36 +15,17 @@ using namespace std;
 
 int main(){
 
-
 	/*
 
 	ESTRUTURA QUE INDICA QUANTOS E QUAIS CLIENTES ESTAO CONTRIBUINDO (AUMENTANDO O W) 
 	PARA UMA CERTA INSTALACAO
 
-	- cada linha indica uma instalacao
-	- a primeira coluna indica a quantidade N de clientes contribuindo
-	- as próximas N colunas indicam o nome de cada cliente que está contribuindo
-
-
-	obs: O ideal seria uma lista normal talvez
-
-	*/
-	int cli_contrib_inst[qtd_instalacoes][qtd_clientes + 1];
-
-	/*
-
-	ESTRUTURA QUE INDICA QUANTOS E QUAIS INSTALACOES CADA CLIENTE ESTA CONTRIBUINDO (AUMENTANDO O W) 
-	PARA UM CERTO CLIENTE
-
 	- cada linha indica um cliente
-	- a primeira coluna indica a quantidade N de instalacoes que este cliente está contribuindo
-	- as próximas N colunas indicam o nome de cada instalacao que ele está contribuindo
-
-
-	obs: O ideal seria uma lista normal talvez
+	- cada coluna indica uma instalacao
+	- Valor 1 na linha i, coluna j se o cliente i contribui pra instalacao j
 
 	*/
-	int insts_que_cli_contrib[qtd_clientes][qtd_instalacoes + 1];
+	int matriz_adjacencia[qtd_clientes][qtd_instalacoes];
 
 
 	int qtd_clientes_ativos_S = qtd_clientes; // Indica a quantidade de clientes ainda em S, os clientes ativos.
@@ -72,12 +53,6 @@ int main(){
 		label[clientes[i]] = 0; // v = inicialmente nao contribui com nada
 		tipo[clientes[i]] = 0; // indica que é cliente
 		nome[clientes[i]] = i; // nomeia de acordo com a numeracao
-
-		// Inicializando o insts_que_cli_contrib, primeira coluna com 0 todas outras com -1
-		insts_que_cli_contrib[i][0] = 0;
-		for(int j=1;j<=qtd_instalacoes;j++){
-			insts_que_cli_contrib[i][j] = -1;
-		}
 	}
 
 
@@ -89,14 +64,15 @@ int main(){
 		label[instalacoes[i]] = 100 + 4+i/3.0; // fi = numero aleatorio
 		tipo[instalacoes[i]] = 1; // indica que é instalação
 		nome[instalacoes[i]] = qtd_clientes + i; // nomeia de acordo com a numeracao
-
-		// Inicializando o cli_contrib_inst, primeira coluna com 0 todas outras com -1
-		cli_contrib_inst[i][0] = 0;
-		for(int j=1;j<=qtd_clientes;j++){
-			cli_contrib_inst[i][j] = -1;
-		}
 	}
 
+
+	// Inicializando a matriz de adjacencia, todos com valor 0
+	for(int i=0;i<qtd_clientes;i++){
+		for(int j=0;j<qtd_instalacoes;j++){
+			matriz_adjacencia[i][j] = 0;
+		}
+	}
 
 	// Custo de atribuição é o custo de atribuir o cliente associado à instalação associada
 	ListGraph::EdgeMap<int> custoAtribuicao(g);
@@ -124,12 +100,16 @@ int main(){
 	ListGraph S; // Grafo que contem os clientes os quais estamos aumentando as variaveis duais
 	graphCopy(g,S).run();
 	
+	
 	// Percorrendo por todos os nós
+	cout << "Percorrendo por todos os nos" << endl;
 	for(ListGraph::NodeIt v(S); v != INVALID; ++v){
 		cout << "no id: " << S.id(v) << " - tipo: " << tipo[v] << " - nome: " << nome[v] << " - label: " << label[v] << endl;
 	}
 
+
 	// Percorrendo por todos os arcos
+	cout << "Percorrendo por todos os arcos" << endl;
 	for(ListGraph::EdgeIt e(S); e!= INVALID; ++e){
 		cout << "arco id: " << S.id(e) ;
 		cout << " - cliente: " << S.id(S.v(e)) << " - instalacao: " << S.id(S.u(e));
@@ -164,23 +144,21 @@ int main(){
 
 
 	int indice_inst;
+
 	// Percorrer todas as arestas para ver quais bateram o custo de atribuicao
-	// Entao, acionar a flag prontoContribuirW e colocar no cli_contrib_inst. Tambem anotar no insts_que_cli_contrib
+	// Entao, acionar a flag prontoContribuirW e colocar na matriz de adiacencia.
 	for(ListGraph::EdgeIt e(S); e!= INVALID; ++e){
 		if(custoAtribuicao[e] == custoAtribuicao[menor]){
 			prontoContribuirW[e] = true;
 
 			indice_inst = nome[S.u(e)] - qtd_clientes;
-			cli_contrib_inst[indice_inst][0] = 1;
-			cli_contrib_inst[indice_inst][1] = nome[S.v(e)];
-
-			insts_que_cli_contrib[nome[S.v(e)]][0] = 1;
-			insts_que_cli_contrib[nome[S.v(e)]][1] = nome[S.u(e)];
+			matriz_adjacencia[nome[S.v(e)]][indice_inst] = 1;
 		}
 	}
 
 
 	// Percorrendo por todos os arcos
+	cout << "Percorrendo por todos os arcos" << endl;
 	for(ListGraph::EdgeIt e(S); e!= INVALID; ++e){
 		cout << "arco id: " << S.id(e) ;
 		cout << " - cliente: " << S.id(S.v(e)) << " - instalacao: " << S.id(S.u(e));
@@ -188,7 +166,9 @@ int main(){
 	}
 
 
+
 	// Percorrendo por todos os nós
+	cout << "Percorrendo por todos os nos" << endl;
 	for(ListGraph::NodeIt v(S); v != INVALID; ++v){
 		cout << "no id: " << S.id(v) << " - tipo: " << tipo[v] << " - nome: " << nome[v] << " - label: " << label[v] << endl;
 	}
@@ -229,6 +209,8 @@ int main(){
 
 	int id_cli;
 
+	int qtd_contribui;
+
 	// ****** A partir daqui deve estar em um loop até nao ter mais clientes ativos:
 
 	while(qtd_clientes_ativos_S > 0){
@@ -266,12 +248,19 @@ int main(){
 		qtd_menorB = 10000; // PROBLEMA: seria bom pegar o valor da primeira, ao inves de 10000
 		nome_menorB = -1;
 
+
 		for(ListGraph::NodeIt v(S); v != INVALID; ++v){
 			if (tipo[v]==1) { 			// se for instalacao
 
 				indice_inst = nome[v] - qtd_clientes;
 
-				if(cli_contrib_inst[indice_inst][0]==0){
+				qtd_contribui = 0;
+
+				for(int i=0;i<qtd_clientes;i++){
+					qtd_contribui += matriz_adjacencia[i][indice_inst]; // verificando quantos contribui pra ela
+				}
+
+				if(qtd_contribui==0){
 					qtd_atual = label[v]; // Se ninguem comecou a contribuir para ela ainda, entao a conta é o valor de fi mesmo
 				}
 
@@ -282,7 +271,7 @@ int main(){
 						qtd_atual += w[e]; // vai indicar somatorio de todos w dessa instalacao
 					}
 
-					qtd_atual = (label[v] - qtd_atual)/cli_contrib_inst[indice_inst][0]; //(fi - somatório de tudo que foi contribuído ate então para fi ) / (numero de clientes prontos para contribuir para fi) 
+					qtd_atual = (label[v] - qtd_atual)/qtd_contribui; //(fi - somatório de tudo que foi contribuído ate então para fi ) / (numero de clientes prontos para contribuir para fi) 
 
 				}
 
@@ -319,7 +308,8 @@ int main(){
 
 		// Percorrer todas as arestas para aumentar em w, caso o cliente estivesse pronto para contribuir
 		// Aproveitar e ver quais bateram o custo de atribuicao
-		// Entao, acionar a flag prontoContribuirW e colocar no cli_contrib_inst. Tambem anotar no insts_que_cli_contrib
+		// Entao, acionar a flag prontoContribuirW e colocar na matriz de adjacencia. 
+
 		for(ListGraph::EdgeIt e(S); e!= INVALID; ++e){
 			if(prontoContribuirW[e]){ // se está pronto para contribuir
 				w[e] += menorAB; // PROBLEMA: será que não tem problema de aumentar esse valor varios vezes e estourar? Talvez dividir pelo numero de inst q ele contribui?
@@ -328,11 +318,7 @@ int main(){
 				prontoContribuirW[e] = true;
 
 				indice_inst = nome[S.u(e)] - qtd_clientes;
-				cli_contrib_inst[indice_inst][0] += 1; // aumenta em 1 o numero de cliente que contribui para aquela inst
-				cli_contrib_inst[indice_inst][cli_contrib_inst[indice_inst][0]] = nome[S.v(e)]; // atribui esse novo cliente em sua lista
-
-				insts_que_cli_contrib[nome[S.v(e)]][0] += 1; // aumenta em 1 o numero de instalacoes que aquele cliente contribui
-				insts_que_cli_contrib[nome[S.v(e)]][insts_que_cli_contrib[nome[S.v(e)]][0]] = nome[S.u(e)]; // atribui essa nova inst em sua lista
+				matriz_adjacencia[nome[S.v(e)]][indice_inst] = 1; // atribui esse novo cliente em sua lista
 			}
 		}
 
@@ -366,44 +352,31 @@ int main(){
 
 			//Remover os seus contribuintes dos clientes ativos
 			indice_inst = nome_menorB - qtd_clientes;
-			cout<<"*-* aqui "<< indice_inst <<" contribuem: " << cli_contrib_inst[indice_inst][0] << " clientes" << endl;
-			for(int i=1;i<=cli_contrib_inst[indice_inst][0];i++){
-
-				id_cli = cli_contrib_inst[indice_inst][i];
-				
-				cout<<"************* vamo remover cliente " << id_cli << endl;
+			for(int i=0;i<=qtd_clientes;i++){
+				if(matriz_adjacencia[i][indice_inst]==1){
+					cout<<"************* vamo remover cliente " << i << endl;
 
 
+					//Apagando ele da lista de contribuintes das outras instalacoes
 
-				// //Apagando ele da lista de contribuintes das outras instalacoes
+					for(int j=0;j<=qtd_instalacoes;j++){ // percorre por todas as instalacoes que o cliente contribui
 
-				/*
+						if(matriz_adjacencia[i][j]==1){ // se ele contribui pra instalacao j
 
-				PROBLEMA GRAVE: como apagar da lista? Precisaria "arrastar" todos de tras pra frente, sem deixar vacuo no meio
-
-				*/
+							cout<<"removido cliente " << i << " da instalacao " << j << endl;
 
 
-				// for(int j=1;j<=insts_que_cli_contrib[id_cli][0];j++){ // percorre por todas as instalacoes que o cliente contribui
+							if(j!=indice_inst){ // se nao estamos falando dessa inst atual
 
-				// 	if(insts_que_cli_contrib[id_cli][j]!=nome_menorB){ // se nao estamos falando dessa inst atual
+								matriz_adjacencia[i][j] = 0;
+							}
+						}
+					}
 
-				// 		for(int k=1;k<=cli_contrib_inst[insts_que_cli_contrib[id_cli][j]][0];k++){ // percorre por todos os clientes que contibuem pra essa instalacao j
-
-				// 			if(cli_contrib_inst[insts_que_cli_contrib[id_cli][j]][k] == id_cli){ // se encontrou o cliente em questao
-				// 				cli_contrib_inst[insts_que_cli_contrib[id_cli][j]][k] = -1;      // PROBLEMA GRAVE: apaga colocando -1. Na verdade tem que locomover todos para frente
-				// 				cli_contrib_inst[insts_que_cli_contrib[id_cli][j]][0] -= 1;      // diminui a quantidade de clientes que contribuem para ela
-				// 				break;
-				// 			}
-				// 		}
-				// 	}
-				// }
-
-				//Apagando ele dos clientes ativos (de S)
-				S.erase(S.nodeFromId(id_cli));
-				qtd_clientes_ativos_S -=1;
-
-				
+					//Apagando ele dos clientes ativos (de S)
+					S.erase(S.nodeFromId(i));
+					qtd_clientes_ativos_S -=1;
+				}
 			}
 
 		} 
@@ -423,6 +396,7 @@ int main(){
 
 
 		// Percorrendo por todos os arcos
+		cout << "Percorrendo por todos os arcos" << endl;
 		for(ListGraph::EdgeIt e(S); e!= INVALID; ++e){
 			cout << "arco id: " << S.id(e) ;
 			cout << " - cliente: " << S.id(S.v(e)) << " - instalacao: " << S.id(S.u(e));
@@ -431,12 +405,105 @@ int main(){
 
 
 		// Percorrendo por todos os nós
+		cout << "Percorrendo por todos os nos" << endl;
 		for(ListGraph::NodeIt v(S); v != INVALID; ++v){
 			cout << "no id: " << S.id(v) << " - tipo: " << tipo[v] << " - nome: " << nome[v] << " - label: " << label[v] << endl;
 		}
 
+	}
+
+
+	/*
+
+	CRIACAO DE Tlinha
+
+	*/
+
+	// grafo com as instalacoes abertas
+	ListGraph Tlinha; 
+	// Criação de nós de instalações em Tlinha
+	ListGraph::Node instTlinha[qtd_instalacoes];
+	int qtd_instTlinha = 0; // indica a quantidade de instalacoes ja em Tlinha
+
+	// Para identificar cada nó
+	ListGraph::NodeMap<int> nomeTlinha(Tlinha);
+
+	cout << "Criando Tlinha" << endl;
+	indice_inst = 0;
+	int id_inst_apagar = 10;
+
+	cout << "Exibindo matriz de adjacencia" << endl;
+	for(int i=0;i<qtd_clientes;i++){
+		for(int j=0;j<qtd_instalacoes;j++){
+			cout<< matriz_adjacencia[i][j] << " ";
+		}
+		cout << endl;
+	}
+
+	// Enquanto T != 0
+	while(qtd_instT > 0){
+
+		for(ListGraph::NodeIt v(T); v != INVALID; ++v){
+			// Escolha inst pertencente a T
+			cout << "Escolhido instalacao " << nomeT[v] << endl;
+			indice_inst = nomeT[v] - qtd_clientes;
+
+			// Tlinha <- Tlinha U {i}
+			instTlinha[qtd_instTlinha] = Tlinha.addNode();
+			nomeTlinha[instTlinha[qtd_instTlinha]] = nomeT[v]; // pega o nome da instalacao
+
+			qtd_instTlinha += 1;
+
+			break;
+		}
+
+
+		//	Remove todas instalacoes i se algum cliente i contribuir a i e indice_inst
+		for(int i=0;i<qtd_clientes;i++){
+
+			if(matriz_adjacencia[i][indice_inst]==1){ // se o cliente i contribui para a inst indice_inst
+
+				for(int j=0;j<qtd_instalacoes;j++){ // ve todas as instalacoes que esse cliente contribui tambem e remove
+
+					if(matriz_adjacencia[i][j]){
+
+						//PROBLEMA: falta verificar se a instalacao j está em T
+
+						cout << "Removendo a instalacao " << (j + qtd_clientes) << " de T, pois cliente " << i << " contribui a ela" << endl;
+
+
+						for(int k=0;k<qtd_clientes;k++){ // PROBLEMA: nao parece eficiente. Quero marcar que todas os clientes daquela instalacao agr nao contribuem mais pra ela
+							matriz_adjacencia[k][j] = 0;
+						}
+
+
+						// PROBLEMA: nome é j, mas o ID nao sei...
+						for(ListGraph::NodeIt v(T); v != INVALID; ++v){ // GAMBIARRA PRA DESCOBRIR O ID DA INSTALACAO J
+							if(nomeT[v]==(j+qtd_clientes)){
+								id_inst_apagar = T.id(v);
+								break;
+							}
+						}
+
+						T.erase(T.nodeFromId(id_inst_apagar));  
+						qtd_instT -= 1;
+					}
+				}
+			}
+		}
 
 	}
 
+
+	// // Percorrendo por todos os nós de Tlinha
+	cout<<"-- Tlinha --" << endl;
+	for(ListGraph::NodeIt v(Tlinha); v != INVALID; ++v){
+		cout << "no id: " << Tlinha.id(v) << " - nome: " << nomeTlinha[v] << endl;
+	}
+	cout<<"-------" << endl;
+
+	// Depois abrir todas as instalacoes em Tlinha e atribuir cada cliente à instalacao mais próxima
+
+	// PROBLEMA: qual melhor jeito? lembrando que tenho as informacoes iniciais em g.. mas percorrer g e ir verificando se está em Tlinha nao parece tao bom
 
 }
