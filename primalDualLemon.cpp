@@ -25,7 +25,7 @@ int main(){
 	- Valor 1 na linha i, coluna j se o cliente i contribui pra instalacao j
 
 	*/
-	int matriz_adjacencia[qtd_clientes][qtd_instalacoes];
+	int matriz_adjacencia[qtd_clientes][qtd_instalacoes]; // indica se o cliente alcançou a instalação
 
 
 	int qtd_clientes_ativos_S = qtd_clientes; // Indica a quantidade de clientes ainda em S, os clientes ativos.
@@ -146,13 +146,15 @@ int main(){
 	int indice_inst;
 
 	// Percorrer todas as arestas para ver quais bateram o custo de atribuicao
-	// Entao, acionar a flag prontoContribuirW e colocar na matriz de adiacencia.
+	// Entao, acionar a flag prontoContribuirW e colocar na matriz de adjacencia.
 	for(ListGraph::EdgeIt e(S); e!= INVALID; ++e){
 		if(custoAtribuicao[e] == custoAtribuicao[menor]){
 			prontoContribuirW[e] = true;
 
 			indice_inst = nome[S.u(e)] - qtd_clientes;
 			matriz_adjacencia[nome[S.v(e)]][indice_inst] = 1;
+			// PROBLEMA: ver se alguma instalacao ja estaria aberta (se ela tem custo zero).. fazer um if aqui
+
 		}
 	}
 
@@ -183,15 +185,16 @@ int main(){
 	*/
 
 	// grafo com as instalacoes que possuem desigualdade justa
-	ListGraph T; 
+	ListGraph T;  
 	// f será o custo de instalação (fi)
 	ListGraph::NodeMap<float> f(T);
-	// Criação de nós de instalações em T
-	ListGraph::Node instT[qtd_instalacoes];
-	int qtd_instT = 0; // indica a quantidade de instalacoes ja em T
 
 	// Para identificar cada nó
 	ListGraph::NodeMap<int> nomeT(T);
+
+	// Criação de nós de instalações em T
+	ListGraph::Node instT[qtd_instalacoes];
+	int qtd_instT = 0; // indica a quantidade de instalacoes ja em T
 
 
 
@@ -206,10 +209,15 @@ int main(){
 	float qtd_menorB; 
 	int nome_menorB;
 
+	int somatorio_caso_b; // PROBLEMA: mudar o nome
+
 
 	int id_cli;
 
 	int qtd_contribui;
+
+	bool teste = true; //PROBLEMA: mudar nome aqui 
+
 
 	// ****** A partir daqui deve estar em um loop até nao ter mais clientes ativos:
 
@@ -219,7 +227,7 @@ int main(){
 
 		// 	A - fazer um for percorrendo todos os clientes e vendo o que resta de cij pra cada (achar o menor) (menor cij - vj)
 
-		qtd_menorA = 10000; // PROBLEMA: seria bom pegar o valor da primeira, ao inves de 10000
+		qtd_menorA = 10000; // PROBLEMA: seria bom pegar o valor da primeira, ao inves de 10000.. SOLUCAO: no começo salvar o maior cij existente dos dados da entrada
 		nome_inst_menorA = -1;
 		nome_cli_menorA = -1;
 
@@ -245,11 +253,12 @@ int main(){
 
 		// B - fazer um for percorrendo todas as instalações para ver (fi - somatório de tudo que foi contribuído ate então para fi ) / numero de clientes prontos para contribuir para fi … os que ja alcançaram cij e ainda estão ativos
 
-		qtd_menorB = 10000; // PROBLEMA: seria bom pegar o valor da primeira, ao inves de 10000
+		qtd_menorB = 10000; // PROBLEMA: seria bom pegar o valor da primeira, ao inves de 10000.. SOLUCAO: mesma solucao do caso A.. colocar maior fi da entrada
 		nome_menorB = -1;
 
 
 		for(ListGraph::NodeIt v(S); v != INVALID; ++v){
+
 			if (tipo[v]==1) { 			// se for instalacao
 
 				indice_inst = nome[v] - qtd_clientes;
@@ -257,32 +266,36 @@ int main(){
 				qtd_contribui = 0;
 
 				for(int i=0;i<qtd_clientes;i++){
-					qtd_contribui += matriz_adjacencia[i][indice_inst]; // verificando quantos contribui pra ela
+					qtd_contribui += matriz_adjacencia[i][indice_inst]; // verificando quantos contribui pra ela // PROBLEMA: pensar melhor mas (talvez!!!!) pode salvar isso como node map, pra nao ter q ficar recalculando toda vez
 				}
 
-				if(qtd_contribui==0){
-					qtd_atual = label[v]; // Se ninguem comecou a contribuir para ela ainda, entao a conta é o valor de fi mesmo
-				}
-
-				else{ // SENAO, SE alguem ja esta pronto para contribuir pelo menos
-
-					qtd_atual = 0; 
+				if(qtd_contribui>0){ // SENAO, SE alguem ja esta pronto para contribuir pelo menos
+					somatorio_caso_b = 0; 
 					for (ListGraph::IncEdgeIt e(S, v); e != INVALID; ++e) { // Percorre todas arestas desse nó
-						qtd_atual += w[e]; // vai indicar somatorio de todos w dessa instalacao
+						somatorio_caso_b += w[e]; // vai indicar somatorio de todos w dessa instalacao // PROBLEMA: pode salvar isso como node map, pra nao ter q ficar recalculando toda vez
 					}
 
-					qtd_atual = (label[v] - qtd_atual)/qtd_contribui; //(fi - somatório de tudo que foi contribuído ate então para fi ) / (numero de clientes prontos para contribuir para fi) 
+					qtd_atual = (label[v] - somatorio_caso_b)/qtd_contribui; //(fi - somatório de tudo que foi contribuído ate então para fi ) / (numero de clientes prontos para contribuir para fi) 
 
+					if(qtd_atual < qtd_menorB){
+						qtd_menorB = qtd_atual;
+						nome_menorB = nome[v]; // PROBLEMA: E SE TIVER MAIS QUE UMA INSTALACAO?
+					}
 				}
-
-				if(qtd_atual < qtd_menorB){
-					qtd_menorB = qtd_atual;
-					nome_menorB = nome[v]; // PROBLEMA: E SE TIVER MAIS QUE UMA INSTALACAO?
-				}
+				
 			}
 		}
 
 		cout << "temos a qtd menor na parte B: " << qtd_menorB << " com a inst: " << nome_menorB << endl;
+
+
+		/*
+
+
+			PAREI DE PARAR POR AQUI
+
+
+		*/
 
 
 		//	ver o menor entre A e B e aumentar esse valor em todos os clientes (tanto no cij se ainda faltar quanto no wij se ja estiver contribuindo)
