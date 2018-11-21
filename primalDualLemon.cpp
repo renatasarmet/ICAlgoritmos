@@ -44,6 +44,8 @@ int main(){
 	// Para identificar cada nó
 	ListGraph::NodeMap<int> nome(g);
 
+	//PROBLEMA SOLUCAO: CRIAR NODE MAP BOOLEANO PARA DIZER SE A INST TA ABERTA OU NAO
+
 
 	// Criação de nós clientes e atribuição de seus labels
 	ListGraph::Node clientes[qtd_clientes];
@@ -177,6 +179,8 @@ int main(){
 
 	
 
+	//PROBLEMA: TALVEZ NAO PRECISE DE T... só o node map booleano que indica se a inst ta aberta
+
 
 	/*
 
@@ -239,8 +243,8 @@ int main(){
 						qtd_atual = custoAtribuicao[e] - label[v];
 						if(qtd_atual < qtd_menorA){
 							qtd_menorA = qtd_atual;
-							nome_inst_menorA = nome[S.u(e)]; // PROBLEMA: E SE TIVER MAIS QUE UMA INSTALACAO?
-							nome_cli_menorA = nome[S.v(e)]; //  PROBLEMA: E SE TIVER MAIS QUE UM CLIENTE?
+							nome_inst_menorA = nome[S.u(e)]; // PROBLEMA: E SE TIVER MAIS QUE UMA INSTALACAO? SOLUCAO: talvez nao precise disso (?) TALVEZ PRECISE
+							nome_cli_menorA = nome[S.v(e)]; //  PROBLEMA: E SE TIVER MAIS QUE UM CLIENTE? SOLUCAO: talvez nao precise disso (?) TALVEZ PRECISE
 						}
 					}
 				}
@@ -265,11 +269,12 @@ int main(){
 
 				qtd_contribui = 0;
 
+				// PROBLEMA SOLUCAO: Se apagar a matriz_adjacencia, fazer um for percorrendo todas as arestas saindo dessa inst, verificar se prontoContribuirW[e] ta verdadeiro e soma 1 se sim
 				for(int i=0;i<qtd_clientes;i++){
-					qtd_contribui += matriz_adjacencia[i][indice_inst]; // verificando quantos contribui pra ela // PROBLEMA: pensar melhor mas (talvez!!!!) pode salvar isso como node map, pra nao ter q ficar recalculando toda vez
+					qtd_contribui += matriz_adjacencia[i][indice_inst]; // verificando quantos contribui pra ela // PROBLEMA: pensar melhor mas (talvez!!!!) pode salvar isso como node map, pra nao ter q ficar recalculando toda vez. SOLUCAO: NAO VALE A PENA TALVEZ 
 				}
 
-				if(qtd_contribui>0){ // SENAO, SE alguem ja esta pronto para contribuir pelo menos
+				if(qtd_contribui>0){ // SE alguem ja esta pronto para contribuir pelo menos
 					somatorio_caso_b = 0; 
 					for (ListGraph::IncEdgeIt e(S, v); e != INVALID; ++e) { // Percorre todas arestas desse nó
 						somatorio_caso_b += w[e]; // vai indicar somatorio de todos w dessa instalacao // PROBLEMA: pode salvar isso como node map, pra nao ter q ficar recalculando toda vez
@@ -279,23 +284,13 @@ int main(){
 
 					if(qtd_atual < qtd_menorB){
 						qtd_menorB = qtd_atual;
-						nome_menorB = nome[v]; // PROBLEMA: E SE TIVER MAIS QUE UMA INSTALACAO?
+						nome_menorB = nome[v]; // PROBLEMA: E SE TIVER MAIS QUE UMA INSTALACAO? SOLUCAO: talvez nao precise disso (?)
 					}
 				}
-				
 			}
 		}
 
 		cout << "temos a qtd menor na parte B: " << qtd_menorB << " com a inst: " << nome_menorB << endl;
-
-
-		/*
-
-
-			PAREI DE PARAR POR AQUI
-
-
-		*/
 
 
 		//	ver o menor entre A e B e aumentar esse valor em todos os clientes (tanto no cij se ainda faltar quanto no wij se ja estiver contribuindo)
@@ -323,13 +318,14 @@ int main(){
 		// Aproveitar e ver quais bateram o custo de atribuicao
 		// Entao, acionar a flag prontoContribuirW e colocar na matriz de adjacencia. 
 
+		// PROBLEMA SOLUCAO: Atualizar aqui o total de contribuicao de cada instalacao (quando implementar isso como node map)
+
 		for(ListGraph::EdgeIt e(S); e!= INVALID; ++e){
 			if(prontoContribuirW[e]){ // se está pronto para contribuir
-				w[e] += menorAB; // PROBLEMA: será que não tem problema de aumentar esse valor varios vezes e estourar? Talvez dividir pelo numero de inst q ele contribui?
+				w[e] += menorAB; 
 			}
-			else if(custoAtribuicao[e] == label[S.v(e)]){ // SENAO SE: está pronto para contribuir (ja pagou o ca)
+			else if(custoAtribuicao[e] == label[S.v(e)]){ // SENAO SE: está pronto para contribuir (ja pagou o c.a.)
 				prontoContribuirW[e] = true;
-
 				indice_inst = nome[S.u(e)] - qtd_clientes;
 				matriz_adjacencia[nome[S.v(e)]][indice_inst] = 1; // atribui esse novo cliente em sua lista
 			}
@@ -337,12 +333,21 @@ int main(){
 
 
 
+		// PROBLEMA SOLUCAO: INVERTER A ORDEM DO TRATAMENTO DO CASO A COM O CASO B (ADICIONAR "OU EMPATE".... talvez só colocar <= pra incluir empate). 
+
 		// REPETINDO O IF, PARA TRATAR DOS DETALHES AGORA
 
 		// SE FOR O CASO A: verificar se a instalação que aquele cliente alcançou ja estava aberta, se sim, remover ele dos ativos
 		if(qtd_menorA < qtd_menorB){
 			cout << "Caso A!" << endl;
 			tag_inst_aberta = false;
+
+			//PROBLEMA: MUDAR O JEITO DE VERIFICAR SE AS INSTS ALCANÇADAS ESTAO ABERTAS.. UTILIZAR O NODE MAP BOOLEANO CRIADO LA EM CIMA DE SUGESTAO
+			// SOLUCAO: percorrer toda aresta, verificar se o cliente j alcançou a inst i . Se isso acontecer, verificar se i ta aberta. 
+					// Se isso acontecer, adicionar o cliente j na lista de futuros_apagados 
+					// Depois de percorrer todas as arestas, remover de S todos os nós dessa lista de futuros_apagados
+
+			/* APAGAR A PARTIR DAQUI PRA COLOCAR NOVA IMPLEMENTACAO */
 			for(ListGraph::NodeIt v(T); v != INVALID; ++v){ // Percorrer por T para ver se o nome_inst_menorA está la (se a inst ja está aberta)
 				if(nomeT[v] == nome_inst_menorA){
 					tag_inst_aberta = true;
@@ -354,49 +359,65 @@ int main(){
 				S.erase(S.nodeFromId(nome_cli_menorA)); 
 				qtd_clientes_ativos_S -= 1;
 			}
+			/* APAGAR ATÉ DAQUI PRA COLOCAR NOVA IMPLEMENTACAO */
+
 		}
 		// SE FOR O CASO B: caso B seja o menor valor: abrir a instalação i e remover os seus contribuintes dos clientes ativos (lembrando de remover eles das listas de contribuintes das outras instalações (talvez só fazer uma tag se está ativo ou não)
 		else if(qtd_menorA > qtd_menorB){ 
 			cout << "Caso B!" << endl;
-			instT[qtd_instT] = T.addNode();
-			f[instT[qtd_instT]] = label[S.nodeFromId(nome_menorB)]; // pega o valor fi da instalacao
-			nomeT[instT[qtd_instT]] = nome_menorB; // pega o nome da instalacao
-			qtd_instT += 1;
 
-			//Remover os seus contribuintes dos clientes ativos
-			indice_inst = nome_menorB - qtd_clientes;
-			for(int i=0;i<=qtd_clientes;i++){
-				if(matriz_adjacencia[i][indice_inst]==1){
-					cout<<"************* vamo remover cliente " << i << endl;
+			//PROBLEMA: se tiver varias insts. SOLUCAO: fazer um for percorrendo as instalacoes pra ver se o node map q guarda a qtd ja contribuida a ela é igual ao fi (label). Tambem atualizr aqui o node map booleano que indica se ela está aberta ou não
+
+				// Adicionando instalacao em T
+				instT[qtd_instT] = T.addNode();
+				f[instT[qtd_instT]] = label[S.nodeFromId(nome_menorB)]; // pega o valor fi da instalacao
+				nomeT[instT[qtd_instT]] = nome_menorB; // pega o nome da instalacao
+				qtd_instT += 1;
+
+				//Remover os seus contribuintes dos clientes ativos
+				indice_inst = nome_menorB - qtd_clientes;
+				for(int i=0;i<=qtd_clientes;i++){
+					if(matriz_adjacencia[i][indice_inst]==1){
+						cout<<"************* vamo remover cliente " << i << endl;
+
+						//PROBLEMA: criar um vetor clientes_congelados dos clientes, para indicar se ele está congelado (se ele foi removido de S). SOLUCAO MELHOR: se for remover a matriz de adjancencia, nao precisa disso.
+
+						//Apagando ele da lista de contribuintes das outras instalacoes
+
+						for(int j=0;j<=qtd_instalacoes;j++){ // percorre por todas as instalacoes que o cliente contribui
+
+							if(matriz_adjacencia[i][j]==1){ // se ele contribui pra instalacao j
+
+								cout<<"removido cliente " << i << " da instalacao " << j << endl;
 
 
-					//Apagando ele da lista de contribuintes das outras instalacoes
+								if(j!=indice_inst){ // se nao estamos falando dessa inst atual // PROBLEMA: pq to fazendo isso??? acho q tem q remover o atual sim
 
-					for(int j=0;j<=qtd_instalacoes;j++){ // percorre por todas as instalacoes que o cliente contribui
-
-						if(matriz_adjacencia[i][j]==1){ // se ele contribui pra instalacao j
-
-							cout<<"removido cliente " << i << " da instalacao " << j << endl;
-
-
-							if(j!=indice_inst){ // se nao estamos falando dessa inst atual
-
-								matriz_adjacencia[i][j] = 0;
+									matriz_adjacencia[i][j] = 0;
+								}
 							}
 						}
-					}
 
-					//Apagando ele dos clientes ativos (de S)
-					S.erase(S.nodeFromId(i));
-					qtd_clientes_ativos_S -=1;
+						//Apagando ele dos clientes ativos (de S)
+						S.erase(S.nodeFromId(i));
+						qtd_clientes_ativos_S -=1;
+					}
 				}
-			}
 
 		} 
-		// SENAO: EMPATE
+		// SENAO: EMPATE /// PROBLEMA: COM AS SOLUCOES NAO VAI PRECISAR DESSE ELSE
 		else{
 			cout << "Empatou! Ver o que fazer" << endl;
 		}
+
+
+		/*
+
+	
+		PAREI DE FALAR AQUI
+
+
+		*/
 
 
 		// // Percorrendo por todos os nós de T
