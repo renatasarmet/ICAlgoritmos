@@ -11,6 +11,9 @@ using namespace std;
 #define qtd_instalacoes 10
 
 
+// TALVEZ GRAFO BIPARTIDO: http://lemon.cs.elte.hu/pub/doc/latest-svn/a00352.html#004394d647a7b4b4016097ba61413b50
+
+
 // aqui so para salvar: for (ListGraph::IncEdgeIt e(g, n); e != INVALID; ++e) {
 
 int main(){
