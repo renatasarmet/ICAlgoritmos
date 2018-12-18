@@ -18,7 +18,7 @@ using namespace std;
 
 int main(){
 
-	bool debug = false;
+	bool debug = true;
 
 	/*
 	
@@ -157,6 +157,15 @@ int main(){
 			cout << " - cliente: " << nome[S.u(e)] << " - instalacao: " << nome[S.v(e)];
 			cout<< " - ca: " << custoAtribuicao[e] << " w - " << w[e] << " PCW - " << prontoContribuirW[e] << endl;
 		}
+
+		// Exibindo a matriz de adjacencia
+		cout << "Exibindo matriz de adjacencia" << endl;
+		for(int i=0;i<qtd_clientes;i++){
+			for(int j=0;j<qtd_instalacoes;j++){
+				cout<< matriz_adjacencia[i][j] << " ";
+			}
+			cout << endl;
+		}
 	}
 	
 
@@ -219,6 +228,15 @@ int main(){
 			cout << "arco id: " << S.id(e) ;
 			cout << " - cliente: " << nome[S.u(e)] << " - instalacao: " << nome[S.v(e)];
 			cout<< " - ca: " << custoAtribuicao[e] << " w - " << w[e] << " PCW - " << prontoContribuirW[e] << endl;
+		}
+
+		// Exibindo a matriz de adjacencia
+		cout << "Exibindo matriz de adjacencia" << endl;
+		for(int i=0;i<qtd_clientes;i++){
+			for(int j=0;j<qtd_instalacoes;j++){
+				cout<< matriz_adjacencia[i][j] << " ";
+			}
+			cout << endl;
 		}
 	}
 
@@ -289,7 +307,7 @@ int main(){
 
 			qtd_contribui = 0;
 
-
+			// AQUI NAO PODE USAR MATRIZ DE ADJACENCIA... PQ UMA VEZ NA M.A., SEMPRE NELA. DIFERENTE DO PRONTOCONTRIBUIRW, QUE ATUALIZA, PODENDO REMOVER ALGUEM
 			// // PROBLEMA SOLUCAO: Se apagar a matriz_adjacencia, fazer um for percorrendo todas as arestas saindo dessa inst, verificar se prontoContribuirW[e] ta verdadeiro e soma 1 se sim
 			// for(int i=0;i<qtd_clientes;i++){
 			// 	qtd_contribui += matriz_adjacencia[i][indice_inst]; // verificando quantos contribui pra ela // PROBLEMA: pensar melhor mas (talvez!!!!) pode salvar isso como node map, pra nao ter q ficar recalculando toda vez. SOLUCAO: NAO VALE A PENA TALVEZ 
@@ -428,7 +446,7 @@ int main(){
 
 			for(ListBpGraph::BlueNodeIt n(S); n != INVALID; ++n){ // percorrer todas as instalacoes
 				if(!aberta[n]){ // se a instalacao ja nao estava aberta (nao tenho ctz se precisa disso, mas acho q sim)
-					if((somatorioW[n] > f[n] - EPSL)&&(somatorioW[n] < f[n] + EPSL)){ // se a soma das partes completou o custo de abrir a instalacao, vamos abrir!
+					if((somatorioW[n] > f[n] - EPSL)&&(somatorioW[n] < f[n] + EPSL)){ // se a soma das partes completou o custo de abrir a instalacao, vamos abrir! (isso é a msm coisa q somatorioW[n] == f[n] mas garante erros minusculos)
 						cout << "Instalacao " << S.id(n) << " deve ser aberta!!!!" << endl;
 						aberta[n] = true;
 						qtd_inst_abertas += 1;
@@ -446,7 +464,6 @@ int main(){
 								cout<<"************* vamo remover cliente " << nome[S.u(e)] << endl;
 
 								apagar_clientes.insert(S.id(S.u(e))); // Adicionar o cliente j na lista de futuros a apagar
-								// prontoContribuirW[e] = false;
 								cout << endl<< endl << endl << "no B -----------------------&&&&&&&&&&&&&&&&&&&&&& SIZE: " << apagar_clientes.size() << endl << endl << endl << endl;
 
 								//PROBLEMA: criar um vetor clientes_congelados dos clientes, para indicar se ele está congelado (se ele foi removido de S). SOLUCAO MELHOR: se for remover a matriz de adjancencia, nao precisa disso.
@@ -454,13 +471,13 @@ int main(){
 								//Apagando ele da lista de contribuintes das outras instalacoes
 
 								for (ListBpGraph::IncEdgeIt e2(S, S.u(e)); e2 != INVALID; ++e2) { // Percorre todas arestas desse nó (ligam a instalacoes)
-									// if(S.id(S.v(e2)) != indice_inst){ // se nao estamos falando dessa inst atual 
+									if(S.id(S.v(e2)) != indice_inst){ // se nao estamos falando dessa inst atual 
 										if(prontoContribuirW[e2]){ // se o cliente estava pronto para contribuir com essa instalacao
 
 											prontoContribuirW[e2] = false;
 											cout<<"removido cliente " << nome[S.u(e2)] << " do pronto para contribuir da instalacao " << nome[S.v(e2)] << endl;
 										}
-									// }
+									}
 								}
 
 								// PROBLEMA: diminuir o somatorioW.. somatorioW[S.asBlueNode()] - w[e] // sendo esse e a aresta de i e indice_inst
@@ -470,8 +487,6 @@ int main(){
 								// qtd_clientes_ativos_S -=1;
 							}
 						}
-
-
 
 					}
 				}
@@ -519,9 +534,20 @@ int main(){
 				cout << " - cliente: " << nome[S.u(e)] << " - instalacao: " << nome[S.v(e)];
 				cout<< " - ca: " << custoAtribuicao[e] << " w - " << w[e] << " PCW - " << prontoContribuirW[e] << endl;
 			}
+
+			// Exibindo a matriz de adjacencia
+			cout << "Exibindo matriz de adjacencia" << endl;
+			for(int i=0;i<qtd_clientes;i++){
+				for(int j=0;j<qtd_instalacoes;j++){
+					cout<< matriz_adjacencia[i][j] << " ";
+				}
+				cout << endl;
+			}
 		}
 
 	}
+
+
 
 
 	/*
@@ -530,10 +556,11 @@ int main(){
 
 	*/
 
-	// grafo com as instalacoes abertas
+	// grafo com as instalacoes abertas ( no futuro quero que tenha os clientes conectados a suas instalacoes correspondentes)
 	ListBpGraph Tlinha; 
 	// Criação de nós de instalações em Tlinha
-	ListBpGraph::Node instTlinha[qtd_instalacoes];
+	ListBpGraph::BlueNode instTlinha[qtd_instalacoes];
+
 	int qtd_instTlinha = 0; // indica a quantidade de instalacoes ja em Tlinha
 
 	// Para identificar cada nó
@@ -541,7 +568,6 @@ int main(){
 
 	cout << "Criando Tlinha" << endl;
 	indice_inst = 0;
-	int id_inst_apagar = 10;
 
 	cout << "Exibindo matriz de adjacencia" << endl;
 	for(int i=0;i<qtd_clientes;i++){
@@ -551,14 +577,15 @@ int main(){
 		cout << endl;
 	}
 
-	cout << "vou comecar com " << qtd_inst_abertas << endl;
 
-	// Enquanto T != 0
+	// Enquanto houverem instalacoes abertas em S
 	while(qtd_inst_abertas > 0){
+
+		cout << "vou comecar com " << qtd_inst_abertas << endl;
 
 		for(ListBpGraph::BlueNodeIt n(S); n != INVALID; ++n){
 			if(aberta[n]){ 
-				// Escolha inst pertencente a T
+				// Escolha inst aberta de S
 				cout << "Escolhido instalacao " << nome[n] << endl;
 				indice_inst = nome[n] - qtd_clientes;
 
@@ -573,45 +600,50 @@ int main(){
 		}
 
 
-		//	Remove todas instalacoes i se algum cliente i contribuir a i e indice_inst
+		//	Remove todas instalacoes i se algum cliente j contribuir a i e indice_inst
 		for(int i=0;i<qtd_clientes;i++){
 
 			if(matriz_adjacencia[i][indice_inst]==1){ // se o cliente i contribui para a inst indice_inst
 
 				for(int j=0;j<qtd_instalacoes;j++){ // ve todas as instalacoes que esse cliente contribui tambem e remove
 
-					if(matriz_adjacencia[i][j]){
+					if(j!=indice_inst){ // Se nao estivermos falando da instalacao inicial que pegamos
 
-						//PROBLEMA: falta verificar se a instalacao j está em T
+						if(matriz_adjacencia[i][j]){
 
-						cout << "Removendo a instalacao " << (j + qtd_clientes) << " de T, pois cliente " << i << " contribui a ela" << endl;
-
-
-						for(int k=0;k<qtd_clientes;k++){ // PROBLEMA: nao parece eficiente. Quero marcar que todas os clientes daquela instalacao agr nao contribuem mais pra ela
-							matriz_adjacencia[k][j] = 0;
-						}
+							// Limpando a matriz de adjacencia naquela coluna
+							for(int k=0;k<qtd_clientes;k++){ // PROBLEMA: nao parece eficiente. Quero marcar que todas os clientes daquela instalacao agr nao contribuem mais pra ela
+								matriz_adjacencia[k][j] = 0;
+							}
 
 
-						// PROBLEMA: nome é j, mas o ID nao sei...
-						for(ListBpGraph::BlueNodeIt n(S); n != INVALID; ++n){ // PROBLEMA: Seria essa a melhor forma? ver melhor oq é j
-							if(aberta[n]){
-								if(nome[n]==(j+qtd_clientes)){
-									aberta[n] = false;
-									qtd_inst_abertas -= 1;
-									break;
-								}
+							if(aberta[S.asBlueNode(S.nodeFromId(j+qtd_clientes))]){ // Se a instalacao j está aberta
+								cout << "Removendo a instalacao " << (j + qtd_clientes) << " das abertas, pois cliente " << i << " contribui a ela" << endl;
+								aberta[S.asBlueNode(S.nodeFromId(j+qtd_clientes))] = false;
+								qtd_inst_abertas -= 1;
 							}
 						}
-
-						// APAGAR
-						// T.erase(T.nodeFromId(id_inst_apagar));  
 					}
+					
 				}
 			}
 		}
+		cout << "Removendo a instalacao escolhida " << indice_inst + qtd_clientes << " das abertas" << endl;
+		aberta[S.asBlueNode(S.nodeFromId(indice_inst+qtd_clientes))] = false;
+		qtd_inst_abertas -= 1;
 
-		// cout << "oooopaa " << qtd_inst_abertas << endl;
+	}
 
+	if (debug){
+
+		// Exibindo a matriz de adjacencia
+		cout << "Exibindo matriz de adjacencia" << endl;
+		for(int i=0;i<qtd_clientes;i++){
+			for(int j=0;j<qtd_instalacoes;j++){
+				cout<< matriz_adjacencia[i][j] << " ";
+			}
+			cout << endl;
+		}
 	}
 
 
@@ -621,6 +653,9 @@ int main(){
 		cout << "no id: " << Tlinha.id(n) << " - nome: " << nomeTlinha[n] << endl;
 	}
 	cout<<"-------" << endl;
+
+
+
 
 	// Depois abrir todas as instalacoes em Tlinha e atribuir cada cliente à instalacao mais próxima
 
