@@ -3,6 +3,9 @@
 // #include <lemon/lgf_reader.h>
 // #include <lemon/lgf_writer.h>
 #include <iostream>
+#include <set>
+#include <iterator>
+#define EPSL 0.001
 using namespace lemon;
 using namespace std;
 
@@ -14,6 +17,8 @@ using namespace std;
 // TALVEZ GRAFO BIPARTIDO: http://lemon.cs.elte.hu/pub/doc/latest-svn/a00352.html#004394d647a7b4b4016097ba61413b50
 
 int main(){
+
+	bool debug = false;
 
 	/*
 	
@@ -131,26 +136,27 @@ int main(){
 	ListBpGraph S; // Grafo que contem os clientes os quais estamos aumentando as variaveis duais
 	bpGraphCopy(g,S).run();
 	
+	if (debug){
+		// Percorrendo por todos os nós A - clientes
+		cout << "Percorrendo por todos os clientes" << endl;
+		for(ListBpGraph::RedNodeIt n(S); n != INVALID; ++n){
+			cout << "no id: " << S.id(n)  << " - nome: " << nome[n] << " - v: " << v[n] << endl;
+		}
 
-	// Percorrendo por todos os nós A - clientes
-	cout << "Percorrendo por todos os clientes" << endl;
-	for(ListBpGraph::RedNodeIt n(S); n != INVALID; ++n){
-		cout << "no id: " << S.id(n)  << " - nome: " << nome[n] << " - v: " << v[n] << endl;
-	}
-
-	// Percorrendo por todos os nós B - instalacoes
-	cout << "Percorrendo por todos as instalacoes" << endl;
-	for(ListBpGraph::BlueNodeIt n(S); n != INVALID; ++n){
-		cout << "no id: " << S.id(n)  << " - nome: " << nome[n] << " - f: " << f[n] << " - aberta: " << aberta[n] << endl;
-	}
+		// Percorrendo por todos os nós B - instalacoes
+		cout << "Percorrendo por todos as instalacoes" << endl;
+		for(ListBpGraph::BlueNodeIt n(S); n != INVALID; ++n){
+			cout << "no id: " << S.id(n)  << " - nome: " << nome[n] << " - f: " << f[n] << " - aberta: " << aberta[n] << endl;
+		}
 
 
-	// Percorrendo por todos os arcos
-	cout << "Percorrendo por todos os arcos" << endl;
-	for(ListBpGraph::EdgeIt e(S); e!= INVALID; ++e){
-		cout << "arco id: " << S.id(e) ;
-		cout << " - cliente: " << S.id(S.u(e)) << " - instalacao: " << S.id(S.v(e));
-		cout<< " - ca: " << custoAtribuicao[e] << " w - " << w[e] << " PCW - " << prontoContribuirW[e] << endl;
+		// Percorrendo por todos os arcos
+		cout << "Percorrendo por todos os arcos" << endl;
+		for(ListBpGraph::EdgeIt e(S); e!= INVALID; ++e){
+			cout << "arco id: " << S.id(e) ;
+			cout << " - cliente: " << nome[S.u(e)] << " - instalacao: " << nome[S.v(e)];
+			cout<< " - ca: " << custoAtribuicao[e] << " w - " << w[e] << " PCW - " << prontoContribuirW[e] << endl;
+		}
 	}
 	
 
@@ -193,37 +199,54 @@ int main(){
 	}
 
 
-	// Percorrendo por todos os arcos
-	cout << "Percorrendo por todos os arcos" << endl;
-	for(ListBpGraph::EdgeIt e(S); e!= INVALID; ++e){
-		cout << "arco id: " << S.id(e) ;
-		cout << " - cliente: " << S.id(S.u(e)) << " - instalacao: " << S.id(S.v(e));
-		cout<< " - ca: " << custoAtribuicao[e] << " w - " << w[e] << " PCW - " << prontoContribuirW[e] << endl;
+	if (debug){
+		// Percorrendo por todos os nós A - clientes
+		cout << "Percorrendo por todos os clientes" << endl;
+		for(ListBpGraph::RedNodeIt n(S); n != INVALID; ++n){
+			cout << "no id: " << S.id(n)  << " - nome: " << nome[n] << " - v: " << v[n] << endl;
+		}
+
+		// Percorrendo por todos os nós B - instalacoes
+		cout << "Percorrendo por todos as instalacoes" << endl;
+		for(ListBpGraph::BlueNodeIt n(S); n != INVALID; ++n){
+			cout << "no id: " << S.id(n)  << " - nome: " << nome[n] << " - f: " << f[n] << " - aberta: " << aberta[n] << endl;
+		}
+
+
+		// Percorrendo por todos os arcos
+		cout << "Percorrendo por todos os arcos" << endl;
+		for(ListBpGraph::EdgeIt e(S); e!= INVALID; ++e){
+			cout << "arco id: " << S.id(e) ;
+			cout << " - cliente: " << nome[S.u(e)] << " - instalacao: " << nome[S.v(e)];
+			cout<< " - ca: " << custoAtribuicao[e] << " w - " << w[e] << " PCW - " << prontoContribuirW[e] << endl;
+		}
 	}
 
 
 	int qtd_inst_abertas = 0; // indica a quantidade de instalacoes abertas
 
 
-	int tag_inst_aberta = false; // tag para ver se a inst está aberta (se está em T)
-	int menorAB; // receberá o menor valor entre o menor de A ou o menor de B
+	int tag_inst_aberta = false; // tag para ver se a inst está aberta 
+	float menorAB; // receberá o menor valor entre o menor de A ou o menor de B
 
 	float qtd_menorA;
 	float qtd_atual;
-	int nome_inst_menorA;
-	int nome_cli_menorA;
+	// int nome_inst_menorA;
+	// int nome_cli_menorA;
 
 	float qtd_menorB; 
 	int nome_menorB;
 
-	int somatorio_caso_b; // PROBLEMA: mudar o nome
-
+	float somatorio_caso_b; // PROBLEMA: mudar o nome
 
 	int id_cli;
 
 	int qtd_contribui;
 
-	bool teste = true; //PROBLEMA: mudar nome aqui 
+	// conjunto de clientes a serem removidos de S na iteração, pois deixaram de ser ativos
+    set <int, greater <int> > apagar_clientes; 
+    // Iterator par ao conjunto 
+    set <int, greater <int> > :: iterator itr; 
 
 
 	// ****** A partir daqui deve estar em um loop até nao ter mais clientes ativos:
@@ -234,9 +257,9 @@ int main(){
 
 		// 	A - fazer um for percorrendo todos os clientes e vendo o que resta de cij pra cada (achar o menor) (menor cij - vj)
 
-		qtd_menorA = maiorCij;
-		nome_inst_menorA = -1;
-		nome_cli_menorA = -1;
+		qtd_menorA = maiorCij; // inicia com o maior valor de cij dado na entrada
+		// nome_inst_menorA = -1;
+		// nome_cli_menorA = -1;
 
 		for(ListBpGraph::RedNodeIt n(S); n != INVALID; ++n){		// percorre os clientes
 		
@@ -245,8 +268,8 @@ int main(){
 					qtd_atual = custoAtribuicao[e] - v[n];
 					if(qtd_atual < qtd_menorA){
 						qtd_menorA = qtd_atual;
-						nome_inst_menorA = nome[S.v(e)]; // PROBLEMA: E SE TIVER MAIS QUE UMA INSTALACAO? SOLUCAO: talvez nao precise disso (?) TALVEZ PRECISE
-						nome_cli_menorA = nome[S.u(e)]; //  PROBLEMA: E SE TIVER MAIS QUE UM CLIENTE? SOLUCAO: talvez nao precise disso (?) TALVEZ PRECISE
+						// nome_inst_menorA = nome[S.v(e)]; // PROBLEMA: E SE TIVER MAIS QUE UMA INSTALACAO? SOLUCAO: talvez nao precise disso (?) TALVEZ PRECISE
+						// nome_cli_menorA = nome[S.u(e)]; //  PROBLEMA: E SE TIVER MAIS QUE UM CLIENTE? SOLUCAO: talvez nao precise disso (?) TALVEZ PRECISE
 					}
 				}
 			}
@@ -257,31 +280,40 @@ int main(){
 
 		// B - fazer um for percorrendo todas as instalações para ver (fi - somatório de tudo que foi contribuído ate então para fi ) / numero de clientes prontos para contribuir para fi … os que ja alcançaram cij e ainda estão ativos
 
-		qtd_menorB = maiorFi; 
+		qtd_menorB = maiorFi; // inicia com o maior valor de fi dado na entrada
 		nome_menorB = -1;
 
-
-		for(ListBpGraph::BlueNodeIt n(S); n != INVALID; ++n){
+		for(ListBpGraph::BlueNodeIt n(S); n != INVALID; ++n){ // percorre as instalacoes
 
 			indice_inst = nome[n] - qtd_clientes;
 
 			qtd_contribui = 0;
 
-			// PROBLEMA SOLUCAO: Se apagar a matriz_adjacencia, fazer um for percorrendo todas as arestas saindo dessa inst, verificar se prontoContribuirW[e] ta verdadeiro e soma 1 se sim
-			for(int i=0;i<qtd_clientes;i++){
-				qtd_contribui += matriz_adjacencia[i][indice_inst]; // verificando quantos contribui pra ela // PROBLEMA: pensar melhor mas (talvez!!!!) pode salvar isso como node map, pra nao ter q ficar recalculando toda vez. SOLUCAO: NAO VALE A PENA TALVEZ 
+
+			// // PROBLEMA SOLUCAO: Se apagar a matriz_adjacencia, fazer um for percorrendo todas as arestas saindo dessa inst, verificar se prontoContribuirW[e] ta verdadeiro e soma 1 se sim
+			// for(int i=0;i<qtd_clientes;i++){
+			// 	qtd_contribui += matriz_adjacencia[i][indice_inst]; // verificando quantos contribui pra ela // PROBLEMA: pensar melhor mas (talvez!!!!) pode salvar isso como node map, pra nao ter q ficar recalculando toda vez. SOLUCAO: NAO VALE A PENA TALVEZ 
+			// }
+
+			for (ListBpGraph::IncEdgeIt e(S, n); e != INVALID; ++e) { // Percorre todas arestas desse nó
+				if(prontoContribuirW[e]){
+					qtd_contribui += 1;
+				}
 			}
 
-			if(qtd_contribui>0){ // SE alguem ja esta pronto para contribuir pelo menos
+
+			if(qtd_contribui > 0){ // SE alguem ja esta pronto para contribuir pelo menos
 				somatorio_caso_b = 0; 
 				for (ListBpGraph::IncEdgeIt e(S, n); e != INVALID; ++e) { // Percorre todas arestas desse nó
 					somatorio_caso_b += w[e]; // vai indicar somatorio de todos w dessa instalacao // PROBLEMA: pode salvar isso como node map, pra nao ter q ficar recalculando toda vez
 				}
 
-				cout << "TENHO AQUI SOMATORIO CASO B: " << somatorio_caso_b <<  endl;
-				cout << "E TENHO AQUI O MEU SOMATORIO : " << somatorioW[n] << endl;
+				// cout << "TENHO AQUI SOMATORIO CASO B: " << somatorio_caso_b <<  endl;
+				// cout << "E TENHO AQUI O MEU SOMATORIO : " << somatorioW[n] << endl;
 
 				qtd_atual = (f[n] - somatorio_caso_b)/qtd_contribui; //(fi - somatório de tudo que foi contribuído ate então para fi ) / (numero de clientes prontos para contribuir para fi) 
+
+				// qtd_atual = (f[n] - somatorioW[n])/qtd_contribui; //(fi - somatório de tudo que foi contribuído ate então para fi ) / (numero de clientes prontos para contribuir para fi) 
 
 				if(qtd_atual < qtd_menorB){
 					qtd_menorB = qtd_atual;
@@ -290,7 +322,7 @@ int main(){
 			}
 		}
 
-		cout << "temos a qtd menor na parte B: " << qtd_menorB << " com a inst: " << nome_menorB << endl;
+		cout << "temos a qtd menor na parte B: " << qtd_menorB  << endl;
 
 
 		//	ver o menor entre A e B e aumentar esse valor em todos os clientes (tanto no cij se ainda faltar quanto no wij se ja estiver contribuindo)
@@ -331,7 +363,6 @@ int main(){
 		}
 
 
-
 		// PROBLEMA SOLUCAO: INVERTER A ORDEM DO TRATAMENTO DO CASO A COM O CASO B (ADICIONAR "OU EMPATE".... talvez só colocar <= pra incluir empate). 
 
 		// REPETINDO O IF, PARA TRATAR DOS DETALHES AGORA
@@ -354,14 +385,38 @@ int main(){
 			// 	}
 			// }
 
-			// isso ta provisorio.. tem q apagar pra colocar a nova implementacao
-			if(aberta[S.asBlueNode(S.nodeFromId(nome_inst_menorA))]) { // se a instalacao ja estava aberta
-				cout <<"Instalacao ja estava aberta. Removendo o cliente em questao dos ativos "<< endl;
+			for(ListBpGraph::EdgeIt e(S); e!= INVALID; ++e){ // percorrer todas as arestas
+				if(prontoContribuirW[e]){ // verificar se o cliente j alcancou a inst i (se ta pronto para contribuir)
+					// cout << "to aqui deboa prontoContribuirW com cliente " << nome[S.u(e)] << " e inst " << nome[S.v(e)] << endl;
+					if(aberta[S.asBlueNode(S.v(e))]){ // verificar se inst i ta aberta
+						// cout << "cheguei para adicionar! com cliente " << nome[S.u(e)] << " e inst aberta " << nome[S.v(e)] << endl;
 
-				S.erase(S.nodeFromId(nome_cli_menorA)); 
+						apagar_clientes.insert(S.id(S.u(e))); // Adicionar o cliente j na lista de futuros a apagar
+					}
+				}
+			}
+
+			cout << endl<< endl << endl << "-----------------------&&&&&&&&&&&&&&&&&&&&&& SIZE: " << apagar_clientes.size() << endl << endl << endl << endl;
+
+			for (itr = apagar_clientes.begin(); itr != apagar_clientes.end(); ++itr) { // percorrer todos os elementos do conjunto 
+				cout <<"OLHAAAAAAA Instalacao ja estava aberta. Removendo o cliente " << *itr << " dos ativos "<< endl;
+		        S.erase(S.nodeFromId(*itr));  // apagando dos clientes ativos
 
 				qtd_clientes_ativos_S -= 1;
-			}
+		    }
+
+		    //Apagar tudo do conjunto (limpar conjunto)
+		    apagar_clientes.erase(apagar_clientes.begin(), apagar_clientes.end()); 
+
+
+			// // isso ta provisorio.. tem q apagar pra colocar a nova implementacao
+			// if(aberta[S.asBlueNode(S.nodeFromId(nome_inst_menorA))]) { // se a instalacao ja estava aberta
+			// 	cout <<"Instalacao ja estava aberta. Removendo o cliente em questao dos ativos "<< endl;
+
+			// 	S.erase(S.nodeFromId(nome_cli_menorA)); 
+
+			// 	qtd_clientes_ativos_S -= 1;
+			// }
 			/* APAGAR ATÉ DAQUI PRA COLOCAR NOVA IMPLEMENTACAO */
 
 		}
@@ -371,46 +426,70 @@ int main(){
 
 			//PROBLEMA: se tiver varias insts. SOLUCAO: fazer um for percorrendo as instalacoes pra ver se o node map q guarda a qtd ja contribuida a ela é igual ao fi (label). Tambem atualizr aqui o node map booleano que indica se ela está aberta ou não
 
-				//APAGAR
-				// Adicionando instalacao em T
-				// instT[qtd_inst_abertas] = T.addBlueNode();
-				// f[instT[qtd_inst_abertas]] = f[S.nodeFromId(nome_menorB)]; // pega o valor fi da instalacao
-				// nomeT[instT[qtd_inst_abertas]] = nome_menorB; // pega o nome da instalacao
-				qtd_inst_abertas += 1;
-				cout << "to aumentando aqui o qtd: " << qtd_inst_abertas << endl;
-				aberta[S.asBlueNode(S.nodeFromId(nome_menorB))] = true; // PROBLEMA aqui tem q colocar do jeito q pode ser mais que um
-
-				//Remover os seus contribuintes dos clientes ativos
-				indice_inst = nome_menorB - qtd_clientes;
-				for(int i=0;i<=qtd_clientes;i++){
-					if(matriz_adjacencia[i][indice_inst]==1){
-						cout<<"************* vamo remover cliente " << i << endl;
-
-						//PROBLEMA: criar um vetor clientes_congelados dos clientes, para indicar se ele está congelado (se ele foi removido de S). SOLUCAO MELHOR: se for remover a matriz de adjancencia, nao precisa disso.
-
-						//Apagando ele da lista de contribuintes das outras instalacoes
-
-						for(int j=0;j<=qtd_instalacoes;j++){ // percorre por todas as instalacoes que o cliente contribui
-
-							if(matriz_adjacencia[i][j]==1){ // se ele contribui pra instalacao j
-
-								cout<<"removido cliente " << i << " da instalacao " << j << endl;
+			for(ListBpGraph::BlueNodeIt n(S); n != INVALID; ++n){ // percorrer todas as instalacoes
+				if(!aberta[n]){ // se a instalacao ja nao estava aberta (nao tenho ctz se precisa disso, mas acho q sim)
+					if((somatorioW[n] > f[n] - EPSL)&&(somatorioW[n] < f[n] + EPSL)){ // se a soma das partes completou o custo de abrir a instalacao, vamos abrir!
+						cout << "Instalacao " << S.id(n) << " deve ser aberta!!!!" << endl;
+						aberta[n] = true;
+						qtd_inst_abertas += 1;
+						cout << "to aumentando aqui o qtd de insts abertas: " << qtd_inst_abertas << endl;
 
 
-								if(j!=indice_inst){ // se nao estamos falando dessa inst atual // PROBLEMA: pq to fazendo isso??? acho q tem q remover o atual sim
+						//Remover os seus contribuintes dos clientes ativos
+						indice_inst = nome[n] - qtd_clientes;
 
-									matriz_adjacencia[i][j] = 0;
+
+						for (ListBpGraph::IncEdgeIt e(S, n); e != INVALID; ++e) { // Percorre todas arestas desse nó ( ligam a clientes )
+
+							if(prontoContribuirW[e]){ // se esse cliente está pronto para contribuir
+
+								cout<<"************* vamo remover cliente " << nome[S.u(e)] << endl;
+
+								apagar_clientes.insert(S.id(S.u(e))); // Adicionar o cliente j na lista de futuros a apagar
+								// prontoContribuirW[e] = false;
+								cout << endl<< endl << endl << "no B -----------------------&&&&&&&&&&&&&&&&&&&&&& SIZE: " << apagar_clientes.size() << endl << endl << endl << endl;
+
+								//PROBLEMA: criar um vetor clientes_congelados dos clientes, para indicar se ele está congelado (se ele foi removido de S). SOLUCAO MELHOR: se for remover a matriz de adjancencia, nao precisa disso.
+
+								//Apagando ele da lista de contribuintes das outras instalacoes
+
+								for (ListBpGraph::IncEdgeIt e2(S, S.u(e)); e2 != INVALID; ++e2) { // Percorre todas arestas desse nó (ligam a instalacoes)
+									// if(S.id(S.v(e2)) != indice_inst){ // se nao estamos falando dessa inst atual 
+										if(prontoContribuirW[e2]){ // se o cliente estava pronto para contribuir com essa instalacao
+
+											prontoContribuirW[e2] = false;
+											cout<<"removido cliente " << nome[S.u(e2)] << " do pronto para contribuir da instalacao " << nome[S.v(e2)] << endl;
+										}
+									// }
 								}
+
+								// PROBLEMA: diminuir o somatorioW.. somatorioW[S.asBlueNode()] - w[e] // sendo esse e a aresta de i e indice_inst
+
+								// //Apagando ele dos clientes ativos (de S)
+								// S.erase(S.nodeFromId(i));
+								// qtd_clientes_ativos_S -=1;
 							}
 						}
 
-						// PROBLEMA: diminuir o somatorioW.. somatorioW[S.asBlueNode()] - w[e] // sendo esse e a aresta de i e indice_inst
 
-						//Apagando ele dos clientes ativos (de S)
-						S.erase(S.nodeFromId(i));
-						qtd_clientes_ativos_S -=1;
+
 					}
 				}
+
+
+				cout << endl<< endl << endl << "depois B-----------------------&&&&&&&&&&&&&&&&&&&&&& SIZE: " << apagar_clientes.size() << endl << endl << endl << endl;
+
+				for (itr = apagar_clientes.begin(); itr != apagar_clientes.end(); ++itr) { // percorrer todos os elementos do conjunto 
+					cout <<"Instalacao ja estava aberta. Removendo o cliente " << *itr << " dos ativos "<< endl;
+			        S.erase(S.nodeFromId(*itr));  // apagando dos clientes ativos
+
+					qtd_clientes_ativos_S -= 1;
+					cout << "Restando " << qtd_clientes_ativos_S << " clientes ativos " << endl;
+			    }
+
+			    //Apagar tudo do conjunto (limpar conjunto)
+			    apagar_clientes.erase(apagar_clientes.begin(), apagar_clientes.end()); 
+			}
 
 		} 
 		// SENAO: EMPATE /// PROBLEMA: COM AS SOLUCOES NAO VAI PRECISAR DESSE ELSE
@@ -419,25 +498,27 @@ int main(){
 		}
 
 
-		// Percorrendo por todos os arcos
-		cout << "Percorrendo por todos os arcos" << endl;
-		for(ListBpGraph::EdgeIt e(S); e!= INVALID; ++e){
-			cout << "arco id: " << S.id(e) ;
-			cout << " - cliente: " << S.id(S.u(e)) << " - instalacao: " << S.id(S.v(e));
-			cout<< " - ca: " << custoAtribuicao[e] << " w - " << w[e] << " PCW - " << prontoContribuirW[e] << endl;
-		}
+		if (debug){
+			// Percorrendo por todos os nós A - clientes
+			cout << "Percorrendo por todos os clientes" << endl;
+			for(ListBpGraph::RedNodeIt n(S); n != INVALID; ++n){
+				cout << "no id: " << S.id(n)  << " - nome: " << nome[n] << " - v: " << v[n] << endl;
+			}
+
+			// Percorrendo por todos os nós B - instalacoes
+			cout << "Percorrendo por todos as instalacoes" << endl;
+			for(ListBpGraph::BlueNodeIt n(S); n != INVALID; ++n){
+				cout << "no id: " << S.id(n)  << " - nome: " << nome[n] << " - f: " << f[n] << " - aberta: " << aberta[n] << endl;
+			}
 
 
-		// Percorrendo por todos os nós A - clientes
-		cout << "Percorrendo por todos os clientes" << endl;
-		for(ListBpGraph::RedNodeIt n(S); n != INVALID; ++n){
-			cout << "no id: " << S.id(n)  << " - nome: " << nome[n] << " - v: " << v[n] << endl;
-		}
-
-		// Percorrendo por todos os nós B - instalacoes
-		cout << "Percorrendo por todos as instalacoes" << endl;
-		for(ListBpGraph::BlueNodeIt n(S); n != INVALID; ++n){
-			cout << "no id: " << S.id(n)  << " - nome: " << nome[n] << " - f: " << f[n] << " - aberta: " << aberta[n] << endl;
+			// Percorrendo por todos os arcos
+			cout << "Percorrendo por todos os arcos" << endl;
+			for(ListBpGraph::EdgeIt e(S); e!= INVALID; ++e){
+				cout << "arco id: " << S.id(e) ;
+				cout << " - cliente: " << nome[S.u(e)] << " - instalacao: " << nome[S.v(e)];
+				cout<< " - ca: " << custoAtribuicao[e] << " w - " << w[e] << " PCW - " << prontoContribuirW[e] << endl;
+			}
 		}
 
 	}
