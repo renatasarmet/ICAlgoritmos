@@ -13,9 +13,6 @@ using namespace std;
 
 // TALVEZ GRAFO BIPARTIDO: http://lemon.cs.elte.hu/pub/doc/latest-svn/a00352.html#004394d647a7b4b4016097ba61413b50
 
-
-// aqui so para salvar: for (ListBpGraph::IncEdgeIt e(g, n); e != INVALID; ++e) {
-
 int main(){
 
 	/*
@@ -51,11 +48,8 @@ int main(){
 	// f - será o custo de instalação (fi)
 	ListBpGraph::BlueNodeMap<float> f(g);
 
-
-
-	// APAGAR.. pois agr é A e B
-	// // Tipo: 0 para cliente 1 para instalação
-	// ListBpGraph::NodeMap<int> tipo(g);
+	// somatorioW - indica o quanto ja foi pago do custo de abrir a instalacao i... somatorio de todos os w correspondente a essa i
+	ListBpGraph::BlueNodeMap<float> somatorioW(g);
 
 	// Para identificar cada nó
 	ListBpGraph::NodeMap<int> nome(g);
@@ -67,10 +61,16 @@ int main(){
 	// Criação de nós clientes e atribuição de seus labels
 	ListBpGraph::RedNode clientes[qtd_clientes];
 
+	// Variavel que armazena o maior valor cij dado na entrada, para uso posterior
+	int maiorCij = 0;
+
+	// Variavel que armazena o maior valor fi dado na entrada, para uso posterior
+	int maiorFi = 0;
+
+
 	for(int i=0;i<qtd_clientes;i++){
 		clientes[i] = g.addRedNode();
 		v[clientes[i]] = 0; // v = inicialmente nao contribui com nada
-		// tipo[clientes[i]] = 0; // indica que é cliente APAGAR
 		nome[clientes[i]] = i; // nomeia de acordo com a numeracao
 	}
 
@@ -78,12 +78,18 @@ int main(){
 	// Criação de nós de instalações e atribuição de seus labels
 	ListBpGraph::BlueNode instalacoes[qtd_instalacoes];
 
+
 	for(int i=0;i<qtd_instalacoes;i++){
 		instalacoes[i] = g.addBlueNode();
 		f[instalacoes[i]] = 100 + 4+i/3.0; // fi = numero aleatorio
-		// tipo[instalacoes[i]] = 1; // indica que é instalação APAGAR
+		somatorioW[instalacoes[i]] = 0; // no começo nada foi pago dessa instalacao
 		aberta[instalacoes[i]] = false; // indica que a instalação não está aberta inicialmente
 		nome[instalacoes[i]] = qtd_clientes + i; // nomeia de acordo com a numeracao
+
+		// Salvando o valor do maior Fi da entrada
+		if(f[instalacoes[i]]>maiorFi){
+			maiorFi = f[instalacoes[i]];
+		}
 	}
 
 
@@ -113,6 +119,12 @@ int main(){
 			custoAtribuicao[arcos[cont]] = 300 - i - j; // cij = numero aleatorio
 			w[arcos[cont]] = 0; // inicialmente nao contribui com nada
 			prontoContribuirW[arcos[cont]] = false; // inicia com falso em todos
+
+			// Salvando o valor do maior Cij da entrada
+			if(custoAtribuicao[arcos[cont]]>maiorCij){
+				maiorCij = custoAtribuicao[arcos[cont]];
+			}
+
 			cont++;
 		}
 	}
@@ -120,7 +132,6 @@ int main(){
 	ListBpGraph S; // Grafo que contem os clientes os quais estamos aumentando as variaveis duais
 	bpGraphCopy(g,S).run();
 	
-
 
 	// Percorrendo por todos os nós A - clientes
 	cout << "Percorrendo por todos os clientes" << endl;
@@ -266,7 +277,7 @@ int main(){
 
 		// 	A - fazer um for percorrendo todos os clientes e vendo o que resta de cij pra cada (achar o menor) (menor cij - vj)
 
-		qtd_menorA = 10000; // PROBLEMA: seria bom pegar o valor da primeira, ao inves de 10000.. SOLUCAO: no começo salvar o maior cij existente dos dados da entrada
+		qtd_menorA = maiorCij;
 		nome_inst_menorA = -1;
 		nome_cli_menorA = -1;
 
@@ -289,7 +300,7 @@ int main(){
 
 		// B - fazer um for percorrendo todas as instalações para ver (fi - somatório de tudo que foi contribuído ate então para fi ) / numero de clientes prontos para contribuir para fi … os que ja alcançaram cij e ainda estão ativos
 
-		qtd_menorB = 10000; // PROBLEMA: seria bom pegar o valor da primeira, ao inves de 10000.. SOLUCAO: mesma solucao do caso A.. colocar maior fi da entrada
+		qtd_menorB = maiorFi; 
 		nome_menorB = -1;
 
 
@@ -350,6 +361,7 @@ int main(){
 		for(ListBpGraph::EdgeIt e(S); e!= INVALID; ++e){
 			if(prontoContribuirW[e]){ // se está pronto para contribuir
 				w[e] += menorAB; 
+				somatorioW[S.asBlueNode(S.v(e))] += menorAB; // aumenta esse valor no somatorio da instalacao correspondente
 			}
 			else if(custoAtribuicao[e] == v[S.asRedNode(S.u(e))]){ // SENAO SE: está pronto para contribuir (ja pagou o c.a.)
 				prontoContribuirW[e] = true;
