@@ -403,6 +403,7 @@ int main(){
 				// f[instT[qtd_instT]] = f[S.nodeFromId(nome_menorB)]; // pega o valor fi da instalacao
 				// nomeT[instT[qtd_instT]] = nome_menorB; // pega o nome da instalacao
 				qtd_instT += 1;
+				cout << "to aumentando aqui o qtd: " << qtd_instT << endl;
 				aberta[S.asBlueNode(S.nodeFromId(nome_menorB))] = true; // PROBLEMA aqui tem q colocar do jeito q pode ser mais que um
 
 				//Remover os seus contribuintes dos clientes ativos
@@ -466,97 +467,106 @@ int main(){
 	}
 
 
-	// /*
+	/*
 
-	// CRIACAO DE Tlinha
+	CRIACAO DE Tlinha
 
-	// */
+	*/
 
-	// // grafo com as instalacoes abertas
-	// ListBpGraph Tlinha; 
-	// // Criação de nós de instalações em Tlinha
-	// ListBpGraph::Node instTlinha[qtd_instalacoes];
-	// int qtd_instTlinha = 0; // indica a quantidade de instalacoes ja em Tlinha
+	// grafo com as instalacoes abertas
+	ListBpGraph Tlinha; 
+	// Criação de nós de instalações em Tlinha
+	ListBpGraph::Node instTlinha[qtd_instalacoes];
+	int qtd_instTlinha = 0; // indica a quantidade de instalacoes ja em Tlinha
 
-	// // Para identificar cada nó
-	// ListBpGraph::NodeMap<int> nomeTlinha(Tlinha);
+	// Para identificar cada nó
+	ListBpGraph::NodeMap<int> nomeTlinha(Tlinha);
 
-	// cout << "Criando Tlinha" << endl;
-	// indice_inst = 0;
-	// int id_inst_apagar = 10;
+	cout << "Criando Tlinha" << endl;
+	indice_inst = 0;
+	int id_inst_apagar = 10;
 
-	// cout << "Exibindo matriz de adjacencia" << endl;
-	// for(int i=0;i<qtd_clientes;i++){
-	// 	for(int j=0;j<qtd_instalacoes;j++){
-	// 		cout<< matriz_adjacencia[i][j] << " ";
-	// 	}
-	// 	cout << endl;
-	// }
+	cout << "Exibindo matriz de adjacencia" << endl;
+	for(int i=0;i<qtd_clientes;i++){
+		for(int j=0;j<qtd_instalacoes;j++){
+			cout<< matriz_adjacencia[i][j] << " ";
+		}
+		cout << endl;
+	}
 
-	// // Enquanto T != 0
-	// while(qtd_instT > 0){
+	cout << "vou comecar com " << qtd_instT << endl;
 
-	// 	for(ListBpGraph::NodeIt v(T); v != INVALID; ++v){
-	// 		// Escolha inst pertencente a T
-	// 		cout << "Escolhido instalacao " << nomeT[v] << endl;
-	// 		indice_inst = nomeT[v] - qtd_clientes;
+	// Enquanto T != 0
+	while(qtd_instT > 0){
 
-	// 		// Tlinha <- Tlinha U {i}
-	// 		instTlinha[qtd_instTlinha] = Tlinha.addBlueNode();
-	// 		nomeTlinha[instTlinha[qtd_instTlinha]] = nomeT[v]; // pega o nome da instalacao
+		for(ListBpGraph::BlueNodeIt n(S); n != INVALID; ++n){
+			if(aberta[n]){ 
+				// Escolha inst pertencente a T
+				cout << "Escolhido instalacao " << nome[n] << endl;
+				indice_inst = nome[n] - qtd_clientes;
 
-	// 		qtd_instTlinha += 1;
+				// Tlinha <- Tlinha U {i}
+				instTlinha[qtd_instTlinha] = Tlinha.addBlueNode();
+				nomeTlinha[instTlinha[qtd_instTlinha]] = nome[n]; // pega o nome da instalacao
 
-	// 		break;
-	// 	}
+				qtd_instTlinha += 1;
 
-
-	// 	//	Remove todas instalacoes i se algum cliente i contribuir a i e indice_inst
-	// 	for(int i=0;i<qtd_clientes;i++){
-
-	// 		if(matriz_adjacencia[i][indice_inst]==1){ // se o cliente i contribui para a inst indice_inst
-
-	// 			for(int j=0;j<qtd_instalacoes;j++){ // ve todas as instalacoes que esse cliente contribui tambem e remove
-
-	// 				if(matriz_adjacencia[i][j]){
-
-	// 					//PROBLEMA: falta verificar se a instalacao j está em T
-
-	// 					cout << "Removendo a instalacao " << (j + qtd_clientes) << " de T, pois cliente " << i << " contribui a ela" << endl;
+				break;
+			}
+		}
 
 
-	// 					for(int k=0;k<qtd_clientes;k++){ // PROBLEMA: nao parece eficiente. Quero marcar que todas os clientes daquela instalacao agr nao contribuem mais pra ela
-	// 						matriz_adjacencia[k][j] = 0;
-	// 					}
+		//	Remove todas instalacoes i se algum cliente i contribuir a i e indice_inst
+		for(int i=0;i<qtd_clientes;i++){
+
+			if(matriz_adjacencia[i][indice_inst]==1){ // se o cliente i contribui para a inst indice_inst
+
+				for(int j=0;j<qtd_instalacoes;j++){ // ve todas as instalacoes que esse cliente contribui tambem e remove
+
+					if(matriz_adjacencia[i][j]){
+
+						//PROBLEMA: falta verificar se a instalacao j está em T
+
+						cout << "Removendo a instalacao " << (j + qtd_clientes) << " de T, pois cliente " << i << " contribui a ela" << endl;
 
 
-	// 					// PROBLEMA: nome é j, mas o ID nao sei...
-	// 					for(ListBpGraph::NodeIt v(T); v != INVALID; ++v){ // GAMBIARRA PRA DESCOBRIR O ID DA INSTALACAO J
-	// 						if(nomeT[v]==(j+qtd_clientes)){
-	// 							id_inst_apagar = T.id(v);
-	// 							break;
-	// 						}
-	// 					}
-
-	// 					T.erase(T.nodeFromId(id_inst_apagar));  
-	// 					qtd_instT -= 1;
-	// 				}
-	// 			}
-	// 		}
-	// 	}
-
-	// }
+						for(int k=0;k<qtd_clientes;k++){ // PROBLEMA: nao parece eficiente. Quero marcar que todas os clientes daquela instalacao agr nao contribuem mais pra ela
+							matriz_adjacencia[k][j] = 0;
+						}
 
 
-	// // // Percorrendo por todos os nós de Tlinha
-	// cout<<"-- Tlinha --" << endl;
-	// for(ListBpGraph::NodeIt v(Tlinha); v != INVALID; ++v){
-	// 	cout << "no id: " << Tlinha.id(v) << " - nome: " << nomeTlinha[v] << endl;
-	// }
-	// cout<<"-------" << endl;
+						// PROBLEMA: nome é j, mas o ID nao sei...
+						for(ListBpGraph::BlueNodeIt n(S); n != INVALID; ++n){ // PROBLEMA: Seria essa a melhor forma? ver melhor oq é j
+							if(aberta[n]){
+								if(nome[n]==(j+qtd_clientes)){
+									aberta[n] = false;
+									qtd_instT -= 1;
+									break;
+								}
+							}
+						}
 
-	// // Depois abrir todas as instalacoes em Tlinha e atribuir cada cliente à instalacao mais próxima
+						// APAGAR
+						// T.erase(T.nodeFromId(id_inst_apagar));  
+					}
+				}
+			}
+		}
 
-	// // PROBLEMA: qual melhor jeito? lembrando que tenho as informacoes iniciais em g.. mas percorrer g e ir verificando se está em Tlinha nao parece tao bom
+		// cout << "oooopaa " << qtd_instT << endl;
+
+	}
+
+
+	// // Percorrendo por todos os nós de Tlinha que sao instalacoes
+	cout<<"-- Tlinha --" << endl;
+	for(ListBpGraph::BlueNodeIt n(Tlinha); n != INVALID; ++n){
+		cout << "no id: " << Tlinha.id(n) << " - nome: " << nomeTlinha[n] << endl;
+	}
+	cout<<"-------" << endl;
+
+	// Depois abrir todas as instalacoes em Tlinha e atribuir cada cliente à instalacao mais próxima
+
+	// PROBLEMA: qual melhor jeito? lembrando que tenho as informacoes iniciais em g.. mas percorrer g e ir verificando se está em Tlinha nao parece tao bom
 
 }
