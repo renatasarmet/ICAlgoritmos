@@ -54,7 +54,6 @@ int main(){
 	// Para identificar cada nó
 	ListBpGraph::NodeMap<int> nome(g);
 
-	//PROBLEMA SOLUCAO: CRIAR NODE MAP BOOLEANO PARA DIZER SE A INST TA ABERTA OU NAO
 	// Indica se a instalação está aberta ou não
 	ListBpGraph::BlueNodeMap<bool> aberta(g);
 
@@ -172,18 +171,10 @@ int main(){
 	cout << "menor : " << S.id(menor) << " com custo: " << custoAtribuicao[menor] << endl;
 
 
-
-	// // Percorrendo por todos os nós A - clientes
-	// cout << "Percorrendo por todos os clientes" << endl;
-	// for(ListBpGraph::RedNodeIt n(S); n != INVALID; ++n){
-	// 	cout << "no id: " << S.id(n)  << " - nome: " << nome[n] << " - v: " << v[n] << endl;
-	// }
-
-	// // Percorrendo por todos os nós B - instalacoes
-	// cout << "Percorrendo por todos as instalacoes" << endl;
-	// for(ListBpGraph::BlueNodeIt n(S); n != INVALID; ++n){
-	// 	cout << "no id: " << S.id(n)  << " - nome: " << nome[n] << " - f: " << f[n] << " - aberta: " << aberta[n] << endl;
-	// }
+	// Percorrer todos os clientes para aumentar em todos esse valor
+	for(ListBpGraph::RedNodeIt n(S); n != INVALID; ++n){
+		v[n] += custoAtribuicao[menor];
+	}
 
 
 	int indice_inst;
@@ -211,41 +202,7 @@ int main(){
 	}
 
 
-	// // Percorrendo por todos os nós A - clientes
-	// cout << "Percorrendo por todos os clientes" << endl;
-	// for(ListBpGraph::RedNodeIt n(S); n != INVALID; ++n){
-	// 	cout << "no id: " << S.id(n)  << " - nome: " << nome[n] << " - v: " << v[n] << endl;
-	// }
-
-	// // Percorrendo por todos os nós B - instalacoes
-	// cout << "Percorrendo por todos as instalacoes" << endl;
-	// for(ListBpGraph::BlueNodeIt n(S); n != INVALID; ++n){
-	// 	cout << "no id: " << S.id(n)  << " - nome: " << nome[n] << " - f: " << f[n] << " - aberta: " << aberta[n] << endl;
-	// }
-
-	
-
-	// //PROBLEMA: TALVEZ NAO PRECISE DE T... só o node map booleano que indica se a inst ta aberta
-
-
-	/*
-
-	CRIACAO DE T
-
-	*/
-
-	// // grafo com as instalacoes que possuem desigualdade justa
-	// ListBpGraph T;  
-	// // f será o custo de instalação (fi)
-	// ListBpGraph::NodeMap<float> f(T);
-
-	// // Para identificar cada nó
-	// ListBpGraph::NodeMap<int> nomeT(T);
-
-	// // Criação de nós de instalações em T
-	// ListBpGraph::Node instT[qtd_instalacoes];
-	int qtd_instT = 0; // indica a quantidade de instalacoes ja em T
-
+	int qtd_inst_abertas = 0; // indica a quantidade de instalacoes abertas
 
 
 	int tag_inst_aberta = false; // tag para ver se a inst está aberta (se está em T)
@@ -320,6 +277,9 @@ int main(){
 				for (ListBpGraph::IncEdgeIt e(S, n); e != INVALID; ++e) { // Percorre todas arestas desse nó
 					somatorio_caso_b += w[e]; // vai indicar somatorio de todos w dessa instalacao // PROBLEMA: pode salvar isso como node map, pra nao ter q ficar recalculando toda vez
 				}
+
+				cout << "TENHO AQUI SOMATORIO CASO B: " << somatorio_caso_b <<  endl;
+				cout << "E TENHO AQUI O MEU SOMATORIO : " << somatorioW[n] << endl;
 
 				qtd_atual = (f[n] - somatorio_caso_b)/qtd_contribui; //(fi - somatório de tudo que foi contribuído ate então para fi ) / (numero de clientes prontos para contribuir para fi) 
 
@@ -397,7 +357,9 @@ int main(){
 			// isso ta provisorio.. tem q apagar pra colocar a nova implementacao
 			if(aberta[S.asBlueNode(S.nodeFromId(nome_inst_menorA))]) { // se a instalacao ja estava aberta
 				cout <<"Instalacao ja estava aberta. Removendo o cliente em questao dos ativos "<< endl;
+
 				S.erase(S.nodeFromId(nome_cli_menorA)); 
+
 				qtd_clientes_ativos_S -= 1;
 			}
 			/* APAGAR ATÉ DAQUI PRA COLOCAR NOVA IMPLEMENTACAO */
@@ -411,11 +373,11 @@ int main(){
 
 				//APAGAR
 				// Adicionando instalacao em T
-				// instT[qtd_instT] = T.addBlueNode();
-				// f[instT[qtd_instT]] = f[S.nodeFromId(nome_menorB)]; // pega o valor fi da instalacao
-				// nomeT[instT[qtd_instT]] = nome_menorB; // pega o nome da instalacao
-				qtd_instT += 1;
-				cout << "to aumentando aqui o qtd: " << qtd_instT << endl;
+				// instT[qtd_inst_abertas] = T.addBlueNode();
+				// f[instT[qtd_inst_abertas]] = f[S.nodeFromId(nome_menorB)]; // pega o valor fi da instalacao
+				// nomeT[instT[qtd_inst_abertas]] = nome_menorB; // pega o nome da instalacao
+				qtd_inst_abertas += 1;
+				cout << "to aumentando aqui o qtd: " << qtd_inst_abertas << endl;
 				aberta[S.asBlueNode(S.nodeFromId(nome_menorB))] = true; // PROBLEMA aqui tem q colocar do jeito q pode ser mais que um
 
 				//Remover os seus contribuintes dos clientes ativos
@@ -441,6 +403,8 @@ int main(){
 								}
 							}
 						}
+
+						// PROBLEMA: diminuir o somatorioW.. somatorioW[S.asBlueNode()] - w[e] // sendo esse e a aresta de i e indice_inst
 
 						//Apagando ele dos clientes ativos (de S)
 						S.erase(S.nodeFromId(i));
@@ -506,10 +470,10 @@ int main(){
 		cout << endl;
 	}
 
-	cout << "vou comecar com " << qtd_instT << endl;
+	cout << "vou comecar com " << qtd_inst_abertas << endl;
 
 	// Enquanto T != 0
-	while(qtd_instT > 0){
+	while(qtd_inst_abertas > 0){
 
 		for(ListBpGraph::BlueNodeIt n(S); n != INVALID; ++n){
 			if(aberta[n]){ 
@@ -552,7 +516,7 @@ int main(){
 							if(aberta[n]){
 								if(nome[n]==(j+qtd_clientes)){
 									aberta[n] = false;
-									qtd_instT -= 1;
+									qtd_inst_abertas -= 1;
 									break;
 								}
 							}
@@ -565,7 +529,7 @@ int main(){
 			}
 		}
 
-		// cout << "oooopaa " << qtd_instT << endl;
+		// cout << "oooopaa " << qtd_inst_abertas << endl;
 
 	}
 
