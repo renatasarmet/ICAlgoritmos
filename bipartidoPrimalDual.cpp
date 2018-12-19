@@ -6,17 +6,19 @@
 #include <set>
 #include <iterator>
 #define EPSL 0.001
+
 using namespace lemon;
 using namespace std;
 
 #define qtd_clientes 10
 #define qtd_instalacoes 10
+#define EXIBIR_MATRIZ_ADJACENCIA 3
 
 // Documentacao grafo bipartido: http://lemon.cs.elte.hu/pub/doc/latest-svn/a00352.html#004394d647a7b4b4016097ba61413b50
 
 int main(){
 
-	bool debug = true;
+	int debug = 1;
 
 
 	// conjunto de clientes a serem removidos de S na iteração, pois deixaram de ser ativos
@@ -64,11 +66,14 @@ int main(){
 	// qtdContribuintes - será a quantidade de clientes ativos que estao prontos para contribuir com a inst i
 	ListBpGraph::BlueNodeMap<int> qtdContribuintes(g);
 
-	// Para identificar cada nó
-	ListBpGraph::NodeMap<int> nome(g);
-
 	// Indica se a instalação está aberta ou não
 	ListBpGraph::BlueNodeMap<bool> aberta(g);
+
+	// Indica se a instalação está em Tlinha (util para o final)
+	ListBpGraph::BlueNodeMap<bool> estaEmTlinha(g);
+
+	// Para identificar cada nó
+	ListBpGraph::NodeMap<int> nome(g);
 
 	// Variavel que armazena o maior valor cij dado na entrada, para uso posterior
 	int maiorCij = 0;
@@ -101,6 +106,7 @@ int main(){
 		somatorioW[instalacoes[i]] = 0; // no começo nada foi pago dessa instalacao
 		qtdContribuintes[instalacoes[i]] = 0; // no começo ninguem contribui pra ninguem
 		aberta[instalacoes[i]] = false; // indica que a instalação não está aberta inicialmente
+		estaEmTlinha[instalacoes[i]] = false; // no começo ninguem esta em Tlinha
 		nome[instalacoes[i]] = qtd_clientes + i; // nomeia de acordo com a numeracao
 
 		// Salvando o valor do maior Fi da entrada
@@ -122,10 +128,10 @@ int main(){
 
 
 	// Custo de atribuição é o custo de atribuir o cliente associado à instalação associada
-	ListBpGraph::EdgeMap<int> custoAtribuicao(g);
+	ListBpGraph::EdgeMap<float> custoAtribuicao(g);
 
 	// W é a parte do custo da instalação associada que o cliente associado vai contribuir
-	ListBpGraph::EdgeMap<int> w(g);
+	ListBpGraph::EdgeMap<float> w(g);
 
 	// Indica se aquele cliente ja está pagando todo seu custo de atribuicao àquela instalação, e esta pronto para começar a aumentar o w
 	ListBpGraph::EdgeMap<bool> prontoContribuirW(g);
@@ -529,6 +535,10 @@ int main(){
 	// Para identificar cada nó
 	ListBpGraph::NodeMap<int> nomeTlinha(Tlinha);
 
+	// fTlinha - será o custo de instalação das insts em Tlinha (fi)
+	ListBpGraph::BlueNodeMap<float> fTlinha(g);
+
+
 	cout << "Criando Tlinha" << endl;
 	indice_inst = 0;
 
@@ -552,10 +562,48 @@ int main(){
 				// Tlinha <- Tlinha U {i}
 				instTlinha[qtd_instTlinha] = Tlinha.addBlueNode();
 				nomeTlinha[instTlinha[qtd_instTlinha]] = nome[n]; // pega o nome da instalacao
+				fTlinha[instTlinha[qtd_instTlinha]] = f[n]; // pega o custo de abrir a instalacao
+
+
+				// indica em g que ele está em Tlinha
+				estaEmTlinha[n] = true;
 
 				qtd_instTlinha += 1;
 
 				break;
+			}
+		}
+
+
+		if (debug){
+			// Percorrendo por todos os nós A - clientes
+			cout << "Percorrendo por todos os clientes" << endl;
+			for(ListBpGraph::RedNodeIt n(g); n != INVALID; ++n){
+				cout << "no id: " << g.id(n)  << " - nome: " << nome[n] << endl;
+			}
+
+			// Percorrendo por todos os nós B - instalacoes
+			cout << "Percorrendo por todos as instalacoes" << endl;
+			for(ListBpGraph::BlueNodeIt n(g); n != INVALID; ++n){
+				cout << "no id: " << g.id(n)  << " - nome: " << nome[n] << " - f: " << f[n] << 
+				" - aberta: " << aberta[n] << " - estaEmTlinhaL " << estaEmTlinha[n] << endl;
+			}
+
+			// Percorrendo por todos os arcos
+			cout << "Percorrendo por todos os arcos" << endl;
+			for(ListBpGraph::EdgeIt e(S); e!= INVALID; ++e){
+				cout << "arco id: " << g.id(e) ;
+				cout << " - cliente: " << nome[g.u(e)] << " - instalacao: " << nome[g.v(e)];
+				cout<< " - ca: " << custoAtribuicao[e] << endl;
+			}
+
+			// Exibindo a matriz de adjacencia
+			cout << "Exibindo matriz de adjacencia" << endl;
+			for(int i=0;i<qtd_clientes;i++){
+				for(int j=0;j<qtd_instalacoes;j++){
+					cout<< matriz_adjacencia[i][j] << " ";
+				}
+				cout << endl;
 			}
 		}
 
@@ -576,7 +624,7 @@ int main(){
 						for(int k=0;k<qtd_clientes;k++){ // marcar que todas os clientes daquela instalacao agr nao contribuem mais pra ela
 							matriz_adjacencia[k][j] = 0;
 
-							if (debug){
+							if (debug >= EXIBIR_MATRIZ_ADJACENCIA){
 
 								// Exibindo a matriz de adjacencia
 								cout << "Exibindo matriz de adjacencia" << endl;
@@ -592,8 +640,8 @@ int main(){
 
 
 						if(aberta[S.asBlueNode(S.nodeFromId(j+qtd_clientes))]){ // Se a instalacao j está aberta
-							cout << "Removendo a instalacao " << (j + qtd_clientes) << " das abertas, pois cliente " << i << " contribui a ela" << endl;
-							aberta[S.asBlueNode(S.nodeFromId(j+qtd_clientes))] = false;
+							cout << "Removendo a instalacao " << j << " das abertas, pois cliente " << i << " contribui a ela" << endl;
+							aberta[S.asBlueNode(S.nodeFromId(j))] = false;
 							qtd_inst_abertas -= 1;
 						}
 					}
@@ -601,8 +649,8 @@ int main(){
 			}
 		}
 
-		cout << "Removendo a instalacao escolhida " << indice_inst + qtd_clientes << " das abertas" << endl;
-		aberta[S.asBlueNode(S.nodeFromId(indice_inst+qtd_clientes))] = false;
+		cout << "Removendo a instalacao escolhida " << indice_inst << " das abertas" << endl;
+		aberta[S.asBlueNode(S.nodeFromId(indice_inst))] = false;
 		qtd_inst_abertas -= 1;
 
 	}
@@ -628,9 +676,96 @@ int main(){
 
 
 
+	// Abrir todas as instalacoes em Tlinha e atribuir cada cliente à instalacao mais próxima
 
-	// Depois abrir todas as instalacoes em Tlinha e atribuir cada cliente à instalacao mais próxima
 
-	// PROBLEMA: qual melhor jeito? lembrando que tenho as informacoes iniciais em g.. mas percorrer g e ir verificando se está em Tlinha nao parece tao bom
+	// Criação de nós de clientes em Tlinha
+	ListBpGraph::RedNode cliTlinha[qtd_clientes];
+
+	int qtd_cliTlinha = 0; // indica a quantidade de clientes ja em Tlinha
+
+
+	// caTlinha - em Tlinha indica o Custo de atribuição: é o custo de atribuir o cliente associado à instalação associada
+	ListBpGraph::EdgeMap<float> caTlinha(g);
+
+
+	// Criação de arcos e atribuição de seus labels
+	ListBpGraph::Edge arcosTlinha[qtd_clientes*qtd_instalacoes];
+
+	int qtd_arcosTlinha = 0; // indica a quantidade de arcos ja criados em Tlinha
+
+
+	int menorDistancia = maiorCij;
+	int nomeCliMenorDist = -1;
+	int nomeInstMenorDist = -1;
+
+	int idInstMenorDist = -1;
+
+	// Percorrer todos os clientes de g
+	for(ListBpGraph::RedNodeIt n(g); n != INVALID; ++n){
+
+		for (ListBpGraph::IncEdgeIt e(g, n); e != INVALID; ++e) { // Percorre todas arestas desse nó (ligam a instalacoes)
+			if(estaEmTlinha[g.asBlueNode(g.v(e))]){ // se a instalacao correspondente está em Tlinha
+				if(custoAtribuicao[e] <= menorDistancia){ // encontra a instalacao (que está em Tlinha) que possui a menor distancia
+					menorDistancia = custoAtribuicao[e];
+					nomeCliMenorDist = nome[g.u(e)];
+					nomeInstMenorDist = nome[g.v(e)];
+				}
+			}
+		}
+
+		// Adiciona esse cliente em Tlinha
+		cliTlinha[qtd_cliTlinha] = Tlinha.addRedNode();
+		nomeTlinha[cliTlinha[qtd_cliTlinha]] = nomeCliMenorDist; // pega o nome do cliente
+		qtd_cliTlinha += 1;
+
+
+		//PROBLEMA: Gambiarra 
+		// Descobrir o ID em Tlinha da instalacao correspondente a nomeInstMenorDist
+		for(int i=0;i<qtd_instTlinha;i++){
+			if(nomeTlinha[instTlinha[i]] == nomeInstMenorDist){
+				idInstMenorDist = i;
+				break;
+			}
+		}
+		
+
+		// Cria aresta para associar esse cliente com a instalacao que possui a menor distancia dele
+		arcos[qtd_arcosTlinha] = Tlinha.addEdge(cliTlinha[qtd_cliTlinha-1],instTlinha[idInstMenorDist]);
+		caTlinha[arcos[qtd_arcosTlinha]] = menorDistancia; // pega o custo de atribuicao
+
+		qtd_arcosTlinha += 1;
+
+		// Zerando valores
+		menorDistancia = maiorCij;
+		nomeCliMenorDist = -1;
+		nomeInstMenorDist = -1;
+		idInstMenorDist = -1;
+	}
+
+
+	// Resposta final: Grafo Tlinha
+	cout << endl <<  "Resposta final: GRAFO TLINHA" << endl << endl;
+
+	// Percorrendo por todos os nós A - clientes
+	cout << "Percorrendo por todos os clientes" << endl;
+	for(ListBpGraph::RedNodeIt n(Tlinha); n != INVALID; ++n){
+		cout << "no id: " << Tlinha.id(n)  << " - nome: " << nomeTlinha[n] << endl;
+	}
+
+	// Percorrendo por todos os nós B - instalacoes
+	cout << "Percorrendo por todos as instalacoes" << endl;
+	for(ListBpGraph::BlueNodeIt n(Tlinha); n != INVALID; ++n){
+		cout << "no id: " << Tlinha.id(n)  << " - nome: " << nomeTlinha[n] << " - f: " << fTlinha[n] << endl;
+	}
+
+
+	// Percorrendo por todos os arcos
+	cout << "Percorrendo por todos os arcos" << endl;
+	for(ListBpGraph::EdgeIt e(Tlinha); e!= INVALID; ++e){
+		cout << "arco id: " << Tlinha.id(e) ;
+		cout << " - cliente: " << nomeTlinha[Tlinha.u(e)] << " - instalacao: " << nomeTlinha[Tlinha.v(e)];
+		cout<< " - ca: " << caTlinha[e] << endl;
+	}
 
 }
