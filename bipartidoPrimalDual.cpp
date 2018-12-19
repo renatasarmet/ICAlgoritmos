@@ -19,6 +19,12 @@ int main(){
 	bool debug = true;
 
 
+	// conjunto de clientes a serem removidos de S na iteração, pois deixaram de ser ativos
+    set <int, greater <int> > apagar_clientes; 
+    // Iterator para o conjunto 
+    set <int, greater <int> > :: iterator itr; 
+
+
 	/*
 
 	ESTRUTURA QUE INDICA QUANTOS E QUAIS CLIENTES ESTAO CONTRIBUINDO (AUMENTANDO O W) 
@@ -55,6 +61,9 @@ int main(){
 	// somatorioW - indica o quanto ja foi pago do custo de abrir a instalacao i... somatorio de todos os w correspondente a essa i
 	ListBpGraph::BlueNodeMap<float> somatorioW(g);
 
+	// qtdContribuintes - será a quantidade de clientes ativos que estao prontos para contribuir com a inst i
+	ListBpGraph::BlueNodeMap<int> qtdContribuintes(g);
+
 	// Para identificar cada nó
 	ListBpGraph::NodeMap<int> nome(g);
 
@@ -67,6 +76,7 @@ int main(){
 	// Variavel que armazena o maior valor fi dado na entrada, para uso posterior
 	int maiorFi = 0;
 
+	int qtd_inst_abertas = 0; // indica a quantidade de instalacoes abertas
 
 
 
@@ -89,6 +99,7 @@ int main(){
 		instalacoes[i] = g.addBlueNode();
 		f[instalacoes[i]] = 100 + 4+i/3.0; // fi = numero aleatorio
 		somatorioW[instalacoes[i]] = 0; // no começo nada foi pago dessa instalacao
+		qtdContribuintes[instalacoes[i]] = 0; // no começo ninguem contribui pra ninguem
 		aberta[instalacoes[i]] = false; // indica que a instalação não está aberta inicialmente
 		nome[instalacoes[i]] = qtd_clientes + i; // nomeia de acordo com a numeracao
 
@@ -210,13 +221,63 @@ int main(){
 	for(ListBpGraph::EdgeIt e(S); e!= INVALID; ++e){
 		if(custoAtribuicao[e] == custoAtribuicao[menor]){
 			prontoContribuirW[e] = true;
+			qtdContribuintes[S.asBlueNode(S.v(e))] += 1;
 
 			indice_inst = nome[S.v(e)] - qtd_clientes;
 			matriz_adjacencia[nome[S.u(e)]][indice_inst] = 1;
-			// PROBLEMA: ver se alguma instalacao ja estaria aberta (se ela tem custo zero).. fazer um if aqui
+			
+			//verificar se alguma instalacao ja estaria aberta (se ela tem custo zero)
+			if(f[S.asBlueNode(S.v(e))] == 0){
 
+				if(aberta[S.asBlueNode(S.v(e))]){ // se ela ja estivesse aberta (abriu em uma iteracao anterior)
+					apagar_clientes.insert(S.id(S.u(e))); // Adicionar o cliente j no conjunto de futuros a apagar	
+				}
+
+				else{ // se aquela instalacao nao estava aberta ainda
+
+					cout << "Instalacao " << nome[S.v(e)] << " deve ser aberta!!!!" << endl;
+					aberta[S.asBlueNode(S.v(e))] = true;
+					qtd_inst_abertas += 1;
+					cout << "to aumentando aqui o qtd de insts abertas: " << qtd_inst_abertas << endl;
+
+					//Remover os seus contribuintes dos clientes ativos
+
+					indice_inst = nome[S.v(e)] - qtd_clientes;
+
+					for (ListBpGraph::IncEdgeIt e1(S, S.v(e)); e1 != INVALID; ++e1) { // Percorre todas arestas desse nó ( ligam a clientes )
+
+						if(prontoContribuirW[e1]){ // se esse cliente está pronto para contribuir
+
+							cout<<"************* vamos remover cliente " << nome[S.u(e1)] << endl;
+
+							apagar_clientes.insert(S.id(S.u(e1))); // Adicionar o cliente j no conjunto de futuros a apagar
+							cout << "No inicio, tamanho do conjunto apagar_clientes: " << apagar_clientes.size() << endl;
+
+							//Apagando ele da lista de contribuintes das outras instalacoes
+							for (ListBpGraph::IncEdgeIt e2(S, S.u(e1)); e2 != INVALID; ++e2) { // Percorre todas arestas desse nó cliente (ligam a instalacoes)
+								if(prontoContribuirW[e2]){ // se o cliente estava pronto para contribuir com essa instalacao
+									prontoContribuirW[e2] = false;
+									qtdContribuintes[S.asBlueNode(S.v(e2))] -= 1;
+									cout<<"removido cliente " << nome[S.u(e2)] << " do pronto para contribuir da instalacao " << nome[S.v(e2)] << endl;
+								}
+							}
+						}
+					}
+				}
+			}
 		}
 	}
+
+	// Apagar os clientes que deixaram de ser ativos logo agora no começo (que alcançaram uma inst de custo fi = 0)
+	for (itr = apagar_clientes.begin(); itr != apagar_clientes.end(); ++itr) { // percorrer todos os elementos do conjunto 
+		cout <<"Instalacao foi aberta. Removendo o cliente " << *itr << " dos ativos "<< endl;
+        S.erase(S.nodeFromId(*itr));  // apagando dos clientes ativos
+
+		qtd_clientes_ativos_S -= 1;
+    }
+
+    //Apagar tudo do conjunto (limpar conjunto)
+    apagar_clientes.erase(apagar_clientes.begin(), apagar_clientes.end()); 
 
 
 	if (debug){
@@ -251,25 +312,12 @@ int main(){
 		}
 	}
 
-
-	int qtd_inst_abertas = 0; // indica a quantidade de instalacoes abertas
-
-
-	int tag_inst_aberta = false; // tag para ver se a inst está aberta 
 	float menorAB; // receberá o menor valor entre o menor de A ou o menor de B
 
 	float qtd_menorA;
 	float qtd_atual;
 
 	float qtd_menorB; 
-
-	int qtd_contribui;
-
-	// conjunto de clientes a serem removidos de S na iteração, pois deixaram de ser ativos
-    set <int, greater <int> > apagar_clientes; 
-    // Iterator para o conjunto 
-    set <int, greater <int> > :: iterator itr; 
-
 
 	// ****** A partir daqui deve estar em um loop até nao ter mais clientes ativos:
 
@@ -304,18 +352,9 @@ int main(){
 
 			indice_inst = nome[n] - qtd_clientes;
 
-			qtd_contribui = 0;
+			if(qtdContribuintes[n] > 0){ // SE alguem ja esta pronto para contribuir pelo menos
 
-			for (ListBpGraph::IncEdgeIt e(S, n); e != INVALID; ++e) { // Percorre todas arestas desse nó
-				if(prontoContribuirW[e]){
-					qtd_contribui += 1; // verificando quantos contribui pra ela // PROBLEMA: pensar melhor mas (talvez!!!!) pode salvar isso como node map, pra nao ter q ficar recalculando toda vez. SOLUCAO: NAO VALE A PENA TALVEZ 
-				} 
-			}
-
-
-			if(qtd_contribui > 0){ // SE alguem ja esta pronto para contribuir pelo menos
-				
-				qtd_atual = (f[n] - somatorioW[n])/qtd_contribui; //(fi - somatório de tudo que foi contribuído ate então para fi ) / (numero de clientes prontos para contribuir para fi) 
+				qtd_atual = (f[n] - somatorioW[n])/qtdContribuintes[n]; //(fi - somatório de tudo que foi contribuído ate então para fi ) / (numero de clientes prontos para contribuir para fi) 
 
 				if(qtd_atual < qtd_menorB){
 					qtd_menorB = qtd_atual;
@@ -356,6 +395,7 @@ int main(){
 			}
 			else if(custoAtribuicao[e] == v[S.asRedNode(S.u(e))]){ // SENAO SE: acabou de ficar pronto para contribuir (pagou o c.a.)
 				prontoContribuirW[e] = true;
+				qtdContribuintes[S.asBlueNode(S.v(e))] += 1;
 				indice_inst = nome[S.v(e)] - qtd_clientes;
 				matriz_adjacencia[nome[S.u(e)]][indice_inst] = 1; // atribui esse novo cliente em sua lista
 			}
@@ -370,7 +410,6 @@ int main(){
 		// SE FOR O CASO A: verificar se a instalação que aquele cliente alcançou ja estava aberta, se sim, remover ele dos ativos
 		if(qtd_menorA < qtd_menorB){
 			cout << "Caso A!" << endl;
-			tag_inst_aberta = false;
 
 			for(ListBpGraph::EdgeIt e(S); e!= INVALID; ++e){ // percorrer todas as arestas
 				if(prontoContribuirW[e]){ // verificar se o cliente j alcancou a inst i (se ta pronto para contribuir)
@@ -401,7 +440,7 @@ int main(){
 			for(ListBpGraph::BlueNodeIt n(S); n != INVALID; ++n){ // percorrer todas as instalacoes
 				if(!aberta[n]){ // se a instalacao ainda nao estava aberta
 					if((somatorioW[n] > f[n] - EPSL)&&(somatorioW[n] < f[n] + EPSL)){ // se a soma das partes completou o custo de abrir a instalacao, vamos abrir! (isso é a msm coisa q somatorioW[n] == f[n] mas garante erros minusculos)
-						cout << "Instalacao " << S.id(n) << " deve ser aberta!!!!" << endl;
+						cout << "Instalacao " << nome[n] << " deve ser aberta!!!!" << endl;
 						aberta[n] = true;
 						qtd_inst_abertas += 1;
 						cout << "to aumentando aqui o qtd de insts abertas: " << qtd_inst_abertas << endl;
@@ -424,6 +463,7 @@ int main(){
 								for (ListBpGraph::IncEdgeIt e2(S, S.u(e)); e2 != INVALID; ++e2) { // Percorre todas arestas desse nó cliente (ligam a instalacoes)
 									if(prontoContribuirW[e2]){ // se o cliente estava pronto para contribuir com essa instalacao
 										prontoContribuirW[e2] = false;
+										qtdContribuintes[S.asBlueNode(S.v(e2))] -= 1;
 										cout<<"removido cliente " << nome[S.u(e2)] << " do pronto para contribuir da instalacao " << nome[S.v(e2)] << endl;
 									}
 								}
