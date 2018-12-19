@@ -370,13 +370,8 @@ int main(){
 		if(qtd_menorA < qtd_menorB){
 			menorAB = qtd_menorA;
 		}
-		else if(qtd_menorB < qtd_menorA){
+		else if(qtd_menorB <= qtd_menorA){ // inclui caso de empate
 			menorAB = qtd_menorB;
-		}
-		// SENAO: EMPATE
-		else{
-			cout << "Empatou! Ver o que fazer" << endl;
-			menorAB = qtd_menorA; // PROBLEMA: E SE DEU EMPATE? por enquanto ta assim
 		}
 
 		// Percorrer todos os clientes para aumentar em todos esse valor em v
@@ -401,14 +396,10 @@ int main(){
 			}
 		}
 
-
-		// PROBLEMA SOLUCAO: INVERTER A ORDEM DO TRATAMENTO DO CASO A COM O CASO B (ADICIONAR "OU EMPATE".... talvez só colocar <= pra incluir empate). 
-
-
 		// Repetir IF, tratar dos detalhes agora
 
-		// SE FOR O CASO A: verificar se a instalação que aquele cliente alcançou ja estava aberta, se sim, remover ele dos ativos
-		if(qtd_menorA < qtd_menorB){
+		// SE FOR O CASO A ou empate: verificar se a instalação que aquele cliente alcançou ja estava aberta, se sim, remover ele dos ativos
+		if(qtd_menorA <= qtd_menorB){
 			cout << "Caso A!" << endl;
 
 			for(ListBpGraph::EdgeIt e(S); e!= INVALID; ++e){ // percorrer todas as arestas
@@ -433,8 +424,8 @@ int main(){
 
 		}
 
-		// SE FOR O CASO B: caso B seja o menor valor: abrir a instalação i e remover os seus contribuintes dos clientes ativos (lembrando de remover eles das listas de contribuintes das outras instalações
-		else if(qtd_menorA > qtd_menorB){ 
+		// SE FOR O CASO B ou empate: caso B seja o menor valor: abrir a instalação i e remover os seus contribuintes dos clientes ativos (lembrando de remover eles das listas de contribuintes das outras instalações
+		if(qtd_menorA >= qtd_menorB){ 
 			cout << "Caso B!" << endl;
 
 			for(ListBpGraph::BlueNodeIt n(S); n != INVALID; ++n){ // percorrer todas as instalacoes
@@ -482,11 +473,6 @@ int main(){
 				    apagar_clientes.erase(apagar_clientes.begin(), apagar_clientes.end()); 
 				}
 			}
-		} 
-
-		// SENAO: EMPATE /// PROBLEMA: COM AS SOLUCOES NAO VAI PRECISAR DESSE ELSE
-		else{
-			cout << "Empatou! Ver o que fazer" << endl;
 		}
 
 
@@ -632,7 +618,6 @@ int main(){
 			cout << endl;
 		}
 	}
-
 
 	// // Percorrendo por todos os nós de Tlinha que sao instalacoes
 	cout<<"-- Tlinha --" << endl;
