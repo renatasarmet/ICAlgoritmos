@@ -19,6 +19,12 @@ using namespace std;
 
 // Documentacao grafo bipartido: http://lemon.cs.elte.hu/pub/doc/latest-svn/a00352.html#004394d647a7b4b4016097ba61413b50
 
+
+// TODO:
+// FAZER LEITURA DE INSTANCIAS
+// COLOCAR SAIDA DE DEPURAÇÃO PARA TEMPO DE PROCESSAMENTO (time.h)
+
+
 int main(){
 
 	int debug = 0; // OPCOES DE DEBUG: 1 PARA EXIBIR ACOES, 2 PARA EXIBIR AS MUDANÇAS NO GRAFO, 3 PARA EXIBIR AS MUDANCAS NA MATRIZ DE ADJACENCIA NA CRIACAO DE TLINHA
@@ -227,7 +233,7 @@ int main(){
 	// Percorrer todas as arestas para ver quais bateram o custo de atribuicao
 	// Entao, acionar a flag prontoContribuirW e colocar na matriz de adjacencia.
 	for(ListBpGraph::EdgeIt e(S); e!= INVALID; ++e){
-		if(custoAtribuicao[e] == custoAtribuicao[menor]){
+		if(custoAtribuicao[e] == custoAtribuicao[menor]){ // PROBLEMA: FAZER AQUELE ESQUEMA DO EPSL
 			prontoContribuirW[e] = true;
 			qtdContribuintes[S.asBlueNode(S.v(e))] += 1;
 
@@ -350,7 +356,7 @@ int main(){
 		qtd_menorA = maiorCij; // inicia com o maior valor de cij dado na entrada
 
 		for(ListBpGraph::RedNodeIt n(S); n != INVALID; ++n){		// percorre os clientes
-		
+	
 			for (ListBpGraph::IncEdgeIt e(S, n); e != INVALID; ++e) { // Percorre todas arestas desse nó
 				if(!prontoContribuirW[e]){
 					qtd_atual = custoAtribuicao[e] - v[n];
@@ -371,8 +377,6 @@ int main(){
 		qtd_menorB = maiorFi; // inicia com o maior valor de fi dado na entrada
 
 		for(ListBpGraph::BlueNodeIt n(S); n != INVALID; ++n){ // percorre as instalacoes
-
-			indice_inst = nome[n] - qtd_clientes;
 
 			if(qtdContribuintes[n] > 0){ // SE alguem ja esta pronto para contribuir pelo menos
 
@@ -440,18 +444,6 @@ int main(){
 				cout << "No caso A, tamanho do conjunto apagar_clientes: " << apagar_clientes.size() << endl;
 			}
 
-			for (itr = apagar_clientes.begin(); itr != apagar_clientes.end(); ++itr) { // percorrer todos os elementos do conjunto 
-				if(debug >= EXIBIR_ACOES){
-					cout <<"Instalacao ja estava aberta. Removendo o cliente " << *itr << " dos ativos "<< endl;
-				}
-
-		        S.erase(S.nodeFromId(*itr));  // apagando dos clientes ativos
-				qtd_clientes_ativos_S -= 1;
-		    }
-
-		    //Apagar tudo do conjunto (limpar conjunto)
-		    apagar_clientes.erase(apagar_clientes.begin(), apagar_clientes.end()); 
-
 		}
 
 		// SE FOR O CASO B ou empate: caso B seja o menor valor: abrir a instalação i e remover os seus contribuintes dos clientes ativos (lembrando de remover eles das listas de contribuintes das outras instalações
@@ -472,8 +464,6 @@ int main(){
 						}
 
 						//Remover os seus contribuintes dos clientes ativos
-
-						indice_inst = nome[n] - qtd_clientes;
 
 						for (ListBpGraph::IncEdgeIt e(S, n); e != INVALID; ++e) { // Percorre todas arestas desse nó ( ligam a clientes )
 
@@ -501,24 +491,24 @@ int main(){
 							}
 						}
 					}
-				
-					for (itr = apagar_clientes.begin(); itr != apagar_clientes.end(); ++itr) { // percorrer todos os elementos do conjunto 
-						if(debug >= EXIBIR_ACOES){
-							cout <<"Instalacao foi aberta. Removendo o cliente " << *itr << " dos ativos "<< endl;
-						}
-
-				        S.erase(S.nodeFromId(*itr));  // apagando dos clientes ativos
-						qtd_clientes_ativos_S -= 1;
-				    }
-
-				    //Apagar tudo do conjunto (limpar conjunto)
-				    apagar_clientes.erase(apagar_clientes.begin(), apagar_clientes.end()); 
 				}
 			}
 		}
 
+		for (itr = apagar_clientes.begin(); itr != apagar_clientes.end(); ++itr) { // percorrer todos os elementos do conjunto 
+			if(debug >= EXIBIR_ACOES){
+				cout <<"Instalacao foi aberta. Removendo o cliente " << *itr << " dos ativos "<< endl;
+			}
 
-	if (debug >= EXIBIR_GRAFO){
+	        S.erase(S.nodeFromId(*itr));  // apagando dos clientes ativos
+			qtd_clientes_ativos_S -= 1;
+	    }
+
+	    //Apagar tudo do conjunto (limpar conjunto)
+	    apagar_clientes.erase(apagar_clientes.begin(), apagar_clientes.end()); 
+
+
+		if (debug >= EXIBIR_GRAFO){
 			// Percorrendo por todos os nós A - clientes
 			cout << "Percorrendo por todos os clientes" << endl;
 			for(ListBpGraph::RedNodeIt n(S); n != INVALID; ++n){
@@ -530,7 +520,6 @@ int main(){
 			for(ListBpGraph::BlueNodeIt n(S); n != INVALID; ++n){
 				cout << "no id: " << S.id(n)  << " - nome: " << nome[n] << " - f: " << f[n] << " - aberta: " << aberta[n] << endl;
 			}
-
 
 			// Percorrendo por todos os arcos
 			cout << "Percorrendo por todos os arcos" << endl;
@@ -549,7 +538,6 @@ int main(){
 				cout << endl;
 			}
 		}
-
 	}
 
 
