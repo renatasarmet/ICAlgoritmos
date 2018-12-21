@@ -1,32 +1,36 @@
 #include <lemon/list_graph.h>
 #include <algorithm>
-// #include <lemon/lgf_reader.h>
-// #include <lemon/lgf_writer.h>
 #include <iostream>
 #include <set>
 #include <iterator>
+#include "declaracoes.hpp"
 #define EPSL 0.001
 
 using namespace lemon;
 using namespace std;
 
-#define qtd_clientes 10
-#define qtd_instalacoes 10
 
 #define EXIBIR_ACOES 1 // corresponde a todos os cout quando uma acao é feita
 #define EXIBIR_GRAFO 2 // corresponde a descricao dos clientes, instalacoes e arcos
 #define EXIBIR_MATRIZ_ADJACENCIA 3 // corresponde à parte final, na criacao de Tlinha
 
-// Documentacao grafo bipartido: http://lemon.cs.elte.hu/pub/doc/latest-svn/a00352.html#004394d647a7b4b4016097ba61413b50
-
 
 // TODO:
-// FAZER LEITURA DE INSTANCIAS
 // COLOCAR SAIDA DE DEPURAÇÃO PARA TEMPO DE PROCESSAMENTO (time.h)
 
 
+bool igual(float i, float j){
+    if((i > j-EPSL) && (i < j+EPSL))
+        return true;
+    return false;
+}
 
-void primalDual(float * custoF, float * custoA){
+
+
+void primalDual(int qtdCli, int qtdInst, float * custoF, float * custoA){
+
+	int qtd_clientes = qtdCli; // Indica quantidade de clientes
+	int qtd_instalacoes = qtdInst; // Indica quantidade de instalacoes
 
 	int debug = 0; // OPCOES DE DEBUG: 1 PARA EXIBIR ACOES, 2 PARA EXIBIR AS MUDANÇAS NO GRAFO, 3 PARA EXIBIR AS MUDANCAS NA MATRIZ DE ADJACENCIA NA CRIACAO DE TLINHA
 
@@ -228,7 +232,7 @@ void primalDual(float * custoF, float * custoA){
 	// Percorrer todas as arestas para ver quais bateram o custo de atribuicao
 	// Entao, acionar a flag prontoContribuirW e colocar na matriz de adjacencia.
 	for(ListBpGraph::EdgeIt e(S); e!= INVALID; ++e){
-		if(custoAtribuicao[e] == custoAtribuicao[menor]){ // PROBLEMA: FAZER AQUELE ESQUEMA DO EPSL
+		if(igual(custoAtribuicao[e],custoAtribuicao[menor])){ 
 			prontoContribuirW[e] = true;
 			qtdContribuintes[S.asBlueNode(S.v(e))] += 1;
 
@@ -236,7 +240,7 @@ void primalDual(float * custoF, float * custoA){
 			matriz_adjacencia[nome[S.u(e)]][indice_inst] = 1;
 			
 			//verificar se alguma instalacao ja estaria aberta (se ela tem custo zero)
-			if(f[S.asBlueNode(S.v(e))] == 0){
+			if(igual(f[S.asBlueNode(S.v(e))], 0)){
 
 				if(aberta[S.asBlueNode(S.v(e))]){ // se ela ja estivesse aberta (abriu em uma iteracao anterior)
 					apagar_clientes.insert(S.id(S.u(e))); // Adicionar o cliente j no conjunto de futuros a apagar	
@@ -412,7 +416,7 @@ void primalDual(float * custoF, float * custoA){
 				w[e] += menorAB; 
 				somatorioW[S.asBlueNode(S.v(e))] += menorAB; // aumenta esse valor no somatorio da instalacao correspondente
 			}
-			else if(custoAtribuicao[e] == v[S.asRedNode(S.u(e))]){ // SENAO SE: acabou de ficar pronto para contribuir (pagou o c.a.)
+			else if(igual(custoAtribuicao[e],v[S.asRedNode(S.u(e))])){ // SENAO SE: acabou de ficar pronto para contribuir (pagou o c.a.)
 				prontoContribuirW[e] = true;
 				qtdContribuintes[S.asBlueNode(S.v(e))] += 1;
 				indice_inst = nome[S.v(e)] - qtd_clientes;
@@ -450,7 +454,7 @@ void primalDual(float * custoF, float * custoA){
 
 			for(ListBpGraph::BlueNodeIt n(S); n != INVALID; ++n){ // percorrer todas as instalacoes
 				if(!aberta[n]){ // se a instalacao ainda nao estava aberta
-					if((somatorioW[n] > f[n] - EPSL)&&(somatorioW[n] < f[n] + EPSL)){ // se a soma das partes completou o custo de abrir a instalacao, vamos abrir! (isso é a msm coisa q somatorioW[n] == f[n] mas garante erros minusculos)
+					if(igual(somatorioW[n],f[n])){ // se a soma das partes completou o custo de abrir a instalacao, vamos abrir!
 						aberta[n] = true;
 						qtd_inst_abertas += 1;
 
@@ -810,29 +814,3 @@ void primalDual(float * custoF, float * custoA){
 	cout << endl << "Gasto total final: " << gastoTotalFinal << endl << endl;
 	
 }
-
-
-
-int main(int argc, char *argv[]){
-
-	float custoF[10], custoA[100];
-
-	for(int i=0;i<10;i++){
-		custoF[i] = 100 + 4+i/3.0; // valor aleatorio
-	}
-
-	int cont = 0;
-	for(int i=0;i<10;i++){
-		for(int j=0;j<10;j++){
-			custoA[cont] = 300 - i - j; // cij = numero aleatorio
-			cont++;
-		}
-	}
-
-	primalDual(custoF, custoA);
-
-	return 0;
-}
-
-
-

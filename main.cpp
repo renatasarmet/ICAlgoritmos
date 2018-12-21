@@ -5,10 +5,10 @@
 using namespace std;
 
 int main(int argc, char *argv[]){
-    if (argc > 1){
+    if (argc > 1)
 		trataInput(argv[1]);
-    }
     else
-		cout << "OPS DEU RUIM O ARGUMENTO" << endl;
+		cout << "ERRO! Necessario passar como argumento o arquivo a ser utilizado para ler as entradas!" << endl;
+	
 	return 0;
 };

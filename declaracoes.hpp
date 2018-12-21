@@ -1,6 +1,6 @@
 #include <iostream>
 
 void trataInput(char inputName[]);
-void primalDual(float * custoF, float * custoA);
+void primalDual(int qtdCli, int qtdInst, float * custoF, float * custoA);
 
 void teste();
