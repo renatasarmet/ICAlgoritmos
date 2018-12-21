@@ -25,7 +25,7 @@ using namespace std;
 // COLOCAR SAIDA DE DEPURAÇÃO PARA TEMPO DE PROCESSAMENTO (time.h)
 
 
-int main(){
+int main(int argc, char *argv[]){
 
 	int debug = 0; // OPCOES DE DEBUG: 1 PARA EXIBIR ACOES, 2 PARA EXIBIR AS MUDANÇAS NO GRAFO, 3 PARA EXIBIR AS MUDANCAS NA MATRIZ DE ADJACENCIA NA CRIACAO DE TLINHA
 
@@ -540,6 +540,12 @@ int main(){
 		}
 	}
 
+ 
+
+
+	//////// PAREI DE FALAR AQUI NA REUNIAO
+
+
 
 
 	/*
@@ -807,4 +813,5 @@ int main(){
 
 	cout << endl << "Gasto total final: " << gastoTotalFinal << endl << endl;
 
+	return 0;
 }
