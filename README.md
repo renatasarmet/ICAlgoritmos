@@ -6,8 +6,10 @@ Codigos para resolver o problema da localizacao de instalacoes sem capacidade
 
 *COMO RODAR?*
 
+Primeiramente, eh provavel que seja necessario ter instalado a biblioteca Lemon Graph.
 
-No terminal, primeiramente, digite:
+
+Apos isso, digite no terminal:
 
 g++ main.cpp trataInput.cpp bipartidoPrimalDual.cpp -o main
 
@@ -38,3 +40,12 @@ custo_atribuicao_cliente_1_instalacao_1 .... custo_atribuicao_cliente_1_instalac
 .
 .
 custo_atribuicao_cliente_m_instalacao_1 .... custo_atribuicao_cliente_m_instalacao_n  
+
+
+
+*SOBRE A SAIDA*
+
+A saída eh composta por um grafo Tlinha, contendo todas as instalacoes abertas e todos os clientes associados a suas respectivas instalacoes mais adequadas.
+Tambem eh calculado o total gasto, sendo esse a soma dos custos de abrir todas as instalacoes escolhidas para serem abertas + o custo de atribuir cada cliente a sua instalacao indicada como a mais adequada.
+
+Alem disso, eh gerado um arquivo timeLog.txt que possui as informacoes sobre o tempo gasto em cada execucao.

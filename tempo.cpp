@@ -80,7 +80,7 @@ int main(int argc, char *argv[]){
 			// Atualizando valores de minimo e maximo
 			if(timeSpent > maxTime)
 				maxTime = timeSpent;
-			else if(timeSpent < minTime)
+			if(timeSpent < minTime)
 				minTime = timeSpent;
 
 			// Acrescentando no timeLog.txt o tempo gasto nessa iteracao
