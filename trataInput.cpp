@@ -1,5 +1,6 @@
 #include <iostream>
 #include <fstream>
+#include "declaracoes.hpp"
 #define EPS 0.001
 
 using namespace std;
@@ -15,9 +16,24 @@ using namespace std;
 //     return false;
 // }
 
-
 void trataInput(char inputName[]){
 	cout << "To no trata input com " << inputName << endl;
+   int qtd_clientes, qtd_instalacoes;
+   ifstream inputFLP;
+   inputFLP.open(inputName);
+   inputFLP >> qtd_clientes >> qtd_instalacoes;
+   cout << "qtd clientes: " << qtd_clientes << " qtd_instalacoes " << qtd_instalacoes << endl;
+
+
+
+
+
+
+
+
+
+   inputFLP.close();
+
    //  int n, m, auxWeight, auxQtdSubsets, auxSubset;
    //  int totalWeight = 0;
    //  ifstream inputSCP;

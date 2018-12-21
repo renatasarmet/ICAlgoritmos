@@ -25,7 +25,8 @@ using namespace std;
 // COLOCAR SAIDA DE DEPURAÇÃO PARA TEMPO DE PROCESSAMENTO (time.h)
 
 
-int main(int argc, char *argv[]){
+
+void primalDual(float * custoF, float * custoA){
 
 	int debug = 0; // OPCOES DE DEBUG: 1 PARA EXIBIR ACOES, 2 PARA EXIBIR AS MUDANÇAS NO GRAFO, 3 PARA EXIBIR AS MUDANCAS NA MATRIZ DE ADJACENCIA NA CRIACAO DE TLINHA
 
@@ -33,7 +34,6 @@ int main(int argc, char *argv[]){
     set <int, greater <int> > apagar_clientes; 
     // Iterator para o conjunto 
     set <int, greater <int> > :: iterator itr; 
-
 
 	/*
 
@@ -48,9 +48,6 @@ int main(int argc, char *argv[]){
 	*/
 	int matriz_adjacencia[qtd_clientes][qtd_instalacoes]; // indica se o cliente alcançou a instalação
 
-
-	int qtd_clientes_ativos_S = qtd_clientes; // Indica a quantidade de clientes ainda em S, os clientes ativos.
-	
 
 	/* Sobre os grafos bipartidos, teremos
 	
@@ -89,9 +86,6 @@ int main(int argc, char *argv[]){
 	// Variavel que armazena o maior valor fi dado na entrada, para uso posterior
 	int maiorFi = 0;
 
-	int qtd_inst_abertas = 0; // indica a quantidade de instalacoes abertas
-
-
 
 	// Criação de nós clientes e atribuição de seus labels
 	ListBpGraph::RedNode clientes[qtd_clientes];
@@ -103,14 +97,13 @@ int main(int argc, char *argv[]){
 	}
 
 
-
 	// Criação de nós de instalações e atribuição de seus labels
 	ListBpGraph::BlueNode instalacoes[qtd_instalacoes];
 
 
 	for(int i=0;i<qtd_instalacoes;i++){
 		instalacoes[i] = g.addBlueNode();
-		f[instalacoes[i]] = 100 + 4+i/3.0; // fi = numero aleatorio
+		f[instalacoes[i]] = custoF[i]; // pegando valor vindo por parametro
 		somatorioW[instalacoes[i]] = 0; // no começo nada foi pago dessa instalacao
 		qtdContribuintes[instalacoes[i]] = 0; // no começo ninguem contribui pra ninguem
 		aberta[instalacoes[i]] = false; // indica que a instalação não está aberta inicialmente
@@ -122,15 +115,6 @@ int main(int argc, char *argv[]){
 			maiorFi = f[instalacoes[i]];
 		}
 	}
-
-
-	// Inicializando a matriz de adjacencia, todos com valor 0
-	for(int i=0;i<qtd_clientes;i++){
-		for(int j=0;j<qtd_instalacoes;j++){
-			matriz_adjacencia[i][j] = 0;
-		}
-	}
-
 
 
 	// Custo de atribuição é o custo de atribuir o cliente associado à instalação associada
@@ -150,7 +134,7 @@ int main(int argc, char *argv[]){
 	for(int i=0;i<qtd_clientes;i++){
 		for(int j=0;j<qtd_instalacoes;j++){
 			arcos[cont] = g.addEdge(clientes[i],instalacoes[j]);
-			custoAtribuicao[arcos[cont]] = 300 - i - j; // cij = numero aleatorio
+			custoAtribuicao[arcos[cont]] = custoA[cont]; // pegando valor vindo por parametro
 			w[arcos[cont]] = 0; // inicialmente nao contribui com nada
 			prontoContribuirW[arcos[cont]] = false; // inicia com falso em todos
 
@@ -160,6 +144,19 @@ int main(int argc, char *argv[]){
 			}
 
 			cont++;
+		}
+	}
+
+
+	int qtd_clientes_ativos_S = qtd_clientes; // Indica a quantidade de clientes ainda em S, os clientes ativos.
+
+	int qtd_inst_abertas = 0; // indica a quantidade de instalacoes abertas
+
+
+	// Inicializando a matriz de adjacencia, todos com valor 0
+	for(int i=0;i<qtd_clientes;i++){
+		for(int j=0;j<qtd_instalacoes;j++){
+			matriz_adjacencia[i][j] = 0;
 		}
 	}
 
@@ -202,9 +199,7 @@ int main(int argc, char *argv[]){
 	}
 	
 
-
 	// v <- 0, w <- 0 ja acontece na inicializacao 
-
 
 
 	// Aresta auxiliar, inicia com o valor da primeira aresta
@@ -335,6 +330,7 @@ int main(int argc, char *argv[]){
 			cout << endl;
 		}
 	}
+
 
 	float menorAB; // receberá o menor valor entre o menor de A ou o menor de B
 
@@ -540,7 +536,7 @@ int main(int argc, char *argv[]){
 		}
 	}
 
- 
+
 
 
 	//////// PAREI DE FALAR AQUI NA REUNIAO
@@ -812,6 +808,31 @@ int main(int argc, char *argv[]){
 	}
 
 	cout << endl << "Gasto total final: " << gastoTotalFinal << endl << endl;
+	
+}
+
+
+
+int main(int argc, char *argv[]){
+
+	float custoF[10], custoA[100];
+
+	for(int i=0;i<10;i++){
+		custoF[i] = 100 + 4+i/3.0; // valor aleatorio
+	}
+
+	int cont = 0;
+	for(int i=0;i<10;i++){
+		for(int j=0;j<10;j++){
+			custoA[cont] = 300 - i - j; // cij = numero aleatorio
+			cont++;
+		}
+	}
+
+	primalDual(custoF, custoA);
 
 	return 0;
 }
+
+
+
