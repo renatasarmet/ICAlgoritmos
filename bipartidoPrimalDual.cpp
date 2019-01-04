@@ -7,6 +7,11 @@
 #include "declaracoes.hpp"
 #define EPSL 0.001
 
+
+// TODO: procurar casos de testes
+
+
+
 using namespace lemon;
 using namespace std;
 
@@ -23,6 +28,7 @@ bool igual(float i, float j){
 
 
 void primalDual(int qtdCli, int qtdInst, float * custoF, float * custoA){
+	cout << "to no algoritmo" << endl;
 
 	/* Inicio declaracoes variaveis para calculo de tempo - finalidade eh encontrar gargalos */
 
@@ -689,30 +695,32 @@ void primalDual(int qtdCli, int qtdInst, float * custoF, float * custoA){
 	}
 
 	// Enquanto houverem instalacoes abertas em S ( no algoritmo: while T != vazio )
+	ListBpGraph::BlueNodeIt inst_atual(S);
 	while(qtd_inst_abertas > 0){
-
-		for(ListBpGraph::BlueNodeIt n(S); n != INVALID; ++n){
-			if(aberta[n]){ 
+		while(inst_atual != INVALID){
+			if(aberta[inst_atual]){ 
 				// Escolha inst aberta de S
 				if(debug >= EXIBIR_ACOES){
-					cout << "Escolhido instalacao " << nome[n] << endl;
+					cout << "Escolhido instalacao " << nome[inst_atual] << endl;
 				}
 
-				indice_inst = nome[n] - qtd_clientes;
+				indice_inst = nome[inst_atual] - qtd_clientes;
 
 				// Tlinha <- Tlinha U {i}
 				instTlinha[qtd_instTlinha] = Tlinha.addBlueNode();
-				nomeTlinha[instTlinha[qtd_instTlinha]] = nome[n]; // pega o nome da instalacao
-				fTlinha[instTlinha[qtd_instTlinha]] = f[n]; // pega o custo de abrir a instalacao
+				nomeTlinha[instTlinha[qtd_instTlinha]] = nome[inst_atual]; // pega o nome da instalacao
+				fTlinha[instTlinha[qtd_instTlinha]] = f[inst_atual]; // pega o custo de abrir a instalacao
 
 
 				// indica em g que ele está em Tlinha
-				estaEmTlinha[n] = true;
+				estaEmTlinha[inst_atual] = true;
 
 				qtd_instTlinha += 1;
 
+				++inst_atual;
 				break;
 			}
+			++inst_atual;
 		}
 
 
@@ -726,20 +734,23 @@ void primalDual(int qtdCli, int qtdInst, float * custoF, float * custoA){
 
 			// Percorrendo por todos os nós B - instalacoes
 			cout << "Percorrendo por todos as instalacoes" << endl;
-			for(ListBpGraph::BlueNodeIt n(g); n != INVALID; ++n){
-				cout << "no id: " << g.id(n)  << " - nome: " << nome[n] << " - f: " << f[n] << 
+			for(ListBpGraph::BlueNodeIt n(S); n != INVALID; ++n){
+				cout << "no id: " << S.id(n)  << " - nome: " << nome[n] << " - f: " << f[n] << 
 				" - aberta: " << aberta[n] << " - estaEmTlinhaL " << estaEmTlinha[n] << endl;
 			}
 
 			// Percorrendo por todos os arcos
 			cout << "Percorrendo por todos os arcos" << endl;
-			for(ListBpGraph::EdgeIt e(S); e!= INVALID; ++e){
+			for(ListBpGraph::EdgeIt e(g); e!= INVALID; ++e){
 				cout << "arco id: " << g.id(e) ;
 				cout << " - cliente: " << nome[g.u(e)] << " - instalacao: " << nome[g.v(e)];
 				cout<< " - ca: " << custoAtribuicao[e] << endl;
 			}
 		}
 
+
+		// TODO: pensar em usar um conjunto aqui: para cada instalacao ter um conjunto dos clientes que contribuem e para cada cliente ter um conjunto de instalacoes elas contribuem
+		// talvez eliminar o for mais interno com a adicao de um novo vetor, apenas para indicar se ele ainda esta em T ou nao. Dentro do for ao inves de zerar a coluna, muda o valor desse vetor pra false
 
 		//	Remove todas instalacoes i se algum cliente j contribuir a i e indice_inst
 		for(int i=0;i<qtd_clientes;i++){
@@ -771,13 +782,13 @@ void primalDual(int qtdCli, int qtdInst, float * custoF, float * custoA){
 
 						}
 
-
+						//PROBLEMA: PQ TEM + qtd_clientes ??????? funciona assim
 						if(aberta[S.asBlueNode(S.nodeFromId(j+qtd_clientes))]){ // Se a instalacao j está aberta
 							if(debug >= EXIBIR_ACOES){
 								cout << "Removendo a instalacao " << j << " das abertas, pois cliente " << i << " contribui a ela" << endl;
 							}
 
-							aberta[S.asBlueNode(S.nodeFromId(j))] = false;
+							aberta[S.asBlueNode(S.nodeFromId(j+qtd_clientes))] = false;
 							qtd_inst_abertas -= 1;
 						}
 					}
@@ -791,7 +802,6 @@ void primalDual(int qtdCli, int qtdInst, float * custoF, float * custoA){
 
 		aberta[S.asBlueNode(S.nodeFromId(indice_inst))] = false;
 		qtd_inst_abertas -= 1;
-
 	}
 
 
@@ -860,6 +870,7 @@ void primalDual(int qtdCli, int qtdInst, float * custoF, float * custoA){
 
 	int idInstMenorDist = -1;
 
+	//TODO: Talvez mudar aqu o jeito de fazer pra percorrer menos gente
 	// Percorrer todos os clientes de g
 	for(ListBpGraph::RedNodeIt n(g); n != INVALID; ++n){
 
@@ -879,6 +890,7 @@ void primalDual(int qtdCli, int qtdInst, float * custoF, float * custoA){
 		qtd_cliTlinha += 1;
 
 
+		//SOLUÇÃO: TALVEZ criar um vetor que dado o nome da inst, tem o valor do ID de Tlinha.. criar isso quando cria o Tlinha
 		//PROBLEMA: Gambiarra 
 		// Descobrir o ID em Tlinha da instalacao correspondente a nomeInstMenorDist
 		for(int i=0;i<qtd_instTlinha;i++){

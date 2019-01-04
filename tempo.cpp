@@ -3,7 +3,7 @@
 #include <fstream>
 #include <ctime>
 
-#define N_TESTES 25 // Quantidade de vezes que sera testada a mesma entrada, para calculo de minimo, maximo e media
+#define N_TESTES 1//25 // Quantidade de vezes que sera testada a mesma entrada, para calculo de minimo, maximo e media
 
 using namespace std;
 
