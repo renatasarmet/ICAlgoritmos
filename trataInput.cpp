@@ -8,49 +8,44 @@ using namespace std;
 void trataInput(char inputName[]){
 
    // Declaracoes iniciais
-   int qtd_clientes, qtd_instalacoes;
+   int qtd_clientes, qtd_instalacoes, cont;
    float auxRead;
    ifstream inputFLP;
-
-   cout << "teste 1" << endl;
 
    // Abrindo arquivo 
    inputFLP.open(inputName); 
 
-   cout << "teste 2" << endl;
+   // Lendo do arquivo os valores que indicam a quantidade de instalacoes e clientes
+   inputFLP >> qtd_instalacoes >> qtd_clientes; 
 
-   // Lendo do arquivo os valores que indicam a quantidade de clientes e instalacoes
-   inputFLP >> qtd_clientes >> qtd_instalacoes; 
-
-   cout << "teste 3" << endl;
+   cout << "QTD INST: " << qtd_instalacoes << " E QTD CLI: " << qtd_clientes << endl;
 
    // Declaracao vetores que salvarao custos lidos no arquivo
    float custoF[qtd_instalacoes], custoA[qtd_clientes*qtd_instalacoes]; 
 
-   cout << "teste 4" << endl;
-
-
    // Lendo do arquivo os custos de abertura das instalacoes e salvando no vetor custoF
    for(int i=0;i<qtd_instalacoes;i++){
-      inputFLP >> auxRead;
+      inputFLP >> auxRead; // Descartando a capacidade da instalação
+      inputFLP >> auxRead; // Pegando o valor do custo de abertura da instalação
       custoF[i] = auxRead;
+      cout << "Fi =  " << custoF[i] << endl;
    }
-
-
-   cout << "teste 5" << endl;
 
    // Lendo do arquivo os custos de atribuicao do clientes com as instalacoes e salvando no vetor custoA
-   for(int i=0;i<(qtd_clientes*qtd_instalacoes);i++){
-         inputFLP >> auxRead;
-         custoA[i] = auxRead;
+   cont = 0;
+   for(int i=0;i<qtd_clientes;i++){
+      inputFLP >> auxRead; // Descartando aqui a demanda do cliente
+      cout << "Demanda = " << auxRead << endl;
+      for(int j=0;j<qtd_instalacoes;j++){
+         inputFLP >> auxRead;                                 // PROBLEMA: Pq só está pegando 2 casas decimais???
+         custoA[cont] = auxRead;
+         cout << "CA = " << custoA[cont] << endl; 
+         cont+=1;
+      }
    }
-
-
-   cout << "teste 6" << endl;
 
    // Chamando a funcao que resolve o problema de fato
    primalDual(qtd_clientes, qtd_instalacoes, custoF, custoA);
-
 
    // Fechando o arquivo
    inputFLP.close();

@@ -10,14 +10,15 @@
 
 // TODO: procurar casos de testes
 
-
+//http://resources.mpi-inf.mpg.de/departments/d1/projects/benchmarks/UflLib/index.html
 
 using namespace lemon;
 using namespace std;
 
-#define EXIBIR_ACOES 1 // corresponde a todos os cout quando uma acao é feita. Calculo de tempo tambem esta nessa categoria
-#define EXIBIR_GRAFO 2 // corresponde a descricao dos clientes, instalacoes e arcos
-#define EXIBIR_MATRIZ_ADJACENCIA 3 // corresponde à parte final, na criacao de Tlinha
+#define EXIBIR_ACOES 1 // corresponde a todos os cout quando uma acao é feita. 
+#define EXIBIR_TEMPO 2 // corresponde aos calculos de tempo 
+#define EXIBIR_GRAFO 3 // corresponde a descricao dos clientes, instalacoes e arcos
+#define EXIBIR_MATRIZ_ADJACENCIA 4 // corresponde à parte final, na criacao de Tlinha
 
 
 bool igual(float i, float j){
@@ -44,7 +45,7 @@ void primalDual(int qtdCli, int qtdInst, float * custoF, float * custoA){
 	int qtd_clientes = qtdCli; // Indica quantidade de clientes
 	int qtd_instalacoes = qtdInst; // Indica quantidade de instalacoes
 
-	int debug = 0; // OPCOES DE DEBUG: 1 PARA EXIBIR ACOES, 2 PARA EXIBIR AS MUDANÇAS NO GRAFO, 3 PARA EXIBIR AS MUDANCAS NA MATRIZ DE ADJACENCIA NA CRIACAO DE TLINHA
+	int debug = 1; // OPCOES DE DEBUG: 1 PARA EXIBIR ACOES, 2 PARA EXIBIR TEMPO, 3 PARA EXIBIR AS MUDANÇAS NO GRAFO, 4 PARA EXIBIR AS MUDANCAS NA MATRIZ DE ADJACENCIA NA CRIACAO DE TLINHA
 
 	// conjunto de clientes a serem removidos de S na iteração, pois deixaram de ser ativos
     set <int, greater <int> > apagar_clientes; 
@@ -102,7 +103,7 @@ void primalDual(int qtdCli, int qtdInst, float * custoF, float * custoA){
 	// Variavel que armazena o maior valor fi dado na entrada, para uso posterior
 	int maiorFi = 0;
 
-	if(debug >= EXIBIR_ACOES){
+	if(debug >= EXIBIR_TEMPO){
 		cout <<"[TEMPO] Iniciando contagem de tempo para criacao do grafo e seus maps" << endl;
 		//Iniciando a contagem do tempo
 		clock_gettime(CLOCK_REALTIME, &start);
@@ -181,7 +182,7 @@ void primalDual(int qtdCli, int qtdInst, float * custoF, float * custoA){
 		}
 	}
 
-	if(debug >= EXIBIR_ACOES){
+	if(debug >= EXIBIR_TEMPO){
 		cout <<"[TEMPO] Finalizando contagem de tempo para criacao do grafo e seus maps" << endl;
 		//Finalizando a contagem do tempo
 		clock_gettime(CLOCK_REALTIME, &finish);
@@ -232,7 +233,7 @@ void primalDual(int qtdCli, int qtdInst, float * custoF, float * custoA){
 	// v <- 0, w <- 0 ja acontece na inicializacao 
 
 
-	if(debug >= EXIBIR_ACOES){
+	if(debug >= EXIBIR_TEMPO){
 		cout <<"[TEMPO] Iniciando contagem de tempo para execucao parte inicial, antes do loop" << endl;
 		//Iniciando a contagem do tempo
 		clock_gettime(CLOCK_REALTIME, &start);
@@ -276,7 +277,7 @@ void primalDual(int qtdCli, int qtdInst, float * custoF, float * custoA){
 	}
 
 
-	if(debug >= EXIBIR_ACOES){
+	if(debug >= EXIBIR_TEMPO){
 		cout <<"[TEMPO] Finalizando contagem de tempo para execucao parte inicial, antes do loop" << endl;
 		//Finalizando a contagem do tempo
 		clock_gettime(CLOCK_REALTIME, &finish);
@@ -339,7 +340,7 @@ void primalDual(int qtdCli, int qtdInst, float * custoF, float * custoA){
 		}
 
 
-		if(debug >= EXIBIR_ACOES){
+		if(debug >= EXIBIR_TEMPO){
 			contador_iteracoes += 1;
 			cout <<"[TEMPO] Iniciando contagem de tempo para execucao do caso A, iteracao: " << contador_iteracoes << endl;
 			//Iniciando a contagem do tempo
@@ -367,7 +368,7 @@ void primalDual(int qtdCli, int qtdInst, float * custoF, float * custoA){
 		}
 
 
-		if(debug >= EXIBIR_ACOES){
+		if(debug >= EXIBIR_TEMPO){
 			cout <<"[TEMPO] Finalizando contagem de tempo para execucao do caso A, iteracao: " << contador_iteracoes << endl;
 			//Finalizando a contagem do tempo
 			clock_gettime(CLOCK_REALTIME, &finish);
@@ -405,7 +406,7 @@ void primalDual(int qtdCli, int qtdInst, float * custoF, float * custoA){
 		}
 
 
-		if(debug >= EXIBIR_ACOES){
+		if(debug >= EXIBIR_TEMPO){
 			cout <<"[TEMPO] Finalizando contagem de tempo para execucao do caso B, iteracao: " << contador_iteracoes << endl;
 			//Finalizando a contagem do tempo
 			clock_gettime(CLOCK_REALTIME, &finish);
@@ -426,7 +427,7 @@ void primalDual(int qtdCli, int qtdInst, float * custoF, float * custoA){
 		}
 
 
-		if(debug >= EXIBIR_ACOES){
+		if(debug >= EXIBIR_TEMPO){
 			cout <<"[TEMPO] Iniciando contagem de tempo para atualizar valores como v, w, somatorioW, prontoContribuirW, qtdContribuintes e matriz_adjacencia. Iteracao: " << contador_iteracoes << endl;
 			//Iniciando a contagem do tempo
 			clock_gettime(CLOCK_REALTIME, &start);
@@ -455,7 +456,7 @@ void primalDual(int qtdCli, int qtdInst, float * custoF, float * custoA){
 			}
 		}
 
-		if(debug >= EXIBIR_ACOES){
+		if(debug >= EXIBIR_TEMPO){
 			cout <<"[TEMPO] Finalizando contagem de tempo para atualizar valores como v, w, somatorioW, prontoContribuirW, qtdContribuintes e matriz_adjacencia. Iteracao: " << contador_iteracoes << endl;
 			//Finalizando a contagem do tempo
 			clock_gettime(CLOCK_REALTIME, &finish);
@@ -471,7 +472,7 @@ void primalDual(int qtdCli, int qtdInst, float * custoF, float * custoA){
 		// SE FOR O CASO A ou empate: verificar se a instalação que aquele cliente alcançou ja estava aberta, se sim, remover ele dos ativos
 		if(qtd_menorA <= qtd_menorB){
 
-			if(debug >= EXIBIR_ACOES){
+			if(debug >= EXIBIR_TEMPO){
 				cout <<"[TEMPO] Iniciando contagem de tempo para detalhes caso A. Iteracao: " << contador_iteracoes << endl;
 				//Iniciando a contagem do tempo
 				clock_gettime(CLOCK_REALTIME, &start);
@@ -494,7 +495,7 @@ void primalDual(int qtdCli, int qtdInst, float * custoF, float * custoA){
 				cout << "No caso A, tamanho do conjunto apagar_clientes: " << apagar_clientes.size() << endl;
 			}
 
-			if(debug >= EXIBIR_ACOES){
+			if(debug >= EXIBIR_TEMPO){
 				cout <<"[TEMPO] Finalizando contagem de tempo para detalhes caso A. Iteracao: " << contador_iteracoes << endl;
 				//Finalizando a contagem do tempo
 				clock_gettime(CLOCK_REALTIME, &finish);
@@ -510,7 +511,7 @@ void primalDual(int qtdCli, int qtdInst, float * custoF, float * custoA){
 		// SE FOR O CASO B ou empate: caso B seja o menor valor: abrir a instalação i e remover os seus contribuintes dos clientes ativos (lembrando de remover eles das listas de contribuintes das outras instalações
 		if(qtd_menorA >= qtd_menorB){ 
 
-			if(debug >= EXIBIR_ACOES){
+			if(debug >= EXIBIR_TEMPO){
 				cout <<"[TEMPO] Iniciando contagem de tempo para detalhes caso B. Iteracao: " << contador_iteracoes << endl;
 				//Iniciando a contagem do tempo
 				clock_gettime(CLOCK_REALTIME, &start);
@@ -563,7 +564,7 @@ void primalDual(int qtdCli, int qtdInst, float * custoF, float * custoA){
 				}
 			}
 
-			if(debug >= EXIBIR_ACOES){
+			if(debug >= EXIBIR_TEMPO){
 				cout <<"[TEMPO] Finalizando contagem de tempo para detalhes caso B. Iteracao: " << contador_iteracoes << endl;
 				//Finalizando a contagem do tempo
 				clock_gettime(CLOCK_REALTIME, &finish);
@@ -577,7 +578,7 @@ void primalDual(int qtdCli, int qtdInst, float * custoF, float * custoA){
 		}
 
 
-		if(debug >= EXIBIR_ACOES){
+		if(debug >= EXIBIR_TEMPO){
 			cout <<"[TEMPO] Iniciando contagem de tempo para apagar clientes congelados. Iteracao: " << contador_iteracoes << endl;
 			//Iniciando a contagem do tempo
 			clock_gettime(CLOCK_REALTIME, &start);
@@ -597,7 +598,7 @@ void primalDual(int qtdCli, int qtdInst, float * custoF, float * custoA){
 	    apagar_clientes.erase(apagar_clientes.begin(), apagar_clientes.end()); 
 
 
-	    if(debug >= EXIBIR_ACOES){
+	    if(debug >= EXIBIR_TEMPO){
 			cout <<"[TEMPO] Finalizando contagem de tempo para apagar clientes congelados. Iteracao: " << contador_iteracoes << endl;
 			//Finalizando a contagem do tempo
 			clock_gettime(CLOCK_REALTIME, &finish);
@@ -641,16 +642,6 @@ void primalDual(int qtdCli, int qtdInst, float * custoF, float * custoA){
 		}
 	}
 
-
-
-
-	//////// PAREI DE FALAR AQUI NA REUNIAO
-	////// novidade tambem: 
-	/// - lendo entradas de arquivo
-	/// - calculando tempo 
-
-
-
 	/*
 
 	CRIACAO DE Tlinha
@@ -688,7 +679,7 @@ void primalDual(int qtdCli, int qtdInst, float * custoF, float * custoA){
 	}
 
 
-	if(debug >= EXIBIR_ACOES){
+	if(debug >= EXIBIR_TEMPO){
 		cout <<"[TEMPO] Iniciando contagem de tempo para modelar Tlinha" << endl;
 		//Iniciando a contagem do tempo
 		clock_gettime(CLOCK_REALTIME, &start);
@@ -805,7 +796,7 @@ void primalDual(int qtdCli, int qtdInst, float * custoF, float * custoA){
 	}
 
 
-	if(debug >= EXIBIR_ACOES){
+	if(debug >= EXIBIR_TEMPO){
 		cout <<"[TEMPO] Finalizando contagem de tempo para modelar Tlinha" << endl;
 		//Finalizando a contagem do tempo
 		clock_gettime(CLOCK_REALTIME, &finish);
@@ -839,7 +830,7 @@ void primalDual(int qtdCli, int qtdInst, float * custoF, float * custoA){
 	}
 
 
-	if(debug >= EXIBIR_ACOES){
+	if(debug >= EXIBIR_TEMPO){
 		cout <<"[TEMPO] Iniciando contagem de tempo para abrir tudo de Tlinha e associar os clientes" << endl;
 		//Iniciando a contagem do tempo
 		clock_gettime(CLOCK_REALTIME, &start);
@@ -915,7 +906,7 @@ void primalDual(int qtdCli, int qtdInst, float * custoF, float * custoA){
 	}
 
 
-	if(debug >= EXIBIR_ACOES){
+	if(debug >= EXIBIR_TEMPO){
 		cout <<"[TEMPO] Finalizando contagem de tempo para abrir tudo de Tlinha e associar os clientes" << endl;
 		//Finalizando a contagem do tempo
 		clock_gettime(CLOCK_REALTIME, &finish);
@@ -963,7 +954,7 @@ void primalDual(int qtdCli, int qtdInst, float * custoF, float * custoA){
 
 	cout << endl << "Gasto total final: " << gastoTotalFinal << endl << endl;
 
-	if(debug >= EXIBIR_ACOES){
+	if(debug >= EXIBIR_TEMPO){
 		cout <<"[TEMPO] Finalizando contagem de tempo para exibir resposta final" << endl;
 		//Finalizando a contagem do tempo
 		clock_gettime(CLOCK_REALTIME, &finish);

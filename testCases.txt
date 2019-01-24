@@ -1,4 +1,1 @@
-flp1.txt
-flp2.txt
-flp3.txt
-flp4.txt
+cap71.txt
