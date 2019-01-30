@@ -48,7 +48,7 @@ void primalDual(int qtdCli, int qtdInst, float * custoF, float * custoA){
 	int qtd_clientes = qtdCli; // Indica quantidade de clientes
 	int qtd_instalacoes = qtdInst; // Indica quantidade de instalacoes
 
-	int debug = 3; // OPCOES DE DEBUG: 1 PARA EXIBIR ACOES, 2 PARA EXIBIR TEMPO, 3 PARA EXIBIR AS MUDANÇAS NO GRAFO, 4 PARA EXIBIR AS MUDANCAS NA MATRIZ DE ADJACENCIA NA CRIACAO DE TLINHA
+	int debug = 0; // OPCOES DE DEBUG: 1 PARA EXIBIR ACOES, 2 PARA EXIBIR TEMPO, 3 PARA EXIBIR AS MUDANÇAS NO GRAFO, 4 PARA EXIBIR AS MUDANCAS NA MATRIZ DE ADJACENCIA NA CRIACAO DE TLINHA
 
 	// conjunto de clientes a serem removidos de S na iteração, pois deixaram de ser ativos
     set <int, greater <int> > apagar_clientes; 
@@ -500,6 +500,26 @@ void primalDual(int qtdCli, int qtdInst, float * custoF, float * custoA){
 				if(prontoContribuirW[e]){ // verificar se o cliente j alcancou a inst i (se ta pronto para contribuir)
 					if(aberta[S.asBlueNode(S.v(e))]){ // verificar se inst i ta aberta
 						apagar_clientes.insert(S.id(S.u(e))); // Adicionar o cliente j no conjunto de futuros a apagar
+
+						// Tirando ele dos contribuintes dessa instalacao
+						prontoContribuirW[e] = false;
+						qtdContribuintes[S.asBlueNode(S.v(e))] -= 1;
+
+						if(debug >= EXIBIR_ACOES){
+							cout<<"removido cliente " << nome[S.u(e)] << " do pronto para contribuir da instalacao " << nome[S.v(e)] << endl;
+						}
+
+						//Apagando ele da lista de contribuintes das outras instalacoes
+						for (ListBpGraph::IncEdgeIt e2(S, S.u(e)); e2 != INVALID; ++e2) { // Percorre todas arestas desse nó cliente (ligam a instalacoes)
+							if(prontoContribuirW[e2]){ // se o cliente estava pronto para contribuir com essa instalacao
+								prontoContribuirW[e2] = false;
+								qtdContribuintes[S.asBlueNode(S.v(e2))] -= 1;
+
+								if(debug >= EXIBIR_ACOES){
+									cout<<"removido cliente " << nome[S.u(e2)] << " do pronto para contribuir da instalacao " << nome[S.v(e2)] << endl;
+								}
+							}
+						}
 					}
 				}
 			}

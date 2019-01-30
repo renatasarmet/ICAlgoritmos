@@ -54,6 +54,7 @@ Alem disso, eh gerado um arquivo timeLog.txt que possui as informacoes sobre o t
 
 
 *SOBRE AS ENTRADAS ORLIB*
+
 In the ORLIB-cap format it is possible to store instances for the uncapacitated and capacitated facility location problem. The first line of a file consists n and m:
 [n] [m]
 Then the next n lines consist of the opening cost and the capacity of the corresponding facility.
@@ -76,3 +77,13 @@ Example: uncapacitated n = 4, m = 3
 120 100 90 120
 0 
 80 50 140 150
+
+
+
+
+*FORMATO DA SOLUCAO ORLIB*
+
+The data-format of the solutions is very simple. At first there are m numbers in the range of [0,n-1]. The i-th number is the facility city i is connected to. The last number of the file is the cost of the solution. Facilities and cities are ordered by the appearance in the problem file. If the number of a facility does not appear in the solution file, it remains closed in the solution. Please note that the numbering starts with 0 here !
+
+Example: n = 4, m = 3
+2 2 2 510
