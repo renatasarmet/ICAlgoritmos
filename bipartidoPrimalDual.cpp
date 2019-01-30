@@ -8,6 +8,9 @@
 #define EPSL 0.001
 
 
+// PROBLEMA IDENTIFICADO: Está somando errado o prontoContribuirW ... na iteracao 63 podemos ver o problema.. ele soma 11 mas na verdade só tem 3.
+
+
 // TODO: procurar casos de testes
 
 //http://resources.mpi-inf.mpg.de/departments/d1/projects/benchmarks/UflLib/index.html
@@ -45,7 +48,7 @@ void primalDual(int qtdCli, int qtdInst, float * custoF, float * custoA){
 	int qtd_clientes = qtdCli; // Indica quantidade de clientes
 	int qtd_instalacoes = qtdInst; // Indica quantidade de instalacoes
 
-	int debug = 1; // OPCOES DE DEBUG: 1 PARA EXIBIR ACOES, 2 PARA EXIBIR TEMPO, 3 PARA EXIBIR AS MUDANÇAS NO GRAFO, 4 PARA EXIBIR AS MUDANCAS NA MATRIZ DE ADJACENCIA NA CRIACAO DE TLINHA
+	int debug = 3; // OPCOES DE DEBUG: 1 PARA EXIBIR ACOES, 2 PARA EXIBIR TEMPO, 3 PARA EXIBIR AS MUDANÇAS NO GRAFO, 4 PARA EXIBIR AS MUDANCAS NA MATRIZ DE ADJACENCIA NA CRIACAO DE TLINHA
 
 	// conjunto de clientes a serem removidos de S na iteração, pois deixaram de ser ativos
     set <int, greater <int> > apagar_clientes; 
@@ -170,6 +173,11 @@ void primalDual(int qtdCli, int qtdInst, float * custoF, float * custoA){
 	}
 
 
+
+	if(debug >= EXIBIR_ACOES){
+		cout << "maiorCij da entrada : " << maiorCij << endl << "maiorFi da entrada: " << maiorFi << endl;
+	}
+
 	int qtd_clientes_ativos_S = qtd_clientes; // Indica a quantidade de clientes ainda em S, os clientes ativos.
 
 	int qtd_inst_abertas = 0; // indica a quantidade de instalacoes abertas
@@ -253,7 +261,6 @@ void primalDual(int qtdCli, int qtdInst, float * custoF, float * custoA){
 	if(debug >= EXIBIR_ACOES){
 		cout << "menor : " << S.id(menor) << " com custo: " << custoAtribuicao[menor] << endl;
 	}
-
 
 	// Percorrer todos os clientes para aumentar em todos esse valor
 	for(ListBpGraph::RedNodeIt n(S); n != INVALID; ++n){
@@ -349,7 +356,7 @@ void primalDual(int qtdCli, int qtdInst, float * custoF, float * custoA){
 
 		// 	A - fazer um for percorrendo todos os clientes e vendo o que resta de cij pra cada (achar o menor) (menor cij - vj)
 
-		qtd_menorA = maiorCij; // inicia com o maior valor de cij dado na entrada
+		qtd_menorA = maiorCij + maiorFi; // inicia com o maior valor de cij + maior valor de fi dados na entrada
 
 		for(ListBpGraph::RedNodeIt n(S); n != INVALID; ++n){		// percorre os clientes
 	
@@ -387,16 +394,21 @@ void primalDual(int qtdCli, int qtdInst, float * custoF, float * custoA){
 
 		// B - fazer um for percorrendo todas as instalações para ver (fi - somatório de tudo que foi contribuído ate então para fi ) / numero de clientes prontos para contribuir para fi … os que ja alcançaram cij e ainda estão ativos
 
-		qtd_menorB = maiorFi; // inicia com o maior valor de fi dado na entrada
+		qtd_menorB = maiorCij + maiorFi; // inicia com o maior valor de cij + maior valor de fi dados na entrada
 
 		for(ListBpGraph::BlueNodeIt n(S); n != INVALID; ++n){ // percorre as instalacoes
 
-			if(qtdContribuintes[n] > 0){ // SE alguem ja esta pronto para contribuir pelo menos
+			if(!aberta[n]){ // se a instalacao ainda nao estava aberta
 
-				qtd_atual = (f[n] - somatorioW[n])/qtdContribuintes[n]; //(fi - somatório de tudo que foi contribuído ate então para fi ) / (numero de clientes prontos para contribuir para fi) 
+				if(qtdContribuintes[n] > 0){ // SE alguem ja esta pronto para contribuir pelo menos
 
-				if(qtd_atual < qtd_menorB){
-					qtd_menorB = qtd_atual;
+					qtd_atual = (f[n] - somatorioW[n])/qtdContribuintes[n]; //(fi - somatório de tudo que foi contribuído ate então para fi ) / (numero de clientes prontos para contribuir para fi) 
+
+					if(qtd_atual < qtd_menorB){
+						qtd_menorB = qtd_atual;
+						cout << "_____ ATUALIZANDO AQUI O QTD MENOR B com : " << qtd_menorB << " da inst: " << nome[n] << endl;
+						cout << "- ela tem: f = " << f[n] << " somatorioW = " << somatorioW[n] << " e qtdContribuintes = " << qtdContribuintes[n] << endl;
+					}
 				}
 			}
 		}
@@ -447,6 +459,7 @@ void primalDual(int qtdCli, int qtdInst, float * custoF, float * custoA){
 			if(prontoContribuirW[e]){ // se está pronto para contribuir
 				w[e] += menorAB; 
 				somatorioW[S.asBlueNode(S.v(e))] += menorAB; // aumenta esse valor no somatorio da instalacao correspondente
+				cout << " TO AQUI AUMENTANDO " << menorAB << " NO " << nome[S.asBlueNode(S.v(e))] << endl;
 			}
 			else if(igual(custoAtribuicao[e],v[S.asRedNode(S.u(e))])){ // SENAO SE: acabou de ficar pronto para contribuir (pagou o c.a.)
 				prontoContribuirW[e] = true;
@@ -524,7 +537,9 @@ void primalDual(int qtdCli, int qtdInst, float * custoF, float * custoA){
 
 			for(ListBpGraph::BlueNodeIt n(S); n != INVALID; ++n){ // percorrer todas as instalacoes
 				if(!aberta[n]){ // se a instalacao ainda nao estava aberta
+					cout << (f[n] - somatorioW[n])/qtdContribuintes[n] <<" ----******---- TO QUERENDO ENTRAR AQUI MAS NAO TA DANDO  "<< nome[n]<< " ------ somatorioW = " << somatorioW[n] << " e f = " << f[n] << " e qtdContribuintes = " << qtdContribuintes[n]<< endl;
 					if(igual(somatorioW[n],f[n])){ // se a soma das partes completou o custo de abrir a instalacao, vamos abrir!
+						cout << "ENTREI " << nome[n] << endl;
 						aberta[n] = true;
 						qtd_inst_abertas += 1;
 
