@@ -7,13 +7,10 @@
 #include "declaracoes.hpp"
 #define EPSL 0.001
 
+// PROBLEMA Identificado: formação de T está correta! Problema está no Tlinha
+// Acho que é porque está usando outro algoritmo
 
-// PROBLEMA IDENTIFICADO: Está somando errado o prontoContribuirW ... na iteracao 63 podemos ver o problema.. ele soma 11 mas na verdade só tem 3.
-
-
-// TODO: procurar casos de testes
-
-//http://resources.mpi-inf.mpg.de/departments/d1/projects/benchmarks/UflLib/index.html
+// Casos de testes: http://resources.mpi-inf.mpg.de/departments/d1/projects/benchmarks/UflLib/index.html
 
 using namespace lemon;
 using namespace std;
@@ -32,7 +29,6 @@ bool igual(float i, float j){
 
 
 void primalDual(int qtdCli, int qtdInst, float * custoF, float * custoA){
-	cout << "to no algoritmo" << endl;
 
 	/* Inicio declaracoes variaveis para calculo de tempo - finalidade eh encontrar gargalos */
 
@@ -215,7 +211,7 @@ void primalDual(int qtdCli, int qtdInst, float * custoF, float * custoA){
 		// Percorrendo por todos os nós B - instalacoes
 		cout << "Percorrendo por todos as instalacoes" << endl;
 		for(ListBpGraph::BlueNodeIt n(S); n != INVALID; ++n){
-			cout << "no id: " << S.id(n)  << " - nome: " << nome[n] << " - f: " << f[n] << " - aberta: " << aberta[n] << endl;
+			cout << "no id: " << S.id(n)  << " - nome: " << nome[n] << " - f: " << f[n] << " - aberta: " << aberta[n] << " - qtdContribuintes: " << qtdContribuintes[n]<< endl;
 		}
 
 
@@ -306,7 +302,7 @@ void primalDual(int qtdCli, int qtdInst, float * custoF, float * custoA){
 		// Percorrendo por todos os nós B - instalacoes
 		cout << "Percorrendo por todos as instalacoes" << endl;
 		for(ListBpGraph::BlueNodeIt n(S); n != INVALID; ++n){
-			cout << "no id: " << S.id(n)  << " - nome: " << nome[n] << " - f: " << f[n] << " - aberta: " << aberta[n] << endl;
+			cout << "no id: " << S.id(n)  << " - nome: " << nome[n] << " - f: " << f[n] << " - aberta: " << aberta[n] << " - qtdContribuintes: " << qtdContribuintes[n]<< endl;
 		}
 
 
@@ -406,8 +402,6 @@ void primalDual(int qtdCli, int qtdInst, float * custoF, float * custoA){
 
 					if(qtd_atual < qtd_menorB){
 						qtd_menorB = qtd_atual;
-						cout << "_____ ATUALIZANDO AQUI O QTD MENOR B com : " << qtd_menorB << " da inst: " << nome[n] << endl;
-						cout << "- ela tem: f = " << f[n] << " somatorioW = " << somatorioW[n] << " e qtdContribuintes = " << qtdContribuintes[n] << endl;
 					}
 				}
 			}
@@ -459,7 +453,6 @@ void primalDual(int qtdCli, int qtdInst, float * custoF, float * custoA){
 			if(prontoContribuirW[e]){ // se está pronto para contribuir
 				w[e] += menorAB; 
 				somatorioW[S.asBlueNode(S.v(e))] += menorAB; // aumenta esse valor no somatorio da instalacao correspondente
-				cout << " TO AQUI AUMENTANDO " << menorAB << " NO " << nome[S.asBlueNode(S.v(e))] << endl;
 			}
 			else if(igual(custoAtribuicao[e],v[S.asRedNode(S.u(e))])){ // SENAO SE: acabou de ficar pronto para contribuir (pagou o c.a.)
 				prontoContribuirW[e] = true;
@@ -557,9 +550,7 @@ void primalDual(int qtdCli, int qtdInst, float * custoF, float * custoA){
 
 			for(ListBpGraph::BlueNodeIt n(S); n != INVALID; ++n){ // percorrer todas as instalacoes
 				if(!aberta[n]){ // se a instalacao ainda nao estava aberta
-					cout << (f[n] - somatorioW[n])/qtdContribuintes[n] <<" ----******---- TO QUERENDO ENTRAR AQUI MAS NAO TA DANDO  "<< nome[n]<< " ------ somatorioW = " << somatorioW[n] << " e f = " << f[n] << " e qtdContribuintes = " << qtdContribuintes[n]<< endl;
 					if(igual(somatorioW[n],f[n])){ // se a soma das partes completou o custo de abrir a instalacao, vamos abrir!
-						cout << "ENTREI " << nome[n] << endl;
 						aberta[n] = true;
 						qtd_inst_abertas += 1;
 
@@ -589,7 +580,7 @@ void primalDual(int qtdCli, int qtdInst, float * custoF, float * custoA){
 										qtdContribuintes[S.asBlueNode(S.v(e2))] -= 1;
 
 										if(debug >= EXIBIR_ACOES){
-											cout<<"removido cliente " << nome[S.u(e2)] << " do pronto para contribuir da instalacao " << nome[S.v(e2)] << endl;
+											cout<<"removido cliente " << nome[S.u(e2)] << " do pronto para contribuir da instalacao " << nome[S.v(e2)] << " agora ela tem qtdContribuintes = " << qtdContribuintes[S.asBlueNode(S.v(e2))] << endl;
 										}
 									}
 								}
@@ -655,7 +646,7 @@ void primalDual(int qtdCli, int qtdInst, float * custoF, float * custoA){
 			// Percorrendo por todos os nós B - instalacoes
 			cout << "Percorrendo por todos as instalacoes" << endl;
 			for(ListBpGraph::BlueNodeIt n(S); n != INVALID; ++n){
-				cout << "no id: " << S.id(n)  << " - nome: " << nome[n] << " - f: " << f[n] << " - aberta: " << aberta[n] << endl;
+				cout << "no id: " << S.id(n)  << " - nome: " << nome[n] << " - f: " << f[n] << " - aberta: " << aberta[n] << " - qtdContribuintes: " << qtdContribuintes[n]<< endl;
 			}
 
 			// Percorrendo por todos os arcos
@@ -809,7 +800,7 @@ void primalDual(int qtdCli, int qtdInst, float * custoF, float * custoA){
 						}
 
 						//PROBLEMA: PQ TEM + qtd_clientes ??????? funciona assim
-						if(aberta[S.asBlueNode(S.nodeFromId(j+qtd_clientes))]){ // Se a instalacao j está aberta
+						if(aberta[S.asBlueNode(S.nodeFromId(j))]){ // Se a instalacao j está aberta
 							if(debug >= EXIBIR_ACOES){
 								cout << "Removendo a instalacao " << j << " das abertas, pois cliente " << i << " contribui a ela" << endl;
 							}
@@ -896,7 +887,7 @@ void primalDual(int qtdCli, int qtdInst, float * custoF, float * custoA){
 
 	int idInstMenorDist = -1;
 
-	//TODO: Talvez mudar aqu o jeito de fazer pra percorrer menos gente
+	//TODO: Talvez mudar aqui o jeito de fazer pra percorrer menos gente
 	// Percorrer todos os clientes de g
 	for(ListBpGraph::RedNodeIt n(g); n != INVALID; ++n){
 

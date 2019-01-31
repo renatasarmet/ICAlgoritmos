@@ -11,6 +11,7 @@ void trataInput(char inputName[]){
    int qtd_clientes, qtd_instalacoes, cont;
    float auxRead;
    ifstream inputFLP;
+   int debug = 0; // OPCOES DE DEBUG: 0 PARA NAO EXIBIR NADA, 1 PARA EXIBIR AS INFORMACOES SENDO SALVAS
 
    // Abrindo arquivo 
    inputFLP.open(inputName); 
@@ -28,18 +29,29 @@ void trataInput(char inputName[]){
       inputFLP >> auxRead; // Descartando a capacidade da instalação
       inputFLP >> auxRead; // Pegando o valor do custo de abertura da instalação
       custoF[i] = auxRead;
-      cout << "Fi =  " << custoF[i] << endl;
+
+      if(debug > 0){
+         cout << "Fi =  " << custoF[i] << endl;  
+      }  
    }
 
    // Lendo do arquivo os custos de atribuicao do clientes com as instalacoes e salvando no vetor custoA
    cont = 0;
    for(int i=0;i<qtd_clientes;i++){
       inputFLP >> auxRead; // Descartando aqui a demanda do cliente
-      cout << "Demanda = " << auxRead << endl;
+
+      if(debug > 0){
+         cout << "Demanda = " << auxRead << endl;
+      }
+
       for(int j=0;j<qtd_instalacoes;j++){
          inputFLP >> auxRead;                                 // PROBLEMA: Pq só está pegando 2 casas decimais???
          custoA[cont] = auxRead;
-         cout << "CA = " << custoA[cont] << endl; 
+
+         if(debug > 0){
+            cout << "CA = " << custoA[cont] << endl; 
+         }
+
          cont+=1;
       }
    }
