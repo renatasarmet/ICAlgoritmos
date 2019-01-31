@@ -1,4 +1,8 @@
 cap71.txt
-cap72.txt
-cap73.txt
-cap74.txt
+cap101.txt
+cap131.txt
+flp50x100.txt
+flp100x100.txt
+flp100x200.txt
+flp100x400.txt
+flp100x600.txt

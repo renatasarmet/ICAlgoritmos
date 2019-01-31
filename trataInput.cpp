@@ -10,6 +10,7 @@ void trataInput(char inputName[]){
    // Declaracoes iniciais
    int qtd_clientes, qtd_instalacoes, cont;
    float auxRead;
+   char auxCRead[30];
    ifstream inputFLP;
    int debug = 0; // OPCOES DE DEBUG: 0 PARA NAO EXIBIR NADA, 1 PARA EXIBIR AS INFORMACOES SENDO SALVAS
 
@@ -27,6 +28,7 @@ void trataInput(char inputName[]){
    // Lendo do arquivo os custos de abertura das instalacoes e salvando no vetor custoF
    for(int i=0;i<qtd_instalacoes;i++){
       inputFLP >> auxRead; // Descartando a capacidade da instalação
+      // cout << auxRead << endl;
       inputFLP >> auxRead; // Pegando o valor do custo de abertura da instalação
       custoF[i] = auxRead;
 

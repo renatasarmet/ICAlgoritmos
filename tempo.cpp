@@ -43,7 +43,7 @@ int main(int argc, char *argv[]){
 		// Composicao da string que contera a chamada para execucao do programa com o parametro da entrada correspondente
 		stringstream stringBuilder;
 		inputName >> auxInputName;
-		stringBuilder << "./main facilityTestCases/tests/" << auxInputName;
+		stringBuilder << "./main2 facilityTestCases/tests/" << auxInputName;
 		string completeString = stringBuilder.str();
 		cout << endl << "Entrada a ser utilizada: " <<  auxInputName << endl;
 

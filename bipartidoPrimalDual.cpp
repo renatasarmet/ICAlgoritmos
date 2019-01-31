@@ -7,10 +7,13 @@
 #include "declaracoes.hpp"
 #define EPSL 0.001
 
-// PROBLEMA Identificado: formação de T está correta! Problema está no Tlinha
-// Acho que é porque está usando outro algoritmo
+// TODO: descobrir e corrigir problema do codigo : instancias enormes estao em loop infinito
+// TODO: primeira versão do relatório
+// TODO: generalizar o leitor de instancias (no proprio lugar q fala os nomes das instancias, colocar uma letra ou numero na frente, para indicar o formato da entrada)
 
 // Casos de testes: http://resources.mpi-inf.mpg.de/departments/d1/projects/benchmarks/UflLib/index.html
+
+// TODO: seria legal se tivesse uma fila de prioridades para ver o caso A (menor cij)
 
 using namespace lemon;
 using namespace std;
@@ -668,6 +671,8 @@ void primalDual(int qtdCli, int qtdInst, float * custoF, float * custoA){
 		}
 	}
 
+	cout << "terminei T" << endl;
+
 	/*
 
 	CRIACAO DE Tlinha
@@ -952,33 +957,33 @@ void primalDual(int qtdCli, int qtdInst, float * custoF, float * custoA){
 	// Indica a soma dos custos de instalacoes + custos de atribuicao
 	float gastoTotalFinal = 0;
 
-	// Resposta final: Grafo Tlinha
-	cout << endl <<  "Resposta final: GRAFO TLINHA" << endl;
+	// //Resposta final: Grafo Tlinha
+	// cout << endl <<  "Resposta final: GRAFO TLINHA" << endl;
 
-	// Percorrendo por todos os nós A - clientes
-	cout << endl << "Percorrendo por todos os clientes" << endl;
-	for(ListBpGraph::RedNodeIt n(Tlinha); n != INVALID; ++n){
-		cout << "no id: " << Tlinha.id(n)  << " - nome: " << nomeTlinha[n] << endl;
-	}
+	// // Percorrendo por todos os nós A - clientes
+	// cout << endl << "Percorrendo por todos os clientes" << endl;
+	// for(ListBpGraph::RedNodeIt n(Tlinha); n != INVALID; ++n){
+	// 	cout << "no id: " << Tlinha.id(n)  << " - nome: " << nomeTlinha[n] << endl;
+	// }
 
-	// Percorrendo por todos os nós B - instalacoes
-	cout << endl << "Percorrendo por todos as instalacoes" << endl;
-	for(ListBpGraph::BlueNodeIt n(Tlinha); n != INVALID; ++n){
-		cout << "no id: " << Tlinha.id(n)  << " - nome: " << nomeTlinha[n] << " - f: " << fTlinha[n] << endl;
-		gastoTotalFinal += fTlinha[n]; // acrescentando o valor do custo de abrir essa instalacao
-	}
+	// // Percorrendo por todos os nós B - instalacoes
+	// cout << endl << "Percorrendo por todos as instalacoes" << endl;
+	// for(ListBpGraph::BlueNodeIt n(Tlinha); n != INVALID; ++n){
+	// 	cout << "no id: " << Tlinha.id(n)  << " - nome: " << nomeTlinha[n] << " - f: " << fTlinha[n] << endl;
+	// 	gastoTotalFinal += fTlinha[n]; // acrescentando o valor do custo de abrir essa instalacao
+	// }
 
 
-	// Percorrendo por todos os arcos
-	cout << endl << "Percorrendo por todos os arcos" << endl;
-	for(ListBpGraph::EdgeIt e(Tlinha); e!= INVALID; ++e){
-		cout << "arco id: " << Tlinha.id(e) ;
-		cout << " - cliente: " << nomeTlinha[Tlinha.u(e)] << " - instalacao: " << nomeTlinha[Tlinha.v(e)];
-		cout<< " - ca: " << caTlinha[e] << endl;
-		gastoTotalFinal += caTlinha[e]; // acrescentando o valor de atribuicao desse cliente a essa instalacao
-	}
+	// // Percorrendo por todos os arcos
+	// cout << endl << "Percorrendo por todos os arcos" << endl;
+	// for(ListBpGraph::EdgeIt e(Tlinha); e!= INVALID; ++e){
+	// 	cout << "arco id: " << Tlinha.id(e) ;
+	// 	cout << " - cliente: " << nomeTlinha[Tlinha.u(e)] << " - instalacao: " << nomeTlinha[Tlinha.v(e)];
+	// 	cout<< " - ca: " << caTlinha[e] << endl;
+	// 	gastoTotalFinal += caTlinha[e]; // acrescentando o valor de atribuicao desse cliente a essa instalacao
+	// }
 
-	cout << endl << "Gasto total final: " << gastoTotalFinal << endl << endl;
+	//cout << endl << "Gasto total final: " << gastoTotalFinal << endl << endl;
 
 	if(debug >= EXIBIR_TEMPO){
 		cout <<"[TEMPO] Finalizando contagem de tempo para exibir resposta final" << endl;
