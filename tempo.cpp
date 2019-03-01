@@ -9,8 +9,10 @@ using namespace std;
 
 int main(int argc, char *argv[]){
 
-	// Abertura para leitura de arquivo que contem uma lista com todos os arquivos de entrada
-	ifstream inputName("testCases.txt"); 
+	if(argc != 2){
+		cout << "Erro nos parametros. Necessario passar o tipo de entrada." << endl;
+		return 0;
+	}
 
 	// Declaracao variavel auxiliar que tera o nome do arquivo a ser utilizado naquela iteracao
 	string auxInputName; 
@@ -36,6 +38,23 @@ int main(int argc, char *argv[]){
 	// Declaracao variavel que indica a media de tempo gasto para executar aquela entrada entre os N_TESTES
 	double avgTime;
 
+	// Declaracao variavel que indica o nome dos arquivos de teste
+	char nameInput[30];
+
+	if(strcmp(argv[1],"1") == 0){
+		strcpy(nameInput,"testCases1.txt");
+	}
+	else if(strcmp(argv[1], "2") == 0){
+		strcpy(nameInput,"testCases2.txt");
+	}
+	else{
+		cout << "Erro no parametro que indica o tipo de entrada." << endl;
+		return 0;
+	}
+
+	// Abertura para leitura de arquivo que contem uma lista com todos os arquivos de entrada
+	ifstream inputName(nameInput); 
+
 
 	// Enquanto houverem entradas nao testadas ainda
 	while(!inputName.eof()){
@@ -43,7 +62,7 @@ int main(int argc, char *argv[]){
 		// Composicao da string que contera a chamada para execucao do programa com o parametro da entrada correspondente
 		stringstream stringBuilder;
 		inputName >> auxInputName;
-		stringBuilder << "./main2 facilityTestCases/tests/" << auxInputName;
+		stringBuilder << "./main facilityTestCases/tests/" << auxInputName << " " << argv[1];
 		string completeString = stringBuilder.str();
 		cout << endl << "Entrada a ser utilizada: " <<  auxInputName << endl;
 

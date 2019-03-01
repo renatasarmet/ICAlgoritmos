@@ -8,7 +8,10 @@
 #define EPSL 0.001
 
 // TODO: descobrir e corrigir problema do codigo : instancias enormes estao em loop infinito
+
 // TODO: primeira versão do relatório
+// Link para visualizacao relatorio: https://www.overleaf.com/read/ptfjyjssxwkc
+
 // TODO: generalizar o leitor de instancias (no proprio lugar q fala os nomes das instancias, colocar uma letra ou numero na frente, para indicar o formato da entrada)
 
 // Casos de testes: http://resources.mpi-inf.mpg.de/departments/d1/projects/benchmarks/UflLib/index.html
