@@ -5,18 +5,18 @@
 #include <iterator>
 #include <ctime>
 #include "declaracoes.hpp"
-#define EPSL 0.001
+#define EPSL 0.00000001
 
-// TODO: descobrir e corrigir problema do codigo : instancias enormes estao em loop infinito
+// TODO: talvez problema do codigo (ver se é mesmo): instancias enormes estao muito rapidas, está certo isso? Olhar solucao, ver se resultado é 3-aproximacao
 
-// TODO: primeira versão do relatório
+// TODO: finalizar primeira versão do relatório
 // Link para visualizacao relatorio: https://www.overleaf.com/read/ptfjyjssxwkc
-
-// TODO: generalizar o leitor de instancias (no proprio lugar q fala os nomes das instancias, colocar uma letra ou numero na frente, para indicar o formato da entrada)
 
 // Casos de testes: http://resources.mpi-inf.mpg.de/departments/d1/projects/benchmarks/UflLib/index.html
 
 // TODO: seria legal se tivesse uma fila de prioridades para ver o caso A (menor cij)
+
+// TODO: Sobre testes: tabela com os resultados 
 
 using namespace lemon;
 using namespace std;
@@ -27,14 +27,20 @@ using namespace std;
 #define EXIBIR_MATRIZ_ADJACENCIA 4 // corresponde à parte final, na criacao de Tlinha
 
 
-bool igual(float i, float j){
+bool igual(double i, double j){
     if((i > j-EPSL) && (i < j+EPSL))
         return true;
     return false;
 }
 
+bool maior_igual(double i, double j){
+    if(i >= j * (1-EPSL))
+        return true;
+    return false;
+}
 
-void primalDual(int qtdCli, int qtdInst, float * custoF, float * custoA){
+
+void primalDual(int qtdCli, int qtdInst, double * custoF, double * custoA){
 
 	/* Inicio declaracoes variaveis para calculo de tempo - finalidade eh encontrar gargalos */
 
@@ -82,13 +88,13 @@ void primalDual(int qtdCli, int qtdInst, float * custoF, float * custoA){
 	ListBpGraph g;
 
 	// v - será o quanto o cliente vai contribuir (v)
-	ListBpGraph::RedNodeMap<float> v(g);
+	ListBpGraph::RedNodeMap<double> v(g);
 
 	// f - será o custo de instalação (fi)
-	ListBpGraph::BlueNodeMap<float> f(g);
+	ListBpGraph::BlueNodeMap<double> f(g);
 
 	// somatorioW - indica o quanto ja foi pago do custo de abrir a instalacao i... somatorio de todos os w correspondente a essa i
-	ListBpGraph::BlueNodeMap<float> somatorioW(g);
+	ListBpGraph::BlueNodeMap<double> somatorioW(g);
 
 	// qtdContribuintes - será a quantidade de clientes ativos que estao prontos para contribuir com a inst i
 	ListBpGraph::BlueNodeMap<int> qtdContribuintes(g);
@@ -145,10 +151,10 @@ void primalDual(int qtdCli, int qtdInst, float * custoF, float * custoA){
 
 
 	// Custo de atribuição é o custo de atribuir o cliente associado à instalação associada
-	ListBpGraph::EdgeMap<float> custoAtribuicao(g);
+	ListBpGraph::EdgeMap<double> custoAtribuicao(g);
 
 	// W é a parte do custo da instalação associada que o cliente associado vai contribuir
-	ListBpGraph::EdgeMap<float> w(g);
+	ListBpGraph::EdgeMap<double> w(g);
 
 	// Indica se aquele cliente ja está pagando todo seu custo de atribuicao àquela instalação, e esta pronto para começar a aumentar o w
 	ListBpGraph::EdgeMap<bool> prontoContribuirW(g);
@@ -173,7 +179,6 @@ void primalDual(int qtdCli, int qtdInst, float * custoF, float * custoA){
 			cont++;
 		}
 	}
-
 
 
 	if(debug >= EXIBIR_ACOES){
@@ -331,12 +336,12 @@ void primalDual(int qtdCli, int qtdInst, float * custoF, float * custoA){
 	}
 
 
-	float menorAB; // receberá o menor valor entre o menor de A ou o menor de B
+	double menorAB; // receberá o menor valor entre o menor de A ou o menor de B
 
-	float qtd_menorA;
-	float qtd_atual;
+	double qtd_menorA;
+	double qtd_atual;
 
-	float qtd_menorB; 
+	double qtd_menorB; 
 
 	int contador_iteracoes = 0; // Variavel auxiliar, que, em caso de debug >= EXIBIR_ACOES indica quantas iteracoes houveram no while
 
@@ -556,7 +561,8 @@ void primalDual(int qtdCli, int qtdInst, float * custoF, float * custoA){
 
 			for(ListBpGraph::BlueNodeIt n(S); n != INVALID; ++n){ // percorrer todas as instalacoes
 				if(!aberta[n]){ // se a instalacao ainda nao estava aberta
-					if(igual(somatorioW[n],f[n])){ // se a soma das partes completou o custo de abrir a instalacao, vamos abrir!
+					cout.precision(10);
+					if(maior_igual(somatorioW[n],f[n])){ // se a soma das partes completou o custo de abrir a instalacao, vamos abrir!
 						aberta[n] = true;
 						qtd_inst_abertas += 1;
 
@@ -694,7 +700,7 @@ void primalDual(int qtdCli, int qtdInst, float * custoF, float * custoA){
 	ListBpGraph::NodeMap<int> nomeTlinha(Tlinha);
 
 	// fTlinha - será o custo de instalação das insts em Tlinha (fi)
-	ListBpGraph::BlueNodeMap<float> fTlinha(g);
+	ListBpGraph::BlueNodeMap<double> fTlinha(g);
 
 	if(debug >= EXIBIR_ACOES){
 		cout << endl<< "Criando Tlinha" << endl;
@@ -880,7 +886,7 @@ void primalDual(int qtdCli, int qtdInst, float * custoF, float * custoA){
 
 
 	// caTlinha - em Tlinha indica o Custo de atribuição: é o custo de atribuir o cliente associado à instalação associada
-	ListBpGraph::EdgeMap<float> caTlinha(g);
+	ListBpGraph::EdgeMap<double> caTlinha(g);
 
 
 	// Criação de arcos e atribuição de seus labels
@@ -958,7 +964,7 @@ void primalDual(int qtdCli, int qtdInst, float * custoF, float * custoA){
 	}
 
 	// Indica a soma dos custos de instalacoes + custos de atribuicao
-	float gastoTotalFinal = 0;
+	double gastoTotalFinal = 0;
 
 	// //Resposta final: Grafo Tlinha
 	// cout << endl <<  "Resposta final: GRAFO TLINHA" << endl;

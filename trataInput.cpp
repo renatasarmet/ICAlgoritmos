@@ -9,7 +9,7 @@ void trataInput(char inputName[], char tipoEntrada[]){
 
    // Declaracoes iniciais
    int qtd_clientes, qtd_instalacoes, cont;
-   float auxRead;
+   double auxRead;
    char auxCRead[30];
    ifstream inputFLP;
    int debug = 0; // OPCOES DE DEBUG: 0 PARA NAO EXIBIR NADA, 1 PARA EXIBIR AS INFORMACOES SENDO SALVAS
@@ -25,7 +25,7 @@ void trataInput(char inputName[], char tipoEntrada[]){
       cout << "QTD INST: " << qtd_instalacoes << " E QTD CLI: " << qtd_clientes << endl;
 
       // Declaracao vetores que salvarao custos lidos no arquivo
-      float custoF[qtd_instalacoes], custoA[qtd_clientes*qtd_instalacoes]; 
+      double custoF[qtd_instalacoes], custoA[qtd_clientes*qtd_instalacoes]; 
 
       // Lendo do arquivo os custos de abertura das instalacoes e salvando no vetor custoF
       for(int i=0;i<qtd_instalacoes;i++){
@@ -74,7 +74,7 @@ void trataInput(char inputName[], char tipoEntrada[]){
       cout << "QTD INST: " << qtd_instalacoes << " E QTD CLI: " << qtd_clientes << endl;
 
       // Declaracao vetores que salvarao custos lidos no arquivo
-      float custoF[qtd_instalacoes], custoA[qtd_clientes*qtd_instalacoes]; 
+      double custoF[qtd_instalacoes], custoA[qtd_clientes*qtd_instalacoes]; 
 
       // Lendo do arquivo os custos de abertura das instalacoes e salvando no vetor custoF
       cont = 0;
