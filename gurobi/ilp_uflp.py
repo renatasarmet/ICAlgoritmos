@@ -7,6 +7,7 @@ import sys
 from collections import namedtuple
 import math
 from gurobipy import *
+import csv
 
 
 Point = namedtuple("Point", ['x', 'y'])
@@ -160,7 +161,9 @@ def facilityILP(facility_list, client_list, bound):
         # The objective value of the solution.
         print("Optimal objective value = %.2f" % solver.objVal)
 
-    sol_value = int(solver.objVal)
+    # Choose here if we want the solution cost to be integer or not 
+    #sol_value = int(solver.objVal) 
+    sol_value = solver.objVal
 
     solution = [-1] * len(client_list)
 
@@ -185,8 +188,8 @@ def solve_it(input_data):
     facility_count = int(parts[0])
     customer_count = int(parts[1])
 
-    print("QTD inst: ", facility_count)
-    print("QTD cli: ", customer_count)
+    print("Facilities amount: ", facility_count)
+    print("Customers amount: ", customer_count)
 
     facilities = []
     for i in range(1, facility_count+1):
@@ -219,13 +222,23 @@ def solve_it(input_data):
         if DEBUG >= 2:
             print(f"Facility ILP solution value = {pair_new[0]}")
 
+        # put a conditional here when we stablish a correct bound to send to facilityILP
         pair_best = pair_new
 
     # prepare the solution in the specified output format
-    output_data = str(pair_best[0]) + ' ' + str(pair_best[2]) + '\n'
-    output_data += ' '.join(map(str, pair_best[1]))
+    #output_data = str(pair_best[0]) + ' ' + str(pair_best[2]) + '\n'
+    #output_data += ' '.join(map(str, pair_best[1]))
 
-    return output_data
+    #return output_data
+    return pair_best
+
+# Solution list is a list of tuple. Each tuple has the following format : input file name, solution cost, time spent, if it is optimal or not
+def export_csv(output_file,solution_list):
+    with open(output_file, 'w', newline='') as csvfile:
+        w = csv.writer(csvfile, dialect='excel')
+        w.writerow(["Input file name", "Solution cost", "Time spent", "Optimal"])
+        for sol in solution_list:
+            w.writerow([sol[0],sol[1],sol[2],sol[3]])
 
 
 start = time.time()
@@ -234,12 +247,21 @@ if __name__ == '__main__':
     import sys
     if len(sys.argv) > 1:
         file_location = sys.argv[1].strip()
+        file_name = file_location.split("/")[-1]
         with open(file_location, 'r') as input_data_file:
             input_data = input_data_file.read()
-        print(solve_it(input_data))
+        solution = solve_it(input_data)
+
+        # print(solution)
     else:
         print('This test requires an input file.  Please select one from the data directory. (i.e. python solver.py ./data/fl_16_2)')
 
 end = time.time()
 if DEBUG >= 1:
-    print("Time spent =", end - start)
+    time_spent = end - start
+    print("Time spent =", time_spent)
+
+# Improve this later with a loop to have more than one solution
+solution_list = [(file_name,solution[0], time_spent, solution[2])]
+
+export_csv("solutions.csv",solution_list)
