@@ -22,7 +22,7 @@ time_limit = 100
 memory_limit = 10 ** 9
 
 
-DEBUG = 2
+DEBUG = 1
 
 
 def length(point1, point2):
@@ -180,50 +180,106 @@ def facilityILP(facility_list, client_list, bound):
     return (sol_value, solution, intOPT)
 
 
-def solve_it(input_data):
+def solve_it(input_type, input_data):
 
     # parse the input
     parts = input_data.split()
 
-    facility_count = int(parts[0])
-    customer_count = int(parts[1])
+    # ORLIB type input
+    if (input_type == '1'):
 
-    print("Facilities amount: ", facility_count)
-    print("Customers amount: ", customer_count)
+        facility_count = int(parts[0])
+        customer_count = int(parts[1])
 
-    facilities = []
-    cont = 0
+        print("Facilities amount: ", facility_count)
+        print("Customers amount: ", customer_count)
 
-    # Facilities loop
-    for i in range(3, (facility_count+1)*2,2):
-        facilities.append(Facility(
-            cont, float(parts[i])))
-        # print("para inst:",facilities[cont].index, "temos custo:", facilities[cont].setup_cost )
-        cont += 1
+        facilities = []
+        cont = 0
 
-    customers = []
-    cust_number = 0
-    cont = 0
+        # Facilities loop
+        for i in range(3, (facility_count+1)*2,2):
+            facilities.append(Facility(
+                cont, float(parts[i])))
+            # print("para inst:",facilities[cont].index, "temos custo:", facilities[cont].setup_cost )
+            cont += 1
 
-    # Customers loop
-    for i in range((facility_count+1)*2, ((facility_count+1)*2) + customer_count + (customer_count * facility_count)):
-        if(cont <= 0):
-            # Creating a new list of attribution cost to this new customer
-            list_attr_cost = []
-        else:
-            # Putting together all attribution costs of this current customer
-            list_attr_cost.append(float(parts[i]))
-               
-            # Adding the customer when all costs are in his list
-            if (cont == facility_count):
-                cont = -1
-                customers.append(Customer(
-                    cust_number, list_attr_cost))
-                # print("para cli", customers[-1].index, "temos custo atr:", customers[-1].attribution_cost)
-                cust_number += 1
+        customers = []
+        cust_number = 0
+        cont = 0
 
-        cont+=1
-    
+        # Customers loop
+        for i in range((facility_count+1)*2, ((facility_count+1)*2) + customer_count + (customer_count * facility_count)):
+            if(cont <= 0):
+                # Creating a new list of attribution cost to this new customer
+                list_attr_cost = []
+            else:
+                # Putting together all attribution costs of this current customer
+                list_attr_cost.append(float(parts[i]))
+                   
+                # Adding the customer when all costs are in his list
+                if (cont == facility_count):
+                    cont = -1
+                    customers.append(Customer(
+                        cust_number, list_attr_cost))
+                    # print("para cli", customers[-1].index, "temos custo atr:", customers[-1].attribution_cost)
+                    cust_number += 1
+
+            cont+=1
+
+    # SIMPLE FORMAT type input
+    elif (input_type == '2'):
+
+        #ignoring 0 and 1 that correspond to the file name
+
+        facility_count = int(parts[2])
+        customer_count = int(parts[3])
+
+        print("Facilities amount: ", facility_count)
+        print("Customers amount: ", customer_count)
+
+        facilities = []
+        customers = []
+        fac_number = 0
+        cust_number = 0
+
+        # Creating a new list of attribution cost. It will be a list of lists
+        list_attr_cost = []
+
+        cont = 0
+        for i in range(5, 5 + (facility_count*2) + (facility_count * customer_count)):
+            if(cont == 1):
+                # Adding the facility
+                facilities.append(Facility(
+                    fac_number, float(parts[i])))
+                # print("para inst:",facilities[fac_number].index, "temos custo:", facilities[fac_number].setup_cost )
+                fac_number += 1
+                # Creating a new list of attribution cost to this new facility
+                list_attr_cost.append([])
+            elif(cont > 1):
+                # Putting together all attribution costs of this current customer
+                list_attr_cost[fac_number-1].append(float(parts[i]))
+                   
+                # Going to the next facility
+                if (cont == customer_count+1):
+                    cont = -1
+
+            cont += 1
+
+
+        for j in range(customer_count):
+            list_to_add = []
+            for i in range(facility_count):
+                list_to_add.append(list_attr_cost[i][j])
+
+            customers.append(Customer(
+                cust_number, list_to_add))
+            # print("para cli", customers[j].index, "temos custo atr:", customers[j].attribution_cost)
+            cust_number += 1
+
+    else: 
+        return ("Weird type of input. You shouldn't be here")
+
     bound = 0 # just because I dont know yet what to do with this
 
     if facility_count * customer_count * facility_count <= memory_limit:
@@ -252,38 +308,57 @@ def export_csv(output_file,solution_list):
 
 
 
+
 if __name__ == '__main__':
-    import sys
+
+    ok = 0
     if len(sys.argv) > 1:
-        file_location = sys.argv[1].strip()
-        with open(file_location, 'r') as input_list_data_file:
-            input_list_data = input_list_data_file.read()
+        input_type = sys.argv[1].strip()
 
-        files_test = input_list_data.split()
+        if(input_type == '1'):
+            print("ORLIB type")
+            file_location = 'testCases1.txt'
+            ok = 1
+        elif(input_type == '2'):
+            print("SIMPLE FORMAT type")
+            file_location = 'testCases2.txt'
+            ok = 1
+        else:
+            print("ERROR: Invalid parameter value")
+            print("SOLUTION: Select 1 for ORLIB inputs or 2 for SIMPLE FORMAT inputs")
 
-        solution_list = []
-        for file_name in files_test:
-            print()
-            print("Input file:", file_name)
-            start = time.time()
+        if ok:
+            with open(file_location, 'r') as input_list_data_file:
+                input_list_data = input_list_data_file.read()
 
-            complete_file_name = 'data/tests/' + file_name
-            with open(complete_file_name, 'r') as input_data_file:
-                input_data = input_data_file.read()
+            files_test = input_list_data.split()
 
-            solution = solve_it(input_data)
+            solution_list = []
+            for file_name in files_test:
+                print()
+                print("Input file:", file_name)
+                start = time.time()
 
-            end = time.time()
-            time_spent = end - start
+                complete_file_name = 'data/tests/' + file_name
+                with open(complete_file_name, 'r') as input_data_file:
+                    input_data = input_data_file.read()
 
-            if DEBUG >= 1:
-                print("Time spent =", time_spent)
+                solution = solve_it(input_type, input_data)
 
-            solution_list.append((file_name,solution[0], time_spent, solution[2]))
+                end = time.time()
+                time_spent = end - start
+
+                if DEBUG >= 1:
+                    print("Time spent =", time_spent)
+
+                solution_list.append((file_name,solution[0], time_spent, solution[2]))
     else:
-        print('This test requires an input file.  Please select one from the data directory. (i.e. python solver.py ./data/fl_16_2)')
+        print('This test requires an input type. Please select one: 1 for ORLIB inputs or 2 for SIMPLE FORMAT inputs ')
 
 
-# Improve this later with a loop to have more than one solution
+# Exporting csv 
+if(input_type == '1'):
+    export_csv("solutions1.csv",solution_list)
+elif(input_type == '2'):
+    export_csv("solutions2.csv",solution_list)
 
-export_csv("solutions.csv",solution_list)
