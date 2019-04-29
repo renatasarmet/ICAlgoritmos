@@ -225,10 +225,6 @@ def solve_it(input_data):
         # put a conditional here when we stablish a correct bound to send to facilityILP
         pair_best = pair_new
 
-    # prepare the solution in the specified output format
-    #output_data = str(pair_best[0]) + ' ' + str(pair_best[2]) + '\n'
-    #output_data += ' '.join(map(str, pair_best[1]))
-
     #return output_data
     return pair_best
 
@@ -241,27 +237,42 @@ def export_csv(output_file,solution_list):
             w.writerow([sol[0],sol[1],sol[2],sol[3]])
 
 
-start = time.time()
+
 
 if __name__ == '__main__':
     import sys
     if len(sys.argv) > 1:
         file_location = sys.argv[1].strip()
-        file_name = file_location.split("/")[-1]
-        with open(file_location, 'r') as input_data_file:
-            input_data = input_data_file.read()
-        solution = solve_it(input_data)
+        with open(file_location, 'r') as input_list_data_file:
+            input_list_data = input_list_data_file.read()
 
-        # print(solution)
+        files_test = input_list_data.split('\n')
+
+        solution_list = []
+        for file_name in files_test:
+            print()
+            print("Input file:", file_name)
+            start = time.time()
+
+            complete_file_name = 'data/tests/' + file_name
+            with open(complete_file_name, 'r') as input_data_file:
+                input_data = input_data_file.read()
+
+            solution = solve_it(input_data)
+
+            end = time.time()
+            time_spent = end - start
+
+            if DEBUG >= 1:
+                print("Time spent =", time_spent)
+
+            print(solution)
+
+            solution_list.append((file_name,solution[0], time_spent, solution[2]))
     else:
         print('This test requires an input file.  Please select one from the data directory. (i.e. python solver.py ./data/fl_16_2)')
 
-end = time.time()
-if DEBUG >= 1:
-    time_spent = end - start
-    print("Time spent =", time_spent)
 
 # Improve this later with a loop to have more than one solution
-solution_list = [(file_name,solution[0], time_spent, solution[2])]
 
 export_csv("solutions.csv",solution_list)
