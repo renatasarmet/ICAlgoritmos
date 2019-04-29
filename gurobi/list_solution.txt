@@ -1,0 +1,15 @@
+cap71.txt.opt
+cap72.txt.opt
+cap73.txt.opt
+cap74.txt.opt
+cap101.txt.opt
+cap102.txt.opt
+cap103.txt.opt
+cap104.txt.opt
+cap131.txt.opt
+cap132.txt.opt
+cap133.txt.opt
+cap134.txt.opt
+capa.txt.opt
+capb.txt.opt
+capc.txt.opt

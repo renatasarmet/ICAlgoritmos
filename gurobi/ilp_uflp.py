@@ -8,6 +8,7 @@ from collections import namedtuple
 import math
 from gurobipy import *
 import csv
+import re
 
 
 Point = namedtuple("Point", ['x', 'y'])
@@ -182,9 +183,8 @@ def facilityILP(facility_list, client_list, bound):
 def solve_it(input_data):
 
     # parse the input
-    lines = input_data.split('\n')
+    parts = input_data.split()
 
-    parts = lines[0].split()
     facility_count = int(parts[0])
     customer_count = int(parts[1])
 
@@ -192,24 +192,37 @@ def solve_it(input_data):
     print("Customers amount: ", customer_count)
 
     facilities = []
-    for i in range(1, facility_count+1):
-        parts = lines[i].split()
+    cont = 0
+
+    # Facilities loop
+    for i in range(3, (facility_count+1)*2,2):
         facilities.append(Facility(
-            i-1, float(parts[1])))
-        # print("para inst:",facilities[i-1].index, "temos custo:", facilities[i-1].setup_cost )
+            cont, float(parts[i])))
+        # print("para inst:",facilities[cont].index, "temos custo:", facilities[cont].setup_cost )
+        cont += 1
 
     customers = []
+    cust_number = 0
     cont = 0
-    for i in range(facility_count+2, facility_count+(2*customer_count)+1,2):
-        parts = lines[i].split()
-        list_attr_cost = []
-        for j in range(len(facilities)):
-            list_attr_cost.append(float(parts[j]))
-           
-        customers.append(Customer(
-            cont, list_attr_cost))
-        # print("para cli", customers[-1].index, "temos custo atr:", customers[-1].attribution_cost)
-        cont += 1
+
+    # Customers loop
+    for i in range((facility_count+1)*2, ((facility_count+1)*2) + customer_count + (customer_count * facility_count)):
+        if(cont <= 0):
+            # Creating a new list of attribution cost to this new customer
+            list_attr_cost = []
+        else:
+            # Putting together all attribution costs of this current customer
+            list_attr_cost.append(float(parts[i]))
+               
+            # Adding the customer when all costs are in his list
+            if (cont == facility_count):
+                cont = -1
+                customers.append(Customer(
+                    cust_number, list_attr_cost))
+                # print("para cli", customers[-1].index, "temos custo atr:", customers[-1].attribution_cost)
+                cust_number += 1
+
+        cont+=1
     
     bound = 0 # just because I dont know yet what to do with this
 
@@ -246,7 +259,7 @@ if __name__ == '__main__':
         with open(file_location, 'r') as input_list_data_file:
             input_list_data = input_list_data_file.read()
 
-        files_test = input_list_data.split('\n')
+        files_test = input_list_data.split()
 
         solution_list = []
         for file_name in files_test:
@@ -265,8 +278,6 @@ if __name__ == '__main__':
 
             if DEBUG >= 1:
                 print("Time spent =", time_spent)
-
-            print(solution)
 
             solution_list.append((file_name,solution[0], time_spent, solution[2]))
     else:
