@@ -7,6 +7,15 @@
 
 using namespace std;
 
+
+
+
+// TODO: RETORNO TA VINDO VALOR ERRADO
+
+
+
+
+
 int main(int argc, char *argv[]){
 
 	if(argc != 2){
@@ -21,6 +30,10 @@ int main(int argc, char *argv[]){
 	// Toda a escrita sera feita no final do arquivo, acrescentando ao conteudo ja existente (app)
 	fstream timeLog;
 	timeLog.open("timeLog.txt", std::fstream::in | std::fstream::out | std::fstream::app);
+
+	// Arquivo para salvar as solucoes 
+	fstream solutionsCSV;
+	
 
 
 	// Declaracao variaveis que indicam o tempo no inicio e fim da execucao
@@ -38,14 +51,32 @@ int main(int argc, char *argv[]){
 	// Declaracao variavel que indica a media de tempo gasto para executar aquela entrada entre os N_TESTES
 	double avgTime;
 
+
+	// Declaracao variavel que guardara o custo da solucao retornado naquela execucao
+	double cost;
+
+	// Declaracao variavel que indica o minimo de custo da solucao retornado daquela entrada entre os N_TESTES. 
+	double minCost;
+
+	// Declaracao variavel que indica o maximo de custo da solucao retornado daquela entrada entre os N_TESTES. 
+	double maxCost;	
+
+	// Declaracao variavel que indica a media de custo da solucao retornado daquela entrada entre os N_TESTES. 
+	double avgCost;
+
+
 	// Declaracao variavel que indica o nome dos arquivos de teste
 	char nameInput[30];
 
 	if(strcmp(argv[1],"1") == 0){
 		strcpy(nameInput,"testCases1.txt");
+		//Abertura de arquivo para leitura e escrita.
+		solutionsCSV.open("solutions1.csv", std::fstream::in | std::fstream::out);
 	}
 	else if(strcmp(argv[1], "2") == 0){
 		strcpy(nameInput,"testCases2.txt");
+		//Abertura de arquivo para leitura e escrita.
+		solutionsCSV.open("solutions2.csv", std::fstream::in | std::fstream::out);
 	}
 	else{
 		cout << "Erro no parametro que indica o tipo de entrada." << endl;
@@ -69,14 +100,20 @@ int main(int argc, char *argv[]){
 		// Colocando no timeLog.txt o nome da proxima entrada a ser testada
 		timeLog << auxInputName << endl;
 
+		// Colocando no solutionsCSV o nome da proxima entrada a ser testada
+		solutionsCSV << auxInputName << ",";
+
 		// Valor alto colocado como inicio, ideal que fosse algo que houvesse certeza que nunca ocorreria.
-		minTime = 1000000;
+		minTime = 1000000000000000000;
+		minCost = 1000000000000000000; //maior valor aceito por double (?)
 
 		// Inicia com 0, o minimo de tempo possivel
 		maxTime = 0;
+		maxCost = 0;
 
 		// Inicia com 0, ja que sera incrementado a cada iteracao com seu valor gasto
 		avgTime = 0;
+		avgCost = 0;
 
 
 		// Executa o programa com a mesma entrada N_TESTES vezes, para calculo de minimo, maximo e media de tempo
@@ -86,7 +123,7 @@ int main(int argc, char *argv[]){
 			clock_gettime(CLOCK_REALTIME, &start);
 
 			// Chamando o programa a ser cronometrado
-			int retCode = system(completeString.c_str());
+			cost = system(completeString.c_str());
 
 			// Finalizando a contagem do tempo
 			clock_gettime(CLOCK_REALTIME, &finish);
@@ -96,24 +133,39 @@ int main(int argc, char *argv[]){
 			timeSpent += (finish.tv_nsec - start.tv_nsec) / 1000000000.0; // Necessario para obter uma precisao maior 
 			cout << "Time spent: " << timeSpent << " seconds" << endl;
 
-			// Atualizando valores de minimo e maximo
+			// Atualizando valores de minimo e maximo do tempo
 			if(timeSpent > maxTime)
 				maxTime = timeSpent;
 			if(timeSpent < minTime)
 				minTime = timeSpent;
 
-			// Acrescentando no timeLog.txt o tempo gasto nessa iteracao
-			timeLog << i << ": " << timeSpent << endl;
+			// Atualizando valores de minimo e maximo do custo
+			if(cost > maxCost)
+				maxCost = cost;
+			if(cost < minCost)
+				minCost = cost;
 
-			// Incrementando valor que sera utilizado para calculo da media
+			// Acrescentando no timeLog.txt o tempo gasto nessa iteracao e o custo da solucao
+			timeLog << i << " - Time spent: " << timeSpent << " - Solution cost: " << cost << endl;
+
+			// Incrementando valor que sera utilizado para calculo da media do tempo e do custo
 			avgTime += timeSpent;
+			avgCost += cost;
 		}
 
-		// Calculando de fato a media do tempo gasto
+		// Calculando de fato a media do tempo gasto e do custo da solucao
 		avgTime = avgTime/N_TESTES;
+		avgCost = avgCost/N_TESTES;
 
-		// Colocando no timeLog.txt o valor minimo, maximo e medio de tempo gasto nas execucoes dessa entrada
-		timeLog << "Min: " << minTime << endl << "Max: " << maxTime << endl << "Avg: " << avgTime << endl << endl;
+		// Colocando no solutionsCSV o valor medio da solucao
+		solutionsCSV << avgCost << ",";
+
+		// Colocando no solutionsCSV o tempo medio gasto 
+		solutionsCSV << avgTime << endl;
+		
+		// Colocando no timeLog.txt o valor minimo, maximo e medio de tempo gasto e do custo da solucao nas execucoes dessa entrada
+		timeLog << "Time - Min: " << minTime << endl << "Max: " << maxTime << endl << "Avg: " << avgTime << endl << endl;
+		timeLog << "Cost - Min: " << minCost << endl << "Max: " << maxCost << endl << "Avg: " << avgCost << endl << endl;
 
 	}
 

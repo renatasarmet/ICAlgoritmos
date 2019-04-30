@@ -38,7 +38,8 @@ bool maior_igual(double i, double j){
 }
 
 
-void primalDual(int qtdCli, int qtdInst, double * custoF, double * custoA){
+// Retornar o valor da solucao
+double primalDual(int qtdCli, int qtdInst, double * custoF, double * custoA){
 
 	/* Inicio declaracoes variaveis para calculo de tempo - finalidade eh encontrar gargalos */
 
@@ -1017,4 +1018,5 @@ void primalDual(int qtdCli, int qtdInst, double * custoF, double * custoA){
 		cout << "[TEMPO] Time spent: " << timeSpent << " seconds" << endl;
 	}
 	
+	return(gastoTotalFinal);
 }
