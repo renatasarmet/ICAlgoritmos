@@ -25,7 +25,7 @@ int main(int argc, char *argv[]){
 	}
 
 	// Declaracao variavel auxiliar que tera o nome do arquivo a ser utilizado naquela iteracao
-	string auxInputName; 
+	char auxInputName[100]; 
 
 	// Abertura de arquivo para leitura e escrita. 
 	// Toda a escrita sera feita no final do arquivo, acrescentando ao conteudo ja existente (app)
@@ -67,7 +67,12 @@ int main(int argc, char *argv[]){
 
 
 	// Declaracao variavel que indica o nome dos arquivos de teste
-	char nameInput[30];
+	char nameInput[50];
+
+	char completeNameInput[150];
+
+	char baseNameInput[50] = "facilityTestCases/tests/";
+	cout << "BASE: "<< baseNameInput << endl;
 
 	if(strcmp(argv[1],"1") == 0){
 		strcpy(nameInput,"testCases1.txt");
@@ -92,12 +97,12 @@ int main(int argc, char *argv[]){
 	while(!inputName.eof()){
 
 		// Composicao da string que contera a chamada para execucao do programa com o parametro da entrada correspondente
-		stringstream stringBuilder;
 		inputName >> auxInputName;
-		// stringBuilder << "./main facilityTestCases/tests/" << auxInputName << " " << argv[1];
-		stringBuilder << "facilityTestCases/tests/" << auxInputName;
-		string completeString = stringBuilder.str();
 		cout << endl << "Entrada a ser utilizada: " <<  auxInputName << endl;
+
+		// Criando a string do caminho completo do arquivo
+		strcpy(completeNameInput,baseNameInput);
+		strcat(completeNameInput,auxInputName);
 
 		// Colocando no timeLog.txt o nome da proxima entrada a ser testada
 		timeLog << auxInputName << endl;
@@ -125,9 +130,7 @@ int main(int argc, char *argv[]){
 			clock_gettime(CLOCK_REALTIME, &start);
 
 			// Chamando o programa a ser cronometrado
-			//cost = system(completeString.c_str());
-
-			cost = trataInput(completeString, argv[1]);
+			cost = trataInput(completeNameInput, argv[1]);
 
 			// Finalizando a contagem do tempo
 			clock_gettime(CLOCK_REALTIME, &finish);

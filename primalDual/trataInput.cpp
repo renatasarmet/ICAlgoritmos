@@ -5,7 +5,7 @@
 
 using namespace std;
 
-double trataInput(std::string inputName, char tipoEntrada[]){
+double trataInput(char inputName[], char tipoEntrada[]){
 
    // Declaracoes iniciais
    int qtd_clientes, qtd_instalacoes, cont;
