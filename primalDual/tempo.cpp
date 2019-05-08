@@ -2,6 +2,7 @@
 #include <sstream>
 #include <fstream>
 #include <ctime>
+#include "declaracoes.hpp"
 
 #define N_TESTES 1//25 // Quantidade de vezes que sera testada a mesma entrada, para calculo de minimo, maximo e media
 
@@ -32,7 +33,7 @@ int main(int argc, char *argv[]){
 	timeLog.open("timeLog.txt", std::fstream::in | std::fstream::out | std::fstream::app);
 
 	// Arquivo para salvar as solucoes 
-	fstream solutionsCSV;
+	ofstream solutionsCSV;
 	
 
 
@@ -71,12 +72,12 @@ int main(int argc, char *argv[]){
 	if(strcmp(argv[1],"1") == 0){
 		strcpy(nameInput,"testCases1.txt");
 		//Abertura de arquivo para leitura e escrita.
-		solutionsCSV.open("solutions1.csv", std::fstream::in | std::fstream::out);
+		solutionsCSV.open("solutions1.csv", std::ofstream::out | std::ofstream::trunc);
 	}
 	else if(strcmp(argv[1], "2") == 0){
 		strcpy(nameInput,"testCases2.txt");
 		//Abertura de arquivo para leitura e escrita.
-		solutionsCSV.open("solutions2.csv", std::fstream::in | std::fstream::out);
+		solutionsCSV.open("solutions2.csv", std::ofstream::out | std::ofstream::trunc);
 	}
 	else{
 		cout << "Erro no parametro que indica o tipo de entrada." << endl;
@@ -93,7 +94,8 @@ int main(int argc, char *argv[]){
 		// Composicao da string que contera a chamada para execucao do programa com o parametro da entrada correspondente
 		stringstream stringBuilder;
 		inputName >> auxInputName;
-		stringBuilder << "./main facilityTestCases/tests/" << auxInputName << " " << argv[1];
+		// stringBuilder << "./main facilityTestCases/tests/" << auxInputName << " " << argv[1];
+		stringBuilder << "facilityTestCases/tests/" << auxInputName;
 		string completeString = stringBuilder.str();
 		cout << endl << "Entrada a ser utilizada: " <<  auxInputName << endl;
 
@@ -123,7 +125,9 @@ int main(int argc, char *argv[]){
 			clock_gettime(CLOCK_REALTIME, &start);
 
 			// Chamando o programa a ser cronometrado
-			cost = system(completeString.c_str());
+			//cost = system(completeString.c_str());
+
+			cost = trataInput(completeString, argv[1]);
 
 			// Finalizando a contagem do tempo
 			clock_gettime(CLOCK_REALTIME, &finish);

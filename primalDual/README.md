@@ -9,6 +9,7 @@ Codigos para resolver o problema da localizacao de instalacoes sem capacidade
 Primeiramente, eh provavel que seja necessario ter instalado a biblioteca Lemon Graph.
 
 
+[ignorar antigo]------ nao eh mais assim -------
 Apos isso, digite no terminal:
 
 g++ main.cpp trataInput.cpp bipartidoPrimalDual.cpp -o main
@@ -17,6 +18,13 @@ g++ main.cpp trataInput.cpp bipartidoPrimalDual.cpp -o main
 Em seguida:
 
 g++ tempo.cpp -o tempo
+[/ignorar antigo]--------------------------------
+
+[novo]------ novo jeito ------
+Digite no terminal:
+
+g++ tempo.cpp trataInput.cpp bipartidoPrimalDual.cpp -o tempo
+[/novo]----------------------
 
 
 Considere que tipoEntrada significa 1 para o tipo ORLIB e 2 para o tipo SIMPLE FORMAT.

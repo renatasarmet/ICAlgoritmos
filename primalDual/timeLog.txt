@@ -1,150 +1,852 @@
 cap71.txt
-0 - Time spent: 0.031055 - Solution cost: 54528
-Time - Min: 0.031055
-Max: 0.031055
-Avg: 0.031055
+0 - Time spent: 0.026048 - Solution cost: 1.0278e+06
+Time - Min: 0.026048
+Max: 0.026048
+Avg: 0.026048
 
-Cost - Min: 54528
-Max: 54528
-Avg: 54528
+Cost - Min: 1.0278e+06
+Max: 1.0278e+06
+Avg: 1.0278e+06
 
 cap72.txt
-0 - Time spent: 0.04175 - Solution cost: 32000
-Time - Min: 0.04175
-Max: 0.04175
-Avg: 0.04175
+0 - Time spent: 0.026822 - Solution cost: 1.0528e+06
+Time - Min: 0.026822
+Max: 0.026822
+Avg: 0.026822
 
-Cost - Min: 32000
-Max: 32000
-Avg: 32000
+Cost - Min: 1.0528e+06
+Max: 1.0528e+06
+Avg: 1.0528e+06
 
 cap73.txt
-0 - Time spent: 0.051166 - Solution cost: 25600
-Time - Min: 0.051166
-Max: 0.051166
-Avg: 0.051166
+0 - Time spent: 0.037404 - Solution cost: 1.02282e+06
+Time - Min: 0.037404
+Max: 0.037404
+Avg: 0.037404
 
-Cost - Min: 25600
-Max: 25600
-Avg: 25600
+Cost - Min: 1.02282e+06
+Max: 1.02282e+06
+Avg: 1.02282e+06
 
 cap74.txt
-0 - Time spent: 0.049312 - Solution cost: 1024
-Time - Min: 0.049312
-Max: 0.049312
-Avg: 0.049312
+0 - Time spent: 0.042838 - Solution cost: 1.05344e+06
+Time - Min: 0.042838
+Max: 0.042838
+Avg: 0.042838
 
-Cost - Min: 1024
-Max: 1024
-Avg: 1024
+Cost - Min: 1.05344e+06
+Max: 1.05344e+06
+Avg: 1.05344e+06
 
 cap101.txt
-0 - Time spent: 0.063203 - Solution cost: 12544
-Time - Min: 0.063203
-Max: 0.063203
-Avg: 0.063203
+cap71.txt
+0 - Time spent: 0.026097 - Solution cost: 1.0278e+06
+Time - Min: 0.026097
+Max: 0.026097
+Avg: 0.026097
 
-Cost - Min: 12544
-Max: 12544
-Avg: 12544
+Cost - Min: 1.0278e+06
+Max: 1.0278e+06
+Avg: 1.0278e+06
+
+cap72.txt
+0 - Time spent: 0.02668 - Solution cost: 1.0528e+06
+Time - Min: 0.02668
+Max: 0.02668
+Avg: 0.02668
+
+Cost - Min: 1.0528e+06
+Max: 1.0528e+06
+Avg: 1.0528e+06
+
+cap73.txt
+0 - Time spent: 0.029643 - Solution cost: 1.02282e+06
+Time - Min: 0.029643
+Max: 0.029643
+Avg: 0.029643
+
+Cost - Min: 1.02282e+06
+Max: 1.02282e+06
+Avg: 1.02282e+06
+
+cap74.txt
+0 - Time spent: 0.029316 - Solution cost: 1.05344e+06
+Time - Min: 0.029316
+Max: 0.029316
+Avg: 0.029316
+
+Cost - Min: 1.05344e+06
+Max: 1.05344e+06
+Avg: 1.05344e+06
+
+cap101.txt
+0 - Time spent: 0.046358 - Solution cost: 843313
+Time - Min: 0.046358
+Max: 0.046358
+Avg: 0.046358
+
+Cost - Min: 843313
+Max: 843313
+Avg: 843313
 
 cap102.txt
-0 - Time spent: 0.076168 - Solution cost: 41472
-Time - Min: 0.076168
-Max: 0.076168
-Avg: 0.076168
+0 - Time spent: 0.04948 - Solution cost: 902306
+Time - Min: 0.04948
+Max: 0.04948
+Avg: 0.04948
 
-Cost - Min: 41472
-Max: 41472
-Avg: 41472
+Cost - Min: 902306
+Max: 902306
+Avg: 902306
 
 cap103.txt
-0 - Time spent: 0.071611 - Solution cost: 20480
-Time - Min: 0.071611
-Max: 0.071611
-Avg: 0.071611
+0 - Time spent: 0.051207 - Solution cost: 906320
+Time - Min: 0.051207
+Max: 0.051207
+Avg: 0.051207
 
-Cost - Min: 20480
-Max: 20480
-Avg: 20480
+Cost - Min: 906320
+Max: 906320
+Avg: 906320
 
 cap104.txt
-0 - Time spent: 0.066332 - Solution cost: 39168
-Time - Min: 0.066332
-Max: 0.066332
-Avg: 0.066332
+0 - Time spent: 0.057999 - Solution cost: 932505
+Time - Min: 0.057999
+Max: 0.057999
+Avg: 0.057999
 
-Cost - Min: 39168
-Max: 39168
-Avg: 39168
+Cost - Min: 932505
+Max: 932505
+Avg: 932505
 
 cap131.txt
-0 - Time spent: 0.173104 - Solution cost: 9728
-Time - Min: 0.173104
-Max: 0.173104
-Avg: 0.173104
+0 - Time spent: 0.15218 - Solution cost: 802342
+Time - Min: 0.15218
+Max: 0.15218
+Avg: 0.15218
 
-Cost - Min: 9728
-Max: 9728
-Avg: 9728
+Cost - Min: 802342
+Max: 802342
+Avg: 802342
 
 cap132.txt
-0 - Time spent: 0.178277 - Solution cost: 36352
-Time - Min: 0.178277
-Max: 0.178277
-Avg: 0.178277
+0 - Time spent: 0.162808 - Solution cost: 869262
+Time - Min: 0.162808
+Max: 0.162808
+Avg: 0.162808
 
-Cost - Min: 36352
-Max: 36352
-Avg: 36352
+Cost - Min: 869262
+Max: 869262
+Avg: 869262
 
 cap133.txt
-0 - Time spent: 0.206508 - Solution cost: 20480
-Time - Min: 0.206508
-Max: 0.206508
-Avg: 0.206508
+0 - Time spent: 0.170647 - Solution cost: 906320
+Time - Min: 0.170647
+Max: 0.170647
+Avg: 0.170647
 
-Cost - Min: 20480
-Max: 20480
-Avg: 20480
+Cost - Min: 906320
+Max: 906320
+Avg: 906320
 
 cap134.txt
-0 - Time spent: 0.214192 - Solution cost: 39168
-Time - Min: 0.214192
-Max: 0.214192
-Avg: 0.214192
+cap71.txt
+0 - Time spent: 0.022578 - Solution cost: 1.0278e+06
+Time - Min: 0.022578
+Max: 0.022578
+Avg: 0.022578
 
-Cost - Min: 39168
-Max: 39168
-Avg: 39168
+Cost - Min: 1.0278e+06
+Max: 1.0278e+06
+Avg: 1.0278e+06
+
+cap72.txt
+0 - Time spent: 0.025001 - Solution cost: 1.0528e+06
+Time - Min: 0.025001
+Max: 0.025001
+Avg: 0.025001
+
+Cost - Min: 1.0528e+06
+Max: 1.0528e+06
+Avg: 1.0528e+06
+
+cap73.txt
+0 - Time spent: 0.028202 - Solution cost: 1.02282e+06
+Time - Min: 0.028202
+Max: 0.028202
+Avg: 0.028202
+
+Cost - Min: 1.02282e+06
+Max: 1.02282e+06
+Avg: 1.02282e+06
+
+cap74.txt
+0 - Time spent: 0.027236 - Solution cost: 1.05344e+06
+Time - Min: 0.027236
+Max: 0.027236
+Avg: 0.027236
+
+Cost - Min: 1.05344e+06
+Max: 1.05344e+06
+Avg: 1.05344e+06
+
+cap101.txt
+0 - Time spent: 0.043074 - Solution cost: 843313
+Time - Min: 0.043074
+Max: 0.043074
+Avg: 0.043074
+
+Cost - Min: 843313
+Max: 843313
+Avg: 843313
+
+cap102.txt
+0 - Time spent: 0.048341 - Solution cost: 902306
+Time - Min: 0.048341
+Max: 0.048341
+Avg: 0.048341
+
+Cost - Min: 902306
+Max: 902306
+Avg: 902306
+
+cap103.txt
+0 - Time spent: 0.052044 - Solution cost: 906320
+Time - Min: 0.052044
+Max: 0.052044
+Avg: 0.052044
+
+Cost - Min: 906320
+Max: 906320
+Avg: 906320
+
+cap104.txt
+0 - Time spent: 0.050573 - Solution cost: 932505
+Time - Min: 0.050573
+Max: 0.050573
+Avg: 0.050573
+
+Cost - Min: 932505
+Max: 932505
+Avg: 932505
+
+cap131.txt
+0 - Time spent: 0.154281 - Solution cost: 802342
+Time - Min: 0.154281
+Max: 0.154281
+Avg: 0.154281
+
+Cost - Min: 802342
+Max: 802342
+Avg: 802342
+
+cap132.txt
+cap71.txt
+0 - Time spent: 0.025221 - Solution cost: 1.0278e+06
+Time - Min: 0.025221
+Max: 0.025221
+Avg: 0.025221
+
+Cost - Min: 1.0278e+06
+Max: 1.0278e+06
+Avg: 1.0278e+06
+
+cap72.txt
+cap71.txt
+0 - Time spent: 0.023282 - Solution cost: 1.0278e+06
+Time - Min: 0.023282
+Max: 0.023282
+Avg: 0.023282
+
+Cost - Min: 1.0278e+06
+Max: 1.0278e+06
+Avg: 1.0278e+06
+
+cap72.txt
+0 - Time spent: 0.023793 - Solution cost: 1.0528e+06
+Time - Min: 0.023793
+Max: 0.023793
+Avg: 0.023793
+
+Cost - Min: 1.0528e+06
+Max: 1.0528e+06
+Avg: 1.0528e+06
+
+cap73.txt
+cap71.txt
+0 - Time spent: 0.023223 - Solution cost: 1.0278e+06
+Time - Min: 0.023223
+Max: 0.023223
+Avg: 0.023223
+
+Cost - Min: 1.0278e+06
+Max: 1.0278e+06
+Avg: 1.0278e+06
+
+cap72.txt
+0 - Time spent: 0.026923 - Solution cost: 1.0528e+06
+Time - Min: 0.026923
+Max: 0.026923
+Avg: 0.026923
+
+Cost - Min: 1.0528e+06
+Max: 1.0528e+06
+Avg: 1.0528e+06
+
+cap73.txt
+0 - Time spent: 0.026216 - Solution cost: 1.02282e+06
+Time - Min: 0.026216
+Max: 0.026216
+Avg: 0.026216
+
+Cost - Min: 1.02282e+06
+Max: 1.02282e+06
+Avg: 1.02282e+06
+
+cap74.txt
+0 - Time spent: 0.026434 - Solution cost: 1.05344e+06
+Time - Min: 0.026434
+Max: 0.026434
+Avg: 0.026434
+
+Cost - Min: 1.05344e+06
+Max: 1.05344e+06
+Avg: 1.05344e+06
+
+cap101.txt
+0 - Time spent: 0.043654 - Solution cost: 843313
+Time - Min: 0.043654
+Max: 0.043654
+Avg: 0.043654
+
+Cost - Min: 843313
+Max: 843313
+Avg: 843313
+
+cap102.txt
+0 - Time spent: 0.04915 - Solution cost: 902306
+Time - Min: 0.04915
+Max: 0.04915
+Avg: 0.04915
+
+Cost - Min: 902306
+Max: 902306
+Avg: 902306
+
+cap103.txt
+0 - Time spent: 0.050599 - Solution cost: 906320
+Time - Min: 0.050599
+Max: 0.050599
+Avg: 0.050599
+
+Cost - Min: 906320
+Max: 906320
+Avg: 906320
+
+cap104.txt
+cap71.txt
+0 - Time spent: 0.022296 - Solution cost: 1.0278e+06
+Time - Min: 0.022296
+Max: 0.022296
+Avg: 0.022296
+
+Cost - Min: 1.0278e+06
+Max: 1.0278e+06
+Avg: 1.0278e+06
+
+cap72.txt
+0 - Time spent: 0.024052 - Solution cost: 1.0528e+06
+Time - Min: 0.024052
+Max: 0.024052
+Avg: 0.024052
+
+Cost - Min: 1.0528e+06
+Max: 1.0528e+06
+Avg: 1.0528e+06
+
+cap73.txt
+0 - Time spent: 0.028643 - Solution cost: 1.02282e+06
+Time - Min: 0.028643
+Max: 0.028643
+Avg: 0.028643
+
+Cost - Min: 1.02282e+06
+Max: 1.02282e+06
+Avg: 1.02282e+06
+
+cap74.txt
+0 - Time spent: 0.026464 - Solution cost: 1.05344e+06
+Time - Min: 0.026464
+Max: 0.026464
+Avg: 0.026464
+
+Cost - Min: 1.05344e+06
+Max: 1.05344e+06
+Avg: 1.05344e+06
+
+cap101.txt
+0 - Time spent: 0.043911 - Solution cost: 843313
+Time - Min: 0.043911
+Max: 0.043911
+Avg: 0.043911
+
+Cost - Min: 843313
+Max: 843313
+Avg: 843313
+
+cap102.txt
+0 - Time spent: 0.050599 - Solution cost: 902306
+Time - Min: 0.050599
+Max: 0.050599
+Avg: 0.050599
+
+Cost - Min: 902306
+Max: 902306
+Avg: 902306
+
+cap103.txt
+0 - Time spent: 0.048955 - Solution cost: 906320
+Time - Min: 0.048955
+Max: 0.048955
+Avg: 0.048955
+
+Cost - Min: 906320
+Max: 906320
+Avg: 906320
+
+cap104.txt
+0 - Time spent: 0.049901 - Solution cost: 932505
+Time - Min: 0.049901
+Max: 0.049901
+Avg: 0.049901
+
+Cost - Min: 932505
+Max: 932505
+Avg: 932505
+
+cap131.txt
+0 - Time spent: 0.156994 - Solution cost: 802342
+Time - Min: 0.156994
+Max: 0.156994
+Avg: 0.156994
+
+Cost - Min: 802342
+Max: 802342
+Avg: 802342
+
+cap132.txt
+0 - Time spent: 0.166408 - Solution cost: 869262
+Time - Min: 0.166408
+Max: 0.166408
+Avg: 0.166408
+
+Cost - Min: 869262
+Max: 869262
+Avg: 869262
+
+cap133.txt
+0 - Time spent: 0.172294 - Solution cost: 906320
+Time - Min: 0.172294
+Max: 0.172294
+Avg: 0.172294
+
+Cost - Min: 906320
+Max: 906320
+Avg: 906320
+
+cap134.txt
+0 - Time spent: 0.19608 - Solution cost: 932505
+Time - Min: 0.19608
+Max: 0.19608
+Avg: 0.19608
+
+Cost - Min: 932505
+Max: 932505
+Avg: 932505
 
 capa.txt
-0 - Time spent: 0.528184 - Solution cost: 0
-Time - Min: 0.528184
-Max: 0.528184
-Avg: 0.528184
+0 - Time spent: 0.46397 - Solution cost: 0
+Time - Min: 0.46397
+Max: 0.46397
+Avg: 0.46397
 
 Cost - Min: 0
 Max: 0
 Avg: 0
 
 capb.txt
-0 - Time spent: 0.567071 - Solution cost: 0
-Time - Min: 0.567071
-Max: 0.567071
-Avg: 0.567071
+0 - Time spent: 0.445027 - Solution cost: 0
+Time - Min: 0.445027
+Max: 0.445027
+Avg: 0.445027
 
 Cost - Min: 0
 Max: 0
 Avg: 0
 
 capc.txt
-0 - Time spent: 0.529558 - Solution cost: 0
-Time - Min: 0.529558
-Max: 0.529558
-Avg: 0.529558
+0 - Time spent: 0.453464 - Solution cost: 0
+Time - Min: 0.453464
+Max: 0.453464
+Avg: 0.453464
 
 Cost - Min: 0
 Max: 0
 Avg: 0
 
+cap71.txt
+0 - Time spent: 0.022175 - Solution cost: 1.0278e+06
+Time - Min: 0.022175
+Max: 0.022175
+Avg: 0.022175
+
+Cost - Min: 1.0278e+06
+Max: 1.0278e+06
+Avg: 1.0278e+06
+
+cap72.txt
+0 - Time spent: 0.025643 - Solution cost: 1.0528e+06
+Time - Min: 0.025643
+Max: 0.025643
+Avg: 0.025643
+
+Cost - Min: 1.0528e+06
+Max: 1.0528e+06
+Avg: 1.0528e+06
+
+cap73.txt
+0 - Time spent: 0.026743 - Solution cost: 1.02282e+06
+Time - Min: 0.026743
+Max: 0.026743
+Avg: 0.026743
+
+Cost - Min: 1.02282e+06
+Max: 1.02282e+06
+Avg: 1.02282e+06
+
+cap74.txt
+0 - Time spent: 0.026478 - Solution cost: 1.05344e+06
+Time - Min: 0.026478
+Max: 0.026478
+Avg: 0.026478
+
+Cost - Min: 1.05344e+06
+Max: 1.05344e+06
+Avg: 1.05344e+06
+
+cap101.txt
+0 - Time spent: 0.042875 - Solution cost: 843313
+Time - Min: 0.042875
+Max: 0.042875
+Avg: 0.042875
+
+Cost - Min: 843313
+Max: 843313
+Avg: 843313
+
+cap102.txt
+0 - Time spent: 0.049451 - Solution cost: 902306
+Time - Min: 0.049451
+Max: 0.049451
+Avg: 0.049451
+
+Cost - Min: 902306
+Max: 902306
+Avg: 902306
+
+cap103.txt
+0 - Time spent: 0.050894 - Solution cost: 906320
+Time - Min: 0.050894
+Max: 0.050894
+Avg: 0.050894
+
+Cost - Min: 906320
+Max: 906320
+Avg: 906320
+
+cap104.txt
+0 - Time spent: 0.055499 - Solution cost: 932505
+Time - Min: 0.055499
+Max: 0.055499
+Avg: 0.055499
+
+Cost - Min: 932505
+Max: 932505
+Avg: 932505
+
+cap131.txt
+0 - Time spent: 0.148208 - Solution cost: 802342
+Time - Min: 0.148208
+Max: 0.148208
+Avg: 0.148208
+
+Cost - Min: 802342
+Max: 802342
+Avg: 802342
+
+cap132.txt
+0 - Time spent: 0.159632 - Solution cost: 869262
+Time - Min: 0.159632
+Max: 0.159632
+Avg: 0.159632
+
+Cost - Min: 869262
+Max: 869262
+Avg: 869262
+
+cap133.txt
+cap71.txt
+0 - Time spent: 0.026484 - Solution cost: 1.0278e+06
+Time - Min: 0.026484
+Max: 0.026484
+Avg: 0.026484
+
+Cost - Min: 1.0278e+06
+Max: 1.0278e+06
+Avg: 1.0278e+06
+
+cap72.txt
+0 - Time spent: 0.024022 - Solution cost: 1.0528e+06
+Time - Min: 0.024022
+Max: 0.024022
+Avg: 0.024022
+
+Cost - Min: 1.0528e+06
+Max: 1.0528e+06
+Avg: 1.0528e+06
+
+cap73.txt
+0 - Time spent: 0.023887 - Solution cost: 1.02282e+06
+Time - Min: 0.023887
+Max: 0.023887
+Avg: 0.023887
+
+Cost - Min: 1.02282e+06
+Max: 1.02282e+06
+Avg: 1.02282e+06
+
+cap74.txt
+0 - Time spent: 0.028304 - Solution cost: 1.05344e+06
+Time - Min: 0.028304
+Max: 0.028304
+Avg: 0.028304
+
+Cost - Min: 1.05344e+06
+Max: 1.05344e+06
+Avg: 1.05344e+06
+
+cap101.txt
+0 - Time spent: 0.041695 - Solution cost: 843313
+Time - Min: 0.041695
+Max: 0.041695
+Avg: 0.041695
+
+Cost - Min: 843313
+Max: 843313
+Avg: 843313
+
+cap102.txt
+0 - Time spent: 0.047667 - Solution cost: 902306
+Time - Min: 0.047667
+Max: 0.047667
+Avg: 0.047667
+
+Cost - Min: 902306
+Max: 902306
+Avg: 902306
+
+cap103.txt
+cap71.txt
+0 - Time spent: 0.023207 - Solution cost: 1.0278e+06
+Time - Min: 0.023207
+Max: 0.023207
+Avg: 0.023207
+
+Cost - Min: 1.0278e+06
+Max: 1.0278e+06
+Avg: 1.0278e+06
+
+cap72.txt
+0 - Time spent: 0.025523 - Solution cost: 1.0528e+06
+Time - Min: 0.025523
+Max: 0.025523
+Avg: 0.025523
+
+Cost - Min: 1.0528e+06
+Max: 1.0528e+06
+Avg: 1.0528e+06
+
+cap73.txt
+0 - Time spent: 0.029833 - Solution cost: 1.02282e+06
+Time - Min: 0.029833
+Max: 0.029833
+Avg: 0.029833
+
+Cost - Min: 1.02282e+06
+Max: 1.02282e+06
+Avg: 1.02282e+06
+
+cap74.txt
+0 - Time spent: 0.031392 - Solution cost: 1.05344e+06
+Time - Min: 0.031392
+Max: 0.031392
+Avg: 0.031392
+
+Cost - Min: 1.05344e+06
+Max: 1.05344e+06
+Avg: 1.05344e+06
+
+cap101.txt
+0 - Time spent: 0.044986 - Solution cost: 843313
+Time - Min: 0.044986
+Max: 0.044986
+Avg: 0.044986
+
+Cost - Min: 843313
+Max: 843313
+Avg: 843313
+
+cap102.txt
+cap71.txt
+0 - Time spent: 0.024384 - Solution cost: 1.0278e+06
+Time - Min: 0.024384
+Max: 0.024384
+Avg: 0.024384
+
+Cost - Min: 1.0278e+06
+Max: 1.0278e+06
+Avg: 1.0278e+06
+
+cap72.txt
+cap71.txt
+0 - Time spent: 0.025074 - Solution cost: 1.0278e+06
+Time - Min: 0.025074
+Max: 0.025074
+Avg: 0.025074
+
+Cost - Min: 1.0278e+06
+Max: 1.0278e+06
+Avg: 1.0278e+06
+
+cap72.txt
+0 - Time spent: 0.025419 - Solution cost: 1.0528e+06
+Time - Min: 0.025419
+Max: 0.025419
+Avg: 0.025419
+
+Cost - Min: 1.0528e+06
+Max: 1.0528e+06
+Avg: 1.0528e+06
+
+cap73.txt
+0 - Time spent: 0.030838 - Solution cost: 1.02282e+06
+Time - Min: 0.030838
+Max: 0.030838
+Avg: 0.030838
+
+Cost - Min: 1.02282e+06
+Max: 1.02282e+06
+Avg: 1.02282e+06
+
+cap74.txt
+0 - Time spent: 0.042993 - Solution cost: 1.05344e+06
+Time - Min: 0.042993
+Max: 0.042993
+Avg: 0.042993
+
+Cost - Min: 1.05344e+06
+Max: 1.05344e+06
+Avg: 1.05344e+06
+
+cap101.txt
+0 - Time spent: 0.046154 - Solution cost: 843313
+Time - Min: 0.046154
+Max: 0.046154
+Avg: 0.046154
+
+Cost - Min: 843313
+Max: 843313
+Avg: 843313
+
+cap102.txt
+0 - Time spent: 0.05068 - Solution cost: 902306
+Time - Min: 0.05068
+Max: 0.05068
+Avg: 0.05068
+
+Cost - Min: 902306
+Max: 902306
+Avg: 902306
+
+cap103.txt
+0 - Time spent: 0.053033 - Solution cost: 906320
+Time - Min: 0.053033
+Max: 0.053033
+Avg: 0.053033
+
+Cost - Min: 906320
+Max: 906320
+Avg: 906320
+
+cap104.txt
+cap71.txt
+0 - Time spent: 0.025563 - Solution cost: 1.0278e+06
+Time - Min: 0.025563
+Max: 0.025563
+Avg: 0.025563
+
+Cost - Min: 1.0278e+06
+Max: 1.0278e+06
+Avg: 1.0278e+06
+
+cap72.txt
+0 - Time spent: 0.029509 - Solution cost: 1.0528e+06
+Time - Min: 0.029509
+Max: 0.029509
+Avg: 0.029509
+
+Cost - Min: 1.0528e+06
+Max: 1.0528e+06
+Avg: 1.0528e+06
+
+cap73.txt
+0 - Time spent: 0.031721 - Solution cost: 1.02282e+06
+Time - Min: 0.031721
+Max: 0.031721
+Avg: 0.031721
+
+Cost - Min: 1.02282e+06
+Max: 1.02282e+06
+Avg: 1.02282e+06
+
+cap74.txt
+0 - Time spent: 0.031812 - Solution cost: 1.05344e+06
+Time - Min: 0.031812
+Max: 0.031812
+Avg: 0.031812
+
+Cost - Min: 1.05344e+06
+Max: 1.05344e+06
+Avg: 1.05344e+06
+
+cap101.txt
+0 - Time spent: 0.050825 - Solution cost: 843313
+Time - Min: 0.050825
+Max: 0.050825
+Avg: 0.050825
+
+Cost - Min: 843313
+Max: 843313
+Avg: 843313
+
+cap102.txt
+0 - Time spent: 0.054062 - Solution cost: 902306
+Time - Min: 0.054062
+Max: 0.054062
+Avg: 0.054062
+
+Cost - Min: 902306
+Max: 902306
+Avg: 902306
+
+cap103.txt
