@@ -8,15 +8,6 @@
 
 using namespace std;
 
-
-
-
-// TODO: RETORNO TA VINDO VALOR ERRADO
-
-
-
-
-
 int main(int argc, char *argv[]){
 
 	if(argc != 2){
@@ -131,6 +122,8 @@ int main(int argc, char *argv[]){
 
 			// Chamando o programa a ser cronometrado
 			cost = trataInput(completeNameInput, argv[1]);
+
+			cout <<"EH"<< cost << endl;
 
 			// Finalizando a contagem do tempo
 			clock_gettime(CLOCK_REALTIME, &finish);

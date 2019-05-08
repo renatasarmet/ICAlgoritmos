@@ -55,7 +55,7 @@ double primalDual(int qtdCli, int qtdInst, double * custoF, double * custoA){
 	int qtd_clientes = qtdCli; // Indica quantidade de clientes
 	int qtd_instalacoes = qtdInst; // Indica quantidade de instalacoes
 
-	int debug = 4; // OPCOES DE DEBUG: 1 PARA EXIBIR ACOES, 2 PARA EXIBIR TEMPO, 3 PARA EXIBIR AS MUDANÇAS NO GRAFO, 4 PARA EXIBIR AS MUDANCAS NA MATRIZ DE ADJACENCIA NA CRIACAO DE TLINHA
+	int debug = 0; // OPCOES DE DEBUG: 1 PARA EXIBIR ACOES, 2 PARA EXIBIR TEMPO, 3 PARA EXIBIR AS MUDANÇAS NO GRAFO, 4 PARA EXIBIR AS MUDANCAS NA MATRIZ DE ADJACENCIA NA CRIACAO DE TLINHA
 
 	// conjunto de clientes a serem removidos de S na iteração, pois deixaram de ser ativos
     set <int, greater <int> > apagar_clientes; 
