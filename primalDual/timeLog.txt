@@ -8265,3 +8265,43 @@ Cost - Min: 1.05389e+06
 Max: 1.05389e+06
 Avg: 1.05389e+06
 
+capa.txt
+0 - Time spent: 1027.36 - Solution cost: 3.04212e+07
+Time - Min: 1027.36
+Max: 1027.36
+Avg: 1027.36
+
+Cost - Min: 3.04212e+07
+Max: 3.04212e+07
+Avg: 3.04212e+07
+
+capb.txt
+0 - Time spent: 609.444 - Solution cost: 3.14816e+07
+Time - Min: 609.444
+Max: 609.444
+Avg: 609.444
+
+Cost - Min: 3.14816e+07
+Max: 3.14816e+07
+Avg: 3.14816e+07
+
+capc.txt
+0 - Time spent: 529.621 - Solution cost: 3.43102e+07
+Time - Min: 529.621
+Max: 529.621
+Avg: 529.621
+
+Cost - Min: 3.43102e+07
+Max: 3.43102e+07
+Avg: 3.43102e+07
+
+capa.txt
+0 - Time spent: 936.565 - Solution cost: 3.04212e+07
+Time - Min: 936.565
+Max: 936.565
+Avg: 936.565
+
+Cost - Min: 3.04212e+07
+Max: 3.04212e+07
+Avg: 3.04212e+07
+
