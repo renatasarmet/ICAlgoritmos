@@ -12,9 +12,7 @@
 
 // Casos de testes: http://resources.mpi-inf.mpg.de/departments/d1/projects/benchmarks/UflLib/index.html
 
-// TODO: seria legal se tivesse uma fila de prioridades para ver o caso A (menor cij)
-
-// TODO: Sobre testes: tabela com os resultados 
+// TODO: seria legal se tivesse uma fila de prioridades para ver o caso A (menor cij) 
 
 
 // Observacao importante: ao usar S.nodeFromId() eh necessario passar o ID geral, nao o blue ID nem red ID. 
