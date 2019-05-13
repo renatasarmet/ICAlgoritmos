@@ -30,8 +30,8 @@ double trataInput(char inputName[], char tipoEntrada[]){
 
       // Lendo do arquivo os custos de abertura das instalacoes e salvando no vetor custoF
       for(int i=0;i<qtd_instalacoes;i++){
-         inputFLP >> auxRead; // Descartando a capacidade da instalação
-         // cout << auxRead << endl;
+         inputFLP >> auxCRead; // Descartando a capacidade da instalação
+         // cout << "DESCARTE: " << auxCRead << endl;
          inputFLP >> auxRead; // Pegando o valor do custo de abertura da instalação
          custoF[i] = auxRead;
 
@@ -81,7 +81,7 @@ double trataInput(char inputName[], char tipoEntrada[]){
       cont = 0;
       for(int i=0;i<qtd_instalacoes;i++){
          inputFLP >> auxRead; // Descartando o nome da instalação
-         // cout << auxRead << endl;
+         // cout << "DESCARTE:" << auxRead << endl;
          inputFLP >> auxRead; // Pegando o valor do custo de abertura da instalação
          custoF[i] = auxRead;
 

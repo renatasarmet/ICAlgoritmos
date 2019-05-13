@@ -49,6 +49,8 @@ bool maior_igual(double i, double j){
 // Retornar o valor da solucao
 double primalDual(int qtdCli, int qtdInst, double * custoF, double * custoA){
 
+	cout << "COMECEI CODIGO REAL" << endl;
+
 	/* Inicio declaracoes variaveis para calculo de tempo - finalidade eh encontrar gargalos */
 
 	// Declaracao variaveis que indicam o tempo no inicio e fim da execucao daquela parte desejada
