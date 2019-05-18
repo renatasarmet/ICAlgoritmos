@@ -7,10 +7,10 @@ Formulação de programacao linear inteira para o problema da localizacao de ins
 *COMO RODAR?*
 
 Considere que tipoEntrada significa 1 para o tipo ORLIB e 2 para o tipo SIMPLE FORMAT.
+Considere que tipoFormulacao significa 1 para ILP, 2 para LP ou 3 para MLP.
 Então, por fim, basta digitar:
 
-python3 ilp_uflp.py tipoEntrada
-
+python3 uflp_lp_ilp_mip.py tipoEntrada tipoFormulacao
 
 
 *SOBRE AS ENTRADAS*
