@@ -19,3 +19,5 @@ flp100x800.txt
 capa.txt
 capb.txt
 capc.txt
+flp500x1000.txt
+flp1000x6000.txt
