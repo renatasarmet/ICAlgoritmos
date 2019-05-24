@@ -8308,3 +8308,44 @@ Avg: 3.04212e+07
 flp1000x6000.txt
 flp500x1000.txt
 flp500x1000.txt
+flp500x1000.txt
+flp500x1000.txt
+flp500x1000.txt
+flp500x1000.txt
+flp500x1000.txt
+flp500x1000.txt
+flp500x1000.txt
+0 - Time spent: 45.7867 - Solution cost: 538120
+Time - Min: 45.7867
+Max: 45.7867
+Avg: 45.7867
+
+Cost - Min: 538120
+Max: 538120
+Avg: 538120
+
+flp1000x6000.txt
+flp1000x6000.txt
+flp1000x6000.txt
+flp1000x6000.txt
+flp1000x6000.txt
+flp1000x6000.txt
+flp1000x6000.txt
+flp1000x6000.txt
+flp1000x6000.txt
+flp1000x6000.txt
+flp1000x6000.txt
+flp1000x6000.txt
+flp1000x6000.txt
+flp1000x6000.txt
+flp1000x6000.txt
+0 - Time spent: 392.749 - Solution cost: 2.00604e+06
+Time - Min: 392.749
+Max: 392.749
+Avg: 392.749
+
+Cost - Min: 2.00604e+06
+Max: 2.00604e+06
+Avg: 2.00604e+06
+
+flp1000x6000.txt

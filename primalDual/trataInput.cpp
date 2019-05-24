@@ -1,4 +1,5 @@
 #include <iostream>
+#include <cstdlib>
 #include <fstream>
 #include "declaracoes.hpp"
 #define EPS 0.001
@@ -13,11 +14,14 @@ double trataInput(char inputName[], char tipoEntrada[]){
    char auxCRead[30];
    ifstream inputFLP;
    double sol_cost = 0;
+
+   double * custoA;
+   double * custoF;
+
    int debug = 0; // OPCOES DE DEBUG: 0 PARA NAO EXIBIR NADA, 1 PARA EXIBIR AS INFORMACOES SENDO SALVAS
 
    // Abrindo arquivo 
    inputFLP.open(inputName); 
-
 
    if(strcmp(tipoEntrada,"1")==0){
       // Lendo do arquivo os valores que indicam a quantidade de instalacoes e clientes
@@ -25,8 +29,19 @@ double trataInput(char inputName[], char tipoEntrada[]){
 
       cout << "QTD INST: " << qtd_instalacoes << " E QTD CLI: " << qtd_clientes << endl;
 
-      // Declaracao vetores que salvarao custos lidos no arquivo
-      double custoF[qtd_instalacoes], custoA[qtd_clientes*qtd_instalacoes]; 
+      // Vetores que salvarao custos lidos no arquivo
+      custoF = (double*) malloc((qtd_instalacoes) * sizeof(double));
+      if(!custoF){
+         cout << "Memory Allocation Failed";
+         exit(1);
+      }
+
+      custoA = (double*) malloc((qtd_clientes*qtd_instalacoes) * sizeof(double));
+      if(!custoA){
+         cout << "Memory Allocation Failed";
+         exit(1);
+      }
+
 
       // Lendo do arquivo os custos de abertura das instalacoes e salvando no vetor custoF
       for(int i=0;i<qtd_instalacoes;i++){
@@ -39,6 +54,7 @@ double trataInput(char inputName[], char tipoEntrada[]){
             cout << "Fi =  " << custoF[i] << endl;  
          }  
       }
+
 
       // Lendo do arquivo os custos de atribuicao do clientes com as instalacoes e salvando no vetor custoA
       cont = 0;
@@ -61,7 +77,6 @@ double trataInput(char inputName[], char tipoEntrada[]){
          }
       }
 
-
       // Chamando a funcao que resolve o problema de fato
       sol_cost = primalDual(qtd_clientes, qtd_instalacoes, custoF, custoA);
    }
@@ -74,8 +89,18 @@ double trataInput(char inputName[], char tipoEntrada[]){
 
       cout << "QTD INST: " << qtd_instalacoes << " E QTD CLI: " << qtd_clientes << endl;
 
-      // Declaracao vetores que salvarao custos lidos no arquivo
-      double custoF[qtd_instalacoes], custoA[qtd_clientes*qtd_instalacoes]; 
+      // Vetores que salvarao custos lidos no arquivo
+      custoF = (double*) malloc((qtd_instalacoes + 1) * sizeof(double));
+      if(!custoF){
+         cout << "Memory Allocation Failed";
+         exit(1);
+      }
+
+      custoA = (double*) malloc((qtd_clientes*qtd_instalacoes + 1) * sizeof(double));
+      if(!custoA){
+         cout << "Memory Allocation Failed";
+         exit(1);
+      }
 
       // Lendo do arquivo os custos de abertura das instalacoes e salvando no vetor custoF
       cont = 0;
@@ -113,5 +138,7 @@ double trataInput(char inputName[], char tipoEntrada[]){
 
    // Fechando o arquivo
    inputFLP.close();
+   free(custoF);
+   free(custoA);
    return sol_cost;
 }

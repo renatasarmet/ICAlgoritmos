@@ -27,7 +27,7 @@ using namespace std;
 #define EXIBIR_GRAFO 3 // corresponde a descricao dos clientes, instalacoes e arcos
 #define EXIBIR_MATRIZ_ADJACENCIA 4 // corresponde à parte final, na criacao de Tlinha
 
-#define DEBUG 1 // OPCOES DE DEBUG: 1 PARA EXIBIR ACOES, 2 PARA EXIBIR TEMPO, 3 PARA EXIBIR AS MUDANÇAS NO GRAFO, 4 PARA EXIBIR AS MUDANCAS NA MATRIZ DE ADJACENCIA NA CRIACAO DE TLINHA
+#define DEBUG 0 // OPCOES DE DEBUG: 1 PARA EXIBIR ACOES, 2 PARA EXIBIR TEMPO, 3 PARA EXIBIR AS MUDANÇAS NO GRAFO, 4 PARA EXIBIR AS MUDANCAS NA MATRIZ DE ADJACENCIA NA CRIACAO DE TLINHA
 
 
 
@@ -46,7 +46,7 @@ bool maior_igual(double i, double j){
 
 // Retornar o valor da solucao
 double primalDual(int qtdCli, int qtdInst, double * custoF, double * custoA){
-
+	
 	/* Inicio declaracoes variaveis para calculo de tempo - finalidade eh encontrar gargalos */
 
 	// Declaracao variaveis que indicam o tempo no inicio e fim da execucao daquela parte desejada
@@ -90,8 +90,15 @@ double primalDual(int qtdCli, int qtdInst, double * custoF, double * custoA){
 	- Valor 1 na linha i, coluna j se o cliente i contribui pra instalacao j
 
 	*/
-	int matriz_adjacencia[qtd_clientes][qtd_instalacoes]; // indica se o cliente alcançou a instalação
+	
+	// indica se o cliente alcançou a instalação
+	int **matriz_adjacencia = (int**) malloc((qtd_clientes) * sizeof(int*));
+	for(int i = 0; i < qtd_clientes; i++) matriz_adjacencia[i] = (int *)malloc(qtd_instalacoes * sizeof(int));
 
+    if(!matriz_adjacencia){
+        cout << "Memory Allocation Failed";
+        exit(1);
+    }
 
 	/* Sobre os grafos bipartidos, teremos
 	
@@ -137,7 +144,12 @@ double primalDual(int qtdCli, int qtdInst, double * custoF, double * custoA){
 	}
 
 	// Criação de nós clientes e atribuição de seus labels
-	ListBpGraph::RedNode clientes[qtd_clientes];
+	ListBpGraph::RedNode * clientes;
+	clientes = (ListBpGraph::RedNode*) malloc((qtd_clientes) * sizeof(ListBpGraph::RedNode));
+    if(!clientes){
+        cout << "Memory Allocation Failed";
+        exit(1);
+    }
 
 	for(int i=0;i<qtd_clientes;i++){
 		clientes[i] = g.addRedNode();
@@ -147,7 +159,12 @@ double primalDual(int qtdCli, int qtdInst, double * custoF, double * custoA){
 
 
 	// Criação de nós de instalações e atribuição de seus labels
-	ListBpGraph::BlueNode instalacoes[qtd_instalacoes];
+	ListBpGraph::BlueNode * instalacoes;
+	instalacoes = (ListBpGraph::BlueNode*) malloc((qtd_instalacoes) * sizeof(ListBpGraph::BlueNode));
+    if(!instalacoes){
+        cout << "Memory Allocation Failed";
+        exit(1);
+    }
 
 
 	for(int i=0;i<qtd_instalacoes;i++){
@@ -177,7 +194,12 @@ double primalDual(int qtdCli, int qtdInst, double * custoF, double * custoA){
 
 
 	// Criação de arcos e atribuição de seus labels
-	ListBpGraph::Edge arcos[qtd_clientes*qtd_instalacoes]; // conectando todos com todos
+	ListBpGraph::Edge * arcos; // conectando todos com todos
+	arcos = (ListBpGraph::Edge*) malloc((qtd_clientes*qtd_instalacoes) * sizeof(ListBpGraph::Edge));
+    if(!arcos){
+        cout << "Memory Allocation Failed";
+        exit(1);
+    }
 
 	int cont = 0;
 	for(int i=0;i<qtd_clientes;i++){
@@ -706,7 +728,12 @@ double primalDual(int qtdCli, int qtdInst, double * custoF, double * custoA){
 	ListBpGraph Tlinha; 
 
 	// Criação de nós de instalações em Tlinha
-	ListBpGraph::BlueNode instTlinha[qtd_instalacoes];
+	ListBpGraph::BlueNode * instTlinha;
+	instTlinha = (ListBpGraph::BlueNode*) malloc((qtd_instalacoes) * sizeof(ListBpGraph::BlueNode));
+    if(!instTlinha){
+        cout << "Memory Allocation Failed";
+        exit(1);
+    }
 
 	int qtd_instTlinha = 0; // indica a quantidade de instalacoes ja em Tlinha
 
@@ -875,13 +902,21 @@ double primalDual(int qtdCli, int qtdInst, double * custoF, double * custoA){
 	}
 
 	// // Percorrendo por todos os nós de Tlinha que sao instalacoes
+	int qtd_inst_Tlinha = 0;
+
 	if(DEBUG >= EXIBIR_ACOES){
 
 		cout<<"-- Tlinha instalacoes --" << endl;
 		for(ListBpGraph::BlueNodeIt n(Tlinha); n != INVALID; ++n){
+			qtd_inst_Tlinha += 1;
 			cout << "no id: " << Tlinha.id(n) << " - nome: " << nomeTlinha[n] << endl;
 		}
 		cout<<"-------" << endl;
+	}
+	else if(DEBUG == 0){ // preciso fazer essa contagem de qualquer forma
+		for(ListBpGraph::BlueNodeIt n(Tlinha); n != INVALID; ++n){
+			qtd_inst_Tlinha += 1;
+		}
 	}
 
 
@@ -893,9 +928,9 @@ double primalDual(int qtdCli, int qtdInst, double * custoF, double * custoA){
 
 	// Abrir todas as instalacoes em Tlinha e atribuir cada cliente à instalacao mais próxima
 
-
 	// Criação de nós de clientes em Tlinha
 	ListBpGraph::RedNode cliTlinha[qtd_clientes];
+
 
 	int qtd_cliTlinha = 0; // indica a quantidade de clientes ja em Tlinha
 
@@ -903,9 +938,13 @@ double primalDual(int qtdCli, int qtdInst, double * custoF, double * custoA){
 	// caTlinha - em Tlinha indica o Custo de atribuição: é o custo de atribuir o cliente associado à instalação associada
 	ListBpGraph::EdgeMap<double> caTlinha(g);
 
-
-	// Criação de arcos e atribuição de seus labels
-	ListBpGraph::Edge arcosTlinha[qtd_clientes*qtd_instalacoes];
+	// Criação de arcos e atribuição de seus labels. Obs: criando no tamanho maximo necessario, limitado pelo numero de inst ja em Tlinha
+	ListBpGraph::Edge * arcosTlinha;
+	arcosTlinha = (ListBpGraph::Edge*) malloc((qtd_clientes*qtd_inst_Tlinha) * sizeof(ListBpGraph::Edge));
+    if(!arcosTlinha){
+        cout << "Memory Allocation Failed";
+        exit(1);
+    }
 
 	int qtd_arcosTlinha = 0; // indica a quantidade de arcos ja criados em Tlinha
 
@@ -946,7 +985,6 @@ double primalDual(int qtdCli, int qtdInst, double * custoF, double * custoA){
 				break;
 			}
 		}
-		
 
 		// Cria aresta para associar esse cliente com a instalacao que possui a menor distancia dele
 		arcos[qtd_arcosTlinha] = Tlinha.addEdge(cliTlinha[qtd_cliTlinha-1],instTlinha[idInstMenorDist]);
@@ -1045,5 +1083,11 @@ double primalDual(int qtdCli, int qtdInst, double * custoF, double * custoA){
 		cout << "Tempo total final da funcao: " << realTimeSpent << " segundos" << endl;
 	}
 	
+	free(matriz_adjacencia);
+	free(clientes);
+	free(instalacoes);
+	free(arcos);
+	free(instTlinha);
+	free(arcosTlinha);
 	return(gastoTotalFinal);
 }
