@@ -1,17 +1,3 @@
-cap71.txt
-cap72.txt
-cap73.txt
-cap74.txt
-cap101.txt
-cap102.txt
-cap103.txt
-cap104.txt
-cap131.txt
-cap132.txt
-cap133.txt
-cap134.txt
-capa.txt
-capb.txt
-capc.txt
-flp500x1000.txt
-flp1000x6000.txt
+version https://git-lfs.github.com/spec/v1
+oid sha256:73053960d87f6ac38f16fa7fed10ceb2d5e937153789f75a1dfa5ba0b8ff0190
+size 187
