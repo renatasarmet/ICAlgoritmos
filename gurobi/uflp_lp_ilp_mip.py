@@ -30,9 +30,9 @@ Facility = namedtuple(
 Customer = namedtuple("Customer", ['index', 'attribution_cost'])
 
 # time limit in seconds
-time_limit = 100
+time_limit = 900 #15 minutos
 # memory limit in bytes
-memory_limit = 100 ** 9
+memory_limit = 10 ** 9 # 1GB
 
 
 DEBUG = 1
