@@ -87,6 +87,7 @@ void excluindo_clientes_nao_ativos(int *vetor, int *vetorID, int tam_vetor, int 
 		
 		for(int j=0;j<quantidade_apagar;j++){
 			if(vetorID[i]==clientes_apagar[j]){
+				// cout << "VAMOS APAGAR O CLINETE " << clientes_apagar[j] << endl;
 				// vetorID[i] = -1; // ID -1 indica que nao esta ativo
 				vetor[i] = -1; // coloca cij = 0
 				qtd_restante -= 1;
@@ -101,7 +102,7 @@ void excluindo_clientes_nao_ativos(int *vetor, int *vetorID, int tam_vetor, int 
 
 
 
-// Por referencia diz qual o melhor tamanho e seu respectivo custo
+// Por referencia diz qual o melhor tamanho para Y e seu respectivo custo
 void melhor_subconjunto(int &melhor_tamanho, double &melhor_custo, int *vetor, double fi, int index_inicio, int tam_vetor, double maior_cij){
 	int tamanho_atual = 1;
 	double soma_custo_atual = 0;
@@ -208,6 +209,10 @@ double guloso(int qtdCli, int qtdInst, double * custoF, double * custoA){
 	// inst_aberta_prox - será correnpondente ao ID da instalacao i tal que min_{i \in X} cij, sendo X as inst abertas
 	ListBpGraph::RedNodeMap<int> inst_aberta_prox(g);
 
+
+	// ativo - indica se o cliente está ativo ainda ou nao, isto é, se ele ainda nao foi conectado a nenhuma instalacao aberta. if j \in S
+	ListBpGraph::RedNodeMap<bool> ativo(g);
+
 	// f - será o custo de instalação (fi)
 	ListBpGraph::BlueNodeMap<double> f(g);
 
@@ -261,6 +266,7 @@ double guloso(int qtdCli, int qtdInst, double * custoF, double * custoA){
 		c_minX[clientes[i]] = -1; // indica que nao está conectado com ninguém inicialmente //PROBLEMA: nao tenho ctz ainda qual a melhor inicializacao
 		nome[clientes[i]] = i; // nomeia de acordo com a numeracao
 		inst_aberta_prox[clientes[i]] = -1; // indica que nao está conectado com ninguém inicialmente
+		ativo[clientes[i]] = true;
 	}
 
 
@@ -470,10 +476,11 @@ double guloso(int qtdCli, int qtdInst, double * custoF, double * custoA){
 		gastoTotalFinal += melhor_custo_escolhido * melhor_tam_escolhido; // fi + somatorio de todos que vao conectar a ele
 		f[instalacoes[id_inst_escolhida]] = 0;
 
+
 		// S <- S - Y
 
 		// criando o conjunto de clientes que serao apagados. inicia no primeiro ativo ate o tamanho escolhido na iteracao.
-		for(int i=qtd_cli_nao_ativos;i<melhor_tam_escolhido;i++){
+		for(int i = qtd_cli_nao_ativos; i < qtd_cli_nao_ativos + melhor_tam_escolhido; i++){
 			apagar_clientes[i - qtd_cli_nao_ativos] = ordem_cijID[id_inst_escolhida][i]; // apagar_clientes inicia na posicao 0.
 		}
 
@@ -484,6 +491,35 @@ double guloso(int qtdCli, int qtdInst, double * custoF, double * custoA){
 		for(ListBpGraph::BlueNodeIt n(S); n != INVALID; ++n){		// percorre as instalacoes
 			excluindo_clientes_nao_ativos(ordem_cij[S.id(n)], ordem_cijID[S.id(n)], qtd_clientes, apagar_clientes, melhor_tam_escolhido);
 		}
+
+
+		// PROBLEMA: NAO TENHO CTZ SE ISSO ESTÁ CERTO!
+
+		// Atualizando o valor de c(j,X) para os clientes que ja nao eram ativos
+		for(ListBpGraph::RedNodeIt n(S); n != INVALID; ++n){		// percorre os clientes
+			if(!ativo[n]){
+				if(c_minX[n] > custoAtribuicao[findEdge(S, n, instalacoes[id_inst_escolhida])]){
+					c_minX[n] = custoAtribuicao[findEdge(S, n, instalacoes[id_inst_escolhida])];
+					cout << "Para ID = " << S.id(n) << " e inst: " << nome[instalacoes[id_inst_escolhida]] << endl;
+					cout << "atualizando aqui: " << c_minX[n] << endl;
+				}
+			}
+		}
+
+		// ATÉ AQUI
+
+
+		// Atualizando o valor de c(j,X) para todos os clientes agora atribuidos a i
+		for(int i=0;i<melhor_tam_escolhido;i++){
+			c_minX[clientes[apagar_clientes[i]]] = custoAtribuicao[findEdge(S, clientes[apagar_clientes[i]], instalacoes[id_inst_escolhida])];
+			inst_aberta_prox[clientes[apagar_clientes[i]]] = id_inst_escolhida; // nao decidi ainda se aqui vai ser o ID ou o nome
+			ativo[clientes[apagar_clientes[i]]] = false;
+			// cout << "Para ID = " << apagar_clientes[i] << " e inst: " << nome[instalacoes[id_inst_escolhida]] << endl;
+			// cout << "temos cij = " << custoAtribuicao[findEdge(S, clientes[apagar_clientes[i]], instalacoes[id_inst_escolhida])] << endl;
+			// cout << "atualizando aqui: " << c_minX[clientes[apagar_clientes[i]]] << " e id= " << inst_aberta_prox[clientes[apagar_clientes[i]]] << endl;
+		}
+
+
 
 	}
 
