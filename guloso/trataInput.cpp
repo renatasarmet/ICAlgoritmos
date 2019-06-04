@@ -102,8 +102,8 @@ double trataInput(char inputName[], char tipoEntrada[]){
          exit(1);
       }
 
+
       // Lendo do arquivo os custos de abertura das instalacoes e salvando no vetor custoF
-      cont = 0;
       for(int i=0;i<qtd_instalacoes;i++){
          inputFLP >> auxRead; // Descartando o nome da instalação
          // cout << "DESCARTE:" << auxRead << endl;
@@ -118,12 +118,11 @@ double trataInput(char inputName[], char tipoEntrada[]){
          for(int j=0;j<qtd_clientes;j++){
 
             inputFLP >> auxRead;                                 // PROBLEMA: Pq só está pegando 2 casas decimais???
-            custoA[cont] = auxRead;
+            custoA[i + j * qtd_instalacoes] = auxRead;       // Esse indice estranho eh para deixa no mesmo formato que o caso ORLIB
 
             if(debug > 0){
-               cout << "CA = " << custoA[cont] << endl; 
+               cout << "CA = " << custoA[i + j * qtd_instalacoes] << endl; 
             }
-            cont+=1;
          }
       }
 

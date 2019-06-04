@@ -7,11 +7,6 @@
 #include "declaracoes.hpp"
 #define EPSL 0.00000001
 
-
-// PROBLEMA: alguns valores estao sendo um pouco menores que o otimo.. isso nao pode acontecer
-
-
-
 // Observacao importante: ao usar g.nodeFromId() eh necessario passar o ID geral, nao o blue ID nem red ID. 
 // No caso do cliente, o red ID = ID geral, pois os clientes foram os primeiros a serem adicionados no grafo.
 // No caso da instalacao, o ID geral = blue ID + qtd_clientes, pois as instalacoes foram adicionadas no grafo logo apos todos os clientes.
@@ -481,7 +476,6 @@ double guloso(int qtdCli, int qtdInst, double * custoF, double * custoA){
 		}
 
 		// cout << "Vamos abrir a instalacao " << id_inst_escolhida << " e conectar " << melhor_tam_escolhido << " clientes com custo " << melhor_custo_escolhido << endl;
-		
 		gastoTotalFinal += f[instalacoes[id_inst_escolhida]]; // Somando os custos de abertura das instalacoes escolhidas para abrir
 
 		// fi <- 0
@@ -528,13 +522,10 @@ double guloso(int qtdCli, int qtdInst, double * custoF, double * custoA){
 
 	}
 
-
-
 	// Somando os custos de conexao dos clientes a instalacao mais proxima aberta
 	for(ListBpGraph::RedNodeIt n(g); n != INVALID; ++n){		// percorre os clientes
 		gastoTotalFinal += custoAtribuicao[findEdge(g, n, instalacoes[inst_aberta_prox[n]])];
 	}
-
 	cout << "GASTO TOTAL FINAL: " << gastoTotalFinal << endl;
 
 
