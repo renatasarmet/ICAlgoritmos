@@ -8,7 +8,11 @@
 #define EPSL 0.00000001
 
 
-// Observacao importante: ao usar S.nodeFromId() eh necessario passar o ID geral, nao o blue ID nem red ID. 
+// PROBLEMA: alguns valores estao sendo um pouco menores que o otimo.. isso nao pode acontecer
+
+
+
+// Observacao importante: ao usar g.nodeFromId() eh necessario passar o ID geral, nao o blue ID nem red ID. 
 // No caso do cliente, o red ID = ID geral, pois os clientes foram os primeiros a serem adicionados no grafo.
 // No caso da instalacao, o ID geral = blue ID + qtd_clientes, pois as instalacoes foram adicionadas no grafo logo apos todos os clientes.
 
@@ -89,7 +93,7 @@ void excluindo_clientes_nao_ativos(int *vetor, int *vetorID, int tam_vetor, int 
 			if(vetorID[i]==clientes_apagar[j]){
 				// cout << "VAMOS APAGAR O CLINETE " << clientes_apagar[j] << endl;
 				// vetorID[i] = -1; // ID -1 indica que nao esta ativo
-				vetor[i] = -1; // coloca cij = 0
+				vetor[i] = -1; // coloca cij = -1, indicando que ja foi atribuido
 				qtd_restante -= 1;
 				break;
 			}
@@ -113,7 +117,7 @@ void melhor_subconjunto(int &melhor_tamanho, double &melhor_custo, int *vetor, d
 	// inicializando só para nao ficar nulo se algo der errado
 	melhor_tamanho = 1;
 
-	// ira criar (index_fim - index_inicio) subconjuntos
+	// ira criar (tam_vetor - index_inicio) subconjuntos
 	for(int i=index_inicio;i<tam_vetor;i++){
 		soma_custo_atual = fi - ganho;
 		// vendo a soma dos custos desse subconjunto
@@ -177,17 +181,13 @@ double guloso(int qtdCli, int qtdInst, double * custoF, double * custoA){
 	int qtd_instalacoes = qtdInst; // Indica quantidade de instalacoes
 
 
-	// conjunto de clientes a serem removidos de S na iteração, pois deixaram de ser ativos
+	// conjunto de clientes a serem removidos de g na iteração, pois deixaram de ser ativos
 	int * apagar_clientes;
 	apagar_clientes = (int*) malloc((qtd_clientes) * sizeof(int));
     if(!apagar_clientes){
         cout << "Memory Allocation Failed";
         exit(1);
     }
-
-
-   	// conjunto de clientes nao ativos, isto é, ja conectados a alguma instalacao
-    set <int, greater <int> > clientes_nao_ativos; 
 
 
     int qtd_cli_nao_ativos = 0; // Indica quantos clientes ja foram conectados a alguma instalacao
@@ -210,7 +210,7 @@ double guloso(int qtdCli, int qtdInst, double * custoF, double * custoA){
 	ListBpGraph::RedNodeMap<int> inst_aberta_prox(g);
 
 
-	// ativo - indica se o cliente está ativo ainda ou nao, isto é, se ele ainda nao foi conectado a nenhuma instalacao aberta. if j \in S
+	// ativo - indica se o cliente está ativo ainda ou nao, isto é, se ele ainda nao foi conectado a nenhuma instalacao aberta. if j \in g
 	ListBpGraph::RedNodeMap<bool> ativo(g);
 
 	// f - será o custo de instalação (fi)
@@ -218,8 +218,9 @@ double guloso(int qtdCli, int qtdInst, double * custoF, double * custoA){
 
 
 	// ordem_cij - será os clientes ativos ordenados pelo cij àquela instalação
-	// ordem_cijID - indica os ID dos clientes ativos ordenados pelo cij àquela instalação
 	int **ordem_cij = (int**) malloc((qtd_instalacoes) * sizeof(int*));
+
+	// ordem_cijID - indica os ID dos clientes ativos ordenados pelo cij àquela instalação
 	int **ordem_cijID = (int**) malloc((qtd_instalacoes) * sizeof(int*));
 
 	for(int i = 0; i < qtd_instalacoes; i++) {
@@ -239,10 +240,10 @@ double guloso(int qtdCli, int qtdInst, double * custoF, double * custoA){
 	ListBpGraph::NodeMap<int> nome(g);
 
 	// Variavel que armazena o maior valor cij dado na entrada, para uso posterior
-	int maiorCij = 0;
+	double maiorCij = 0;
 
 	// Variavel que armazena o maior valor fi dado na entrada, para uso posterior
-	int maiorFi = 0;
+	double maiorFi = 0;
 
 	// usado como auxiliar para encontrar o index certo da instalacao (subtrai qtd_clientes)
 	int indice_inst;
@@ -324,7 +325,7 @@ double guloso(int qtdCli, int qtdInst, double * custoF, double * custoA){
 		cout << "maiorCij da entrada : " << maiorCij << endl << "maiorFi da entrada: " << maiorFi << endl;
 	}
 
-	int qtd_clientes_ativos_S = qtd_clientes; // Indica a quantidade de clientes ainda em S, os clientes ativos.
+	int qtd_clientes_ativos_g = qtd_clientes; // Indica a quantidade de clientes ainda em g, os clientes ativos.
 
 	int qtd_inst_abertas = 0; // indica a quantidade de instalacoes abertas
 
@@ -340,52 +341,49 @@ double guloso(int qtdCli, int qtdInst, double * custoF, double * custoA){
 		timeSpent += (finish.tv_nsec - start.tv_nsec) / 1000000000.0; // Necessario para obter uma precisao maior 
 		cout << "[TEMPO] Time spent: " << timeSpent << " seconds" << endl;
 	}
-
-	ListBpGraph S; // Grafo que contem os clientes os quais estamos aumentando as variaveis duais
-	bpGraphCopy(g,S).run(); // copiando todas as informacoes de g para S
 	
 
 	if (DEBUG >= EXIBIR_GRAFO){
 		// Percorrendo por todos os nós A - clientes
 		cout << "Percorrendo por todos os clientes" << endl;
-		for(ListBpGraph::RedNodeIt n(S); n != INVALID; ++n){
-			cout << "no id: " << S.id(n)  << " - nome: " << nome[n] << endl;
+		for(ListBpGraph::RedNodeIt n(g); n != INVALID; ++n){
+			cout << "no id: " << g.id(n)  << " - nome: " << nome[n] << endl;
 		}
 
 		// Percorrendo por todos os nós B - instalacoes
 		cout << "Percorrendo por todos as instalacoes" << endl;
-		for(ListBpGraph::BlueNodeIt n(S); n != INVALID; ++n){
-			cout << "no id: " << S.id(n)  << " - nome: " << nome[n] << " - f: " << f[n] << " - aberta: " << aberta[n] << endl;
+		for(ListBpGraph::BlueNodeIt n(g); n != INVALID; ++n){
+			cout << "no id: " << g.id(n)  << " - nome: " << nome[n] << " - f: " << f[n] << " - aberta: " << aberta[n] << endl;
 		}
 
 
 		// Percorrendo por todos os arcos
 		cout << "Percorrendo por todos os arcos" << endl;
-		for(ListBpGraph::EdgeIt e(S); e!= INVALID; ++e){
-			cout << "arco id: " << S.id(e) ;
-			cout << " - cliente: " << nome[S.u(e)] << " - instalacao: " << nome[S.v(e)];
+		for(ListBpGraph::EdgeIt e(g); e!= INVALID; ++e){
+			cout << "arco id: " << g.id(e) ;
+			cout << " - cliente: " << nome[g.u(e)] << " - instalacao: " << nome[g.v(e)];
 			cout<< " - ca: " << custoAtribuicao[e] << endl;
 		}
 	}
 
 
 	// colocando para cada instalacao a ordem dos cij
-	for(ListBpGraph::BlueNodeIt n(S); n != INVALID; ++n){		// percorre as instalacoes
+	for(ListBpGraph::BlueNodeIt n(g); n != INVALID; ++n){		// percorre as instalacoes
 		cont = 0;
 		// colocando no vetor que sera ordenado
-		for (ListBpGraph::IncEdgeIt e(S, n); e != INVALID; ++e) { // Percorre todas arestas desse nó
-			ordem_cijID[S.id(n)][cont] = S.id(S.u(e)); // linha da instalacao, coluna contando em cont
-			ordem_cij[S.id(n)][cont] = custoAtribuicao[e]; // linha da instalacao, coluna contando em cont
+		for (ListBpGraph::IncEdgeIt e(g, n); e != INVALID; ++e) { // Percorre todas arestas desse nó
+			ordem_cijID[g.id(n)][cont] = g.id(g.u(e)); // linha da instalacao, coluna contando em cont
+			ordem_cij[g.id(n)][cont] = custoAtribuicao[e]; // linha da instalacao, coluna contando em cont
 			cont += 1;
 		}
 
 		// ordenando o vetor
-		mergeSort(ordem_cij[S.id(n)], ordem_cijID[S.id(n)], 0, (cont-1));
+		mergeSort(ordem_cij[g.id(n)], ordem_cijID[g.id(n)], 0, (cont-1));
 
 		if (DEBUG >= EXIBIR_ACOES){
-			cout << "ORDENADO PARA INSTALACAO " << S.id(n) << endl;
+			cout << "ORDENADO PARA INSTALACAO " << g.id(n) << endl;
 			for(int i=0;i<cont;i++){
-				cout << ordem_cij[S.id(n)][i] << endl; // Adicionar o cliente j no conjunto de 
+				cout << ordem_cij[g.id(n)][i] << endl; // Adicionar o cliente j no conjunto de 
 			}
 			cout << "-------" << endl;
 		}
@@ -435,7 +433,7 @@ double guloso(int qtdCli, int qtdInst, double * custoF, double * custoA){
 
 
 	int id_inst_escolhida;
-	int melhor_custo_escolhido;
+	double melhor_custo_escolhido;
 	int melhor_tam_escolhido;
 
 	int tam_Y_atual;
@@ -448,38 +446,38 @@ double guloso(int qtdCli, int qtdInst, double * custoF, double * custoA){
 
 	// ****** A partir daqui deve estar em um loop até nao ter mais clientes ativos:
 
-	while(qtd_clientes_ativos_S > 0){
+	while(qtd_clientes_ativos_g > 0){
 
 		if(DEBUG >= EXIBIR_ACOES){
-			cout << endl << "------------------------------ AINDA TEM " << qtd_clientes_ativos_S << " CLIENTES ATIVOS ------------------------------" << endl << endl;
+			cout << endl << "------------------------------ AINDA TEM " << qtd_clientes_ativos_g << " CLIENTES ATIVOS ------------------------------" << endl << endl;
 		}
 
 		melhor_custo_escolhido = maiorCij * qtd_clientes + maiorFi + 1; //limitante superior tranquilo 
 		melhor_tam_escolhido = -1;
 		id_inst_escolhida = -1;
 		
-		for(ListBpGraph::BlueNodeIt n(S); n != INVALID; ++n){		// percorre as instalacoes
+		for(ListBpGraph::BlueNodeIt n(g); n != INVALID; ++n){		// percorre as instalacoes
 
 
 			// Calculando ganho de troca de atribuições
-			// \sum_{j notin S} (c(j,X), cij)+
+			// \sum_{j notin g} (c(j,X), cij)+
 			ganho_cij = 0;
 			
-			for (ListBpGraph::IncEdgeIt e(S, n); e != INVALID; ++e) { // Percorre todas arestas desse nó
-				if(!ativo[S.asRedNode(S.u(e))]){
-					if(c_minX[S.asRedNode(S.u(e))] > custoAtribuicao[e]){
-						ganho_cij += c_minX[S.asRedNode(S.u(e))] - custoAtribuicao[e];
+			for (ListBpGraph::IncEdgeIt e(g, n); e != INVALID; ++e) { // Percorre todas arestas desse nó
+				if(!ativo[g.asRedNode(g.u(e))]){
+					if(c_minX[g.asRedNode(g.u(e))] > custoAtribuicao[e]){
+						ganho_cij += c_minX[g.asRedNode(g.u(e))] - custoAtribuicao[e];
 					}
 				}
 			}
-			// cout << "GANHO: " << ganho_cij << endl;
-			melhor_subconjunto(tam_Y_atual, custo_Y_atual, ordem_cij[S.id(n)], f[n], ganho_cij, qtd_cli_nao_ativos, qtd_clientes, maiorCij);
+			// cout << "inst = " << g.id(n) << " -- GANHO: " << ganho_cij << endl;
+			melhor_subconjunto(tam_Y_atual, custo_Y_atual, ordem_cij[g.id(n)], f[n], ganho_cij, qtd_cli_nao_ativos, qtd_clientes, maiorCij);
 
 			// Atualizando valores do melhor custo
 			if(custo_Y_atual < melhor_custo_escolhido){
 				melhor_custo_escolhido = custo_Y_atual;
 				melhor_tam_escolhido = tam_Y_atual;
-				id_inst_escolhida = S.id(n);
+				id_inst_escolhida = g.id(n);
 			}
 
 		}
@@ -491,7 +489,7 @@ double guloso(int qtdCli, int qtdInst, double * custoF, double * custoA){
 		f[instalacoes[id_inst_escolhida]] = 0;
 
 
-		// S <- S - Y
+		// g <- g - Y
 
 		// criando o conjunto de clientes que serao apagados. inicia no primeiro ativo ate o tamanho escolhido na iteracao.
 		for(int i = qtd_cli_nao_ativos; i < qtd_cli_nao_ativos + melhor_tam_escolhido; i++){
@@ -499,33 +497,33 @@ double guloso(int qtdCli, int qtdInst, double * custoF, double * custoA){
 		}
 
 		qtd_cli_nao_ativos += melhor_tam_escolhido;
-		qtd_clientes_ativos_S -= melhor_tam_escolhido;
+		qtd_clientes_ativos_g -= melhor_tam_escolhido;
 
 		// Alterando o valor correspondente em ordem_cij e ordem_cijID para -1 em todas as instalacoes
-		for(ListBpGraph::BlueNodeIt n(S); n != INVALID; ++n){		// percorre as instalacoes
-			excluindo_clientes_nao_ativos(ordem_cij[S.id(n)], ordem_cijID[S.id(n)], qtd_clientes, apagar_clientes, melhor_tam_escolhido);
+		for(ListBpGraph::BlueNodeIt n(g); n != INVALID; ++n){		// percorre as instalacoes
+			excluindo_clientes_nao_ativos(ordem_cij[g.id(n)], ordem_cijID[g.id(n)], qtd_clientes, apagar_clientes, melhor_tam_escolhido);
 		}
 
-
 		// Atualizando o valor de c(j,X) para os clientes que ja nao eram ativos
-		for(ListBpGraph::RedNodeIt n(S); n != INVALID; ++n){		// percorre os clientes
+		for(ListBpGraph::RedNodeIt n(g); n != INVALID; ++n){		// percorre os clientes
 			if(!ativo[n]){
-				if(c_minX[n] > custoAtribuicao[findEdge(S, n, instalacoes[id_inst_escolhida])]){
-					c_minX[n] = custoAtribuicao[findEdge(S, n, instalacoes[id_inst_escolhida])];
-					// cout << "Para ID = " << S.id(n) << " e inst: " << nome[instalacoes[id_inst_escolhida]] << endl;
+				if(c_minX[n] > custoAtribuicao[findEdge(g, n, instalacoes[id_inst_escolhida])]){
+					c_minX[n] = custoAtribuicao[findEdge(g, n, instalacoes[id_inst_escolhida])];
+					inst_aberta_prox[n] = id_inst_escolhida; // nao decidi ainda se aqui vai ser o ID ou o nome
+
+					// cout << "Para ID = " << g.id(n) << " e inst: " << nome[instalacoes[id_inst_escolhida]] << endl;
 					// cout << "atualizando aqui: " << c_minX[n] << endl;
 				}
 			}
 		}
 
-
 		// Atualizando o valor de c(j,X) para todos os clientes agora atribuidos a i
 		for(int i=0;i<melhor_tam_escolhido;i++){
-			c_minX[clientes[apagar_clientes[i]]] = custoAtribuicao[findEdge(S, clientes[apagar_clientes[i]], instalacoes[id_inst_escolhida])];
+			c_minX[clientes[apagar_clientes[i]]] = custoAtribuicao[findEdge(g, clientes[apagar_clientes[i]], instalacoes[id_inst_escolhida])];
 			inst_aberta_prox[clientes[apagar_clientes[i]]] = id_inst_escolhida; // nao decidi ainda se aqui vai ser o ID ou o nome
 			ativo[clientes[apagar_clientes[i]]] = false;
 			// cout << "Para ID = " << apagar_clientes[i] << " e inst: " << nome[instalacoes[id_inst_escolhida]] << endl;
-			// cout << "temos cij = " << custoAtribuicao[findEdge(S, clientes[apagar_clientes[i]], instalacoes[id_inst_escolhida])] << endl;
+			// cout << "temos cij = " << custoAtribuicao[findEdge(g, clientes[apagar_clientes[i]], instalacoes[id_inst_escolhida])] << endl;
 			// cout << "atualizando aqui: " << c_minX[clientes[apagar_clientes[i]]] << " e id= " << inst_aberta_prox[clientes[apagar_clientes[i]]] << endl;
 		}
 
