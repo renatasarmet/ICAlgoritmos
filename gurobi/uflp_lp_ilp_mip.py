@@ -720,7 +720,7 @@ if __name__ == '__main__':
                 print("Input file:", file_name)
                 start = time.time()
 
-                complete_file_name = 'data/tests/' + file_name
+                complete_file_name = '../baseDeTestes/facilityTestCases/tests/' + file_name
                 with open(complete_file_name, 'r') as input_data_file:
                     input_data = input_data_file.read()
 

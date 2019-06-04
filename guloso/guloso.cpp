@@ -518,8 +518,6 @@ double guloso(int qtdCli, int qtdInst, double * custoF, double * custoA){
 			}
 		}
 
-		// ATÉ AQUI
-
 
 		// Atualizando o valor de c(j,X) para todos os clientes agora atribuidos a i
 		for(int i=0;i<melhor_tam_escolhido;i++){

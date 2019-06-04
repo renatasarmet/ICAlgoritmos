@@ -62,7 +62,7 @@ int main(int argc, char *argv[]){
 
 	char completeNameInput[150];
 
-	char baseNameInput[50] = "facilityTestCases/tests/";
+	char baseNameInput[50] = "../baseDeTestes/facilityTestCases/tests/";
 	cout << "BASE: "<< baseNameInput << endl;
 
 	if(strcmp(argv[1],"1") == 0){
