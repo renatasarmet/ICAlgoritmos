@@ -457,8 +457,6 @@ double guloso(int qtdCli, int qtdInst, double * custoF, double * custoA){
 		id_inst_escolhida = -1;
 		
 		for(ListBpGraph::BlueNodeIt n(g); n != INVALID; ++n){		// percorre as instalacoes
-
-
 			// Calculando ganho de troca de atribuições
 			// \sum_{j notin g} (c(j,X), cij)+
 			ganho_cij = 0;
@@ -484,8 +482,9 @@ double guloso(int qtdCli, int qtdInst, double * custoF, double * custoA){
 
 		// cout << "Vamos abrir a instalacao " << id_inst_escolhida << " e conectar " << melhor_tam_escolhido << " clientes com custo " << melhor_custo_escolhido << endl;
 		
+		gastoTotalFinal += f[instalacoes[id_inst_escolhida]]; // Somando os custos de abertura das instalacoes escolhidas para abrir
+
 		// fi <- 0
-		gastoTotalFinal += melhor_custo_escolhido * melhor_tam_escolhido; // fi + somatorio de todos que vao conectar a ele
 		f[instalacoes[id_inst_escolhida]] = 0;
 
 
@@ -527,12 +526,16 @@ double guloso(int qtdCli, int qtdInst, double * custoF, double * custoA){
 			// cout << "atualizando aqui: " << c_minX[clientes[apagar_clientes[i]]] << " e id= " << inst_aberta_prox[clientes[apagar_clientes[i]]] << endl;
 		}
 
+	}
 
 
+
+	// Somando os custos de conexao dos clientes a instalacao mais proxima aberta
+	for(ListBpGraph::RedNodeIt n(g); n != INVALID; ++n){		// percorre os clientes
+		gastoTotalFinal += custoAtribuicao[findEdge(g, n, instalacoes[inst_aberta_prox[n]])];
 	}
 
 	cout << "GASTO TOTAL FINAL: " << gastoTotalFinal << endl;
-
 
 
 	if(DEBUG >= EXIBIR_TEMPO){
