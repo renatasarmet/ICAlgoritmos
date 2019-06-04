@@ -103,7 +103,7 @@ void excluindo_clientes_nao_ativos(int *vetor, int *vetorID, int tam_vetor, int 
 
 
 // Por referencia diz qual o melhor tamanho para Y e seu respectivo custo
-void melhor_subconjunto(int &melhor_tamanho, double &melhor_custo, int *vetor, double fi, int index_inicio, int tam_vetor, double maior_cij){
+void melhor_subconjunto(int &melhor_tamanho, double &melhor_custo, int *vetor, double fi, double ganho, int index_inicio, int tam_vetor, double maior_cij){
 	int tamanho_atual = 1;
 	double soma_custo_atual = 0;
 	double custo_atual = 0;
@@ -115,7 +115,7 @@ void melhor_subconjunto(int &melhor_tamanho, double &melhor_custo, int *vetor, d
 
 	// ira criar (index_fim - index_inicio) subconjuntos
 	for(int i=index_inicio;i<tam_vetor;i++){
-		soma_custo_atual = fi;
+		soma_custo_atual = fi - ganho;
 		// vendo a soma dos custos desse subconjunto
 		for(int j=index_inicio;j<=i;j++){
 			soma_custo_atual += vetor[j];
@@ -441,6 +441,8 @@ double guloso(int qtdCli, int qtdInst, double * custoF, double * custoA){
 	int tam_Y_atual;
 	double custo_Y_atual;
 
+	double ganho_cij;
+
 	double gastoTotalFinal = 0;
 
 
@@ -448,18 +450,30 @@ double guloso(int qtdCli, int qtdInst, double * custoF, double * custoA){
 
 	while(qtd_clientes_ativos_S > 0){
 
-		melhor_custo_escolhido = maiorCij * qtd_clientes + maiorFi + 1; //limitante superior tranquilo 
-		melhor_tam_escolhido = -1;
-		id_inst_escolhida = -1;
-		
 		if(DEBUG >= EXIBIR_ACOES){
 			cout << endl << "------------------------------ AINDA TEM " << qtd_clientes_ativos_S << " CLIENTES ATIVOS ------------------------------" << endl << endl;
 		}
 
+		melhor_custo_escolhido = maiorCij * qtd_clientes + maiorFi + 1; //limitante superior tranquilo 
+		melhor_tam_escolhido = -1;
+		id_inst_escolhida = -1;
+		
 		for(ListBpGraph::BlueNodeIt n(S); n != INVALID; ++n){		// percorre as instalacoes
 
-			// AINDA ESTA FALTANDO O GANHO
-			melhor_subconjunto(tam_Y_atual, custo_Y_atual, ordem_cij[S.id(n)], f[n], qtd_cli_nao_ativos, qtd_clientes, maiorCij);
+
+			// Calculando ganho de troca de atribuições
+			// \sum_{j notin S} (c(j,X), cij)+
+			ganho_cij = 0;
+			
+			for (ListBpGraph::IncEdgeIt e(S, n); e != INVALID; ++e) { // Percorre todas arestas desse nó
+				if(!ativo[S.asRedNode(S.u(e))]){
+					if(c_minX[S.asRedNode(S.u(e))] > custoAtribuicao[e]){
+						ganho_cij += c_minX[S.asRedNode(S.u(e))] - custoAtribuicao[e];
+					}
+				}
+			}
+			// cout << "GANHO: " << ganho_cij << endl;
+			melhor_subconjunto(tam_Y_atual, custo_Y_atual, ordem_cij[S.id(n)], f[n], ganho_cij, qtd_cli_nao_ativos, qtd_clientes, maiorCij);
 
 			// Atualizando valores do melhor custo
 			if(custo_Y_atual < melhor_custo_escolhido){
@@ -493,15 +507,13 @@ double guloso(int qtdCli, int qtdInst, double * custoF, double * custoA){
 		}
 
 
-		// PROBLEMA: NAO TENHO CTZ SE ISSO ESTÁ CERTO!
-
 		// Atualizando o valor de c(j,X) para os clientes que ja nao eram ativos
 		for(ListBpGraph::RedNodeIt n(S); n != INVALID; ++n){		// percorre os clientes
 			if(!ativo[n]){
 				if(c_minX[n] > custoAtribuicao[findEdge(S, n, instalacoes[id_inst_escolhida])]){
 					c_minX[n] = custoAtribuicao[findEdge(S, n, instalacoes[id_inst_escolhida])];
-					cout << "Para ID = " << S.id(n) << " e inst: " << nome[instalacoes[id_inst_escolhida]] << endl;
-					cout << "atualizando aqui: " << c_minX[n] << endl;
+					// cout << "Para ID = " << S.id(n) << " e inst: " << nome[instalacoes[id_inst_escolhida]] << endl;
+					// cout << "atualizando aqui: " << c_minX[n] << endl;
 				}
 			}
 		}
