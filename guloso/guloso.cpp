@@ -551,5 +551,5 @@ double guloso(int qtdCli, int qtdInst, double * custoF, double * custoA){
 	free(clientes);
 	free(instalacoes);
 	free(arcos);
-	return(0);
+	return(gastoTotalFinal);
 }
