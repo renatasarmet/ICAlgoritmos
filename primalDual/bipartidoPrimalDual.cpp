@@ -27,7 +27,7 @@ using namespace std;
 #define EXIBIR_GRAFO 3 // corresponde a descricao dos clientes, instalacoes e arcos
 #define EXIBIR_MATRIZ_ADJACENCIA 4 // corresponde à parte final, na criacao de Tlinha
 
-#define DEBUG 0 // OPCOES DE DEBUG: 1 PARA EXIBIR ACOES, 2 PARA EXIBIR TEMPO, 3 PARA EXIBIR AS MUDANÇAS NO GRAFO, 4 PARA EXIBIR AS MUDANCAS NA MATRIZ DE ADJACENCIA NA CRIACAO DE TLINHA
+#define DEBUG 1 // OPCOES DE DEBUG: 1 PARA EXIBIR ACOES, 2 PARA EXIBIR TEMPO, 3 PARA EXIBIR AS MUDANÇAS NO GRAFO, 4 PARA EXIBIR AS MUDANCAS NA MATRIZ DE ADJACENCIA NA CRIACAO DE TLINHA
 
 
 
@@ -38,7 +38,8 @@ bool igual(double i, double j){
 }
 
 bool maior_igual(double i, double j){
-    if(i >= j * (1-EPSL))
+    // if(i >= j * (1-EPSL))
+    if(i >= j - EPSL)
         return true;
     return false;
 }
@@ -322,8 +323,8 @@ double primalDual(int qtdCli, int qtdInst, double * custoF, double * custoA){
 			prontoContribuirW[e] = true;
 			qtdContribuintes[S.asBlueNode(S.v(e))] += 1;
 
-			indice_inst = nome[S.v(e)] - qtd_clientes;
-			matriz_adjacencia[nome[S.u(e)]][indice_inst] = 1;
+			// indice_inst = nome[S.v(e)] - qtd_clientes;
+			// matriz_adjacencia[nome[S.u(e)]][indice_inst] = 1;
 			
 		}
 	}
@@ -481,7 +482,6 @@ double primalDual(int qtdCli, int qtdInst, double * custoF, double * custoA){
 			menorAB = qtd_menorB;
 		}
 
-
 		if(DEBUG >= EXIBIR_TEMPO){
 			cout <<"[TEMPO] Iniciando contagem de tempo para atualizar valores como v, w, somatorioW, prontoContribuirW, qtdContribuintes e matriz_adjacencia. Iteracao: " << contador_iteracoes << endl;
 			//Iniciando a contagem do tempo
@@ -502,12 +502,15 @@ double primalDual(int qtdCli, int qtdInst, double * custoF, double * custoA){
 			if(prontoContribuirW[e]){ // se está pronto para contribuir
 				w[e] += menorAB; 
 				somatorioW[S.asBlueNode(S.v(e))] += menorAB; // aumenta esse valor no somatorio da instalacao correspondente
+
+				indice_inst = nome[S.v(e)] - qtd_clientes;
+				matriz_adjacencia[nome[S.u(e)]][indice_inst] = 1; // atribui esse novo cliente em sua lista
 			}
 			else if(igual(custoAtribuicao[e],v[S.asRedNode(S.u(e))])){ // SENAO SE: acabou de ficar pronto para contribuir (pagou o c.a.)
 				prontoContribuirW[e] = true;
 				qtdContribuintes[S.asBlueNode(S.v(e))] += 1;
-				indice_inst = nome[S.v(e)] - qtd_clientes;
-				matriz_adjacencia[nome[S.u(e)]][indice_inst] = 1; // atribui esse novo cliente em sua lista
+				// indice_inst = nome[S.v(e)] - qtd_clientes;
+				// matriz_adjacencia[nome[S.u(e)]][indice_inst] = 1; // atribui esse novo cliente em sua lista
 			}
 		}
 
@@ -525,7 +528,8 @@ double primalDual(int qtdCli, int qtdInst, double * custoF, double * custoA){
 		// Repetir IF, tratar dos detalhes agora
 
 		// SE FOR O CASO A ou empate: verificar se a instalação que aquele cliente alcançou ja estava aberta, se sim, remover ele dos ativos
-		if(qtd_menorA <= qtd_menorB){
+		// if(qtd_menorA <= qtd_menorB){
+		if(maior_igual(qtd_menorB,qtd_menorA)){
 
 			if(DEBUG >= EXIBIR_TEMPO){
 				cout <<"[TEMPO] Iniciando contagem de tempo para detalhes caso A. Iteracao: " << contador_iteracoes << endl;
@@ -584,7 +588,8 @@ double primalDual(int qtdCli, int qtdInst, double * custoF, double * custoA){
 		}
 
 		// SE FOR O CASO B ou empate: caso B seja o menor valor: abrir a instalação i e remover os seus contribuintes dos clientes ativos (lembrando de remover eles das listas de contribuintes das outras instalações)
-		if(qtd_menorA >= qtd_menorB){ 
+		// if(qtd_menorA >= qtd_menorB){ 
+		if(maior_igual(qtd_menorA,qtd_menorB)){ 
 
 			if(DEBUG >= EXIBIR_TEMPO){
 				cout <<"[TEMPO] Iniciando contagem de tempo para detalhes caso B. Iteracao: " << contador_iteracoes << endl;
@@ -749,6 +754,7 @@ double primalDual(int qtdCli, int qtdInst, double * custoF, double * custoA){
 
 	indice_inst = 0;
 
+
 	if(DEBUG >= EXIBIR_MATRIZ_ADJACENCIA){
 		cout << "Exibindo matriz de adjacencia" << endl;
 		for(int i=0;i<qtd_clientes;i++){
@@ -757,6 +763,39 @@ double primalDual(int qtdCli, int qtdInst, double * custoF, double * custoA){
 			}
 			cout << endl;
 		}
+	}
+
+
+	int * vetor;
+	vetor = (int *) malloc(qtd_clientes * sizeof(int));
+
+	int cont2 = 0;
+
+	cout << "INSTALACOES ABERTAS: " << endl;
+
+	for(ListBpGraph::BlueNodeIt n(S); n != INVALID; ++n){
+		if(aberta[n]){
+			cout << "no id: " << S.id(n)  << " - nome: " << nome[n] << " - aberta: " << aberta[n] << endl;
+		}
+	}
+
+	cout << "LINHA: " << endl;
+	for(int i=0;i<qtd_clientes;i++){
+		if(matriz_adjacencia[i][49]){
+			cout << i << " ";
+			vetor[cont2++] = i;
+		}
+	}
+	cout << endl;
+
+	for(int i=0;i<cont2;i++){
+		cout <<"cliente: " << vetor[i] << " - ";
+		for(int j=0;j<qtd_instalacoes;j++){
+			if(matriz_adjacencia[vetor[i]][j]){
+				cout << j << " "; 
+			}
+		}
+		cout << endl;
 	}
 
 
@@ -872,7 +911,6 @@ double primalDual(int qtdCli, int qtdInst, double * custoF, double * custoA){
 			cout << "Removendo a instalacao escolhida " << indice_inst + qtd_clientes << " das abertas" << endl;
 		}
 
-
 		aberta[S.asBlueNode(S.nodeFromId(indice_inst + qtd_clientes))] = false;
 		qtd_inst_abertas -= 1;
 	}
@@ -929,7 +967,12 @@ double primalDual(int qtdCli, int qtdInst, double * custoF, double * custoA){
 	// Abrir todas as instalacoes em Tlinha e atribuir cada cliente à instalacao mais próxima
 
 	// Criação de nós de clientes em Tlinha
-	ListBpGraph::RedNode cliTlinha[qtd_clientes];
+	ListBpGraph::RedNode * cliTlinha;
+	cliTlinha = (ListBpGraph::RedNode*) malloc((qtd_clientes) * sizeof(ListBpGraph::RedNode));
+    if(!cliTlinha){
+        cout << "Memory Allocation Failed";
+        exit(1);
+    }
 
 
 	int qtd_cliTlinha = 0; // indica a quantidade de clientes ja em Tlinha
@@ -959,7 +1002,6 @@ double primalDual(int qtdCli, int qtdInst, double * custoF, double * custoA){
 	//TODO: Talvez mudar aqui o jeito de fazer pra percorrer menos gente
 	// Percorrer todos os clientes de g
 	for(ListBpGraph::RedNodeIt n(g); n != INVALID; ++n){
-
 		for (ListBpGraph::IncEdgeIt e(g, n); e != INVALID; ++e) { // Percorre todas arestas desse nó (ligam a instalacoes)
 			if(estaEmTlinha[g.asBlueNode(g.v(e))]){ // se a instalacao correspondente está em Tlinha
 				if(custoAtribuicao[e] <= menorDistancia){ // encontra a instalacao (que está em Tlinha) que possui a menor distancia
