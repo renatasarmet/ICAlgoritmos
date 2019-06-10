@@ -27,7 +27,7 @@ using namespace std;
 #define EXIBIR_GRAFO 3 // corresponde a descricao dos clientes, instalacoes e arcos
 #define EXIBIR_MATRIZ_ADJACENCIA 4 // corresponde à parte final, na criacao de Tlinha
 
-#define DEBUG 1 // OPCOES DE DEBUG: 1 PARA EXIBIR ACOES, 2 PARA EXIBIR TEMPO, 3 PARA EXIBIR AS MUDANÇAS NO GRAFO, 4 PARA EXIBIR AS MUDANCAS NA MATRIZ DE ADJACENCIA NA CRIACAO DE TLINHA
+#define DEBUG 0 // OPCOES DE DEBUG: 1 PARA EXIBIR ACOES, 2 PARA EXIBIR TEMPO, 3 PARA EXIBIR AS MUDANÇAS NO GRAFO, 4 PARA EXIBIR AS MUDANCAS NA MATRIZ DE ADJACENCIA NA CRIACAO DE TLINHA
 
 
 
@@ -766,37 +766,37 @@ double primalDual(int qtdCli, int qtdInst, double * custoF, double * custoA){
 	}
 
 
-	int * vetor;
-	vetor = (int *) malloc(qtd_clientes * sizeof(int));
+	// int * vetor;
+	// vetor = (int *) malloc(qtd_clientes * sizeof(int));
 
-	int cont2 = 0;
+	// int cont2 = 0;
 
-	cout << "INSTALACOES ABERTAS: " << endl;
+	// cout << "INSTALACOES ABERTAS: " << endl;
 
-	for(ListBpGraph::BlueNodeIt n(S); n != INVALID; ++n){
-		if(aberta[n]){
-			cout << "no id: " << S.id(n)  << " - nome: " << nome[n] << " - aberta: " << aberta[n] << endl;
-		}
-	}
+	// for(ListBpGraph::BlueNodeIt n(S); n != INVALID; ++n){
+	// 	if(aberta[n]){
+	// 		cout << "no id: " << S.id(n)  << " - nome: " << nome[n] << " - aberta: " << aberta[n] << endl;
+	// 	}
+	// }
 
-	cout << "LINHA: " << endl;
-	for(int i=0;i<qtd_clientes;i++){
-		if(matriz_adjacencia[i][49]){
-			cout << i << " ";
-			vetor[cont2++] = i;
-		}
-	}
-	cout << endl;
+	// cout << "LINHA: " << endl;
+	// for(int i=0;i<qtd_clientes;i++){
+	// 	if(matriz_adjacencia[i][49]){
+	// 		cout << i << " ";
+	// 		vetor[cont2++] = i;
+	// 	}
+	// }
+	// cout << endl;
 
-	for(int i=0;i<cont2;i++){
-		cout <<"cliente: " << vetor[i] << " - ";
-		for(int j=0;j<qtd_instalacoes;j++){
-			if(matriz_adjacencia[vetor[i]][j]){
-				cout << j << " "; 
-			}
-		}
-		cout << endl;
-	}
+	// for(int i=0;i<cont2;i++){
+	// 	cout <<"cliente: " << vetor[i] << " - ";
+	// 	for(int j=0;j<qtd_instalacoes;j++){
+	// 		if(matriz_adjacencia[vetor[i]][j]){
+	// 			cout << j << " "; 
+	// 		}
+	// 	}
+	// 	cout << endl;
+	// }
 
 
 	if(DEBUG >= EXIBIR_TEMPO){
