@@ -8,9 +8,14 @@ Formulação de programacao linear inteira para o problema da localizacao de ins
 
 Considere que tipoEntrada significa 1 para o tipo ORLIB e 2 para o tipo SIMPLE FORMAT.
 Considere que tipoFormulacao significa 1 para ILP, 2 para LP ou 3 para MLP.
-Então, por fim, basta digitar:
+Então, basta digitar:
 
 python3 uflp_lp_ilp_mip.py tipoEntrada tipoFormulacao
+
+
+Por fim, para gerar o csv com todos os arquivos testados, basta digitar:
+
+python3 leitorSol.py
 
 
 *SOBRE AS ENTRADAS*

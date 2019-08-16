@@ -20,7 +20,7 @@ Então, basta digitar:
 ./tempo tipoEntrada
 
 
-For fim, para gerar o csv com todos os arquivos testados, basta digitar:
+Por fim, para gerar o csv com todos os arquivos testados, basta digitar:
 
 python3 leitorSol.py
 

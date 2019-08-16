@@ -666,16 +666,6 @@ def solve_it(input_type, input_data, formulation_type):
     #return output_data
     return pair_best
 
-# Solution list is a list of tuple. Each tuple has the following format : input file name, solution cost, time spent, if it is optimal or not
-def export_csv(output_file,solution_list):
-    with open(output_file, 'w', newline='') as csvfile:
-        w = csv.writer(csvfile, dialect='excel')
-        w.writerow(["Input file name", "Solution cost", "Time spent", "Optimal"])
-        for sol in solution_list:
-            w.writerow([sol[0],sol[1],sol[2],sol[3]])
-
-
-
 
 
 if __name__ == '__main__':
@@ -714,7 +704,6 @@ if __name__ == '__main__':
 
             files_test = input_list_data.split()
 
-            solution_list = []
             for file_name in files_test:
                 print()
                 print("Input file:", file_name)
@@ -732,13 +721,13 @@ if __name__ == '__main__':
                 if DEBUG >= 1:
                     print("Time spent =", time_spent)
 
-                solution_list.append((file_name,solution[0], time_spent, solution[2]))
+                complete_sol_file_name = 'solutions/' + file_name + '.sol'
 
-            # Exporting csv 
-            if(input_type == '1'):
-                export_csv("solutions1.csv",solution_list)
-            elif(input_type == '2'):
-                export_csv("solutions2.csv",solution_list)
+                file = open(complete_sol_file_name, 'w')
+                sentence = str(solution[0]) + "," + str(time_spent) + "," + str(solution[2])
+                file.write(sentence)
+                file.close()
+
     else:
         print('This test requires an input type and the formulation type. \nFirst please select one: 1 for ORLIB inputs or 2 for SIMPLE FORMAT inputs. \nSecond please select one: 1 for ILP, 2 for LP or 3 for MIP')
 
