@@ -15,9 +15,14 @@ g++ tempo.cpp trataInput.cpp guloso.cpp -o tempo
 
 
 Considere que tipoEntrada significa 1 para o tipo ORLIB e 2 para o tipo SIMPLE FORMAT.
-Então, por fim, basta digitar:
+Então, basta digitar:
 
 ./tempo tipoEntrada
+
+
+For fim, para gerar o csv com todos os arquivos testados, basta digitar:
+
+python3 leitorSol.py
 
 
 *SOBRE AS ENTRADAS*
