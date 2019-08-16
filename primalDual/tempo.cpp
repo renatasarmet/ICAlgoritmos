@@ -18,15 +18,20 @@ int main(int argc, char *argv[]){
 	// Declaracao variavel auxiliar que tera o nome do arquivo a ser utilizado naquela iteracao
 	char auxInputName[100]; 
 
+	// Declaracao de variaveis auxiliares para a formacao do arquivo .sol
+	char auxSolName[105];
+	char dirName[45] = "solutions/";
+	char completeAuxSolName[150];
+
 	// Abertura de arquivo para leitura e escrita. 
 	// Toda a escrita sera feita no final do arquivo, acrescentando ao conteudo ja existente (app)
 	fstream timeLog;
 	timeLog.open("timeLog.txt", std::fstream::in | std::fstream::out | std::fstream::app);
 
-	// Arquivo para salvar as solucoes 
-	ofstream solutionsCSV;
-	
 
+	// Arquivo para salvar a solucao
+	ofstream solutionTXT;
+	
 
 	// Declaracao variaveis que indicam o tempo no inicio e fim da execucao
 	struct timespec start, finish;
@@ -67,13 +72,9 @@ int main(int argc, char *argv[]){
 
 	if(strcmp(argv[1],"1") == 0){
 		strcpy(nameInput,"testCases1.txt");
-		//Abertura de arquivo para leitura e escrita.
-		solutionsCSV.open("solutions1.csv", std::ofstream::out | std::ofstream::trunc);
 	}
 	else if(strcmp(argv[1], "2") == 0){
 		strcpy(nameInput,"testCases2.txt");
-		//Abertura de arquivo para leitura e escrita.
-		solutionsCSV.open("solutions2.csv", std::ofstream::out | std::ofstream::trunc);
 	}
 	else{
 		cout << "Erro no parametro que indica o tipo de entrada." << endl;
@@ -91,15 +92,19 @@ int main(int argc, char *argv[]){
 		inputName >> auxInputName;
 		cout << endl << "Entrada a ser utilizada: " <<  auxInputName << endl;
 
+
+		//Abertura de arquivo para leitura e escrita do .sol .
+		strcpy(auxSolName,dirName);
+		strcat(auxSolName,auxInputName);
+		strcat(auxSolName,".sol");
+		solutionTXT.open(auxSolName, std::ofstream::out | std::ofstream::trunc);
+
 		// Criando a string do caminho completo do arquivo
 		strcpy(completeNameInput,baseNameInput);
 		strcat(completeNameInput,auxInputName);
 
 		// Colocando no timeLog.txt o nome da proxima entrada a ser testada
 		timeLog << auxInputName << endl;
-
-		// Colocando no solutionsCSV o nome da proxima entrada a ser testada
-		solutionsCSV << auxInputName << ",";
 
 		// Valor alto colocado como inicio, ideal que fosse algo que houvesse certeza que nunca ocorreria.
 		minTime = 1000000000000000000;
@@ -155,16 +160,23 @@ int main(int argc, char *argv[]){
 		avgTime = avgTime/N_TESTES;
 		avgCost = avgCost/N_TESTES;
 
-		// Colocando no solutionsCSV o valor medio da solucao
-		solutionsCSV << avgCost << ",";
+		// Colocando no solutionTXT o valor minimo da solucao
+		solutionTXT << minCost << ",";
 
-		// Colocando no solutionsCSV o tempo medio gasto 
-		solutionsCSV << avgTime << endl;
+		// Colocando no solutionTXT o valor medio da solucao
+		solutionTXT << avgCost << ",";
+
+		// Colocando no solutionTXT o valor maximo da solucao
+		solutionTXT << maxCost << ",";
 		
+		// Colocando no solutionTXT o tempo medio gasto 
+		solutionTXT << avgTime;
+
 		// Colocando no timeLog.txt o valor minimo, maximo e medio de tempo gasto e do custo da solucao nas execucoes dessa entrada
 		timeLog << "Time - Min: " << minTime << endl << "Max: " << maxTime << endl << "Avg: " << avgTime << endl << endl;
 		timeLog << "Cost - Min: " << minCost << endl << "Max: " << maxCost << endl << "Avg: " << avgCost << endl << endl;
 
+		solutionTXT.close();
 	}
 
 	return 0;

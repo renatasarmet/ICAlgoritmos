@@ -29,6 +29,7 @@ int main(int argc, char *argv[]){
 	timeLog.open("timeLog.txt", std::fstream::in | std::fstream::out | std::fstream::app);
 
 
+	// Arquivo para salvar a solucao
 	ofstream solutionTXT;
 	
 
