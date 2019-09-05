@@ -51,7 +51,7 @@ Tambem eh calculado o total gasto, sendo esse a soma dos custos de abrir todas a
 
 Alem disso, eh gerado um arquivo timeLog.txt que possui as informacoes sobre o tempo gasto em cada execucao.
 
-
+--- alem disso, é gerado um .sol contendo o minCost, avgCost, maxCost, avgTime, instalacoes conectadas a cada cliente
 
 
 *SOBRE AS ENTRADAS ORLIB*
