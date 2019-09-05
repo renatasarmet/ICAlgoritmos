@@ -6,7 +6,7 @@
 
 using namespace std;
 
-double trataInput(char inputName[], char tipoEntrada[]){
+solutionType trataInput(char inputName[], char tipoEntrada[]){
 
    // Declaracoes iniciais
    int qtd_clientes, qtd_instalacoes, cont;
@@ -17,6 +17,8 @@ double trataInput(char inputName[], char tipoEntrada[]){
 
    double * custoA;
    double * custoF;
+
+   solutionType solution;
 
    int debug = 0; // OPCOES DE DEBUG: 0 PARA NAO EXIBIR NADA, 1 PARA EXIBIR AS INFORMACOES SENDO SALVAS
 
@@ -78,7 +80,8 @@ double trataInput(char inputName[], char tipoEntrada[]){
       }
 
       // Chamando a funcao que resolve o problema de fato
-      sol_cost = guloso(qtd_clientes, qtd_instalacoes, custoF, custoA);
+      solution = guloso(qtd_clientes, qtd_instalacoes, custoF, custoA);
+      sol_cost = solution.gastoTotalFinal;
    }
    else if(strcmp(tipoEntrada,"2")==0){
       inputFLP >> auxCRead; // Descartando a palavra FILE
@@ -127,11 +130,12 @@ double trataInput(char inputName[], char tipoEntrada[]){
       }
 
       // Chamando a funcao que resolve o problema de fato
-      sol_cost = guloso(qtd_clientes, qtd_instalacoes, custoF, custoA);
+      solution = guloso(qtd_clientes, qtd_instalacoes, custoF, custoA);
+      sol_cost = solution.gastoTotalFinal;
    }
    else{
       cout << "Tipo de entrada invalida." << endl;
-      return sol_cost;
+      return solution;
    }
    
 
@@ -139,5 +143,5 @@ double trataInput(char inputName[], char tipoEntrada[]){
    inputFLP.close();
    free(custoF);
    free(custoA);
-   return sol_cost;
+   return solution;
 }

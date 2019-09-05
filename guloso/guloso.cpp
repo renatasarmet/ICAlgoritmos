@@ -21,7 +21,6 @@ using namespace std;
 
 #define DEBUG 0 // OPCOES DE DEBUG: 1 PARA EXIBIR ACOES, 2 PARA EXIBIR TEMPO, 3 PARA EXIBIR AS MUDANÇAS NO GRAFO, 4 PARA EXIBIR AS MUDANCAS NA MATRIZ DE ADJACENCIA NA CRIACAO DE TLINHA
 
-
 void mergeSort(int *vetor, int *vetorID, int posicaoInicio, int posicaoFim) {
 
     int i, j, k, metadeTamanho, *vetorTemp, *vetorTempID;
@@ -147,7 +146,11 @@ bool maior_igual(double i, double j){
 
 
 // Retornar o valor da solucao
-double guloso(int qtdCli, int qtdInst, double * custoF, double * custoA){
+solutionType guloso(int qtdCli, int qtdInst, double * custoF, double * custoA){
+
+	// Struct que vai retornar a solução
+	solutionType solution;
+
 	
 	/* Inicio declaracoes variaveis para calculo de tempo - finalidade eh encontrar gargalos */
 
@@ -175,6 +178,16 @@ double guloso(int qtdCli, int qtdInst, double * custoF, double * custoA){
 	int qtd_clientes = qtdCli; // Indica quantidade de clientes
 	int qtd_instalacoes = qtdInst; // Indica quantidade de instalacoes
 
+
+	// indica as instalacoes finais atribuidas a cada cliente
+	solution.instalacoes_conectadas = (int*) malloc((qtd_clientes) * sizeof(int));
+    if(!solution.instalacoes_conectadas){
+        cout << "Memory Allocation Failed";
+        exit(1);
+    }
+
+    // Salvando a qtd de clientes para utilizar nos outros arquivos
+    solution.qtd_clientes = qtd_clientes;
 
 	// conjunto de clientes a serem removidos de g na iteração, pois deixaram de ser ativos
 	int * apagar_clientes;
@@ -386,47 +399,6 @@ double guloso(int qtdCli, int qtdInst, double * custoF, double * custoA){
 	}
 
 
-	/** ESSA PARTE DO CODIGO SO SERVE PARA EU TESTAR AS MINHAS FUNCOES SE ESTAO CORRETAS**/
-	// int teste[4];
-	// teste[0] = 50;
-	// teste[1] = 20;
-	// teste[2] = 21;
-	// teste[3] = 40;
-
-	// int id[4];
-	// id[0] = 0;
-	// id[1] = 1;
-	// id[2] = 2;
-	// id[3] = 3;
-
-	// mergeSort(teste, id, 0, 3);
-
-	// int tam;
-	// double custo;
-
-	// melhor_subconjunto(tam, custo,teste, 1,  0, 4, maiorCij);
-	// cout << "tam: " << tam << " custo: " << custo <<  endl;
-
-
-	// int apagar[2];
-	// apagar[0] = 3;
-	// apagar[1] = 2;
-
-	// excluindo_clientes_nao_ativos(teste, id, 4, apagar, 2);
-
-	// for(int i=0;i<4;i++){
-	// 	cout << "i = " << i << " teste = " << teste[i] << " id = " << id[i] << endl;
-	// }
-
-	// int valor = tam;
-
-	// melhor_subconjunto(tam, custo,teste, 1,  valor, 4, maiorCij);
-	// cout << "tam: " << tam << " custo: " << custo <<  endl;
-
-
-	/************** ATE AQUI EH SO PRA TESTAR SE AS MINHA FUNCOES ESTAO CORRETAS**/
-
-
 	int id_inst_escolhida;
 	double melhor_custo_escolhido;
 	int melhor_tam_escolhido;
@@ -523,8 +495,15 @@ double guloso(int qtdCli, int qtdInst, double * custoF, double * custoA){
 	}
 
 	// Somando os custos de conexao dos clientes a instalacao mais proxima aberta
+	cont = 0;
 	for(ListBpGraph::RedNodeIt n(g); n != INVALID; ++n){		// percorre os clientes
 		gastoTotalFinal += custoAtribuicao[findEdge(g, n, instalacoes[inst_aberta_prox[n]])];
+
+		// Colocando as instalacoes abertas mais proximas em um vetor pra retornar na solucao
+		solution.instalacoes_conectadas[cont] = inst_aberta_prox[clientes[cont]]; // esse loop percorre todos os clientes, então posso usar o cont normalmente aqui
+		// cout << "cliente " << cont << " com inst " << solution.instalacoes_conectadas[cont] << endl;
+
+		cont += 1;
 	}
 	cout << "GASTO TOTAL FINAL: " << gastoTotalFinal << endl;
 
@@ -539,9 +518,14 @@ double guloso(int qtdCli, int qtdInst, double * custoF, double * custoA){
 		realTimeSpent += (real_finish.tv_nsec - real_start.tv_nsec) / 1000000000.0; // Necessario para obter uma precisao maior 
 		cout << "Tempo total final da funcao: " << realTimeSpent << " segundos" << endl;
 	}
-	
+
+
 	free(clientes);
 	free(instalacoes);
 	free(arcos);
-	return(gastoTotalFinal);
+
+	solution.gastoTotalFinal = gastoTotalFinal;
+	solution.timeSpent = 0; // só para não deixar lixo, isso vai ser preenchido melhor no outro arquivo
+
+	return(solution);
 }
