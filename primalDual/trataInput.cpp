@@ -6,17 +6,18 @@
 
 using namespace std;
 
-double trataInput(char inputName[], char tipoEntrada[]){
+solutionType trataInput(char inputName[], char tipoEntrada[]){
 
    // Declaracoes iniciais
    int qtd_clientes, qtd_instalacoes, cont;
    double auxRead;
    char auxCRead[30];
    ifstream inputFLP;
-   double sol_cost = 0;
 
    double * custoA;
    double * custoF;
+
+   solutionType solution;
 
    int debug = 0; // OPCOES DE DEBUG: 0 PARA NAO EXIBIR NADA, 1 PARA EXIBIR AS INFORMACOES SENDO SALVAS
 
@@ -78,7 +79,7 @@ double trataInput(char inputName[], char tipoEntrada[]){
       }
 
       // Chamando a funcao que resolve o problema de fato
-      sol_cost = primalDual(qtd_clientes, qtd_instalacoes, custoF, custoA);
+      solution = primalDual(qtd_clientes, qtd_instalacoes, custoF, custoA);
    }
    else if(strcmp(tipoEntrada,"2")==0){
       inputFLP >> auxCRead; // Descartando a palavra FILE
@@ -127,11 +128,11 @@ double trataInput(char inputName[], char tipoEntrada[]){
       }
 
       // Chamando a funcao que resolve o problema de fato
-      sol_cost = primalDual(qtd_clientes, qtd_instalacoes, custoF, custoA);
+      solution = primalDual(qtd_clientes, qtd_instalacoes, custoF, custoA);
    }
    else{
       cout << "Tipo de entrada invalida." << endl;
-      return sol_cost;
+      return solution;
    }
    
 
@@ -139,5 +140,5 @@ double trataInput(char inputName[], char tipoEntrada[]){
    inputFLP.close();
    free(custoF);
    free(custoA);
-   return sol_cost;
+   return solution;
 }

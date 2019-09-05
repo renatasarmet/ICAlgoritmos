@@ -1,6 +1,11 @@
 #include <iostream>
 
-double trataInput(char inputName[], char tipoEntrada[]);
-double primalDual(int qtdCli, int qtdInst, double * custoF, double * custoA);
+struct solutionType {
+	int * instalacoes_conectadas;
+	double gastoTotalFinal;
+	double timeSpent;
+	int qtd_clientes;
+};
 
-void teste();
+solutionType trataInput(char inputName[], char tipoEntrada[]);
+solutionType primalDual(int qtdCli, int qtdInst, double * custoF, double * custoA);

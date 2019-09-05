@@ -519,13 +519,14 @@ solutionType guloso(int qtdCli, int qtdInst, double * custoF, double * custoA){
 		cout << "Tempo total final da funcao: " << realTimeSpent << " segundos" << endl;
 	}
 
+	// Colocando valores na struct para retornar
+	solution.gastoTotalFinal = gastoTotalFinal;
+	solution.timeSpent = 0; // só para não deixar lixo, isso vai ser preenchido melhor no outro arquivo
+
 
 	free(clientes);
 	free(instalacoes);
 	free(arcos);
-
-	solution.gastoTotalFinal = gastoTotalFinal;
-	solution.timeSpent = 0; // só para não deixar lixo, isso vai ser preenchido melhor no outro arquivo
 
 	return(solution);
 }

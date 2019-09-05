@@ -13,7 +13,6 @@ solutionType trataInput(char inputName[], char tipoEntrada[]){
    double auxRead;
    char auxCRead[30];
    ifstream inputFLP;
-   double sol_cost = 0;
 
    double * custoA;
    double * custoF;
@@ -81,7 +80,6 @@ solutionType trataInput(char inputName[], char tipoEntrada[]){
 
       // Chamando a funcao que resolve o problema de fato
       solution = guloso(qtd_clientes, qtd_instalacoes, custoF, custoA);
-      sol_cost = solution.gastoTotalFinal;
    }
    else if(strcmp(tipoEntrada,"2")==0){
       inputFLP >> auxCRead; // Descartando a palavra FILE
@@ -131,7 +129,6 @@ solutionType trataInput(char inputName[], char tipoEntrada[]){
 
       // Chamando a funcao que resolve o problema de fato
       solution = guloso(qtd_clientes, qtd_instalacoes, custoF, custoA);
-      sol_cost = solution.gastoTotalFinal;
    }
    else{
       cout << "Tipo de entrada invalida." << endl;

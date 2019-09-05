@@ -9,5 +9,3 @@ struct solutionType {
 
 solutionType trataInput(char inputName[], char tipoEntrada[]);
 solutionType guloso(int qtdCli, int qtdInst, double * custoF, double * custoA);
-
-void teste();

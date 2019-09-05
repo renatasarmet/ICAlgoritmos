@@ -46,7 +46,11 @@ bool maior_igual(double i, double j){
 
 
 // Retornar o valor da solucao
-double primalDual(int qtdCli, int qtdInst, double * custoF, double * custoA){
+solutionType primalDual(int qtdCli, int qtdInst, double * custoF, double * custoA){
+
+	// Struct que vai retornar a solução
+	solutionType solution;
+
 	
 	/* Inicio declaracoes variaveis para calculo de tempo - finalidade eh encontrar gargalos */
 
@@ -73,6 +77,17 @@ double primalDual(int qtdCli, int qtdInst, double * custoF, double * custoA){
 
 	int qtd_clientes = qtdCli; // Indica quantidade de clientes
 	int qtd_instalacoes = qtdInst; // Indica quantidade de instalacoes
+
+
+	// indica as instalacoes finais atribuidas a cada cliente
+	solution.instalacoes_conectadas = (int*) malloc((qtd_clientes) * sizeof(int));
+    if(!solution.instalacoes_conectadas){
+        cout << "Memory Allocation Failed";
+        exit(1);
+    }
+
+    // Salvando a qtd de clientes para utilizar nos outros arquivos
+    solution.qtd_clientes = qtd_clientes;
 
 
 	// conjunto de clientes a serem removidos de S na iteração, pois deixaram de ser ativos
@@ -133,10 +148,10 @@ double primalDual(int qtdCli, int qtdInst, double * custoF, double * custoA){
 	ListBpGraph::NodeMap<int> nome(g);
 
 	// Variavel que armazena o maior valor cij dado na entrada, para uso posterior
-	int maiorCij = 0;
+	double maiorCij = 0;
 
 	// Variavel que armazena o maior valor fi dado na entrada, para uso posterior
-	int maiorFi = 0;
+	double maiorFi = 0;
 
 	if(DEBUG >= EXIBIR_TEMPO){
 		cout <<"[TEMPO] Iniciando contagem de tempo para criacao do grafo e seus maps" << endl;
@@ -992,7 +1007,7 @@ double primalDual(int qtdCli, int qtdInst, double * custoF, double * custoA){
 	int qtd_arcosTlinha = 0; // indica a quantidade de arcos ja criados em Tlinha
 
 
-	int menorDistancia = maiorCij;
+	double menorDistancia = maiorCij;
 	int nomeCliMenorDist = -1;
 	int nomeInstMenorDist = -1;
 
@@ -1093,6 +1108,7 @@ double primalDual(int qtdCli, int qtdInst, double * custoF, double * custoA){
 		cout << endl << "Percorrendo por todos os arcos" << endl;
 	}
 
+	cont = 0;
 	for(ListBpGraph::EdgeIt e(Tlinha); e!= INVALID; ++e){
 		if(DEBUG >= EXIBIR_ACOES){
 			cout << "arco id: " << Tlinha.id(e) ;
@@ -1101,6 +1117,13 @@ double primalDual(int qtdCli, int qtdInst, double * custoF, double * custoA){
 		}
 
 		gastoTotalFinal += caTlinha[e]; // acrescentando o valor de atribuicao desse cliente a essa instalacao
+
+		// Colocando as instalacoes abertas mais proximas em um vetor pra retornar na solucao
+		indice_inst = nomeTlinha[Tlinha.v(e)] - qtd_clientes; // colocando -qtd_clientes para colocar o id correto da inst
+		solution.instalacoes_conectadas[cont] = indice_inst; // esse loop percorre todos os clientes, então posso usar o cont normalmente aqui
+		// cout << "cliente " << cont << " com inst " << solution.instalacoes_conectadas[cont] << endl;
+
+		cont += 1;
 	}
 
 	cout << "Gasto total final: " << gastoTotalFinal << endl;
@@ -1125,11 +1148,17 @@ double primalDual(int qtdCli, int qtdInst, double * custoF, double * custoA){
 		cout << "Tempo total final da funcao: " << realTimeSpent << " segundos" << endl;
 	}
 	
+	// Colocando valores na struct para retornar
+	solution.gastoTotalFinal = gastoTotalFinal;
+	solution.timeSpent = 0; // só para não deixar lixo, isso vai ser preenchido melhor no outro arquivo
+
+
 	free(matriz_adjacencia);
 	free(clientes);
 	free(instalacoes);
 	free(arcos);
 	free(instTlinha);
 	free(arcosTlinha);
-	return(gastoTotalFinal);
+
+	return(solution);
 }

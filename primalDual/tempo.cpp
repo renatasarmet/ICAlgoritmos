@@ -31,6 +31,13 @@ int main(int argc, char *argv[]){
 
 	// Arquivo para salvar a solucao
 	ofstream solutionTXT;
+
+
+	// Struct que vai conter a solução retornada
+	solutionType currentSolution;
+
+	// Struct que vai conter a melhor solução até agora
+	solutionType bestSolution;
 	
 
 	// Declaracao variaveis que indicam o tempo no inicio e fim da execucao
@@ -48,9 +55,6 @@ int main(int argc, char *argv[]){
 	// Declaracao variavel que indica a media de tempo gasto para executar aquela entrada entre os N_TESTES
 	double avgTime;
 
-
-	// Declaracao variavel que guardara o custo da solucao retornado naquela execucao
-	double cost;
 
 	// Declaracao variavel que indica o minimo de custo da solucao retornado daquela entrada entre os N_TESTES. 
 	double minCost;
@@ -126,7 +130,7 @@ int main(int argc, char *argv[]){
 			clock_gettime(CLOCK_REALTIME, &start);
 
 			// Chamando o programa a ser cronometrado
-			cost = trataInput(completeNameInput, argv[1]);
+			currentSolution = trataInput(completeNameInput, argv[1]);
 
 			// Finalizando a contagem do tempo
 			clock_gettime(CLOCK_REALTIME, &finish);
@@ -143,17 +147,21 @@ int main(int argc, char *argv[]){
 				minTime = timeSpent;
 
 			// Atualizando valores de minimo e maximo do custo
-			if(cost > maxCost)
-				maxCost = cost;
-			if(cost < minCost)
-				minCost = cost;
+			if(currentSolution.gastoTotalFinal > maxCost)
+				maxCost = currentSolution.gastoTotalFinal;
+
+			if(currentSolution.gastoTotalFinal < minCost){
+				minCost = currentSolution.gastoTotalFinal;
+
+				bestSolution = currentSolution; // atualizando a melhor solucao
+			}
 
 			// Acrescentando no timeLog.txt o tempo gasto nessa iteracao e o custo da solucao
-			timeLog << i << " - Time spent: " << timeSpent << " - Solution cost: " << cost << endl;
+			timeLog << i << " - Time spent: " << timeSpent << " - Solution cost: " << currentSolution.gastoTotalFinal << endl;
 
 			// Incrementando valor que sera utilizado para calculo da media do tempo e do custo
 			avgTime += timeSpent;
-			avgCost += cost;
+			avgCost += currentSolution.gastoTotalFinal;
 		}
 
 		// Calculando de fato a media do tempo gasto e do custo da solucao
@@ -171,6 +179,11 @@ int main(int argc, char *argv[]){
 		
 		// Colocando no solutionTXT o tempo medio gasto 
 		solutionTXT << avgTime;
+
+		// Colocando no solutionsTXT as instalacoes finais conectadas
+		for(int i=0; i < bestSolution.qtd_clientes; i++){
+			solutionTXT << "," << bestSolution.instalacoes_conectadas[i];
+		}
 
 		// Colocando no timeLog.txt o valor minimo, maximo e medio de tempo gasto e do custo da solucao nas execucoes dessa entrada
 		timeLog << "Time - Min: " << minTime << endl << "Max: " << maxTime << endl << "Avg: " << avgTime << endl << endl;
