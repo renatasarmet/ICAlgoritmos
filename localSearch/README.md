@@ -1,7 +1,7 @@
 Codigos para resolver o problema da localizacao de instalacoes sem capacidade
 
 
--------- ALGORITMO GULOSO --------
+-------- ALGORITMO DE BUSCA LOCAL --------
 
 
 *COMO RODAR?*
