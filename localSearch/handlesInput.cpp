@@ -200,6 +200,9 @@ solutionType handlesInput(char inputName[], char initialSolName[], char inputTyp
 	// salvando a quantidade de clientes em solution
 	solution.qty_clients = qty_clients;
 
+	// zerando tempo, só para nao ficar lixo
+	solution.timeSpent = 0;
+
 	// Chamando a funcao que resolve o problema de fato
 	solution = localSearch(qty_facilities, custoF, custoA, solution);
 

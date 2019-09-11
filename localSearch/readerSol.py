@@ -24,9 +24,10 @@ for file_name in files_test:
 
 		if(input_data):
 			# solution :: 0 - minCost, 1 - avgCost, 2 - maxCost, 3 - avgTime, 4....qtd_clientes - connected facility
-			solution = input_data.split(",")
+			solution = input_data.split(" ")
 
-			solution_list.append((file_name[:-4],solution[0],solution[3])) #deleting ".sol" from filename
+			if len(solution) >= 4: # checking if the solution is in a correct format
+				solution_list.append((file_name[:-4],solution[0],solution[3])) #deleting ".sol" from filename
 
 # Exporting csv 
 export_csv("solutions.csv",solution_list)

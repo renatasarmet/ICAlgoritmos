@@ -24,9 +24,10 @@ for file_name in files_test:
 
 		if(input_data):
 			# solution :: 0 - avgCost, 1 - avgTime, 2 - optimal
-			solution = input_data.split(",")
+			solution = input_data.split(" ")
 
-			solution_list.append((file_name[:-4],solution[0],solution[1],solution[2])) #deleting ".sol" from filename
+			if len(solution) >= 3: # checking if the solution is in a correct format
+				solution_list.append((file_name[:-4],solution[0],solution[1],solution[2])) #deleting ".sol" from filename
 
 # Exporting csv 
 export_csv("solutions.csv",solution_list)
