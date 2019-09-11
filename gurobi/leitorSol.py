@@ -15,17 +15,18 @@ files_test.sort()
 
 solution_list = []
 for file_name in files_test:
-	print("Input file:", file_name)
+	if file_name != ".DS_Store": # ignore this file
+		print("Input file:", file_name)
 
-	complete_file_name = 'solutions/' + file_name
-	with open(complete_file_name, 'r') as input_data_file:
-		input_data = input_data_file.read()
+		complete_file_name = 'solutions/' + file_name
+		with open(complete_file_name, 'r') as input_data_file:
+			input_data = input_data_file.read()
 
-	if(input_data):
-		# solution :: 0 - avgCost, 1 - avgTime, 2 - optimal
-		solution = input_data.split(",")
+		if(input_data):
+			# solution :: 0 - avgCost, 1 - avgTime, 2 - optimal
+			solution = input_data.split(",")
 
-		solution_list.append((file_name[:-4],solution[0],solution[1],solution[2])) #deleting ".sol" from filename
+			solution_list.append((file_name[:-4],solution[0],solution[1],solution[2])) #deleting ".sol" from filename
 
 # Exporting csv 
 export_csv("solutions.csv",solution_list)

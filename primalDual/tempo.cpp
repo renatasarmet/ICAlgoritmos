@@ -169,20 +169,20 @@ int main(int argc, char *argv[]){
 		avgCost = avgCost/N_TESTES;
 
 		// Colocando no solutionTXT o valor minimo da solucao
-		solutionTXT << minCost << ",";
+		solutionTXT << minCost << " ";
 
 		// Colocando no solutionTXT o valor medio da solucao
-		solutionTXT << avgCost << ",";
+		solutionTXT << avgCost << " ";
 
 		// Colocando no solutionTXT o valor maximo da solucao
-		solutionTXT << maxCost << ",";
+		solutionTXT << maxCost << " ";
 		
 		// Colocando no solutionTXT o tempo medio gasto 
 		solutionTXT << avgTime;
 
 		// Colocando no solutionsTXT as instalacoes finais conectadas
 		for(int i=0; i < bestSolution.qtd_clientes; i++){
-			solutionTXT << "," << bestSolution.instalacoes_conectadas[i];
+			solutionTXT << " " << bestSolution.instalacoes_conectadas[i];
 		}
 
 		// Colocando no timeLog.txt o valor minimo, maximo e medio de tempo gasto e do custo da solucao nas execucoes dessa entrada

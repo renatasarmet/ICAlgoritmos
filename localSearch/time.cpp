@@ -2,16 +2,16 @@
 #include <sstream>
 #include <fstream>
 #include <ctime>
-#include "declaracoes.hpp"
+#include "definitions.hpp"
 
-#define N_TESTES 1//25 // Quantidade de vezes que sera testada a mesma entrada, para calculo de minimo, maximo e media
+#define N_TESTS 1//25 // Quantidade de vezes que sera testada a mesma entrada, para calculo de minimo, maximo e media
 
 using namespace std;
 
 int main(int argc, char *argv[]){
 
 	if(argc != 2){
-		cout << "Erro nos parametros. Necessario passar o tipo de entrada." << endl;
+		cout << "Error in the parameters. You must enter the input type." << endl;
 		return 0;
 	}
 
@@ -46,23 +46,23 @@ int main(int argc, char *argv[]){
 	// Declaracao variavel que marcara o tempo calculado daquela execucao
 	double timeSpent;
 
-	// Declaracao variavel que indica o minimo de tempo gasto para executar aquela entrada entre os N_TESTES. 
+	// Declaracao variavel que indica o minimo de tempo gasto para executar aquela entrada entre os N_TESTS. 
 	double minTime;
 
-	// Declaracao variavel que indica o maximo de tempo gasto para executar aquela entrada entre os N_TESTES
+	// Declaracao variavel que indica o maximo de tempo gasto para executar aquela entrada entre os N_TESTS
 	double maxTime;	
 
-	// Declaracao variavel que indica a media de tempo gasto para executar aquela entrada entre os N_TESTES
+	// Declaracao variavel que indica a media de tempo gasto para executar aquela entrada entre os N_TESTS
 	double avgTime;
 
 
-	// Declaracao variavel que indica o minimo de custo da solucao retornado daquela entrada entre os N_TESTES. 
+	// Declaracao variavel que indica o minimo de custo da solucao retornado daquela entrada entre os N_TESTS. 
 	double minCost;
 
-	// Declaracao variavel que indica o maximo de custo da solucao retornado daquela entrada entre os N_TESTES. 
+	// Declaracao variavel que indica o maximo de custo da solucao retornado daquela entrada entre os N_TESTS. 
 	double maxCost;	
 
-	// Declaracao variavel que indica a media de custo da solucao retornado daquela entrada entre os N_TESTES. 
+	// Declaracao variavel que indica a media de custo da solucao retornado daquela entrada entre os N_TESTS. 
 	double avgCost;
 
 
@@ -74,6 +74,12 @@ int main(int argc, char *argv[]){
 	char baseNameInput[50] = "../baseDeTestes/facilityTestCases/tests/";
 	cout << "BASE: "<< baseNameInput << endl;
 
+
+	// Declaracao variavel que indica o nome dos arquivos com a solução inicial
+	char nameInitialSol[50];
+	char dirNameInitialSol[45] = "initialSolutions/";
+	char completeNameInitialSol[150];
+
 	if(strcmp(argv[1],"1") == 0){
 		strcpy(nameInput,"testCases1.txt");
 	}
@@ -81,7 +87,7 @@ int main(int argc, char *argv[]){
 		strcpy(nameInput,"testCases2.txt");
 	}
 	else{
-		cout << "Erro no parametro que indica o tipo de entrada." << endl;
+		cout << "Error in the parameter indicating the input type." << endl;
 		return 0;
 	}
 
@@ -94,7 +100,7 @@ int main(int argc, char *argv[]){
 
 		// Composicao da string que contera a chamada para execucao do programa com o parametro da entrada correspondente
 		inputName >> auxInputName;
-		cout << endl << "Entrada a ser utilizada: " <<  auxInputName << endl;
+		cout << endl << "Input to use: " <<  auxInputName << endl;
 
 
 		//Abertura de arquivo para leitura e escrita do .sol .
@@ -106,6 +112,11 @@ int main(int argc, char *argv[]){
 		// Criando a string do caminho completo do arquivo
 		strcpy(completeNameInput,baseNameInput);
 		strcat(completeNameInput,auxInputName);
+
+		// Criando a string do caminho completo do arquivo com a solucao inicial
+		strcpy(completeNameInitialSol,dirNameInitialSol);
+		strcat(completeNameInitialSol,auxInputName);
+		strcat(completeNameInitialSol,".sol");
 
 		// Colocando no timeLog.txt o nome da proxima entrada a ser testada
 		timeLog << auxInputName << endl;
@@ -123,14 +134,14 @@ int main(int argc, char *argv[]){
 		avgCost = 0;
 
 
-		// Executa o programa com a mesma entrada N_TESTES vezes, para calculo de minimo, maximo e media de tempo
-		for(int i = 0; i < N_TESTES; i++){
+		// Executa o programa com a mesma entrada N_TESTS vezes, para calculo de minimo, maximo e media de tempo
+		for(int i = 0; i < N_TESTS; i++){
 
 			//Iniciando a contagem do tempo
 			clock_gettime(CLOCK_REALTIME, &start);
 
 			// Chamando o programa a ser cronometrado
-			currentSolution = trataInput(completeNameInput, argv[1]);
+			currentSolution = handlesInput(completeNameInput, completeNameInitialSol, argv[1]);
 
 			// Finalizando a contagem do tempo
 			clock_gettime(CLOCK_REALTIME, &finish);
@@ -147,42 +158,42 @@ int main(int argc, char *argv[]){
 				minTime = timeSpent;
 
 			// Atualizando valores de minimo e maximo do custo
-			if(currentSolution.gastoTotalFinal > maxCost)
-				maxCost = currentSolution.gastoTotalFinal;
+			if(currentSolution.finalTotalCost > maxCost)
+				maxCost = currentSolution.finalTotalCost;
 
-			if(currentSolution.gastoTotalFinal < minCost){
-				minCost = currentSolution.gastoTotalFinal;
+			if(currentSolution.finalTotalCost < minCost){
+				minCost = currentSolution.finalTotalCost;
 
 				bestSolution = currentSolution; // atualizando a melhor solucao
 			}
 
 			// Acrescentando no timeLog.txt o tempo gasto nessa iteracao e o custo da solucao
-			timeLog << i << " - Time spent: " << timeSpent << " - Solution cost: " << currentSolution.gastoTotalFinal << endl;
+			timeLog << i << " - Time spent: " << timeSpent << " - Solution cost: " << currentSolution.finalTotalCost << endl;
 
 			// Incrementando valor que sera utilizado para calculo da media do tempo e do custo
 			avgTime += timeSpent;
-			avgCost += currentSolution.gastoTotalFinal;
+			avgCost += currentSolution.finalTotalCost;
 		}
 
 		// Calculando de fato a media do tempo gasto e do custo da solucao
-		avgTime = avgTime/N_TESTES;
-		avgCost = avgCost/N_TESTES;
+		avgTime = avgTime/N_TESTS;
+		avgCost = avgCost/N_TESTS;
 
 		// Colocando no solutionTXT o valor minimo da solucao
-		solutionTXT << minCost << " ";
+		solutionTXT << minCost << ",";
 
 		// Colocando no solutionTXT o valor medio da solucao
-		solutionTXT << avgCost << " ";
+		solutionTXT << avgCost << ",";
 
 		// Colocando no solutionTXT o valor maximo da solucao
-		solutionTXT << maxCost << " ";
+		solutionTXT << maxCost << ",";
 		
 		// Colocando no solutionTXT o tempo medio gasto 
 		solutionTXT << avgTime;
 
 		// Colocando no solutionsTXT as instalacoes finais conectadas
-		for(int i=0; i < bestSolution.qtd_clientes; i++){
-			solutionTXT << " " << bestSolution.instalacoes_conectadas[i];
+		for(int i=0; i < bestSolution.qty_clients; i++){
+			solutionTXT << "," << bestSolution.assigned_facilities[i];
 		}
 
 		// Colocando no timeLog.txt o valor minimo, maximo e medio de tempo gasto e do custo da solucao nas execucoes dessa entrada
