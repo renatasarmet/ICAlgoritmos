@@ -1,8 +1,8 @@
 #include <lemon/list_graph.h>
 #include <algorithm>
 #include <iostream>
-#include <set>
-#include <iterator>
+// #include <set>
+// #include <iterator>
 #include <ctime>
 #include "declaracoes.hpp"
 #define EPSL 0.00000001
@@ -132,17 +132,17 @@ void melhor_subconjunto(int &melhor_tamanho, double &melhor_custo, int *vetor, d
 }
 
 
-bool igual(double i, double j){
-    if((i > j-EPSL) && (i < j+EPSL))
-        return true;
-    return false;
-}
+// bool igual(double i, double j){
+//     if((i > j-EPSL) && (i < j+EPSL))
+//         return true;
+//     return false;
+// }
 
-bool maior_igual(double i, double j){
-    if(i >= j * (1-EPSL))
-        return true;
-    return false;
-}
+// bool maior_igual(double i, double j){
+//     if(i >= j * (1-EPSL))
+//         return true;
+//     return false;
+// }
 
 
 // Retornar o valor da solucao
