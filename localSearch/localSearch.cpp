@@ -305,6 +305,14 @@ solutionType localSearch(int qtyFac, double * costF, double * costA, solutionTyp
 		// Apos isso, na proxima iteracao do while o for será repetido
 		// Ainda faltará encaixar a operação de troca - FUTURO
 
+
+		// Podemos considerar que inicialmente estamos no otimo local ate que se prove o contrario. 
+		// Entao, vou percorrer todas as instalacoes e, caso eu encontre alguma melhora no percurso, modifico esse otimo local para falso
+		// Na proxima iteracao volto a considerar que estamos no otimo local e repito o processo
+		// No momento que eu percorrer todas as instalacoes e nenhuma conseguir melhorar nada, entao eu realmente estava no otimo local e finalizo o while
+		// Ainda faltará encaixar a operação de troca, preciso ver melhor, mas talvez seja um for logo depois desse for ja feito, que só ira entrar caso finalize o primeiro for com local_optimum = true -- FUTURO
+		local_optimum = true; 
+
 		for(ListBpGraph::BlueNodeIt n(g); n != INVALID; ++n){		// percorre as instalacoes
 
 			if(DEBUG >= DISPLAY_ACTIONS){
@@ -318,7 +326,9 @@ solutionType localSearch(int qtyFac, double * costF, double * costA, solutionTyp
 				}
 
 				if(open_facilities.size() <= 1){
-					cout << "Sorry, you can't close it because it is the only one that is open." << endl;
+					if(DEBUG >= DISPLAY_ACTIONS){
+						cout << "Sorry, you can't close it because it is the only one that is open." << endl;
+					}
 				}
 				else{
 
@@ -376,18 +386,17 @@ solutionType localSearch(int qtyFac, double * costF, double * costA, solutionTyp
 								nearest_open_fac[n_cli] = temp_nearest_fac[n_cli]; // reatribuindo com a nova inst mais proxima
 								c_minX[n_cli] = assignment_cost[findEdge(g, n_cli, facilities[nearest_open_fac[n_cli]])]; // atualizando o menor cij desse cli
 
-								open[n] = false; // fechando a instalacao
-								open_facilities.erase(g.id(n));
-								closed_facilities.insert(g.id(n));
-
-								solution.assigned_facilities[name[n_cli]] = nearest_open_fac[n_cli]; // salvando alteracoes na solucao final
+								solution.assigned_facilities[name[n_cli]] = nearest_open_fac[n_cli]; // salvando alteracoes sobre a inst mais proxima na solucao final
 							}
 						}
 
+						open[n] = false; // fechando de fato a instalacao
+						open_facilities.erase(g.id(n));
+						closed_facilities.insert(g.id(n));
+
 						solution.finalTotalCost += extra_cost; // Atualizando o custo total final
 
-						local_optimum = true; // ISSO NAO FICARA AQUI MESMO, SERA MAIS PRA FORA DO ANINHAMENTO, MAS TA TEMPORARIO AQUI PRA TESTE
-
+						local_optimum = false; // Como encontrei uma melhora, entao eu nao estava no otimo local, portanto o while deve continuar
 					}
 					else {
 						if(DEBUG >= DISPLAY_ACTIONS){
@@ -420,7 +429,7 @@ solutionType localSearch(int qtyFac, double * costF, double * costA, solutionTyp
 						// Atualizamos o custo extra, subtraindo o custo de atribuicao da antiga inst e somando o custo com a nova
 						extra_cost = extra_cost + assignment_cost[e] - c_minX[g.asRedNode(g.u(e))];
 					}
-					else {
+					else { // senao, caso a nova inst nao seja mais proxima
 						temp_nearest_fac[g.asRedNode(g.u(e))] = nearest_open_fac[g.asRedNode(g.u(e))]; // colocando isso apenas para uso posterior na checagem nao haver lixo
 					}
 				}
@@ -448,30 +457,25 @@ solutionType localSearch(int qtyFac, double * costF, double * costA, solutionTyp
 							nearest_open_fac[n_cli] = temp_nearest_fac[n_cli]; // reatribuindo com a nova inst mais proxima
 							c_minX[n_cli] = assignment_cost[findEdge(g, n_cli, facilities[nearest_open_fac[n_cli]])]; // atualizando o menor cij desse cli
 
-							open[n] = true; // abrindo a instalacao
-							closed_facilities.erase(g.id(n));
-							open_facilities.insert(g.id(n));
-
 							solution.assigned_facilities[name[n_cli]] = nearest_open_fac[n_cli]; // salvando alteracoes na solucao final
 						}
 					}
 
+					open[n] = true; // abrindo de fato a instalacao
+					closed_facilities.erase(g.id(n));
+					open_facilities.insert(g.id(n));
+
 					solution.finalTotalCost += extra_cost; // Atualizando o custo total final
 
-					local_optimum = true; // ISSO NAO FICARA AQUI MESMO, SERA MAIS PRA FORA DO ANINHAMENTO, MAS TA TEMPORARIO AQUI PRA TESTE
+					local_optimum = false; // Como encontrei uma melhora, entao eu nao estava no otimo local, portanto o while deve continuar
 				}
 				else {
 					if(DEBUG >= DISPLAY_ACTIONS){
 						cout << "VISHHHH IT GOT WORSE" << endl;
 					}
 				}
-
 			}
-
 		}
-
-		// VOU APAGAR ESSE BREAK DEPOIS, EH SO PRA NAO GERAR LOOP INFINITO E EU PODER TESTAR POR ENQUANTO
-		// break;
 	}
 
 	cout << "FINAL TOTAL COST: " << solution.finalTotalCost << endl;
