@@ -35,7 +35,7 @@ time_limit = 900 #15 minutos
 memory_limit = 10 ** 9 # 1GB
 
 
-DEBUG = 1
+DEBUG = 0
 
 
 def connectNearest(facility_list, client_list, open_facilities):
@@ -613,7 +613,6 @@ def solve_it(input_type, input_data, formulation_type):
 
             cont += 1
 
-
         for j in range(customer_count):
             list_to_add = []
             for i in range(facility_count):
@@ -721,10 +720,14 @@ if __name__ == '__main__':
                 if DEBUG >= 1:
                     print("Time spent =", time_spent)
 
-                complete_sol_file_name = 'solutions/' + file_name + '.sol'
+                complete_sol_file_name = 'solutions' + formulation_type + '/' + file_name + '.sol'
 
                 file = open(complete_sol_file_name, 'w')
-                sentence = str(solution[0]) + "," + str(time_spent) + "," + str(solution[2])
+                sentence = str(solution[0]) + " " + str(time_spent) + " " + str(solution[2])
+
+                for s in solution[1]:
+                    sentence += " " + str(s)
+
                 file.write(sentence)
                 file.close()
 

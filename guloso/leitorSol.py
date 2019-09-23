@@ -23,7 +23,7 @@ for file_name in files_test:
 			input_data = input_data_file.read()
 
 		if(input_data):
-			# solution :: 0 - minCost, 1 - avgCost, 2 - maxCost, 3 - avgTime, 4....qtd_clientes - connected facility
+			# solution :: 0 - minCost, 1 - avgCost, 2 - maxCost, 3 - avgTime, 4....qty_clients - connected facility
 			solution = input_data.split(" ")
 
 			if len(solution) >= 4: # checking if the solution is in a correct format
