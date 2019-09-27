@@ -19,7 +19,7 @@ using namespace std;
 #define DISPLAY_TIME 3 // corresponde aos calculos de tempo 
 #define DISPLAY_GRAPH 4 // corresponde a descricao dos clientes, instalacoes e arcos
 
-#define DEBUG 1 // OPCOES DE DEBUG: 1 PARA EXIBIR OS MOVIMENTOS REALIZADOS, 2 PARA EXIBIR ACOES, 3 PARA EXIBIR TEMPO, 4 PARA EXIBIR AS MUDANÇAS NO GRAFO
+#define DEBUG 0 // OPCOES DE DEBUG: 1 PARA EXIBIR OS MOVIMENTOS REALIZADOS, 2 PARA EXIBIR ACOES, 3 PARA EXIBIR TEMPO, 4 PARA EXIBIR AS MUDANÇAS NO GRAFO
 
 
 // Retornar o valor da solucao
