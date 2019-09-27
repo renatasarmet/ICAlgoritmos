@@ -24,6 +24,9 @@ solutionType trataInput(char inputName[], char tipoEntrada[]){
    // Abrindo arquivo 
    inputFLP.open(inputName); 
 
+   cout << fixed;
+   cout.precision(5);
+
    if(strcmp(tipoEntrada,"1")==0){
       // Lendo do arquivo os valores que indicam a quantidade de instalacoes e clientes
       inputFLP >> qtd_instalacoes >> qtd_clientes; 

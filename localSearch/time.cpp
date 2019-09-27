@@ -15,6 +15,9 @@ int main(int argc, char *argv[]){
 		return 0;
 	}
 
+	cout << fixed;
+   	cout.precision(5);
+
 	// Declaracao variavel auxiliar que tera o nome do arquivo a ser utilizado naquela iteracao
 	char auxInputName[100]; 
 
@@ -180,7 +183,7 @@ int main(int argc, char *argv[]){
 		avgCost = avgCost/N_TESTS;
 
 		// Colocando no solutionTXT o valor minimo da solucao
-		solutionTXT << minCost << " ";
+		solutionTXT << fixed << setprecision(5) << minCost << " ";
 
 		// Colocando no solutionTXT o valor medio da solucao
 		solutionTXT << avgCost << " ";

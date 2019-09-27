@@ -148,6 +148,9 @@ void melhor_subconjunto(int &melhor_tamanho, double &melhor_custo, int *vetor, d
 // Retornar o valor da solucao
 solutionType guloso(int qtdCli, int qtdInst, double * custoF, double * custoA){
 
+	cout << fixed;
+   	cout.precision(5);
+
 	// Struct que vai retornar a solução
 	solutionType solution;
 

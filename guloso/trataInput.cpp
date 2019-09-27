@@ -24,6 +24,9 @@ solutionType trataInput(char inputName[], char tipoEntrada[]){
    // Abrindo arquivo 
    inputFLP.open(inputName); 
 
+   cout << fixed;
+   cout.precision(5);
+
    if(strcmp(tipoEntrada,"1")==0){
       // Lendo do arquivo os valores que indicam a quantidade de instalacoes e clientes
       inputFLP >> qtd_instalacoes >> qtd_clientes; 
@@ -67,7 +70,7 @@ solutionType trataInput(char inputName[], char tipoEntrada[]){
          }
 
          for(int j=0;j<qtd_instalacoes;j++){
-            inputFLP >> auxRead;                                 // PROBLEMA: Pq só está pegando 2 casas decimais???
+            inputFLP >> auxRead;
             custoA[cont] = auxRead;
 
             if(debug > 0){
@@ -118,7 +121,7 @@ solutionType trataInput(char inputName[], char tipoEntrada[]){
          // Lendo do arquivo os custos de atribuicao do clientes com as instalacoes e salvando no vetor custoA
          for(int j=0;j<qtd_clientes;j++){
 
-            inputFLP >> auxRead;                                 // PROBLEMA: Pq só está pegando 2 casas decimais???
+            inputFLP >> auxRead;
             custoA[i + j * qtd_instalacoes] = auxRead;       // Esse indice estranho eh para deixa no mesmo formato que o caso ORLIB
 
             if(debug > 0){
@@ -134,7 +137,6 @@ solutionType trataInput(char inputName[], char tipoEntrada[]){
       cout << "Tipo de entrada invalida." << endl;
       return solution;
    }
-   
 
    // Fechando o arquivo
    inputFLP.close();

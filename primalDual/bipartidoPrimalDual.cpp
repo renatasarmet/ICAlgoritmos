@@ -48,6 +48,9 @@ bool maior_igual(double i, double j){
 // Retornar o valor da solucao
 solutionType primalDual(int qtdCli, int qtdInst, double * custoF, double * custoA){
 
+	cout << fixed;
+   	cout.precision(5);
+
 	// Struct que vai retornar a solução
 	solutionType solution;
 
