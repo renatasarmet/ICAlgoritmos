@@ -25,6 +25,9 @@ using namespace std;
 // Retornar o valor da solucao
 solutionType localSearch(int qtyFac, double * costF, double * costA, solutionType solution){
 
+	cout << fixed;
+   	cout.precision(5);
+
 	/* Inicio declaracoes variaveis para calculo de tempo */
 
 	// Declaracao variaveis que indicam o tempo do programa como um todo

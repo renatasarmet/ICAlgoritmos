@@ -340,16 +340,17 @@ def facilityLP(facility_list, client_list, bound):
     #     print(f"Number of constraints = {solver.NumConstraints()}")
 
     # The value of each variable in the solution.
+    y_values = solver.getAttr('X', y)
     if DEBUG >= 3:
         print('Solution for y variables:')
-        y_values = solver.getAttr('X', y)
         print(y_values)
 
     if DEBUG >= 4:
         print('Solution for x variables:')
-        x_values = []
-        for i in range(0, len(facility_list)):
-            x_values.append(solver.getAttr('X', x[i]))
+    x_values = []
+    for i in range(0, len(facility_list)):
+        x_values.append(solver.getAttr('X', x[i]))
+        if DEBUG >= 4:
             print(x_values[i])
 
     if DEBUG >= 2:
@@ -371,7 +372,7 @@ def facilityLP(facility_list, client_list, bound):
     if DEBUG >= 3:
         print(solution)
 
-    return (sol_value, solution, intOPT)
+    return (sol_value, solution, intOPT, x_values, y_values)
 
 
 
@@ -725,8 +726,18 @@ if __name__ == '__main__':
                 file = open(complete_sol_file_name, 'w')
                 sentence = str(solution[0]) + " " + str(time_spent) + " " + str(solution[2])
 
-                for s in solution[1]:
-                    sentence += " " + str(s)
+                if formulation_type == '2':
+                    # solution[4] is the y_values
+                    for y in solution[4]: 
+                      sentence += " " + str(y)
+                      
+                    # solution[3] is the x_values
+                    for x_f in solution[3]: # each x_f is a list of x from the facility f to every client
+                      for x in x_f: # each x is a value of x from the facility f to this especific client
+                          sentence += " " + str(x)
+                else:
+                    for s in solution[1]:
+                        sentence += " " + str(s)
 
                 file.write(sentence)
                 file.close()

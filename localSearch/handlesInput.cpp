@@ -23,7 +23,8 @@ solutionType handlesInput(char inputName[], char initialSolName[], char inputTyp
 
 	int debug = 0; // OPCOES DE DEBUG: 0 PARA NAO EXIBIR NADA, 1 PARA EXIBIR AS INFORMACOES SENDO SALVAS
 
-
+	cout << fixed;
+   	cout.precision(5);
 
 	/****************************
 	Lendo o arquivo de entrada
