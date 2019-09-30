@@ -1,7 +1,7 @@
-Formulação de programacao linear inteira para o problema da localizacao de instalacoes sem capacidade
+Formulação de programacao linear inteira (ILP), programacao linear (LP) e programacao linear inteira mista (MIP) para o problema da localizacao de instalacoes sem capacidade. Além da formulação do programa linear do Dual do problema.
 
 
--------- ILP --------
+-------- ILP, LP, MIP --------
 
 
 *COMO RODAR?*
@@ -17,6 +17,16 @@ Por fim, para gerar o csv com todos os arquivos testados, basta digitar:
 
 python3 leitorSol.py
 
+-------- DUAL --------
+
+*COMO RODAR?*
+
+Considere que tipoEntrada significa 1 para o tipo ORLIB e 2 para o tipo SIMPLE FORMAT.
+Então, basta digitar:
+
+python3 dual_uflp_lp.py tipoEntrada
+
+----------------------------------------
 
 *SOBRE AS ENTRADAS*
 
