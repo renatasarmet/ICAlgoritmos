@@ -77,11 +77,13 @@ int main(int argc, char *argv[]){
 	char baseNameInput[50] = "../baseDeTestes/facilityTestCases/tests/";
 	cout << "BASE: "<< baseNameInput << endl;
 
+	// Declaracao variavel que indica o nome dos arquivos com a solução do LP primal
+	char dirNamePrimalSol[45] = "primalLPSolutions/";
+	char completeNamePrimalSol[150];
 
-	// Declaracao variavel que indica o nome dos arquivos com a solução inicial
-	char nameInitialSol[50];
-	char dirNameInitialSol[45] = "initialSolutions/";
-	char completeNameInitialSol[150];
+	// Declaracao variavel que indica o nome dos arquivos com a solução do LP dual
+	char dirNameDualSol[45] = "dualLPSolutions/";
+	char completeNameDualSol[150];
 
 	if(strcmp(argv[1],"1") == 0){
 		strcpy(nameInput,"testCases1.txt");
@@ -116,10 +118,15 @@ int main(int argc, char *argv[]){
 		strcpy(completeNameInput,baseNameInput);
 		strcat(completeNameInput,auxInputName);
 
-		// Criando a string do caminho completo do arquivo com a solucao inicial
-		strcpy(completeNameInitialSol,dirNameInitialSol);
-		strcat(completeNameInitialSol,auxInputName);
-		strcat(completeNameInitialSol,".sol");
+		// Criando a string do caminho completo do arquivo com a solucao LP primal
+		strcpy(completeNamePrimalSol,dirNamePrimalSol);
+		strcat(completeNamePrimalSol,auxInputName);
+		strcat(completeNamePrimalSol,".sol");
+
+		// Criando a string do caminho completo do arquivo com a solucao LP dual
+		strcpy(completeNameDualSol,dirNameDualSol);
+		strcat(completeNameDualSol,auxInputName);
+		strcat(completeNameDualSol,".sol");
 
 		// Colocando no timeLog.txt o nome da proxima entrada a ser testada
 		timeLog << auxInputName << endl;
@@ -144,7 +151,7 @@ int main(int argc, char *argv[]){
 			clock_gettime(CLOCK_REALTIME, &start);
 
 			// Chamando o programa a ser cronometrado
-			currentSolution = handlesInput(completeNameInput, completeNameInitialSol, argv[1]);
+			currentSolution = handlesInput(completeNameInput, completeNamePrimalSol, completeNameDualSol, argv[1]);
 
 			// Finalizando a contagem do tempo
 			clock_gettime(CLOCK_REALTIME, &finish);

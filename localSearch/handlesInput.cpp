@@ -82,7 +82,7 @@ solutionType handlesInput(char inputName[], char initialSolName[], char inputTyp
 			}
 
 			for(int j=0;j<qty_facilities;j++){
-				inputFLP >> auxRead;                                 // PROBLEMA: Pq só está pegando 2 casas decimais???
+				inputFLP >> auxRead;                                 
 				custoA[counter] = auxRead;
 
 				if(debug > 0){
@@ -130,7 +130,7 @@ solutionType handlesInput(char inputName[], char initialSolName[], char inputTyp
 			// Lendo do arquivo os custos de atribuicao do clientes com as instalacoes e salvando no vetor custoA
 			for(int j=0;j<qty_clients;j++){
 
-				inputFLP >> auxRead;                                 // PROBLEMA: Pq só está pegando 2 casas decimais???
+				inputFLP >> auxRead;
 				custoA[i + j * qty_facilities] = auxRead;       // Esse indice estranho eh para deixa no mesmo formato que o caso ORLIB
 
 				if(debug > 0){

@@ -7,5 +7,5 @@ struct solutionType {
 	int qty_clients;
 };
 
-solutionType handlesInput(char inputName[], char initialSolName[], char inputType[]);
-solutionType localSearch(int qtyFac, double * costF, double * costA, solutionType solution);
+solutionType handlesInput(char inputName[], char primalSolName[], char dualSolName[], char inputType[]);
+solutionType randRounding(int qtyFac, int qtyCli, double * costF, double * costA, double ** x_values, double * v_values);
