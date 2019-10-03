@@ -7,6 +7,14 @@
 #include "declaracoes.hpp"
 #define EPSL 0.00000001
 
+
+
+
+// PROBLEMA: ordem_cij está como vetor de int, sendo que tem que ser vetor de double. Arrumar isso (lembrar de arrumar o merge_sort tbm)
+
+
+
+
 // Observacao importante: ao usar g.nodeFromId() eh necessario passar o ID geral, nao o blue ID nem red ID. 
 // No caso do cliente, o red ID = ID geral, pois os clientes foram os primeiros a serem adicionados no grafo.
 // No caso da instalacao, o ID geral = blue ID + qtd_clientes, pois as instalacoes foram adicionadas no grafo logo apos todos os clientes.
