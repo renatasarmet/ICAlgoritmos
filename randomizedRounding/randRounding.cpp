@@ -380,7 +380,7 @@ solutionType randRounding(int qty_facilities, int qty_clients, double * costF, d
 		}
 	}
 
-	cout << "FINAL TOTAL COST: " << solution.finalTotalCost << endl;
+	cout << "Final total cost: " << solution.finalTotalCost << endl;
 
 	if(DEBUG >= DISPLAY_TIME){
 

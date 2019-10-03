@@ -2,9 +2,10 @@
 #include <sstream>
 #include <fstream>
 #include <ctime>
+#include <cfloat>
 #include "definitions.hpp"
 
-#define N_TESTS 1//25 // Quantidade de vezes que sera testada a mesma entrada, para calculo de minimo, maximo e media
+#define N_TESTS 10 //25 // Quantidade de vezes que sera testada a mesma entrada, para calculo de minimo, maximo e media
 
 using namespace std;
 
@@ -77,6 +78,7 @@ int main(int argc, char *argv[]){
 	char baseNameInput[50] = "../baseDeTestes/facilityTestCases/tests/";
 	cout << "BASE: "<< baseNameInput << endl;
 
+
 	// Declaracao variavel que indica o nome dos arquivos com a solução do LP primal
 	char dirNamePrimalSol[45] = "primalLPSolutions/";
 	char completeNamePrimalSol[150];
@@ -84,6 +86,7 @@ int main(int argc, char *argv[]){
 	// Declaracao variavel que indica o nome dos arquivos com a solução do LP dual
 	char dirNameDualSol[45] = "dualLPSolutions/";
 	char completeNameDualSol[150];
+
 
 	if(strcmp(argv[1],"1") == 0){
 		strcpy(nameInput,"testCases1.txt");
@@ -105,7 +108,7 @@ int main(int argc, char *argv[]){
 
 		// Composicao da string que contera a chamada para execucao do programa com o parametro da entrada correspondente
 		inputName >> auxInputName;
-		cout << endl << "Input to use: " <<  auxInputName << endl;
+		cout << endl << "Input to use: " <<  auxInputName << "\n" << endl;
 
 
 		//Abertura de arquivo para leitura e escrita do .sol .
@@ -131,9 +134,9 @@ int main(int argc, char *argv[]){
 		// Colocando no timeLog.txt o nome da proxima entrada a ser testada
 		timeLog << auxInputName << endl;
 
-		// Valor alto colocado como inicio, ideal que fosse algo que houvesse certeza que nunca ocorreria.
-		minTime = 1000000000000000000;
-		minCost = 1000000000000000000; //maior valor aceito por double (?)
+		// Maior valor aceito por double colocado como inicio
+		minTime = DBL_MAX;
+		minCost = DBL_MAX; 
 
 		// Inicia com 0, o minimo de tempo possivel
 		maxTime = 0;
@@ -175,6 +178,7 @@ int main(int argc, char *argv[]){
 				minCost = currentSolution.finalTotalCost;
 
 				bestSolution = currentSolution; // atualizando a melhor solucao
+				// bestSolution.timeSpent = timeSpent; // salvando o tempo gasto.. isso sera util se eu resolver colocar na tabela o tempo da solucao especifica, nao o tempo medio
 			}
 
 			// Acrescentando no timeLog.txt o tempo gasto nessa iteracao e o custo da solucao
@@ -210,8 +214,12 @@ int main(int argc, char *argv[]){
 		timeLog << "Time - Min: " << minTime << endl << "Max: " << maxTime << endl << "Avg: " << avgTime << endl << endl;
 		timeLog << "Cost - Min: " << minCost << endl << "Max: " << maxCost << endl << "Avg: " << avgCost << endl << endl;
 
+		cout << "\nBEST FINAL TOTAL COST: " << bestSolution.finalTotalCost << "\n"<< endl;
+
 		solutionTXT.close();
 	}
+
+	timeLog.close();
 
 	return 0;
 }

@@ -267,13 +267,16 @@ solutionType handlesInput(char inputName[], char primalSolName[], char dualSolNa
 	solution = randRounding(qty_facilities, qty_clients, costF, costA, x_values, v_values);
 
 
-	// Fechando o arquivo
+	// Fechando os arquivos
 	inputFLP.close();
 	primalSol.close();
 	dualSol.close();
+
+	// Liberando memoria
 	free(costF);
 	free(costA);
 	free(v_values);
 	free(x_values);
+
 	return solution;
 }
