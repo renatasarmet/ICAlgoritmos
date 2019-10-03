@@ -79,13 +79,13 @@ void mergeSort(double *vetor, int *vetorID, int posicaoInicio, int posicaoFim) {
 
 
 // Retornar o valor da solucao
-solutionType randRounding(int qty_facilities, int qty_clients, double * costF, double * costA, double ** x_values, double * v_values){
+solutionType randRounding(int qty_facilities, int qty_clients, double * costF, double * costA, double ** x_values, double * v_values, int seed){
 
 	cout << fixed;
    	cout.precision(5);
 
    	// Semente do numero aleatorio
-   	srand((unsigned)time(NULL));
+   	srand(seed);
 
 	// Struct que vai retornar a solução
 	solutionType solution;

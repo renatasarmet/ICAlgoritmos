@@ -6,7 +6,7 @@
 
 using namespace std;
 
-solutionType handlesInput(char inputName[], char primalSolName[], char dualSolName[], char inputType[]){
+solutionType handlesInput(char inputName[], char primalSolName[], char dualSolName[], char inputType[], int seed){
 
 	// Declaracoes iniciais
 	int qty_clients, qty_facilities, counter;
@@ -264,7 +264,7 @@ solutionType handlesInput(char inputName[], char primalSolName[], char dualSolNa
 	
 
 	// Chamando a funcao que resolve o problema de fato
-	solution = randRounding(qty_facilities, qty_clients, costF, costA, x_values, v_values);
+	solution = randRounding(qty_facilities, qty_clients, costF, costA, x_values, v_values, seed);
 
 
 	// Fechando os arquivos

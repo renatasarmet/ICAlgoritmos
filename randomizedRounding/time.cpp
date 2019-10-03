@@ -154,7 +154,7 @@ int main(int argc, char *argv[]){
 			clock_gettime(CLOCK_REALTIME, &start);
 
 			// Chamando o programa a ser cronometrado
-			currentSolution = handlesInput(completeNameInput, completeNamePrimalSol, completeNameDualSol, argv[1]);
+			currentSolution = handlesInput(completeNameInput, completeNamePrimalSol, completeNameDualSol, argv[1],i);
 
 			// Finalizando a contagem do tempo
 			clock_gettime(CLOCK_REALTIME, &finish);
