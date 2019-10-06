@@ -16,9 +16,8 @@ using namespace std;
 
 
 double randZeroToOne(){
-	return ((double) rand() / (RAND_MAX));
+	return (((double) rand()) / ((double) RAND_MAX + 1));
 }
-
 
 void mergeSort(double *vetor, int *vetorID, int posicaoInicio, int posicaoFim) {
 
@@ -355,7 +354,7 @@ solutionType randRounding(int qty_facilities, int qty_clients, double * costF, d
 		*/
 
 		for(int j=0;j<qty_clients;j++){
-			if(x_values[cur_facility][j] > 0){   // Se esse cliente for vizinho de cur_facility, vamos atribui-lo
+			if((x_values[cur_facility][j] > 0) && (sorted_vC[index_vC[clients[j]]]!=-1)){   // Se esse cliente for vizinho de cur_facility e estiver ativo, vamos atribui-lo
 
 				if(DEBUG >= DISPLAY_ACTIONS){
 					cout << "Assigning client " << j << " to facility " << cur_facility << endl;
@@ -371,11 +370,6 @@ solutionType randRounding(int qty_facilities, int qty_clients, double * costF, d
 				// Desativando cliente
 				sorted_vC[index_vC[clients[j]]] = -1;
 				qty_active_clients -= 1;
-
-				// Zerando todos os valores de x_values correspondentes a esse cliente
-				for(int i=0;i<qty_facilities;i++){
-					x_values[i][j] = 0;
-				}
 			}
 		}
 	}

@@ -14,6 +14,10 @@
 ## For MLP just xij >= 0
 
 
+
+# model.MIPGap colocar isso na tabela também
+
+
 import time
 
 import sys
