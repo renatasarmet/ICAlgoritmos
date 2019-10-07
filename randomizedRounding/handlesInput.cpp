@@ -6,7 +6,34 @@
 
 using namespace std;
 
-solutionType handlesInput(char inputName[], char primalSolName[], char dualSolName[], char inputType[], int seed){
+
+// solutionType handlesInput(char inputName[], char primalSolName[], char dualSolName[], char solutionName[], char inputType[], int seed){
+
+int main(int argc, char *argv[]){
+
+	if(argc != 7){
+		cout << "Error in the parameters. You must enter the input type." << endl;
+		return 0;
+	}
+
+	char * inputName = argv[1];
+	char * primalSolName = argv[2];
+	char * dualSolName = argv[3];
+	char * solutionName = argv[4];
+	char * inputType = argv[5];
+	int seed = *argv[6] - '0'; // subtraindo o valor ascii para converter argv[6] para inteiro
+
+	// Arquivo para salvar a solucao
+	ofstream solutionTXT;
+
+	// Declaracao variaveis que indicam o tempo no inicio e fim da execucao
+	struct timespec start, finish;
+
+	// Declaracao variavel que marcara o tempo calculado daquela execucao
+	double timeSpent;
+
+	// Declaracao de variaveis auxiliares para a formacao do arquivo .sol
+	char auxSolName[105];
 
 	// Declaracoes iniciais
 	int qty_clients, qty_facilities, counter;
@@ -26,6 +53,10 @@ solutionType handlesInput(char inputName[], char primalSolName[], char dualSolNa
 	double * v_values;
 
 	int debug = 0; // OPCOES DE DEBUG: 0 PARA NAO EXIBIR NADA, 1 PARA EXIBIR AS INFORMACOES SENDO SALVAS
+
+
+	//Iniciando a contagem do tempo
+	clock_gettime(CLOCK_REALTIME, &start);
 
 	cout << fixed;
    	cout.precision(5);
@@ -145,7 +176,8 @@ solutionType handlesInput(char inputName[], char primalSolName[], char dualSolNa
 	}
 	else{
 		cout << "Invalid input type." << endl;
-		return solution;
+		// return solution;
+		return 0;
 	}
 
   /*
@@ -267,10 +299,33 @@ solutionType handlesInput(char inputName[], char primalSolName[], char dualSolNa
 	solution = randRounding(qty_facilities, qty_clients, costF, costA, x_values, v_values, seed);
 
 
+	// Finalizando a contagem do tempo
+	clock_gettime(CLOCK_REALTIME, &finish);
+
+	// Calculando o tempo gasto
+	timeSpent =  (finish.tv_sec - start.tv_sec);
+	timeSpent += (finish.tv_nsec - start.tv_nsec) / 1000000000.0; // Necessario para obter uma precisao maior 
+	cout << "Time spent: " << timeSpent << " seconds" << endl;
+
+	//Abertura de arquivo para leitura e escrita do .sol .
+	solutionTXT.open(solutionName, std::ofstream::out | std::ofstream::trunc);
+
+	// Colocando no solutionTXT o valor do custo da solucao
+	solutionTXT << fixed << setprecision(5) << solution.finalTotalCost << " ";
+	
+	// Colocando no solutionTXT o tempo gasto 
+	solutionTXT << timeSpent;
+
+	// Colocando no solutionsTXT as instalacoes finais conectadas
+	for(int i=0; i < qty_clients; i++){
+		solutionTXT << " " << solution.assigned_facilities[i];
+	}
+
 	// Fechando os arquivos
 	inputFLP.close();
 	primalSol.close();
 	dualSol.close();
+	solutionTXT.close();
 
 	// Liberando memoria
 	free(costF);
@@ -278,5 +333,6 @@ solutionType handlesInput(char inputName[], char primalSolName[], char dualSolNa
 	free(v_values);
 	free(x_values);
 
-	return solution;
+	// return solution;
+	return 0;
 }

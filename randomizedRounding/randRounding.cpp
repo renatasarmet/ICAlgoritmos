@@ -90,9 +90,7 @@ solutionType randRounding(int qty_facilities, int qty_clients, double * costF, d
 	solutionType solution;
 
 	// Inicializando struct 
-	solution.qty_clients = qty_clients;
 	solution.finalTotalCost = 0;
-	solution.timeSpent = 0;
 
 	// indicara as instalacoes atribuidas a cada cliente na resposta
 	solution.assigned_facilities = (int*) malloc((qty_clients) * sizeof(int));

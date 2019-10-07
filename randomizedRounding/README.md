@@ -11,13 +11,19 @@ Primeiramente, eh provavel que seja necessario ter instalado a biblioteca Lemon 
 
 Após isso, digite no terminal:
 
-g++ time.cpp handlesInput.cpp randRounding.cpp -o time
+g++ handlesInput.cpp randRounding.cpp -o rr
 
 
-Considere que tipoEntrada significa 1 para o tipo ORLIB e 2 para o tipo SIMPLE FORMAT.
+Considere que input_type significa 1 para o tipo ORLIB e 2 para o tipo SIMPLE FORMAT.
+Então, para rodar nosso testador, basta digitar:
+
+python3 tester.py input_type
+
+
+Caso queira executar apenas um exemplo, considere que input_name é o caminho completo do problema UFL a ser resolvido, primalSolName é o caminho completo da solucao primal desse caso e o dualSolName é o caminho completo do dual desse caso. Considere também que solutionName é o caminho completo onde deseja-se guardar a solucao, o input_type é o tipo da entrada (1 para o tipo ORLIB e 2 para o tipo SIMPLE FORMAT) e a seed é a semente para aleatorizar.
 Então, basta digitar:
 
-./time tipoEntrada
+./rr input_name primalSolName dualSolName solutionName input_type seed
 
 
 Por fim, para gerar o csv com todos os arquivos listados em "testCasesReader.txt", basta digitar:
@@ -28,7 +34,7 @@ python3 readerSol.py
 *SOBRE AS ENTRADAS*
 
 
-Cada entrada deve estar em um arquivo, na pasta facilityTestCases/tests.
+Se for utilizar o tester.py, cada entrada deve estar em um arquivo, na pasta facilityTestCases/tests.
 
 Para entradas do tipo ORLIB, existe um arquivo chamado testCases1.txt, o qual contem uma lista de todos os nomes dos arquivos presentes nessa pasta facilityTestCases/tests que deverao ser testados.
 Para entradas do tipo SIMPLE FORMAT, o mesmo acontece, porem no arquivo chamado testCases2.txt.
@@ -49,9 +55,7 @@ custo_atribuicao_cliente_m_instalacao_1 .... custo_atribuicao_cliente_m_instalac
 A saída eh composta por um grafo Tlinha, contendo todas as instalacoes abertas e todos os clientes associados a suas respectivas instalacoes mais adequadas.
 Tambem eh calculado o total gasto, sendo esse a soma dos custos de abrir todas as instalacoes escolhidas para serem abertas + o custo de atribuir cada cliente a sua instalacao indicada como a mais adequada.
 
-Alem disso, eh gerado um arquivo timeLog.txt que possui as informacoes sobre o tempo gasto em cada execucao.
-
---- alem disso, é gerado um .sol contendo o minCost, avgCost, maxCost, avgTime, instalacoes conectadas a cada cliente
+Alem disso, sao gerados arquivos que possuem as informacoes sobre o tempo e o custo gasto em cada execucao, alem da solução.
 
 
 *SOBRE AS ENTRADAS ORLIB*
