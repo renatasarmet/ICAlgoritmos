@@ -2,12 +2,15 @@
 #include <cstdlib>
 #include <fstream>
 #include "definitions.hpp"
+
 #define EPS 0.001
 
+#define DISPLAY_TIME_SIZE 1 // corresponde a exibicao do tempo total gasto e do tamanho da entrada (quantidade de clientes e de instalacoes)
+#define DISPLAY_ACTIONS 2 // corresponde a todos os cout quando uma informacao eh salva 
+
+#define DEBUG 0 // OPCOES DE DEBUG: 0 PARA NAO EXIBIR NADA, 1 PARA EXIBIR TEMPO E QTD CLI E INST, 2 PARA EXIBIR AS INFORMACOES SENDO SALVAS
+
 using namespace std;
-
-
-// solutionType handlesInput(char inputName[], char primalSolName[], char dualSolName[], char solutionName[], char inputType[], int seed){
 
 int main(int argc, char *argv[]){
 
@@ -23,7 +26,7 @@ int main(int argc, char *argv[]){
 	char * inputType = argv[5];
 	int seed;
 
-	if(argc == 7)
+	if(argc >= 7)
 		seed = stoi(argv[6],nullptr,10); // convertendo argv[6] para inteiro
 	else
 		seed = ((unsigned)time(NULL)); // seed nao foi passada por parametro, entao vai aleatoria
@@ -57,9 +60,6 @@ int main(int argc, char *argv[]){
 	double ** x_values;
 	double * v_values;
 
-	int debug = 0; // OPCOES DE DEBUG: 0 PARA NAO EXIBIR NADA, 1 PARA EXIBIR AS INFORMACOES SENDO SALVAS
-
-
 	//Iniciando a contagem do tempo
 	clock_gettime(CLOCK_REALTIME, &start);
 
@@ -83,7 +83,9 @@ int main(int argc, char *argv[]){
 		// Lendo do arquivo os valores que indicam a quantidade de instalacoes e clientes
 		inputFLP >> qty_facilities >> qty_clients; 
 
-		cout << "QTY FACILITIES: " << qty_facilities << " E QTY CLIENTS: " << qty_clients << endl;
+		if(DEBUG >= DISPLAY_TIME_SIZE){
+			cout << "QTY FACILITIES: " << qty_facilities << " E QTY CLIENTS: " << qty_clients << endl;
+		}
 
 		// Vetores que salvarao custos lidos no arquivo
 		costF = (double*) malloc((qty_facilities) * sizeof(double));
@@ -106,7 +108,7 @@ int main(int argc, char *argv[]){
 			inputFLP >> auxRead; // Pegando o valor do custo de abertura da instalação
 			costF[i] = auxRead;
 
-			if(debug > 0){
+			if(DEBUG >= DISPLAY_ACTIONS){
 				cout << "Fi =  " << costF[i] << endl;  
 			}  
 		}
@@ -117,7 +119,7 @@ int main(int argc, char *argv[]){
 		for(int i=0;i<qty_clients;i++){
 			inputFLP >> auxRead; // Descartando aqui a demanda do cliente
 
-			if(debug > 0){
+			if(DEBUG >= DISPLAY_ACTIONS){
 				cout << "Demand = " << auxRead << endl;
 			}
 
@@ -125,7 +127,7 @@ int main(int argc, char *argv[]){
 				inputFLP >> auxRead;
 				costA[counter] = auxRead;
 
-				if(debug > 0){
+				if(DEBUG >= DISPLAY_ACTIONS){
 					cout << "AC = " << costA[counter] << endl; 
 				}
 
@@ -140,7 +142,9 @@ int main(int argc, char *argv[]){
 		// Lendo do arquivo os valores que indicam a quantidade de instalacoes e clientes. E descartando o 0
 		inputFLP >> qty_facilities >> qty_clients >> auxRead; 
 
-		cout << "QTY FACILITIES: " << qty_facilities << " E QTY CLIENTS: " << qty_clients << endl;
+		if(DEBUG >= DISPLAY_TIME_SIZE){
+			cout << "QTY FACILITIES: " << qty_facilities << " E QTY CLIENTS: " << qty_clients << endl;
+		}
 
 		// Vetores que salvarao custos lidos no arquivo
 		costF = (double*) malloc((qty_facilities + 1) * sizeof(double));
@@ -163,7 +167,7 @@ int main(int argc, char *argv[]){
 			inputFLP >> auxRead; // Pegando o valor do custo de abertura da instalação
 			costF[i] = auxRead;
 
-			if(debug > 0){
+			if(DEBUG >= DISPLAY_ACTIONS){
 				cout << "Fi =  " << costF[i] << endl;  
 			}  
 
@@ -173,7 +177,7 @@ int main(int argc, char *argv[]){
 				inputFLP >> auxRead;
 				costA[i + j * qty_facilities] = auxRead;       // Esse indice estranho eh para deixa no mesmo formato que o caso ORLIB
 
-				if(debug > 0){
+				if(DEBUG >= DISPLAY_ACTIONS){
 					cout << "AC = " << costA[i + j * qty_facilities] << endl; 
 				}
 			}
@@ -194,7 +198,7 @@ int main(int argc, char *argv[]){
 	Lendo o arquivo com a solução LP primal
 	*/
 
-	if(debug > 0){
+	if(DEBUG >= DISPLAY_ACTIONS){
 		cout << "primal solution" << endl;  
 	}  
 
@@ -241,7 +245,7 @@ int main(int argc, char *argv[]){
 		for(int j=0;j<qty_clients;j++){
 			primalSol >> x_values[i][j]; 
 
-			if(debug > 0){
+			if(DEBUG >= DISPLAY_ACTIONS){
 				cout << "facility " << i << " client " << j << " =  " << x_values[i][j] << endl;  
 			}  
 		}
@@ -256,7 +260,7 @@ int main(int argc, char *argv[]){
 	Lendo o arquivo com a solução LP dual
 	*/
 
-	if(debug > 0){
+	if(DEBUG >= DISPLAY_ACTIONS){
 		cout << "dual solution" << endl;  
 	}  
 
@@ -290,7 +294,7 @@ int main(int argc, char *argv[]){
 	for(int j=0;j<qty_clients;j++){
 		dualSol >> v_values[j]; 
 
-		if(debug > 0){
+		if(DEBUG >= DISPLAY_ACTIONS){
 			cout << "client " << j << " =  " << v_values[j] << endl;  
 		}  
 	}
@@ -310,7 +314,9 @@ int main(int argc, char *argv[]){
 	// Calculando o tempo gasto
 	timeSpent =  (finish.tv_sec - start.tv_sec);
 	timeSpent += (finish.tv_nsec - start.tv_nsec) / 1000000000.0; // Necessario para obter uma precisao maior 
-	cout << "Time spent: " << timeSpent << " seconds" << endl;
+	if(DEBUG >= DISPLAY_TIME_SIZE){
+		cout << "Time spent: " << timeSpent << " seconds" << endl;
+	}
 
 	//Abertura de arquivo para leitura e escrita do .sol .
 	solutionTXT.open(solutionName, std::ofstream::out | std::ofstream::trunc);

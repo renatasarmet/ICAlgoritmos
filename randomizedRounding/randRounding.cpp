@@ -8,11 +8,12 @@
 using namespace lemon;
 using namespace std;
 
-#define DISPLAY_ACTIONS 1 // corresponde a todos os cout quando uma acao é feita. 
-#define DISPLAY_TIME 2 // corresponde aos calculos de tempo 
-#define DISPLAY_GRAPH 3 // corresponde a descricao dos clientes, instalacoes e arcos
+#define DISPLAY_FINAL_COST 1 // corresponde a exibicao do custo finalTotalCost
+#define DISPLAY_ACTIONS 2 // corresponde a todos os cout quando uma acao é feita. 
+#define DISPLAY_TIME 3 // corresponde aos calculos de tempo 
+#define DISPLAY_GRAPH 4 // corresponde a descricao dos clientes, instalacoes e arcos
 
-#define DEBUG 0 // OPCOES DE DEBUG: 1 PARA EXIBIR ACOES, 2 PARA EXIBIR TEMPO, 3 PARA EXIBIR AS MUDANÇAS NO GRAFO
+#define DEBUG 0 // OPCOES DE DEBUG: 1 PARA EXIBIR CUSTO FINAL, 2 PARA EXIBIR ACOES, 3 PARA EXIBIR TEMPO, 4 PARA EXIBIR AS MUDANÇAS NO GRAFO
 
 
 double randZeroToOne(){
@@ -372,7 +373,9 @@ solutionType randRounding(int qty_facilities, int qty_clients, double * costF, d
 		}
 	}
 
-	cout << "Final total cost: " << solution.finalTotalCost << endl;
+	if(DEBUG >= DISPLAY_FINAL_COST){
+		cout << "Final total cost: " << solution.finalTotalCost << endl;
+	}
 
 	if(DEBUG >= DISPLAY_TIME){
 
