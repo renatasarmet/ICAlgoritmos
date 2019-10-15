@@ -11,8 +11,8 @@ using namespace std;
 
 int main(int argc, char *argv[]){
 
-	if(argc != 7){
-		cout << "Error in the parameters. You must enter the input type." << endl;
+	if(argc < 6){
+		cout << "Error in the parameters. You must enter at least 6 parameters" << endl;
 		return 0;
 	}
 
@@ -21,7 +21,12 @@ int main(int argc, char *argv[]){
 	char * dualSolName = argv[3];
 	char * solutionName = argv[4];
 	char * inputType = argv[5];
-	int seed = *argv[6] - '0'; // subtraindo o valor ascii para converter argv[6] para inteiro
+	int seed;
+
+	if(argc == 7)
+		seed = stoi(argv[6],nullptr,10); // convertendo argv[6] para inteiro
+	else
+		seed = ((unsigned)time(NULL)); // seed nao foi passada por parametro, entao vai aleatoria
 
 	// Arquivo para salvar a solucao
 	ofstream solutionTXT;
