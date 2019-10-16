@@ -82,10 +82,10 @@ for file_name in files_test:
 			c_dividend += (costs[i] - avg_cost) ** 2
 			t_dividend += (times[i] - avg_time) ** 2
 
-		sd_cost = (c_dividend / N_TESTS) ** (1/2) # population sd
-		# sd_cost = (c_dividend / (N_TESTS - 1)) ** (1/2) # sample sd
-		sd_time = (t_dividend / N_TESTS) ** (1/2) # population sd
-		# sd_time = (t_dividend / (N_TESTS - 1)) ** (1/2) # sample sd
+		# sd_cost = (c_dividend / N_TESTS) ** (1/2) # population sd
+		sd_cost = (c_dividend / (N_TESTS - 1)) ** (1/2) # sample sd
+		# sd_time = (t_dividend / N_TESTS) ** (1/2) # population sd
+		sd_time = (t_dividend / (N_TESTS - 1)) ** (1/2) # sample sd
 
 		# Saving information for future csv
 		solution_list.append((file_name, best_sol, min_cost, avg_cost, max_cost, sd_cost, avg_time, sd_time)) 

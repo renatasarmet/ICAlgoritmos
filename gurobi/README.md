@@ -15,7 +15,9 @@ python3 uflp_lp_ilp_mip.py tipoEntrada tipoFormulacao
 
 Por fim, para gerar o csv com todos os arquivos testados, basta digitar:
 
-python3 leitorSol.py
+python3 leitorSol.py tipoFormulacao
+
+considere que tipoFormulacao eh o mesmo anterior e pode tambem assumir 4 para o Dual.
 
 -------- DUAL --------
 
