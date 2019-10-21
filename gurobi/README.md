@@ -7,28 +7,16 @@ Formulação de programacao linear inteira (ILP), programacao linear (LP) e prog
 *COMO RODAR?*
 
 Considere que tipoEntrada significa 1 para o tipo ORLIB e 2 para o tipo SIMPLE FORMAT.
-Considere que tipoFormulacao significa 1 para ILP, 2 para LP ou 3 para MLP.
+Considere que tipoFormulacao significa 1 para ILP, 2 para LP, 3 para MLP ou 4 para o Dual.
 Então, basta digitar:
 
-python3 uflp_lp_ilp_mip.py tipoEntrada tipoFormulacao
+python3 uflp.py tipoEntrada tipoFormulacao
 
 
 Por fim, para gerar o csv com todos os arquivos testados, basta digitar:
 
-python3 leitorSol.py tipoFormulacao
+python3 readerSol.py tipoFormulacao
 
-considere que tipoFormulacao eh o mesmo anterior e pode tambem assumir 4 para o Dual.
-
--------- DUAL --------
-
-*COMO RODAR?*
-
-Considere que tipoEntrada significa 1 para o tipo ORLIB e 2 para o tipo SIMPLE FORMAT.
-Então, basta digitar:
-
-python3 dual_uflp_lp.py tipoEntrada
-
-----------------------------------------
 
 *SOBRE AS ENTRADAS*
 

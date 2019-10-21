@@ -11,8 +11,6 @@ def export_csv(output_file,solution_list):
 			w.writerow([sol[0],sol[1],sol[2],sol[3]])
 
 
-
-
 if __name__ == '__main__':
 
 	ok = 1
@@ -21,12 +19,16 @@ if __name__ == '__main__':
 
 		if(formulation_type == '1'):
 			print("Integer Linear Program")
+			formulation_type = "ILP"
 		elif(formulation_type == '2'):
 			print("Linear Program")
+			formulation_type = "LP"
 		elif(formulation_type == '3'):
 			print("Mixed Integer Linear Program")
+			formulation_type = "MIP"
 		elif(formulation_type == '4'):
 			print("Dual Linear Program")
+			formulation_type = 'Dual'
 		else:
 			print("ERROR: Invalid parameter value")
 			print("SOLUTION: Select 1 for ILP or 2 for LP or 3 for MLP or 4 for Dual")
@@ -38,7 +40,7 @@ if __name__ == '__main__':
 			file_location = 'testCasesReader.txt'
 
 			with open(file_location, 'r') as input_list_data_file:
-			    input_list_data = input_list_data_file.read()
+				input_list_data = input_list_data_file.read()
 
 			files_test = input_list_data.split()
 
@@ -46,9 +48,6 @@ if __name__ == '__main__':
 			for file_name in files_test:
 				if file_name != ".DS_Store": # ignore this file
 					print("Input file:", file_name)
-
-					if formulation_type == '4':
-						formulation_type = 'Dual'
 
 					complete_file_name = 'solutions' + formulation_type + '/' + file_name + ".sol"
 					with open(complete_file_name, 'r') as input_data_file:
@@ -65,5 +64,5 @@ if __name__ == '__main__':
 			export_csv("solutions" + formulation_type + ".csv",solution_list)
 	else:
 		print("ERROR: You need to enter a parameter")
-		print("SOLUTION: Select 1 for ILP or 2 for LP or 3 for MLP or 4 for Dual")
+		print("SOLUTION: Select 1 for ILP, 2 for LP, 3 for MLP or 4 for Dual")
 		ok = 0
