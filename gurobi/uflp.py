@@ -13,6 +13,7 @@ from dual import dualLP
 from ILP import facilityILP
 from LP import facilityLP
 from MIP import facilityMIP
+from trivial import facilityTrivial
 
 
 Facility = namedtuple("Facility", ['index', 'setup_cost'])
@@ -154,6 +155,12 @@ def solve_it(input_type, input_data, formulation_type):
 			if DEBUG >= 2:
 				print(f"Dual LP solution value = {pair_new[0]}")
 
+		elif(formulation_type == 'Trivial'):
+			pair_new = facilityTrivial(facilities, customers, DEBUG)
+
+			if DEBUG >= 2:
+				print(f"Trivial solution value = {pair_new[0]}")
+
 		else:
 			print("Wrong formulation type. You shouldn't be here")
 
@@ -217,9 +224,13 @@ if __name__ == '__main__':
 			if DEBUG >= 1:
 				print("Dual Linear Program")
 			formulation_type = 'Dual'
+		elif(formulation_type == '5'):
+			if DEBUG >= 1:
+				print("Trivial Program")
+			formulation_type = 'Trivial'
 		else:
 			print("ERROR: Invalid second parameter value")
-			print("SOLUTION: Select 1 for ILP, 2 for LP, 3 for MLP or 4 for Dual")
+			print("SOLUTION: Select 1 for ILP, 2 for LP, 3 for MLP, 4 for Dual or 5 for Trivial")
 			ok = False
 
 		if ok:
@@ -252,7 +263,7 @@ if __name__ == '__main__':
 					  sentence += " " + str(x)
 
 			else:
-				# In Dual solution[2] is the v_values and in ILP or MIP it is the solution
+				# In Dual solution[2] is the v_values and in ILP, MIP or Trivial it is the solution
 				for s in solution[2]:
 					sentence += " " + str(s)
 
@@ -266,5 +277,5 @@ if __name__ == '__main__':
 			file.close()
 
 	else:
-		print('This test requires an input type, the formulation type, the complete file name and the complete solution file name. \nFirst please select one: 1 for ORLIB inputs or 2 for SIMPLE FORMAT inputs. \nSecond please select one: 1 for ILP, 2 for LP, 3 for MIP or 4 for Dual')
+		print('This test requires an input type, the formulation type, the complete file name and the complete solution file name. \nFirst please select one: 1 for ORLIB inputs or 2 for SIMPLE FORMAT inputs. \nSecond please select one: 1 for ILP, 2 for LP, 3 for MIP, 4 for Dual or 5 for Trivial')
 

@@ -41,9 +41,11 @@ if __name__ == '__main__':
 			f_type = "MIP"
 		elif(formulation_type == '4'):
 			f_type = 'Dual'
+		elif(formulation_type == '5'):
+			f_type = 'Trivial'
 		else:
 			print("ERROR: Invalid second parameter value")
-			print("SOLUTION: Select 1 for ILP, 2 for LP, 3 for MLP or 4 for Dual")
+			print("SOLUTION: Select 1 for ILP, 2 for LP, 3 for MLP, 4 for Dual or 5 for Trivial")
 			ok = False
 
 		if ok:
@@ -63,5 +65,5 @@ if __name__ == '__main__':
 				os.system("python3 " + EXE + " " + input_type + " " + formulation_type + " " + complete_file_name + " " + complete_sol_file_name + " " + str(time_limit) + " " + str(memory_limit))
 
 	else:
-		print('This test requires an input type and the formulation type. \nFirst please select one: 1 for ORLIB inputs or 2 for SIMPLE FORMAT inputs. \nSecond please select one: 1 for ILP, 2 for LP, 3 for MIP or 4 for Dual')
+		print('This test requires an input type and the formulation type. \nFirst please select one: 1 for ORLIB inputs or 2 for SIMPLE FORMAT inputs. \nSecond please select one: 1 for ILP, 2 for LP, 3 for MIP, 4 for Dual or 5 for Trivial')
 

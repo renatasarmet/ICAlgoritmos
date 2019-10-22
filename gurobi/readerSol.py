@@ -29,9 +29,12 @@ if __name__ == '__main__':
 		elif(formulation_type == '4'):
 			print("Dual Linear Program")
 			formulation_type = 'Dual'
+		elif(formulation_type == '5'):
+			print("Trivial Program")
+			formulation_type = 'Trivial'
 		else:
 			print("ERROR: Invalid parameter value")
-			print("SOLUTION: Select 1 for ILP or 2 for LP or 3 for MLP or 4 for Dual")
+			print("SOLUTION: Select 1 for ILP or 2 for LP or 3 for MLP, 4 for Dual or 5 for Trivial")
 			ok = 0
 
 
@@ -64,5 +67,5 @@ if __name__ == '__main__':
 			export_csv("solutions" + formulation_type + ".csv",solution_list)
 	else:
 		print("ERROR: You need to enter a parameter")
-		print("SOLUTION: Select 1 for ILP, 2 for LP, 3 for MLP or 4 for Dual")
+		print("SOLUTION: Select 1 for ILP, 2 for LP, 3 for MLP, 4 for Dual or 5 for Trivial")
 		ok = 0
