@@ -6,16 +6,22 @@ Formulação de programacao linear inteira (ILP), programacao linear (LP) e prog
 
 *COMO RODAR?*
 
-Considere que tipoEntrada significa 1 para o tipo ORLIB e 2 para o tipo SIMPLE FORMAT.
-Considere que tipoFormulacao significa 1 para ILP, 2 para LP, 3 para MLP ou 4 para o Dual.
+Considere que input_type significa 1 para o tipo ORLIB e 2 para o tipo SIMPLE FORMAT.
+Considere que formulation_type significa 1 para ILP, 2 para LP, 3 para MLP ou 4 para o Dual.
+Então, para rodar nosso testador, basta digitar:
+
+python3 tester.py input_type formulation_type
+
+
+Por fim, para gerar o csv com todos os arquivos listados em "testCasesReader.txt", basta digitar:
+
+python3 readerSol.py formulation_type
+
+
+Caso queira executar apenas um exemplo, considere que complete_file_name é o caminho completo do problema UFL a ser resolvido, que complete_sol_file_name é o caminho completo onde deseja-se guardar a solucao, o input_type é o tipo da entrada (1 para o tipo ORLIB e 2 para o tipo SIMPLE FORMAT) e o formulation_type é o tipo da formulação (1 para ILP, 2 para LP, 3 para MLP ou 4 para o Dual). Considere também que o time_limit é o tempo limite e memory_limit a memória limite (ambos são parametros opcionais, se nada for indicado, usara o default. Caso deseja especificar o memory_limit, é necessario também especificar o time_limit.).
 Então, basta digitar:
 
-python3 uflp.py tipoEntrada tipoFormulacao
-
-
-Por fim, para gerar o csv com todos os arquivos testados, basta digitar:
-
-python3 readerSol.py tipoFormulacao
+python3 uflp.py input_type formulation_type complete_file_name complete_sol_file_name time_limit memory_limit
 
 
 *SOBRE AS ENTRADAS*

@@ -20,15 +20,15 @@ Então, para rodar nosso testador, basta digitar:
 python3 tester.py input_type
 
 
+Por fim, para gerar o csv com todos os arquivos listados em "testCasesReader.txt", basta digitar:
+
+python3 readerSol.py
+
+
 Caso queira executar apenas um exemplo, considere que input_name é o caminho completo do problema UFL a ser resolvido, primalSolName é o caminho completo da solucao primal desse caso e o dualSolName é o caminho completo do dual desse caso. Considere também que solutionName é o caminho completo onde deseja-se guardar a solucao, o input_type é o tipo da entrada (1 para o tipo ORLIB e 2 para o tipo SIMPLE FORMAT) e a seed é a semente para aleatorizar (esse é o unico parametro opcional, se nada for indicado, usara aleatorio).
 Então, basta digitar:
 
 ./rr input_name primalSolName dualSolName solutionName input_type seed
-
-
-Por fim, para gerar o csv com todos os arquivos listados em "testCasesReader.txt", basta digitar:
-
-python3 readerSol.py
 
 
 *SOBRE AS ENTRADAS*

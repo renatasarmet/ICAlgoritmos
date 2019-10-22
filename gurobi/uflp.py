@@ -18,11 +18,6 @@ from MIP import facilityMIP
 Facility = namedtuple("Facility", ['index', 'setup_cost'])
 Customer = namedtuple("Customer", ['index', 'attribution_cost'])
 
-# time limit in seconds
-time_limit = 900 #15 minutes
-# memory limit in bytes
-memory_limit = 10 ** 9 # 1GB
-
 DEBUG = 0
 
 def solve_it(input_type, input_data, formulation_type):
@@ -169,100 +164,107 @@ def solve_it(input_type, input_data, formulation_type):
 		print("Exceeded Memory limit.")
 		pair_best = (0,0,[-1] * len(customers), [-1] * len(customers) * len(facilities))
 
-
 	#return output_data
 	return pair_best
-
 
 
 if __name__ == '__main__':
 
 	ok = False
-	if len(sys.argv) > 2:
+	if len(sys.argv) > 4:
 		input_type = sys.argv[1].strip()
 		formulation_type = sys.argv[2].strip()
+		complete_file_name = sys.argv[3].strip()
+		complete_sol_file_name = sys.argv[4].strip()
+
+		if len(sys.argv) > 5:
+			time_limit = int(sys.argv[5].strip())
+
+			if len(sys.argv) > 6:
+				memory_limit = int(sys.argv[6].strip())
+				
+			else: # default memory limit in bytes
+				memory_limit = 10 ** 9 # 1GB
+
+		else: # default time limit in seconds
+			time_limit = 900 #15 minutes
 
 		if(input_type == '1'):
-			print("ORLIB type")
-			file_location = 'testCases1.txt'
+			if DEBUG >= 1:
+				print("ORLIB type")
 			ok = True
 		elif(input_type == '2'):
-			print("SIMPLE FORMAT type")
-			file_location = 'testCases2.txt'
+			if DEBUG >= 1:
+				print("SIMPLE FORMAT type")
 			ok = True
 		else:
 			print("ERROR: Invalid first parameter value")
 			print("SOLUTION: Select 1 for ORLIB inputs or 2 for SIMPLE FORMAT inputs")
 
 		if(formulation_type == '1'):
-			print("Integer Linear Program")
+			if DEBUG >= 1:
+				print("Integer Linear Program")
 			formulation_type = "ILP"
 		elif(formulation_type == '2'):
-			print("Linear Program")
+			if DEBUG >= 1:
+				print("Linear Program")
 			formulation_type = "LP"
 		elif(formulation_type == '3'):
-			print("Mixed Integer Linear Program")
+			if DEBUG >= 1:
+				print("Mixed Integer Linear Program")
 			formulation_type = "MIP"
 		elif(formulation_type == '4'):
-			print("Dual Linear Program")
+			if DEBUG >= 1:
+				print("Dual Linear Program")
 			formulation_type = 'Dual'
 		else:
 			print("ERROR: Invalid second parameter value")
-			print("SOLUTION: Select 1 for ILP or 2 for LP or 3 for MLP")
+			print("SOLUTION: Select 1 for ILP, 2 for LP, 3 for MLP or 4 for Dual")
 			ok = False
 
 		if ok:
-			with open(file_location, 'r') as input_list_data_file:
-				input_list_data = input_list_data_file.read()
+			if DEBUG >= 1:
+				print("Input file:", complete_file_name)
+			start = time.time()
 
-			files_test = input_list_data.split()
+			with open(complete_file_name, 'r') as input_data_file:
+				input_data = input_data_file.read()
 
-			for file_name in files_test:
-				print()
-				print("Input file:", file_name)
-				start = time.time()
+			solution = solve_it(input_type, input_data, formulation_type)
 
-				complete_file_name = '../baseDeTestes/facilityTestCases/tests/' + file_name
-				with open(complete_file_name, 'r') as input_data_file:
-					input_data = input_data_file.read()
+			end = time.time()
+			time_spent = end - start
 
-				solution = solve_it(input_type, input_data, formulation_type)
+			if DEBUG >= 1:
+				print("Time spent =", time_spent)
 
-				end = time.time()
-				time_spent = end - start
+			file = open(complete_sol_file_name, 'w')
+			sentence = str(solution[0]) + " " + str(time_spent) + " " + str(solution[1])
 
-				if DEBUG >= 1:
-					print("Time spent =", time_spent)
+			if formulation_type == 'LP':
+				# solution[4] is the y_values
+				for y in solution[4]: 
+				  sentence += " " + str(y)
+				  
+				# solution[3] is the x_values
+				for x_f in solution[3]: # each x_f is a list of x from the facility f to every client
+				  for x in x_f: # each x is a value of x from the facility f to this especific client
+					  sentence += " " + str(x)
 
-				complete_sol_file_name = 'solutions' + formulation_type + '/' + file_name + '.sol'
+			else:
+				# In Dual solution[2] is the v_values and in ILP or MIP it is the solution
+				for s in solution[2]:
+					sentence += " " + str(s)
 
-				file = open(complete_sol_file_name, 'w')
-				sentence = str(solution[0]) + " " + str(time_spent) + " " + str(solution[1])
+				if formulation_type == 'Dual':
+					# solution[3] is the w_values
+					for w_f in solution[3]: # each w_f is a list of w from the facility f to every client
+					  for w in w_f: # each w is a value of w from the facility f to this especific client
+						  sentence += " " + str(w)
 
-				if formulation_type == 'LP':
-					# solution[4] is the y_values
-					for y in solution[4]: 
-					  sentence += " " + str(y)
-					  
-					# solution[3] is the x_values
-					for x_f in solution[3]: # each x_f is a list of x from the facility f to every client
-					  for x in x_f: # each x is a value of x from the facility f to this especific client
-						  sentence += " " + str(x)
-
-				else:
-					# In Dual solution[2] is the v_values and in ILP or MIP it is the solution
-					for s in solution[2]:
-						sentence += " " + str(s)
-
-					if formulation_type == 'Dual':
-						# solution[3] is the w_values
-						for w_f in solution[3]: # each w_f is a list of w from the facility f to every client
-						  for w in w_f: # each w is a value of w from the facility f to this especific client
-							  sentence += " " + str(w)
-
-				file.write(sentence)
-				file.close()
+			file.write(sentence)
+			file.close()
 
 	else:
-		print('This test requires an input type and the formulation type. \nFirst please select one: 1 for ORLIB inputs or 2 for SIMPLE FORMAT inputs. \nSecond please select one: 1 for ILP, 2 for LP, 3 for MIP or 4 for Dual')
+		print('This test requires an input type, the formulation type, the complete file name and the complete solution file name. \nFirst please select one: 1 for ORLIB inputs or 2 for SIMPLE FORMAT inputs. \nSecond please select one: 1 for ILP, 2 for LP, 3 for MIP or 4 for Dual')
 
