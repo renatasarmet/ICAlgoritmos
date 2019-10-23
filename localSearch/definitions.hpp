@@ -3,9 +3,6 @@
 struct solutionType {
 	int * assigned_facilities;
 	double finalTotalCost;
-	double timeSpent;
-	int qty_clients;
 };
 
-solutionType handlesInput(char inputName[], char initialSolName[], char inputType[]);
-solutionType localSearch(int qtyFac, double * costF, double * costA, solutionType solution);
+solutionType localSearch(int qty_facilities, int qty_clients, double * costF, double * costA, solutionType solution);

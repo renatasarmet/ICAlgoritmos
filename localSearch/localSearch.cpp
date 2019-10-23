@@ -23,7 +23,7 @@ using namespace std;
 
 
 // Retornar o valor da solucao
-solutionType localSearch(int qtyFac, double * costF, double * costA, solutionType solution){
+solutionType localSearch(int qty_facilities, int qty_clients, double * costF, double * costA, solutionType solution){
 
 	cout << fixed;
    	cout.precision(5);
@@ -42,9 +42,6 @@ solutionType localSearch(int qtyFac, double * costF, double * costA, solutionTyp
 		// INICIANDO A CONTAGEM DE TEMPO DA FUNCAO COMO UM TODO
 		clock_gettime(CLOCK_REALTIME, &real_start);
 	}
-
-	int qty_clients = solution.qty_clients; // Indica quantidade de clientes
-	int qty_facilities = qtyFac; // Indica quantidade de instalacoes
 
 	// Variavel que armazena o maior valor cij dado na entrada, para uso posterior
 	double biggestCij = 0;
