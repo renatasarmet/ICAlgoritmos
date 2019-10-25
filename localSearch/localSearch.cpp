@@ -7,19 +7,16 @@
 #include "definitions.hpp"
 #define EPSL 0.00000001
 
-// Observacao importante: ao usar g.nodeFromId() eh necessario passar o ID geral, nao o blue ID nem red ID. 
-// No caso do cliente, o red ID = ID geral, pois os clientes foram os primeiros a serem adicionados no grafo.
-// No caso da instalacao, o ID geral = blue ID + qty_clients, pois as instalacoes foram adicionadas no grafo logo apos todos os clientes.
-
 using namespace lemon;
 using namespace std;
 
-#define DISPLAY_MOVES 1 // corresponde a todos os cout quando um movimento é realizado de fato
-#define DISPLAY_ACTIONS 2 // corresponde a todos os cout quando uma acao é feita. 
-#define DISPLAY_TIME 3 // corresponde aos calculos de tempo 
-#define DISPLAY_GRAPH 4 // corresponde a descricao dos clientes, instalacoes e arcos
+#define DISPLAY_BASIC 1 // corresponde a exibicao da quantidade de movimentos
+#define DISPLAY_MOVES 2 // corresponde a todos os cout quando um movimento é realizado de fato
+#define DISPLAY_ACTIONS 3 // corresponde a todos os cout quando uma acao é feita. 
+#define DISPLAY_TIME 4 // corresponde aos calculos de tempo 
+#define DISPLAY_GRAPH 5 // corresponde a descricao dos clientes, instalacoes e arcos
 
-#define DEBUG 0 // OPCOES DE DEBUG: 1 PARA EXIBIR OS MOVIMENTOS REALIZADOS, 2 PARA EXIBIR ACOES, 3 PARA EXIBIR TEMPO, 4 PARA EXIBIR AS MUDANÇAS NO GRAFO
+#define DEBUG 1 // OPCOES DE DEBUG: 1 - MOSTRAR A QTD DE MOVIMENTOS, 2 PARA EXIBIR OS MOVIMENTOS REALIZADOS, 3 PARA EXIBIR ACOES, 4 PARA EXIBIR TEMPO, 5 PARA EXIBIR AS MUDANÇAS NO GRAFO
 
 
 // Retornar o valor da solucao
@@ -106,7 +103,7 @@ solutionType localSearch(int qty_facilities, int qty_clients, double * costF, do
 	for(int i=0;i<qty_facilities;i++){
 		facilities[i] = g.addBlueNode();
 		f[facilities[i]] = costF[i]; // pegando valor vindo por parametro
-		name[facilities[i]] = qty_clients + i; // nomeia de acordo com a numeracao
+		name[facilities[i]] = i; // nomeia de acordo com a numeracao
 		open[facilities[i]] = false; // indica que a instalação não está aberta inicialmente
 	}
 
@@ -269,7 +266,7 @@ solutionType localSearch(int qty_facilities, int qty_clients, double * costF, do
 		for(ListBpGraph::BlueNodeIt n(g); n != INVALID; ++n){		// percorre as instalacoes
 
 			if(DEBUG >= DISPLAY_ACTIONS){
-				cout << "Let's move facility " << name[n] - qty_clients << endl;
+				cout << "Let's move facility " << name[n] << endl;
 			}
 
 			if(open[n]){ // caso a inst esteja aberta
@@ -328,7 +325,7 @@ solutionType localSearch(int qty_facilities, int qty_clients, double * costF, do
 						}
 
 						if(DEBUG >= DISPLAY_MOVES){
-							cout << "Move CLOSE facility: "<< name[n] - qty_clients << endl;
+							cout << "Move CLOSE facility: "<< name[n] << endl;
 						}
 
 						qty_moves += 1;
@@ -337,7 +334,8 @@ solutionType localSearch(int qty_facilities, int qty_clients, double * costF, do
 
 							if(nearest_open_fac[n_cli] == g.id(n)){ // caso esse cliente esteja conectado a essa instalacao
 								if(DEBUG >= DISPLAY_ACTIONS){
-									cout << "changing client: " << name[n_cli] << " nearest facility " << name[n] - qty_clients << endl;
+									cout << "changing client: " << name[n_cli] << " nearest facility " << name[n] << endl;
+
 								}
 
 								nearest_open_fac[n_cli] = temp_nearest_fac[n_cli]; // reatribuindo com a nova inst mais proxima
@@ -403,7 +401,8 @@ solutionType localSearch(int qty_facilities, int qty_clients, double * costF, do
 					}
 
 					if(DEBUG >= DISPLAY_MOVES){
-						cout << "Move OPEN facility: "<< name[n] - qty_clients << endl;
+						cout << "Move OPEN facility: "<< name[n] << endl;
+
 					}
 
 					qty_moves += 1;
@@ -412,7 +411,8 @@ solutionType localSearch(int qty_facilities, int qty_clients, double * costF, do
 
 						if(nearest_open_fac[n_cli] != temp_nearest_fac[n_cli]) { // caso esse cliente seja mais proximo dessa nova instalacao
 							if(DEBUG >= DISPLAY_ACTIONS){
-								cout << "changing client: " << name[n_cli] << " nearest facility " << name[n] - qty_clients << endl;
+								cout << "changing client: " << name[n_cli] << " nearest facility " << name[n] << endl;
+
 							}
 
 							nearest_open_fac[n_cli] = temp_nearest_fac[n_cli]; // reatribuindo com a nova inst mais proxima
@@ -449,10 +449,8 @@ solutionType localSearch(int qty_facilities, int qty_clients, double * costF, do
 			for(ListBpGraph::BlueNodeIt n(g); n != INVALID; ++n){		// percorre as instalacoes
 
 				if(DEBUG >= DISPLAY_ACTIONS){
-					cout << "Let's move facility " << name[n] - qty_clients << endl;
+					cout << "Let's move facility " << name[n] << endl;
 				}
-
-
 
 				if(open[n]){ // caso a inst esteja aberta
 
@@ -513,7 +511,7 @@ solutionType localSearch(int qty_facilities, int qty_clients, double * costF, do
 							ListBpGraph::BlueNode n2 = g.asBlueNode(g.nodeFromId(*itr)); // Pega o no correspondente dessa inst
 
 							if(DEBUG >= DISPLAY_ACTIONS){
-								cout << "Let's swap in the facility " << name[n2] - qty_clients << endl;
+								cout << "Let's swap in the facility " << name[n2] << endl;
 							}
 
 							complete_extra_cost = extra_cost + f[n2]; // soma o custo de abertura dessa inst
@@ -548,7 +546,7 @@ solutionType localSearch(int qty_facilities, int qty_clients, double * costF, do
 								}
 
 								if(DEBUG >= DISPLAY_MOVES){
-									cout << "Move SWAP OUT facility: " << name[n] - qty_clients << " and SWAP IN facility: " << name[n2] - qty_clients << endl;
+									cout << "Move SWAP OUT facility: " << name[n] << " and SWAP IN facility: " << name[n2] << endl;
 								}
 
 								qty_moves += 1;
@@ -636,7 +634,7 @@ solutionType localSearch(int qty_facilities, int qty_clients, double * costF, do
 						ListBpGraph::BlueNode n2 = g.asBlueNode(g.nodeFromId(*itr)); // Pega o no correspondente dessa inst
 
 						if(DEBUG >= DISPLAY_ACTIONS){
-							cout << "Let's swap out the facility " << name[n2] - qty_clients << endl;
+							cout << "Let's swap out the facility " << name[n2] << endl;
 						}
 
 						complete_extra_cost = extra_cost - f[n2]; // subtrai o custo de abertura dessa inst
@@ -663,7 +661,8 @@ solutionType localSearch(int qty_facilities, int qty_clients, double * costF, do
 								// Tambem devemos testar com a instalacao que pretendo abrir, que nao esta ainda no conjunto open facilities
 
 								if(assignment_cost[findEdge(g, n_cli, n)] < best_cij_reassignment){ // caso essa seja a inst mais perto ate agr encontrada
-									temp2_nearest_fac[n_cli] = name[n] - qty_clients; // atualizando a inst mais perto temporaria
+									temp2_nearest_fac[n_cli] = name[n]; // atualizando a inst mais perto temporaria
+
 									best_cij_reassignment = assignment_cost[findEdge(g, n_cli, n)];
 								}
 
@@ -694,7 +693,7 @@ solutionType localSearch(int qty_facilities, int qty_clients, double * costF, do
 							}
 
 							if(DEBUG >= DISPLAY_MOVES){
-								cout << "Move SWAP IN facility: " << name[n] - qty_clients << " and SWAP OUT facility: " << name[n2] - qty_clients << endl;
+								cout << "Move SWAP IN facility: " << name[n] << " and SWAP OUT facility: " << name[n2] << endl;
 							}
 
 							qty_moves += 1;
@@ -750,9 +749,14 @@ solutionType localSearch(int qty_facilities, int qty_clients, double * costF, do
 		}
 	}
 
-	cout << "FINAL TOTAL COST: " << solution.finalTotalCost << endl;
+	if(DEBUG >= DISPLAY_ACTIONS){
+		cout << "FINAL TOTAL COST: " << solution.finalTotalCost << endl;
+	}
 
-	cout << "Total moves: " << qty_moves << endl;
+
+	if(DEBUG >= DISPLAY_BASIC){
+		cout << "Total moves: " << qty_moves << endl;
+	}
 
 	if(DEBUG >= DISPLAY_TIME){
 
