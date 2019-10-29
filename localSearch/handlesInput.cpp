@@ -232,6 +232,9 @@ int main(int argc, char *argv[]){
 	Fim ler o arquivo com a solução inicial
 	******************************************/
 
+	// Variavel que indica se ja encontramos o otimo local -- condicao de parada da busca
+	solution.local_optimum = false;
+
 	// Chamando a funcao que resolve o problema de fato
 	solution = localSearch(qty_facilities, qty_clients, costF, costA, solution);
 
@@ -256,7 +259,10 @@ int main(int argc, char *argv[]){
 	solutionTXT << fixed << setprecision(5) << solution.finalTotalCost << " ";
 	
 	// Colocando no solutionTXT o tempo gasto 
-	solutionTXT << timeSpent;
+	solutionTXT << timeSpent << " ";
+
+	// Colocando no solutionTXT se o otimo local foi encontrado
+	solutionTXT << solution.local_optimum;
 
 	// Colocando no solutionsTXT as instalacoes finais conectadas
 	for(int i=0; i < qty_clients; i++){

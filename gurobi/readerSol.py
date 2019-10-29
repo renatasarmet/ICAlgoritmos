@@ -57,7 +57,7 @@ if __name__ == '__main__':
 						input_data = input_data_file.read()
 
 					if(input_data):
-						# solution :: 0 - avgCost, 1 - avgTime, 2 - optimal, 3....qty_clients - connected facility
+						# solution :: 0 - cost, 1 - timeSpent, 2 - optimal, 3....qty_clients - connected facility
 						solution = input_data.split(" ")
 
 						if len(solution) >= 3: # checking if the solution is in a correct format

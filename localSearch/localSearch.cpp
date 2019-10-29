@@ -201,11 +201,6 @@ solutionType localSearch(int qty_facilities, int qty_clients, double * costF, do
 		}
 	}
 
-
-	// Variavel que indica que ja encontramos o otimo local -- condicao de parada do loop
-	bool local_optimum = false;
-
-
 	// Variavel que indica se foi feito uma troca, se sim, devemos dar um break no for para voltar pro while
 	bool swap_done = false;
 
@@ -223,9 +218,10 @@ solutionType localSearch(int qty_facilities, int qty_clients, double * costF, do
 
 	// ****** A partir daqui deve estar em um loop até nao ter mais melhoras possiveis, isto é, encontrar o otimo local
 
-	// OBSERVACAO: TAMBEM EXISTE UMA CONDICAO DE PARADA RELACIONADA A TEMPO, FEITA LOGO NO INICIO DO LOOP
+	// OBSERVACAO 1: tambem existe uma condicao de parada relacionada a tempo, feita logo no inicio do loop
+	// OBSERVACAO 2: solution.local_optimum (variavel que indica se ja encontramos o otimo local) foi inicializado com valor falso na leitura da solução inicial (handlesInput.cpp)
 
-	while(!local_optimum){
+	while(!solution.local_optimum){
 
 		// CHECANDO A CONTAGEM DE TEMPO GASTO ATÉ AGORA
 		clock_gettime(CLOCK_REALTIME, &time_so_far);
@@ -273,8 +269,8 @@ solutionType localSearch(int qty_facilities, int qty_clients, double * costF, do
 		// Entao, vou percorrer todas as instalacoes e, caso eu encontre alguma melhora no percurso, modifico esse otimo local para falso
 		// Na proxima iteracao volto a considerar que estamos no otimo local e repito o processo
 		// No momento que eu percorrer todas as instalacoes e nenhuma conseguir melhorar nada, entao eu realmente estava no otimo local e finalizo o while
-		// Encaixando a operação de troca, será um for logo depois desse primeiro for, que só ira entrar caso finalize o primeiro for com local_optimum = true, pois indica que nada melhorou por ali
-		local_optimum = true; 
+		// Encaixando a operação de troca, será um for logo depois desse primeiro for, que só ira entrar caso finalize o primeiro for com solution.local_optimum = true, pois indica que nada melhorou por ali
+		solution.local_optimum = true; 
 
 		for(ListBpGraph::BlueNodeIt n(g); n != INVALID; ++n){		// percorre as instalacoes
 
@@ -364,7 +360,7 @@ solutionType localSearch(int qty_facilities, int qty_clients, double * costF, do
 
 						solution.finalTotalCost += extra_cost; // Atualizando o custo total final
 
-						local_optimum = false; // Como encontrei uma melhora, entao eu nao estava no otimo local, portanto o while deve continuar
+						solution.local_optimum = false; // Como encontrei uma melhora, entao eu nao estava no otimo local, portanto o while deve continuar
 					}
 					else {
 						if(DEBUG >= DISPLAY_ACTIONS){
@@ -441,7 +437,7 @@ solutionType localSearch(int qty_facilities, int qty_clients, double * costF, do
 
 					solution.finalTotalCost += extra_cost; // Atualizando o custo total final
 
-					local_optimum = false; // Como encontrei uma melhora, entao eu nao estava no otimo local, portanto o while deve continuar
+					solution.local_optimum = false; // Como encontrei uma melhora, entao eu nao estava no otimo local, portanto o while deve continuar
 				}
 				else {
 					if(DEBUG >= DISPLAY_ACTIONS){
@@ -453,7 +449,7 @@ solutionType localSearch(int qty_facilities, int qty_clients, double * costF, do
 
 
 		// CASO DE TROCA
-		if(local_optimum){ // Entra aqui se nao houve nenhuma melhora na tentativa de add ou delete
+		if(solution.local_optimum){ // Entra aqui se nao houve nenhuma melhora na tentativa de add ou delete
 
 			if(DEBUG >= DISPLAY_ACTIONS){
 				cout << "Let's try to swap it. Now the total cost is " << solution.finalTotalCost << endl;
@@ -593,7 +589,7 @@ solutionType localSearch(int qty_facilities, int qty_clients, double * costF, do
 									cout << "*After the swap move we have total cost: " << solution.finalTotalCost << endl;
 								}
 
-								local_optimum = false; // Como encontrei uma melhora, entao eu nao estava no otimo local, portanto o while deve continuar
+								solution.local_optimum = false; // Como encontrei uma melhora, entao eu nao estava no otimo local, portanto o while deve continuar
 
 								swap_done = true;
 								break; // quero que volte a olhar os movimentos de add e delete, ao inves de ver outras possiveis trocas
@@ -740,7 +736,7 @@ solutionType localSearch(int qty_facilities, int qty_clients, double * costF, do
 								cout << "*After the swap move we have total cost: " << solution.finalTotalCost << endl;
 							}
 
-							local_optimum = false; // Como encontrei uma melhora, entao eu nao estava no otimo local, portanto o while deve continuar
+							solution.local_optimum = false; // Como encontrei uma melhora, entao eu nao estava no otimo local, portanto o while deve continuar
 
 							swap_done = true;
 							break; // quero que volte a olhar os movimentos de add e delete, ao inves de ver outras possiveis trocas
