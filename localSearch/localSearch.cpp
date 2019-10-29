@@ -222,10 +222,10 @@ solutionType localSearch(int qty_facilities, int qty_clients, double * costF, do
 	double best_cij_reassignment;
 
 
-	// ****** A partir daqui deve estar em um loop até nao ter mais melhoras possiveis, isto eh, encontrar o otimo local
+	// ****** A partir daqui deve estar em um loop até nao ter mais melhoras possiveis, isto é, encontrar o otimo local
 
 
-	// OBSERVACAO IMPORTANTE: SERA NECESSARIO COLOCAR UMA CONDICAO DE PARADA TAMBEM RELACIONADO A TEMPO OU QUANTIDADE DE ITERACOES
+	// OBSERVACAO IMPORTANTE: NO FUTURO SERA NECESSARIO COLOCAR UMA CONDICAO DE PARADA TAMBEM RELACIONADO A TEMPO OU QUANTIDADE DE ITERACOES
 
 
 	while(!local_optimum){
@@ -355,7 +355,7 @@ solutionType localSearch(int qty_facilities, int qty_clients, double * costF, do
 					}
 					else {
 						if(DEBUG >= DISPLAY_ACTIONS){
-							cout << "VISHHHH IT GOT WORSE" << endl;
+							cout << "NO! IT GOT WORSE" << endl;
 						}
 					}
 				}
@@ -432,7 +432,7 @@ solutionType localSearch(int qty_facilities, int qty_clients, double * costF, do
 				}
 				else {
 					if(DEBUG >= DISPLAY_ACTIONS){
-						cout << "VISHHHH IT GOT WORSE" << endl;
+						cout << "NO! IT GOT WORSE" << endl;
 					}
 				}
 			}
@@ -587,7 +587,7 @@ solutionType localSearch(int qty_facilities, int qty_clients, double * costF, do
 							}
 							else {
 								if(DEBUG >= DISPLAY_ACTIONS){
-									cout << "VISHHHH IT GOT WORSE" << endl;
+									cout << "NO! IT GOT WORSE" << endl;
 								}
 							}
 						}
@@ -734,7 +734,7 @@ solutionType localSearch(int qty_facilities, int qty_clients, double * costF, do
 						}
 						else {
 							if(DEBUG >= DISPLAY_ACTIONS){
-								cout << "VISHHHH IT GOT WORSE" << endl;
+								cout << "NO! IT GOT WORSE" << endl;
 							}
 						}
 					}
