@@ -14,10 +14,12 @@ Após isso, digite no terminal:
 g++ handlesInput.cpp localSearch.cpp -o lsr
 
 
-Considere que tipoEntrada significa 1 para o tipo ORLIB e 2 para o tipo SIMPLE FORMAT.
+Considere que input_type significa 1 para o tipo ORLIB e 2 para o tipo SIMPLE FORMAT.
+obs: APENAS caso a solução inicial venha do RR, deve-se digitar tambem como parametro a quantidade de testes que foram feitos (qty_tests)
+
 Então, para rodar nosso testador, basta digitar:
 
-python3 tester.py input_type
+python3 tester.py input_type <qty_tests>
 
 
 Por fim, para gerar o csv com todos os arquivos listados em "testCasesReader.txt", basta digitar:

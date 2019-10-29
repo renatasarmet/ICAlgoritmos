@@ -12,6 +12,17 @@ if __name__ == '__main__':
 	ok = True
 	if len(sys.argv) > 1:
 		input_type = sys.argv[1].strip()
+		n_tests = 1
+		initial_sol_rr = False
+
+		if len(sys.argv) > 2: 
+			initial_sol_rr = True # indica que o teste será com soluções iniciais vindas do RR
+			n_tests = int(sys.argv[2].strip()) # entao esse parametro indica a quantidade de testes que foram feitos (o N)
+
+			if n_tests <= 0:
+				print("ERROR: Invalid parameter value")
+				print("SOLUTION: The second parameter must be greater than 0")
+				ok = False
 
 		if(input_type == '1'):
 			if DEBUG >= DISPLAY_NAME:
@@ -41,12 +52,20 @@ if __name__ == '__main__':
 					print()
 					print("Input file:", file_name)
 
-				input_name = '../baseDeTestes/facilityTestCases/tests/' + file_name
-				initialSolName = 'initialSolutions/' + file_name + '.sol'
-				solutionName = 'solutions/' + file_name + '.sol'
+				for i in range(1,n_tests+1): # Repete n_tests vezes
 
-				# Chamando o programa a ser testado
-				os.system(EXE + " " + input_name + " " + initialSolName + " " + solutionName + " " + input_type)
+					input_name = '../baseDeTestes/facilityTestCases/tests/' + file_name
+
+					if initial_sol_rr:
+						initialSolName = 'initialSolutions/' + file_name + "_" + str(i) + '.sol'
+						solutionName = 'solutions/' + file_name + "_" + str(i) + '.sol'
+
+					else:
+						initialSolName = 'initialSolutions/' + file_name + '.sol'
+						solutionName = 'solutions/' + file_name + '.sol'
+
+					# Chamando o programa a ser testado
+					os.system(EXE + " " + input_name + " " + initialSolName + " " + solutionName + " " + input_type)
 
 	else:
 		print('This test requires an input type. \nFirst please select one: 1 for ORLIB inputs or 2 for SIMPLE FORMAT inputs.')
