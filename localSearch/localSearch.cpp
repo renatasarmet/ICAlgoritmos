@@ -18,6 +18,7 @@ using namespace std;
 
 #define DEBUG 1 // OPCOES DE DEBUG: 1 - MOSTRAR A QTD DE MOVIMENTOS, 2 PARA EXIBIR OS MOVIMENTOS REALIZADOS, 3 PARA EXIBIR ACOES, 4 PARA EXIBIR TEMPO, 5 PARA EXIBIR AS MUDANÇAS NO GRAFO
 
+#define TIME_LIMIT 900 //15 minutos
 
 // Retornar o valor da solucao
 solutionType localSearch(int qty_facilities, int qty_clients, double * costF, double * costA, solutionType solution){
@@ -28,17 +29,15 @@ solutionType localSearch(int qty_facilities, int qty_clients, double * costF, do
 	/* Inicio declaracoes variaveis para calculo de tempo */
 
 	// Declaracao variaveis que indicam o tempo do programa como um todo
-	struct timespec real_start, real_finish;
+	struct timespec real_start, real_finish, time_so_far;
 
-	// Declaracao variavel que marcara o tempo de execucao da funcao como um todo
-	double realTimeSpent;
+	// Declaracao variavel que marcara o tempo de execucao
+	double timeSpent;
 
 	/* Fim declaracoes para calculo de tempo */
 
-	if(DEBUG >= DISPLAY_TIME){
-		// INICIANDO A CONTAGEM DE TEMPO DA FUNCAO COMO UM TODO
-		clock_gettime(CLOCK_REALTIME, &real_start);
-	}
+	// INICIANDO A CONTAGEM DE TEMPO DA FUNCAO COMO UM TODO
+	clock_gettime(CLOCK_REALTIME, &real_start);
 
 	// Variavel que armazena o maior valor cij dado na entrada, para uso posterior
 	double biggestCij = 0;
@@ -224,11 +223,25 @@ solutionType localSearch(int qty_facilities, int qty_clients, double * costF, do
 
 	// ****** A partir daqui deve estar em um loop até nao ter mais melhoras possiveis, isto é, encontrar o otimo local
 
-
-	// OBSERVACAO IMPORTANTE: NO FUTURO SERA NECESSARIO COLOCAR UMA CONDICAO DE PARADA TAMBEM RELACIONADO A TEMPO OU QUANTIDADE DE ITERACOES
-
+	// OBSERVACAO: TAMBEM EXISTE UMA CONDICAO DE PARADA RELACIONADA A TEMPO, FEITA LOGO NO INICIO DO LOOP
 
 	while(!local_optimum){
+
+		// CHECANDO A CONTAGEM DE TEMPO GASTO ATÉ AGORA
+		clock_gettime(CLOCK_REALTIME, &time_so_far);
+
+		// Calculando o tempo gasto até agora
+		timeSpent =  (time_so_far.tv_sec - real_start.tv_sec);
+		timeSpent += (time_so_far.tv_nsec - real_start.tv_nsec) / 1000000000.0; // Necessario para obter uma precisao maior 
+
+		if(DEBUG >= DISPLAY_TIME){
+			cout << "Total time spent so far: " << timeSpent << " seconds" << endl;
+		}
+
+		// Se já passou o tempo limite, devemos parar
+		if(timeSpent >= TIME_LIMIT){
+			break;
+		}
 
 		if(DEBUG >= DISPLAY_ACTIONS){
 			cout << endl << "------------------------------ NEXT MOVE ------------------------------" << endl << endl;
@@ -764,9 +777,9 @@ solutionType localSearch(int qty_facilities, int qty_clients, double * costF, do
 		clock_gettime(CLOCK_REALTIME, &real_finish);
 
 		// Calculando o tempo gasto total
-		realTimeSpent =  (real_finish.tv_sec - real_start.tv_sec);
-		realTimeSpent += (real_finish.tv_nsec - real_start.tv_nsec) / 1000000000.0; // Necessario para obter uma precisao maior 
-		cout << "Final Total Function Time: " << realTimeSpent << " seconds" << endl;
+		timeSpent =  (real_finish.tv_sec - real_start.tv_sec);
+		timeSpent += (real_finish.tv_nsec - real_start.tv_nsec) / 1000000000.0; // Necessario para obter uma precisao maior 
+		cout << "Final Total Function Time: " << timeSpent << " seconds" << endl;
 	}
 
 	free(clients);
