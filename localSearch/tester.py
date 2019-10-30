@@ -52,13 +52,13 @@ if __name__ == '__main__':
 					print()
 					print("Input file:", file_name)
 
-				for i in range(1,n_tests+1): # Repete n_tests vezes
+				for seed in range(1,n_tests+1): # Repete n_tests vezes
 
 					input_name = '../baseDeTestes/facilityTestCases/tests/' + file_name
 
 					if initial_sol_rr:
-						initialSolName = 'initialSolutions/' + file_name + "_" + str(i) + '.sol'
-						solutionName = 'solutions/' + file_name + "_" + str(i) + '.sol'
+						initialSolName = 'initialSolutions/' + file_name + "_" + str(seed) + '.sol'
+						solutionName = 'solutions/' + file_name + "_" + str(seed) + '.sol'
 
 					else:
 						initialSolName = 'initialSolutions/' + file_name + '.sol'

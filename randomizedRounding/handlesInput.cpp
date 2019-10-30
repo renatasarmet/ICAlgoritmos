@@ -84,7 +84,7 @@ int main(int argc, char *argv[]){
 		inputFLP >> qty_facilities >> qty_clients; 
 
 		if(DEBUG >= DISPLAY_TIME_SIZE){
-			cout << "QTY FACILITIES: " << qty_facilities << " E QTY CLIENTS: " << qty_clients << endl;
+			cout << "QTY FACILITIES: " << qty_facilities << " AND QTY CLIENTS: " << qty_clients << endl;
 		}
 
 		// Vetores que salvarao custos lidos no arquivo
@@ -143,7 +143,7 @@ int main(int argc, char *argv[]){
 		inputFLP >> qty_facilities >> qty_clients >> auxRead; 
 
 		if(DEBUG >= DISPLAY_TIME_SIZE){
-			cout << "QTY FACILITIES: " << qty_facilities << " E QTY CLIENTS: " << qty_clients << endl;
+			cout << "QTY FACILITIES: " << qty_facilities << " AND QTY CLIENTS: " << qty_clients << endl;
 		}
 
 		// Vetores que salvarao custos lidos no arquivo
@@ -163,7 +163,7 @@ int main(int argc, char *argv[]){
 		// Lendo do arquivo os custos de abertura das instalacoes e salvando no vetor costF
 		for(int i=0;i<qty_facilities;i++){
 			inputFLP >> auxRead; // Descartando o nome da instalação
-			// cout << "DESCARTE:" << auxRead << endl;
+			// cout << "Discard:" << auxRead << endl;
 			inputFLP >> auxRead; // Pegando o valor do custo de abertura da instalação
 			costF[i] = auxRead;
 

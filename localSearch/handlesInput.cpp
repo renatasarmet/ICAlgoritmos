@@ -9,14 +9,14 @@
 #define DISPLAY_TIME_SIZE 2 // corresponde a exibicao do tempo total gasto e do tamanho da entrada (quantidade de clientes e de instalacoes)
 #define DISPLAY_ACTIONS 3 // corresponde a todos os cout quando uma informacao eh salva 
 
-#define DEBUG 1 // OPCOES DE DEBUG: 0 PARA NAO EXIBIR NADA, 1 PARA EXIBIR TEMPO E QTD CLI E INST, 2 PARA EXIBIR AS INFORMACOES SENDO SALVAS
+#define DEBUG 1 // OPCOES DE DEBUG: 0 PARA NAO EXIBIR NADA, 1 PARA EXIBIR CUSTO INICIAL E FINAL, 2 PARA EXIBIR TEMPO E QTD CLI E INST, 3 PARA EXIBIR AS INFORMACOES SENDO SALVAS
 
 using namespace std;
 
 int main(int argc, char *argv[]){
 
 	if(argc < 5){
-		cout << "Error in the parameters. You must enter at least 6 parameters" << endl;
+		cout << "Error in the parameters. You must enter 4 parameters" << endl;
 		return 0;
 	}
 
@@ -55,7 +55,7 @@ int main(int argc, char *argv[]){
 	clock_gettime(CLOCK_REALTIME, &start);
 
 	cout << fixed;
-   	cout.precision(5);
+	cout.precision(5);
 
 	/****************************
 	Lendo o arquivo de entrada
@@ -75,7 +75,7 @@ int main(int argc, char *argv[]){
 		inputFLP >> qty_facilities >> qty_clients; 
 
 		if(DEBUG >= DISPLAY_TIME_SIZE){
-			cout << "QTY FACILITIES: " << qty_facilities << " E QTY CLIENTS: " << qty_clients << endl;
+			cout << "QTY FACILITIES: " << qty_facilities << " AND QTY CLIENTS: " << qty_clients << endl;
 		}
 
 		// Vetores que salvarao custos lidos no arquivo
@@ -134,7 +134,7 @@ int main(int argc, char *argv[]){
 		inputFLP >> qty_facilities >> qty_clients >> auxRead; 
 
 		if(DEBUG >= DISPLAY_TIME_SIZE){
-			cout << "QTY FACILITIES: " << qty_facilities << " E QTY CLIENTS: " << qty_clients << endl;
+			cout << "QTY FACILITIES: " << qty_facilities << " AND QTY CLIENTS: " << qty_clients << endl;
 		}
 
 		// Vetores que salvarao custos lidos no arquivo
@@ -154,7 +154,7 @@ int main(int argc, char *argv[]){
 		// Lendo do arquivo os custos de abertura das instalacoes e salvando no vetor costF
 		for(int i=0;i<qty_facilities;i++){
 			inputFLP >> auxRead; // Descartando o nome da instalação
-			// cout << "DESCARTE:" << auxRead << endl;
+			// cout << "Discard: " << auxRead << endl;
 			inputFLP >> auxRead; // Pegando o valor do custo de abertura da instalação
 			costF[i] = auxRead;
 
@@ -180,7 +180,7 @@ int main(int argc, char *argv[]){
 		return 0;
 	}
 
-    /*
+	/*
 	Fim ler o arquivo de entrada
 	******************************************/
 

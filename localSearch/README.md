@@ -23,8 +23,9 @@ python3 tester.py input_type <qty_tests>
 
 
 Por fim, para gerar o csv com todos os arquivos listados em "testCasesReader.txt", basta digitar:
+obs: APENAS caso a solução inicial venha do RR, deve-se digitar tambem como parametro a quantidade de testes que foram feitos (qty_tests)
 
-python3 readerSol.py
+python3 readerSol.py <qty_tests>
 
 
 Caso queira executar apenas um exemplo, considere que input_name é o caminho completo do problema UFL a ser resolvido, initialSolName é o caminho completo da solucao inicial desse caso, solutionName é o caminho completo onde deseja-se guardar a solucao e o input_type é o tipo da entrada (1 para o tipo ORLIB e 2 para o tipo SIMPLE FORMAT).

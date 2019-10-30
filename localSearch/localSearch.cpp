@@ -18,7 +18,7 @@ using namespace std;
 
 #define DEBUG 1 // OPCOES DE DEBUG: 1 - MOSTRAR A QTD DE MOVIMENTOS, 2 PARA EXIBIR OS MOVIMENTOS REALIZADOS, 3 PARA EXIBIR ACOES, 4 PARA EXIBIR TEMPO, 5 PARA EXIBIR AS MUDANÇAS NO GRAFO
 
-#define TIME_LIMIT 900 //15 minutos
+#define TIME_LIMIT 60 //colocando 1 minuto pra dar tempo de fazer todos os testes agora //900 //15 minutos
 
 // Retornar o valor da solucao
 solutionType localSearch(int qty_facilities, int qty_clients, double * costF, double * costA, solutionType solution){
