@@ -32,12 +32,13 @@ def dualLP(facility_list, client_list, time_limit=900, DEBUG=0):
 		v.append(solver.addVar(vtype=GRB.CONTINUOUS, name='v[%d]' % j))
 
 	# w[i][j] are continuous variables.
+	# Constraint type 3: wij >= 0 , for each facility i and for each client j (lower bound - lb)
 	w = []
 	for i in range(0, len(facility_list)):
 		w.append([])
 		for j in range(0, len(client_list)):
 			w[i].append(solver.addVar(
-				vtype=GRB.CONTINUOUS, name='w[%d][%d]' % (i, j)))
+				vtype=GRB.CONTINUOUS, lb=0.0, name='w[%d][%d]' % (i, j)))
 
 
 	# Define the constraints.
@@ -53,15 +54,14 @@ def dualLP(facility_list, client_list, time_limit=900, DEBUG=0):
 		left_side = LinExpr()
 		for j in range(0, len(client_list)):
 			left_side += 1 * w[i][j]
-		solver.addConstr(left_side, GRB.LESS_EQUAL, facility_list[i].setup_cost, 'c2[%d]' % j)
-		# solver.addConstr(left_side <= fi, 'c2[%d]' % j)
+		solver.addConstr(left_side, GRB.LESS_EQUAL, facility_list[i].setup_cost, 'c2[%d]' % i)
+		# solver.addConstr(left_side <= fi, 'c2[%d]' % i)
 
-	# Constraint type 3: wij >= 0 , for each facility i and for each client j
-	# Create a constraint for each pair facility and client
-	for i in range(0, len(facility_list)):
-		for j in range(0, len(client_list)):
-			solver.addConstr(w[i][j] >= 0, 'c3[%d][%d]' % (i, j))
-
+	# # Constraint type 3: wij >= 0 , for each facility i and for each client j
+	# # Create a constraint for each pair facility and client
+	# for i in range(0, len(facility_list)):
+	# 	for j in range(0, len(client_list)):
+	# 		solver.addConstr(w[i][j] >= 0, 'c3[%d][%d]' % (i, j))
 
 	# Define the objective function.
 	# Objective function: max sum_{j \in D} vj

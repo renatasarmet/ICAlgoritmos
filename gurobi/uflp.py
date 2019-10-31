@@ -122,7 +122,7 @@ def solve_it(input_type, input_data, formulation_type):
 	else: 
 		return ("Weird type of input. You shouldn't be here")
 
-	bound = 0 # just because I dont know yet what to do with this
+	bound = GRB.INFINITY # just because I dont know yet what to do with this
 
 	pair_best = 0
 	pair_new = 0
