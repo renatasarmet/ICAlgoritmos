@@ -1,5 +1,6 @@
 import os
 import csv
+import sys
 
 # Solution list is a list of tuple. Each tuple has the following format : input file name, solution cost, time spent and if it is optimal
 def export_csv(output_file,solution_list):
@@ -29,7 +30,7 @@ if __name__ == '__main__':
 
 	if len(sys.argv) > 1:
 		initial_sol_rr = True # indica que o teste será com soluções iniciais vindas do RR
-		n_tests = sys.argv[1].strip()
+		n_tests = int(sys.argv[1].strip())
 
 		if n_tests <= 0:
 			print("ERROR: Invalid parameter value")
@@ -114,20 +115,20 @@ if __name__ == '__main__':
 						exit()
 					
 				# Averaging
-				avg_cost = avg_cost / N_TESTS
-				avg_time = avg_time / N_TESTS
+				avg_cost = avg_cost / n_tests
+				avg_time = avg_time / n_tests
 
 				# Standard Deviation Calculation for Cost and Time
 				c_dividend = 0
 				t_dividend = 0
-				for i in range(N_TESTS):
+				for i in range(n_tests):
 					c_dividend += (costs[i] - avg_cost) ** 2
 					t_dividend += (times[i] - avg_time) ** 2
 
-				# sd_cost = (c_dividend / N_TESTS) ** (1/2) # population sd
-				sd_cost = (c_dividend / (N_TESTS - 1)) ** (1/2) # sample sd
-				# sd_time = (t_dividend / N_TESTS) ** (1/2) # population sd
-				sd_time = (t_dividend / (N_TESTS - 1)) ** (1/2) # sample sd
+				# sd_cost = (c_dividend / n_tests) ** (1/2) # population sd
+				sd_cost = (c_dividend / (n_tests - 1)) ** (1/2) # sample sd
+				# sd_time = (t_dividend / n_tests) ** (1/2) # population sd
+				sd_time = (t_dividend / (n_tests - 1)) ** (1/2) # sample sd
 
 				# Saving information for future csv
 				solution_list.append((file_name, best_sol, min_cost, avg_cost, max_cost, sd_cost, avg_time, sd_time)) 
