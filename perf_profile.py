@@ -1,6 +1,8 @@
 import matplotlib.pyplot
 import numpy
 
+#https://www.geeksforgeeks.org/graph-plotting-in-python-set-1/
+
 # meses = ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho']
 # valores = [105235, 107697, 110256, 109236, 108859, 109986]
 
@@ -78,7 +80,9 @@ def prepare_graphic(x_values,solutions, distances):
 			while (i < len(solutions[0])) and (distances[alg][i] <= x):
 				qty += 1
 				i+=1
-			y_values[-1].append(qty)
+
+			y = (qty * 100)/len(solutions[0]) # calculando a porcentagem da quantidade
+			y_values[-1].append(y)
 
 	return y_values
 
@@ -134,7 +138,7 @@ if __name__ == '__main__':
 		minimum = 0.1
 
 	# IGNORANDO O MAXIMO REAL, APENAS PARA FICAR MAIS VISIVEL
-	maximum = 10
+	maximum = 8
 
 	""" Fim verificar menor distancia """
 
@@ -150,7 +154,6 @@ if __name__ == '__main__':
 
 	""" Fim construir o eixo x """
 
-	# TO DO: MODIFICAR PARA QTY SER PORCENTAGEM
 	y_values = prepare_graphic(x_values,solutions,distances)
 
 	for i in range(len(solutions)):
