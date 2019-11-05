@@ -1,15 +1,9 @@
 #include <lemon/list_graph.h>
 #include <algorithm>
 #include <iostream>
-// #include <set>
-// #include <iterator>
 #include <ctime>
 #include "definitions.hpp"
 #define EPSL 0.00000001
-
-// Observacao importante: ao usar g.nodeFromId() eh necessario passar o ID geral, nao o blue ID nem red ID. 
-// No caso do cliente, o red ID = ID geral, pois os clientes foram os primeiros a serem adicionados no grafo.
-// No caso da instalacao, o ID geral = blue ID + qty_clients, pois as instalacoes foram adicionadas no grafo logo apos todos os clientes.
 
 using namespace lemon;
 using namespace std;
@@ -87,8 +81,6 @@ void deleting_non_active_clients(double *vector, int *vectorID, int vector_size,
 		
 		for(int j=0;j<qty_cli_delete;j++){
 			if(vectorID[i]==clients_delete[j]){
-				// cout << "LET'S DELETE CLIENT " << clients_delete[j] << endl;
-				// vectorID[i] = -1; // ID -1 indica que nao esta ativo
 				vector[i] = -1; // coloca cij = -1, indicando que ja foi atribuido
 				qty_remaining -= 1;
 				break;
@@ -132,20 +124,6 @@ void best_subset(int &best_size, double &best_cost, double *vector, double fi, d
 	}
 
 }
-
-
-// bool igual(double i, double j){
-//     if((i > j-EPSL) && (i < j+EPSL))
-//         return true;
-//     return false;
-// }
-
-// bool maior_igual(double i, double j){
-//     if(i >= j * (1-EPSL))
-//         return true;
-//     return false;
-// }
-
 
 // Retornar o valor da solucao
 solutionType greedy(int qty_clients, int qty_facilities, double * costF, double * costA){
@@ -274,7 +252,7 @@ solutionType greedy(int qty_clients, int qty_facilities, double * costF, double 
 		facilities[i] = g.addBlueNode();
 		f[facilities[i]] = costF[i]; // pegando valor vindo por parametro
 		open[facilities[i]] = false; // indica que a instalação não está aberta inicialmente
-		name[facilities[i]] = qty_clients + i; // nomeia de acordo com a numeracao
+		name[facilities[i]] = i; // nomeia de acordo com a numeracao
 
 		// Salvando o valor do maior Fi da entrada
 		if(f[facilities[i]]>biggestFi){
