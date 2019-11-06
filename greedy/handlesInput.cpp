@@ -2,7 +2,6 @@
 #include <cstdlib>
 #include <fstream>
 #include "definitions.hpp"
-#define EPS 0.001
 
 #define DISPLAY_BASIC 1 // corresponde a exibicao do custo final da solucao
 #define DISPLAY_TIME_SIZE 2 // corresponde a exibicao do tempo total gasto e do tamanho da entrada (quantidade de clientes e de instalacoes)
@@ -120,7 +119,6 @@ int main(int argc, char *argv[]){
 				counter+=1;
 			}
 		}
-
 	}
 	else if(strcmp(inputType,"2")==0){
 		inputFLP >> auxCRead; // Descartando a palavra FILE

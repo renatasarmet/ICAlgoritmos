@@ -133,7 +133,8 @@ solutionType greedy(int qty_clients, int qty_facilities, double * costF, double 
 
 	// Struct que vai retornar a solução
 	solutionType solution;
-
+	
+	solution.finalTotalCost = 0; // inicializando o custo final
 	
 	/* Inicio declaracoes variaveis para calculo de tempo - finalidade eh encontrar gargalos */
 

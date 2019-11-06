@@ -11,19 +11,25 @@ Primeiramente, eh provavel que seja necessario ter instalado a biblioteca Lemon 
 
 Após isso, digite no terminal:
 
-g++ tempo.cpp trataInput.cpp bipartidoPrimalDual.cpp -o tempo
+g++ handlesInput.cpp primalDual.cpp -o pd
 
 
-Considere que tipoEntrada significa 1 para o tipo ORLIB e 2 para o tipo SIMPLE FORMAT.
-Então, basta digitar:
+Considere que input_type significa 1 para o tipo ORLIB e 2 para o tipo SIMPLE FORMAT.
 
-./tempo tipoEntrada
+Então, para rodar nosso testador, basta digitar:
+
+python3 tester.py input_type
 
 
 Por fim, para gerar o csv com todos os arquivos listados em "testCasesReader.txt", basta digitar:
 
-python3 leitorSol.py
+python3 readerSol.py
 
+
+Caso queira executar apenas um exemplo, considere que input_name é o caminho completo do problema UFL a ser resolvido, solutionName é o caminho completo onde deseja-se guardar a solucao e o input_type é o tipo da entrada (1 para o tipo ORLIB e 2 para o tipo SIMPLE FORMAT).
+Então, basta digitar:
+
+./pd input_name solutionName input_type
 
 *SOBRE AS ENTRADAS*
 
