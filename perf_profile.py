@@ -1,15 +1,5 @@
-import matplotlib.pyplot
+import matplotlib.pyplot as plt
 import numpy
-
-#https://www.geeksforgeeks.org/graph-plotting-in-python-set-1/
-
-# meses = ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho']
-# valores = [105235, 107697, 110256, 109236, 108859, 109986]
-
-# matplotlib.pyplot.plot(meses, valores)
-
-# matplotlib.pyplot.show()
-
 import os
 import sys
 
@@ -29,7 +19,6 @@ def get_solutions(file_location,initial_sol_rr):
 			if len(elements) > 1 : # para nao contar alguma linha vazia que possa ter
 				solution_list.append(elements[1]) #pega o custo da solução
 
-			
 	else: # se a solução inicial vier do RR
 		for file in files_test:
 			elements = file.split(",")
@@ -70,16 +59,14 @@ def calculate_distances(solutions,best_solutions):
 
 
 def prepare_graphic(x_values,solutions, distances):
-	y_values = [] # é uma matrix. O primeiro vetor contem len(solutions) elementos. Cada um desses elementos contem len(x_values) elementos)
+	y_values = [] # é uma matrix. O primeiro vetor contem len(solutions) elementos. Cada um desses elementos contem len(x_values) elementos
 
 	for alg in range(len(solutions)): #percorre pelos tipos de algoritmo
 		qty = 0
-		i = 0
 		y_values.append([])
 		for x in x_values: # percorre pelos pontos do eixo x (% distancia da melhor solucao)
-			while (i < len(solutions[0])) and (distances[alg][i] <= x):
+			while (qty < len(solutions[0])) and (distances[alg][qty] <= x): # enquanto nao tiver acabado o vetor e a distancia for menor que o x
 				qty += 1
-				i+=1
 
 			y = (qty * 100)/len(solutions[0]) # calculando a porcentagem da quantidade
 			y_values[-1].append(y)
@@ -89,27 +76,33 @@ def prepare_graphic(x_values,solutions, distances):
 
 if __name__ == '__main__':
 
-	# definindo os indices de cada algoritmo no vetor solutions
-	T = 0 # trivial
-	G = 1 # greedy
-	RR = 2 # randomized rounding
-	LS_T = 3 # local search with trivial as initial solution
-	LS_G = 4 # local search with greedy as initial solution
-	LS_RR = 5 # local search with randomized rounding as initial solution
-	# PD = 6 # primal dual
-	# LS_PD = 7 # local search with primal dual as initial solution
+	ZOOM = -1 # Usado caso queira dar um zoom no grafico, ignorando o maximo valor encontrado na solucao. obs: utilizar -1 caso nao queira dar zoom ou colocar o valor do maximo desejado
 
-	solutions = []
+	solutions = [] #vai armazenar as soluces de cada algoritmo
+	legend = [] #vai indicar a ordem da legenda no grafico
 
+	# Pegando as informacoes das solucoes do csv de cada algoritmo
 	solutions.append(get_solutions("gurobi/solutionsTrivial.csv", False))
+	legend.append("Trivial")
 	solutions.append(get_solutions("greedy/solutions.csv", False))
+	legend.append("Greedy")
 	solutions.append(get_solutions("randomizedRounding/solutions.csv", True))
+	legend.append("Randomized Rounding")
+	solutions.append(get_solutions("primalDual/solutions.csv",False))
+	legend.append("Primal Dual")
 	solutions.append(get_solutions("localSearch/solutionsTrivial.csv",False))
+	legend.append("LS - Trivial")
 	solutions.append(get_solutions("localSearch/solutionsGreedy.csv",False))
+	legend.append("LS - Greedy")
 	solutions.append(get_solutions("localSearch/solutionsRR.csv",True))
+	legend.append("LS - RR")
+	solutions.append(get_solutions("localSearch/solutionsDual.csv",False))
+	legend.append("LS - PD")
 
+	# Salvando a melhor solucao de cada instancia
 	best_solutions = calculate_best(solutions)
 
+	# Calculando a distancia da solucao de cada algoritmo com a melhor solucao de cada instancia
 	distances = calculate_distances(solutions,best_solutions)
 
 	"""
@@ -123,22 +116,25 @@ if __name__ == '__main__':
 	# percorre pelos tipos de algoritmo
 	for alg in distances: 
 		i = 0
-		while(alg[i]==0):
+		while(alg[i]==0): # Garante que o minimum nao sera 0
 			i+=1
 
+		# Salvando a maior e a menor distancia encontrada
 		if (i < len(alg)) and (alg[i] < minimum):
 			minimum = alg[i]
-		if alg[-1] > maximum:
+		if (ZOOM < 0) and (alg[-1] > maximum):
 			maximum = alg[-1]
 
-	# caso tudo seja igual a 0
+	# caso tudo seja igual a 0, o passo sera 1
 	if minimum == float("inf"):
 		minimum = 1
-	elif minimum < 0.1:
-		minimum = 0.1
+	# caso o minimo seja muito pequeno, mudamos por razoes de capacidade de memoria
+	elif minimum < 0.01:
+		minimum = 0.01
 
-	# IGNORANDO O MAXIMO REAL, APENAS PARA FICAR MAIS VISIVEL
-	maximum = 8
+	# Caso queira ignorar o maximum real e dar um zoom no grafico
+	if ZOOM >= 0:
+		maximum = ZOOM
 
 	""" Fim verificar menor distancia """
 
@@ -151,13 +147,25 @@ if __name__ == '__main__':
 	x_values = []
 	for i in numpy.arange(0,maximum+minimum,minimum):
 		x_values.append(i)
-
+		
 	""" Fim construir o eixo x """
 
+	# Preparando os valores de y do grafico
 	y_values = prepare_graphic(x_values,solutions,distances)
 
+	# naming the x axis 
+	plt.xlabel('x - % approximation') 
+	# naming the y axis 
+	plt.ylabel('y - % quantity') 
+	  
+	# giving a title to my graph 
+	plt.title('Performance Profile UFL') 
+
+	# Plotando as linhas de cada algoritmo
 	for i in range(len(solutions)):
-		matplotlib.pyplot.plot(x_values,y_values[i])
+		plt.plot(x_values,y_values[i],label=legend[i])
 
-	matplotlib.pyplot.show()
+	# show a legend on the plot 
+	plt.legend() 
 
+	plt.show()
