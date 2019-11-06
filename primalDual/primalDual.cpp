@@ -20,22 +20,22 @@
 using namespace lemon;
 using namespace std;
 
-#define EXIBIR_ACOES 1 // corresponde a todos os cout quando uma acao é feita. 
-#define EXIBIR_TEMPO 2 // corresponde aos calculos de tempo 
-#define EXIBIR_GRAFO 3 // corresponde a descricao dos clients, facilities e edges
-#define EXIBIR_adjacency_matrix 4 // corresponde à parte final, na criacao de Tline
+#define DISPLAY_ACTIONS 1 // corresponde a todos os cout quando uma acao é feita. 
+#define DISPLAY_TIME 2 // corresponde aos calculos de tempo 
+#define DISPLAY_GRAPH 3 // corresponde a descricao dos clients, facilities e edges
+#define DISPLAY_ADJ_MATRIX 4 // corresponde à parte final, na criacao de Tline
 
 #define DEBUG 0 // OPCOES DE DEBUG: 1 PARA EXIBIR ACOES, 2 PARA EXIBIR TEMPO, 3 PARA EXIBIR AS MUDANÇAS NO GRAFO, 4 PARA EXIBIR AS MUDANCAS NA MATRIZ DE ADJACENCIA NA CRIACAO DE Tline
 
 
 
-bool igual(double i, double j){
+bool equal(double i, double j){
     if((i > j-EPSL) && (i < j+EPSL))
         return true;
     return false;
 }
 
-bool maior_igual(double i, double j){
+bool greater_or_equal(double i, double j){
     // if(i >= j * (1-EPSL))
     if(i >= j - EPSL)
         return true;
@@ -71,7 +71,7 @@ solutionType primalDual(int qty_clients, int qty_facilities, double * costF, dou
 	/* Fim declaracoes para calculo de tempo */
 
 
-	if(DEBUG >= EXIBIR_TEMPO){
+	if(DEBUG >= DISPLAY_TIME){
 		// INICIANDO A CONTAGEM DE TEMPO DA FUNCAO COMO UM TODO
 		clock_gettime(CLOCK_REALTIME, &real_start);
 	}
@@ -146,8 +146,8 @@ solutionType primalDual(int qty_clients, int qty_facilities, double * costF, dou
 	// Variavel que armazena o maior valor fi dado na entrada, para uso posterior
 	double biggestFi = 0;
 
-	if(DEBUG >= EXIBIR_TEMPO){
-		cout <<"[TEMPO] Iniciando contagem de tempo para criacao do grafo e seus maps" << endl;
+	if(DEBUG >= DISPLAY_TIME){
+		cout <<"[TIME] Starting time count for graph creation and its maps" << endl;
 		//Iniciando a contagem do tempo
 		clock_gettime(CLOCK_REALTIME, &start);
 	}
@@ -228,8 +228,8 @@ solutionType primalDual(int qty_clients, int qty_facilities, double * costF, dou
 	}
 
 
-	if(DEBUG >= EXIBIR_ACOES){
-		cout << "biggestCij da entrada : " << biggestCij << endl << "biggestFi da entrada: " << biggestFi << endl;
+	if(DEBUG >= DISPLAY_ACTIONS){
+		cout << "biggestCij from input: " << biggestCij << endl << "biggestFi from input " << biggestFi << endl;
 	}
 
 	int qty_active_clients_S = qty_clients; // Indica a quantidade de clients ainda em S, os clients ativos.
@@ -244,22 +244,22 @@ solutionType primalDual(int qty_clients, int qty_facilities, double * costF, dou
 		}
 	}
 
-	if(DEBUG >= EXIBIR_TEMPO){
-		cout <<"[TEMPO] Finalizando contagem de tempo para criacao do grafo e seus maps" << endl;
+	if(DEBUG >= DISPLAY_TIME){
+		cout <<"[TIME] Ending time count for graph creation and its maps" << endl;
 		//Finalizando a contagem do tempo
 		clock_gettime(CLOCK_REALTIME, &finish);
 
 		// Calculando o tempo gasto
 		timeSpent =  (finish.tv_sec - start.tv_sec);
 		timeSpent += (finish.tv_nsec - start.tv_nsec) / 1000000000.0; // Necessario para obter uma precisao maior 
-		cout << "[TEMPO] Time spent: " << timeSpent << " seconds" << endl;
+		cout << "[TIME] Time spent: " << timeSpent << " seconds" << endl;
 	}
 
 	ListBpGraph S; // Grafo que contem os clients os quais estamos aumentando as variaveis duais
 	bpGraphCopy(g,S).run(); // copiando todas as informacoes de g para S
 	
 
-	if (DEBUG >= EXIBIR_GRAFO){
+	if (DEBUG >= DISPLAY_GRAPH){
 		// Percorrendo por todos os nós A - clients
 		cout << "Scrolling through all clients" << endl;
 		for(ListBpGraph::RedNodeIt n(S); n != INVALID; ++n){
@@ -295,8 +295,8 @@ solutionType primalDual(int qty_clients, int qty_facilities, double * costF, dou
 	// v <- 0, w <- 0 ja acontece na inicializacao 
 
 
-	if(DEBUG >= EXIBIR_TEMPO){
-		cout <<"[TEMPO] Iniciando contagem de tempo para execucao parte inicial, antes do loop" << endl;
+	if(DEBUG >= DISPLAY_TIME){
+		cout <<"[TIME] Starting time count for initial part execution, before loop" << endl;
 		//Iniciando a contagem do tempo
 		clock_gettime(CLOCK_REALTIME, &start);
 	}
@@ -312,8 +312,8 @@ solutionType primalDual(int qty_clients, int qty_facilities, double * costF, dou
 		}
 	}
 
-	if(DEBUG >= EXIBIR_ACOES){
-		cout << "min : " << S.id(min) << " com custo: " << assignment_cost[min] << endl;
+	if(DEBUG >= DISPLAY_ACTIONS){
+		cout << "min : " << S.id(min) << " with cost: " << assignment_cost[min] << endl;
 	}
 
 	// Percorrer todos os clients para aumentar em todos esse valor
@@ -327,7 +327,7 @@ solutionType primalDual(int qty_clients, int qty_facilities, double * costF, dou
 	// Percorrer todas as arestas para ver quais bateram o custo de atribuicao
 	// Entao, acionar a flag readyToPayW e colocar na matriz de adjacencia.
 	for(ListBpGraph::EdgeIt e(S); e!= INVALID; ++e){
-		if(igual(assignment_cost[e],assignment_cost[min])){ 
+		if(equal(assignment_cost[e],assignment_cost[min])){ 
 			readyToPayW[e] = true;
 			qty_payers[S.asBlueNode(S.v(e))] += 1;
 
@@ -338,19 +338,19 @@ solutionType primalDual(int qty_clients, int qty_facilities, double * costF, dou
 	}
 
 
-	if(DEBUG >= EXIBIR_TEMPO){
-		cout <<"[TEMPO] Finalizando contagem de tempo para execucao parte inicial, antes do loop" << endl;
+	if(DEBUG >= DISPLAY_TIME){
+		cout <<"[TIME] Ending time count for initial part execution, before loop" << endl;
 		//Finalizando a contagem do tempo
 		clock_gettime(CLOCK_REALTIME, &finish);
 
 		// Calculando o tempo gasto
 		timeSpent =  (finish.tv_sec - start.tv_sec);
 		timeSpent += (finish.tv_nsec - start.tv_nsec) / 1000000000.0; // Necessario para obter uma precisao maior 
-		cout << "[TEMPO] Time spent: " << timeSpent << " seconds" << endl;
+		cout << "[TIME] Time spent: " << timeSpent << " seconds" << endl;
 	}
 
 	
-	if (DEBUG >= EXIBIR_GRAFO){
+	if (DEBUG >= DISPLAY_GRAPH){
 		// Percorrendo por todos os nós A - clients
 		cout << "Scrolling through all clients" << endl;
 		for(ListBpGraph::RedNodeIt n(S); n != INVALID; ++n){
@@ -390,20 +390,20 @@ solutionType primalDual(int qty_clients, int qty_facilities, double * costF, dou
 
 	double qty_minB; 
 
-	int itr_counter = 0; // Variavel auxiliar, que, em caso de DEBUG >= EXIBIR_ACOES indica quantas iteracoes houveram no while
+	int itr_counter = 0; // Variavel auxiliar, que, em caso de DEBUG >= DISPLAY_ACTIONS indica quantas iteracoes houveram no while
 
 	// ****** A partir daqui deve estar em um loop até nao ter mais clients ativos:
 
 	while(qty_active_clients_S > 0){
 		
-		if(DEBUG >= EXIBIR_ACOES){
-			cout << endl << "------------------------------ AINDA TEM " << qty_active_clients_S << " clients ATIVOS ------------------------------" << endl << endl;
+		if(DEBUG >= DISPLAY_ACTIONS){
+			cout << endl << "------------------------------ STILL HAVE " << qty_active_clients_S << " ACTIVE CLIENTS ------------------------------" << endl << endl;
 		}
 
 
-		if(DEBUG >= EXIBIR_TEMPO){
+		if(DEBUG >= DISPLAY_TIME){
 			itr_counter += 1;
-			cout <<"[TEMPO] Iniciando contagem de tempo para execucao do caso A, iteracao: " << itr_counter << endl;
+			cout <<"[TIME] Starting time count for case A execution, iteration: " << itr_counter << endl;
 			//Iniciando a contagem do tempo
 			clock_gettime(CLOCK_REALTIME, &start);
 		}
@@ -424,24 +424,24 @@ solutionType primalDual(int qty_clients, int qty_facilities, double * costF, dou
 			}
 		}
 		
-		if(DEBUG >= EXIBIR_ACOES){
-			cout << "temos a qtd min na parte A: " << qty_minA << endl;
+		if(DEBUG >= DISPLAY_ACTIONS){
+			cout << "min qty A: " << qty_minA << endl;
 		}
 
 
-		if(DEBUG >= EXIBIR_TEMPO){
-			cout <<"[TEMPO] Finalizando contagem de tempo para execucao do caso A, iteracao: " << itr_counter << endl;
+		if(DEBUG >= DISPLAY_TIME){
+			cout <<"[TIME] Ending time count for case A execution, iteration: " << itr_counter << endl;
 			//Finalizando a contagem do tempo
 			clock_gettime(CLOCK_REALTIME, &finish);
 
 			// Calculando o tempo gasto
 			timeSpent =  (finish.tv_sec - start.tv_sec);
 			timeSpent += (finish.tv_nsec - start.tv_nsec) / 1000000000.0; // Necessario para obter uma precisao maior 
-			cout << "[TEMPO] Time spent: " << timeSpent << " seconds" << endl;
+			cout << "[TIME] Time spent: " << timeSpent << " seconds" << endl;
 		
 
 
-			cout <<"[TEMPO] Iniciando contagem de tempo para execucao do caso B, iteracao: " << itr_counter << endl;
+			cout <<"[TIME] Starting time count for case B execution, iteration: " << itr_counter << endl;
 			//Iniciando a contagem do tempo
 			clock_gettime(CLOCK_REALTIME, &start);
 		}
@@ -465,20 +465,20 @@ solutionType primalDual(int qty_clients, int qty_facilities, double * costF, dou
 			}
 		}
 		
-		if(DEBUG >= EXIBIR_ACOES){
-			cout << "temos a qtd min na parte B: " << qty_minB  << endl;
+		if(DEBUG >= DISPLAY_ACTIONS){
+			cout << "min qty B: " << qty_minB  << endl;
 		}
 
 
-		if(DEBUG >= EXIBIR_TEMPO){
-			cout <<"[TEMPO] Finalizando contagem de tempo para execucao do caso B, iteracao: " << itr_counter << endl;
+		if(DEBUG >= DISPLAY_TIME){
+			cout <<"[TIME] Ending time count for case B execution, iteration: " << itr_counter << endl;
 			//Finalizando a contagem do tempo
 			clock_gettime(CLOCK_REALTIME, &finish);
 
 			// Calculando o tempo gasto
 			timeSpent =  (finish.tv_sec - start.tv_sec);
 			timeSpent += (finish.tv_nsec - start.tv_nsec) / 1000000000.0; // Necessario para obter uma precisao maior 
-			cout << "[TEMPO] Time spent: " << timeSpent << " seconds" << endl;
+			cout << "[TIME] Time spent: " << timeSpent << " seconds" << endl;
 		}
 
 		//	ver o min entre A e B e aumentar esse valor em todos os clients (tanto no cij se ainda faltar quanto no wij se ja estiver contribuindo)
@@ -490,8 +490,8 @@ solutionType primalDual(int qty_clients, int qty_facilities, double * costF, dou
 			minAB = qty_minB;
 		}
 
-		if(DEBUG >= EXIBIR_TEMPO){
-			cout <<"[TEMPO] Iniciando contagem de tempo para atualizar valores como v, w, sumW, readyToPayW, qty_payers e adjacency_matrix. Iteracao: " << itr_counter << endl;
+		if(DEBUG >= DISPLAY_TIME){
+			cout <<"[TIME] Starting time count to update values such as v, w, sumW, readyToPayW, qty_payers, and adjacency_matrix. Iteration: " << itr_counter << endl;
 			//Iniciando a contagem do tempo
 			clock_gettime(CLOCK_REALTIME, &start);
 		}
@@ -514,7 +514,7 @@ solutionType primalDual(int qty_clients, int qty_facilities, double * costF, dou
 				fac_index = name[S.v(e)] - qty_clients;
 				adjacency_matrix[name[S.u(e)]][fac_index] = 1; // atribui esse novo cliente em sua lista
 			}
-			else if(igual(assignment_cost[e],v[S.asRedNode(S.u(e))])){ // SENAO SE: acabou de ficar pronto para contribuir (pagou o c.a.)
+			else if(equal(assignment_cost[e],v[S.asRedNode(S.u(e))])){ // SENAO SE: acabou de ficar pronto para contribuir (pagou o c.a.)
 				readyToPayW[e] = true;
 				qty_payers[S.asBlueNode(S.v(e))] += 1;
 				// fac_index = name[S.v(e)] - qty_clients;
@@ -522,32 +522,32 @@ solutionType primalDual(int qty_clients, int qty_facilities, double * costF, dou
 			}
 		}
 
-		if(DEBUG >= EXIBIR_TEMPO){
-			cout <<"[TEMPO] Finalizando contagem de tempo para atualizar valores como v, w, sumW, readyToPayW, qty_payers e adjacency_matrix. Iteracao: " << itr_counter << endl;
+		if(DEBUG >= DISPLAY_TIME){
+			cout <<"[TIME] Ending time count to update values such as v, w, sumW, readyToPayW, qty_payers, and adjacency_matrix. Iteration: " << itr_counter << endl;
 			//Finalizando a contagem do tempo
 			clock_gettime(CLOCK_REALTIME, &finish);
 
 			// Calculando o tempo gasto
 			timeSpent =  (finish.tv_sec - start.tv_sec);
 			timeSpent += (finish.tv_nsec - start.tv_nsec) / 1000000000.0; // Necessario para obter uma precisao maior 
-			cout << "[TEMPO] Time spent: " << timeSpent << " seconds" << endl;
+			cout << "[TIME] Time spent: " << timeSpent << " seconds" << endl;
 		}
 
 		// Repetir IF, tratar dos detalhes agora
 
 		// SE FOR O CASO A ou empate: verificar se a instalação que aquele cliente alcançou ja estava open, se sim, remover ele dos ativos
 		// if(qty_minA <= qty_minB){
-		if(maior_igual(qty_minB,qty_minA)){
+		if(greater_or_equal(qty_minB,qty_minA)){
 
-			if(DEBUG >= EXIBIR_TEMPO){
-				cout <<"[TEMPO] Iniciando contagem de tempo para detalhes caso A. Iteracao: " << itr_counter << endl;
+			if(DEBUG >= DISPLAY_TIME){
+				cout <<"[TIME] Starting time count for case details A. Iteration: " << itr_counter << endl;
 				//Iniciando a contagem do tempo
 				clock_gettime(CLOCK_REALTIME, &start);
 			}
 
 
-			if(DEBUG >= EXIBIR_ACOES){
-				cout << "Caso A!" << endl;
+			if(DEBUG >= DISPLAY_ACTIONS){
+				cout << "Case A!" << endl;
 			}
 
 			for(ListBpGraph::EdgeIt e(S); e!= INVALID; ++e){ // percorrer todas as arestas
@@ -559,8 +559,8 @@ solutionType primalDual(int qty_clients, int qty_facilities, double * costF, dou
 						readyToPayW[e] = false;
 						qty_payers[S.asBlueNode(S.v(e))] -= 1;
 
-						if(DEBUG >= EXIBIR_ACOES){
-							cout<<"removido cliente " << name[S.u(e)] << " do pronto para contribuir da instalacao " << name[S.v(e)] << endl;
+						if(DEBUG >= DISPLAY_ACTIONS){
+							cout<<"deleted client " << name[S.u(e)] << " from ready to pay of facility " << name[S.v(e)] << endl;
 						}
 
 						//Apagando ele da lista de contribuintes das outras facilities
@@ -569,8 +569,8 @@ solutionType primalDual(int qty_clients, int qty_facilities, double * costF, dou
 								readyToPayW[e2] = false;
 								qty_payers[S.asBlueNode(S.v(e2))] -= 1;
 
-								if(DEBUG >= EXIBIR_ACOES){
-									cout<<"removido cliente " << name[S.u(e2)] << " do pronto para contribuir da instalacao " << name[S.v(e2)] << endl;
+								if(DEBUG >= DISPLAY_ACTIONS){
+									cout<<"deleted client " << name[S.u(e2)] << " from ready to pay of facility " << name[S.v(e2)] << endl;
 								}
 							}
 						}
@@ -578,48 +578,48 @@ solutionType primalDual(int qty_clients, int qty_facilities, double * costF, dou
 				}
 			}
 
-			if(DEBUG >= EXIBIR_ACOES){
-				cout << "No caso A, tamanho do conjunto delete_clients: " << delete_clients.size() << endl;
+			if(DEBUG >= DISPLAY_ACTIONS){
+				cout << "In case A, size of delete_clients: " << delete_clients.size() << endl;
 			}
 
-			if(DEBUG >= EXIBIR_TEMPO){
-				cout <<"[TEMPO] Finalizando contagem de tempo para detalhes caso A. Iteracao: " << itr_counter << endl;
+			if(DEBUG >= DISPLAY_TIME){
+				cout <<"[TIME] Ending time count for case details A. Iteration: " << itr_counter << endl;
 				//Finalizando a contagem do tempo
 				clock_gettime(CLOCK_REALTIME, &finish);
 
 				// Calculando o tempo gasto
 				timeSpent =  (finish.tv_sec - start.tv_sec);
 				timeSpent += (finish.tv_nsec - start.tv_nsec) / 1000000000.0; // Necessario para obter uma precisao maior 
-				cout << "[TEMPO] Time spent: " << timeSpent << " seconds" << endl;
+				cout << "[TIME] Time spent: " << timeSpent << " seconds" << endl;
 			}
 
 		}
 
 		// SE FOR O CASO B ou empate: caso B seja o min valor: abrir a instalação i e remover os seus contribuintes dos clients ativos (lembrando de remover eles das listas de contribuintes das outras instalações)
 		// if(qty_minA >= qty_minB){ 
-		if(maior_igual(qty_minA,qty_minB)){ 
+		if(greater_or_equal(qty_minA,qty_minB)){ 
 
-			if(DEBUG >= EXIBIR_TEMPO){
-				cout <<"[TEMPO] Iniciando contagem de tempo para detalhes caso B. Iteracao: " << itr_counter << endl;
+			if(DEBUG >= DISPLAY_TIME){
+				cout <<"[TIME] Starting time count for case B details. Iteration: " << itr_counter << endl;
 				//Iniciando a contagem do tempo
 				clock_gettime(CLOCK_REALTIME, &start);
 			}
 
 
-			if(DEBUG >= EXIBIR_ACOES){
-				cout << "Caso B!" << endl;
+			if(DEBUG >= DISPLAY_ACTIONS){
+				cout << "Case B!" << endl;
 			}
 
 			for(ListBpGraph::BlueNodeIt n(S); n != INVALID; ++n){ // percorrer todas as facilities
 				if(!open[n]){ // se a instalacao ainda nao estava open
 					cout.precision(10);
-					if(maior_igual(sumW[n],f[n])){ // se a soma das partes completou o custo de abrir a instalacao, vamos abrir!
+					if(greater_or_equal(sumW[n],f[n])){ // se a soma das partes completou o custo de abrir a instalacao, vamos abrir!
 						open[n] = true;
 						qty_open_fac += 1;
 
-						if(DEBUG >= EXIBIR_ACOES){
-							cout << "Instalacao " << name[n] << " deve ser open!!!!" << endl;
-							cout << "to aumentando aqui o qtd de insts opens: " << qty_open_fac << endl;
+						if(DEBUG >= DISPLAY_ACTIONS){
+							cout << "Facility " << name[n] << " should open!!!!" << endl;
+							cout << "increasing open fac qty: " << qty_open_fac << endl;
 						}
 
 						//Remover os seus contribuintes dos clients ativos
@@ -631,9 +631,9 @@ solutionType primalDual(int qty_clients, int qty_facilities, double * costF, dou
 
 								delete_clients.insert(S.id(S.u(e))); // Adicionar o cliente j no conjunto de futuros a apagar
 
-								if(DEBUG >= EXIBIR_ACOES){
-									cout<<"************* vamos remover cliente " << name[S.u(e)] << endl;
-									cout << "No caso B, tamanho do conjunto delete_clients: " << delete_clients.size() << endl;
+								if(DEBUG >= DISPLAY_ACTIONS){
+									cout<<"************* let's delete client " << name[S.u(e)] << endl;
+									cout << "In case B, size of delete_clients: " << delete_clients.size() << endl;
 								}
 
 								//Apagando ele da lista de contribuintes das outras facilities
@@ -642,8 +642,8 @@ solutionType primalDual(int qty_clients, int qty_facilities, double * costF, dou
 										readyToPayW[e2] = false;
 										qty_payers[S.asBlueNode(S.v(e2))] -= 1;
 
-										if(DEBUG >= EXIBIR_ACOES){
-											cout<<"removido cliente " << name[S.u(e2)] << " do pronto para contribuir da instalacao " << name[S.v(e2)] << " agora ela tem qty_payers = " << qty_payers[S.asBlueNode(S.v(e2))] << endl;
+										if(DEBUG >= DISPLAY_ACTIONS){
+											cout<<"deleted client " << name[S.u(e2)] << " from ready to pay of facility " << name[S.v(e2)] << " now it has qty_payers = " << qty_payers[S.asBlueNode(S.v(e2))] << endl;
 										}
 									}
 								}
@@ -653,30 +653,30 @@ solutionType primalDual(int qty_clients, int qty_facilities, double * costF, dou
 				}
 			}
 
-			if(DEBUG >= EXIBIR_TEMPO){
-				cout <<"[TEMPO] Finalizando contagem de tempo para detalhes caso B. Iteracao: " << itr_counter << endl;
+			if(DEBUG >= DISPLAY_TIME){
+				cout <<"[TIME] Ending time count for case B details. Iteration:" << itr_counter << endl;
 				//Finalizando a contagem do tempo
 				clock_gettime(CLOCK_REALTIME, &finish);
 
 				// Calculando o tempo gasto
 				timeSpent =  (finish.tv_sec - start.tv_sec);
 				timeSpent += (finish.tv_nsec - start.tv_nsec) / 1000000000.0; // Necessario para obter uma precisao maior 
-				cout << "[TEMPO] Time spent: " << timeSpent << " seconds" << endl;
+				cout << "[TIME] Time spent: " << timeSpent << " seconds" << endl;
 			}
 
 		}
 
 
-		if(DEBUG >= EXIBIR_TEMPO){
-			cout <<"[TEMPO] Iniciando contagem de tempo para apagar clients congelados. Iteracao: " << itr_counter << endl;
+		if(DEBUG >= DISPLAY_TIME){
+			cout <<"[TIME] Starting time count to clear frozen clients. Iteration: " << itr_counter << endl;
 			//Iniciando a contagem do tempo
 			clock_gettime(CLOCK_REALTIME, &start);
 		}
 
 
 		for (itr = delete_clients.begin(); itr != delete_clients.end(); ++itr) { // percorrer todos os elementos do conjunto 
-			if(DEBUG >= EXIBIR_ACOES){
-				cout <<"Instalacao foi open. Removendo o cliente " << *itr << " dos ativos "<< endl;
+			if(DEBUG >= DISPLAY_ACTIONS){
+				cout <<"Facility has been opened. Deleting client " << *itr << " from actives "<< endl;
 			}
 
 	        S.erase(S.nodeFromId(*itr));  // apagando dos clients ativos
@@ -687,41 +687,42 @@ solutionType primalDual(int qty_clients, int qty_facilities, double * costF, dou
 	    delete_clients.erase(delete_clients.begin(), delete_clients.end()); 
 
 
-	    if(DEBUG >= EXIBIR_TEMPO){
-			cout <<"[TEMPO] Finalizando contagem de tempo para apagar clients congelados. Iteracao: " << itr_counter << endl;
+	    if(DEBUG >= DISPLAY_TIME){
+			cout <<"[TIME] Ending time count to clear frozen clients. Iteration:" << itr_counter << endl;
 			//Finalizando a contagem do tempo
 			clock_gettime(CLOCK_REALTIME, &finish);
 
 			// Calculando o tempo gasto
 			timeSpent =  (finish.tv_sec - start.tv_sec);
 			timeSpent += (finish.tv_nsec - start.tv_nsec) / 1000000000.0; // Necessario para obter uma precisao maior 
-			cout << "[TEMPO] Time spent: " << timeSpent << " seconds" << endl;
+			cout << "[TIME] Time spent: " << timeSpent << " seconds" << endl;
 		}
 
 
-		if (DEBUG >= EXIBIR_GRAFO){
+		if (DEBUG >= DISPLAY_GRAPH){
 			// Percorrendo por todos os nós A - clients
-			cout << "Percorrendo por todos os clients" << endl;
+			cout << "Scrolling through all clients" << endl;
 			for(ListBpGraph::RedNodeIt n(S); n != INVALID; ++n){
-				cout << "no id: " << S.id(n)  << " - name: " << name[n] << " - v: " << v[n] << endl;
+				cout << "id: " << S.id(n)  << " - name: " << name[n] << " - v: " << v[n] << endl;
 			}
 
 			// Percorrendo por todos os nós B - facilities
-			cout << "Percorrendo por todos as facilities" << endl;
+			cout << "Scrolling through all facilities" << endl;
 			for(ListBpGraph::BlueNodeIt n(S); n != INVALID; ++n){
-				cout << "no id: " << S.id(n)  << " - name: " << name[n] << " - f: " << f[n] << " - open: " << open[n] << " - qty_payers: " << qty_payers[n]<< endl;
+				cout << "id: " << S.id(n)  << " - name: " << name[n] << " - f: " << f[n] << " - open: " << open[n] << " - qty_payers: " << qty_payers[n]<< endl;
 			}
 
+
 			// Percorrendo por todos os edges
-			cout << "Percorrendo por todos os edges" << endl;
+			cout << "Scrolling through all edges" << endl;
 			for(ListBpGraph::EdgeIt e(S); e!= INVALID; ++e){
-				cout << "arco id: " << S.id(e) ;
-				cout << " - cliente: " << name[S.u(e)] << " - instalacao: " << name[S.v(e)];
-				cout<< " - ca: " << assignment_cost[e] << " w - " << w[e] << " PCW - " << readyToPayW[e] << endl;
+				cout << "edge id: " << S.id(e) ;
+				cout << " - client: " << name[S.u(e)] << " - facility: " << name[S.v(e)];
+				cout<< " - ac: " << assignment_cost[e] << " w - " << w[e] << " readyToPayW - " << readyToPayW[e] << endl;
 			}
 
 			// Exibindo a matriz de adjacencia
-			cout << "Exibindo matriz de adjacencia" << endl;
+			cout << "Scrolling through adjacency matrix" << endl;
 			for(int i=0;i<qty_clients;i++){
 				for(int j=0;j<qty_facilities;j++){
 					cout<< adjacency_matrix[i][j] << " ";
@@ -756,15 +757,16 @@ solutionType primalDual(int qty_clients, int qty_facilities, double * costF, dou
 	// fTline - será o custo de instalação das insts em Tline (fi)
 	ListBpGraph::BlueNodeMap<double> fTline(g);
 
-	if(DEBUG >= EXIBIR_ACOES){
-		cout << endl<< "Criando Tline" << endl;
+	if(DEBUG >= DISPLAY_ACTIONS){
+		cout << endl<< "Criating Tline" << endl;
 	}
 
 	fac_index = 0;
 
 
-	if(DEBUG >= EXIBIR_adjacency_matrix){
-		cout << "Exibindo matriz de adjacencia" << endl;
+	if(DEBUG >= DISPLAY_ADJ_MATRIX){
+		// Exibindo a matriz de adjacencia
+		cout << "Scrolling through adjacency matrix" << endl;
 		for(int i=0;i<qty_clients;i++){
 			for(int j=0;j<qty_facilities;j++){
 				cout<< adjacency_matrix[i][j] << " ";
@@ -807,8 +809,8 @@ solutionType primalDual(int qty_clients, int qty_facilities, double * costF, dou
 	// }
 
 
-	if(DEBUG >= EXIBIR_TEMPO){
-		cout <<"[TEMPO] Iniciando contagem de tempo para modelar Tline" << endl;
+	if(DEBUG >= DISPLAY_TIME){
+		cout <<"[TIME] Starting time count to model Tline" << endl;
 		//Iniciando a contagem do tempo
 		clock_gettime(CLOCK_REALTIME, &start);
 	}
@@ -819,8 +821,8 @@ solutionType primalDual(int qty_clients, int qty_facilities, double * costF, dou
 		while(current_fac != INVALID){
 			if(open[current_fac]){ 
 				// Escolha inst open de S
-				if(DEBUG >= EXIBIR_ACOES){
-					cout << "Escolhido instalacao " << name[current_fac] << endl;
+				if(DEBUG >= DISPLAY_ACTIONS){
+					cout << "Chosen facility " << name[current_fac] << endl;
 				}
 
 				fac_index = name[current_fac] - qty_clients;
@@ -843,27 +845,26 @@ solutionType primalDual(int qty_clients, int qty_facilities, double * costF, dou
 		}
 
 
-		if (DEBUG >= EXIBIR_GRAFO){
-			cout << "SOBRE GRAFO g" << endl;
+		if (DEBUG >= DISPLAY_GRAPH){
 			// Percorrendo por todos os nós A - clients
-			cout << "Percorrendo por todos os clients" << endl;
-			for(ListBpGraph::RedNodeIt n(g); n != INVALID; ++n){
-				cout << "no id: " << g.id(n)  << " - name: " << name[n] << endl;
+			cout << "Scrolling through all clients" << endl;
+			for(ListBpGraph::RedNodeIt n(S); n != INVALID; ++n){
+				cout << "id: " << S.id(n)  << " - name: " << name[n] << " - v: " << v[n] << endl;
 			}
 
 			// Percorrendo por todos os nós B - facilities
-			cout << "Percorrendo por todos as facilities" << endl;
+			cout << "Scrolling through all facilities" << endl;
 			for(ListBpGraph::BlueNodeIt n(S); n != INVALID; ++n){
-				cout << "no id: " << S.id(n)  << " - name: " << name[n] << " - f: " << f[n] << 
-				" - open: " << open[n] << " - isInTlineL " << isInTline[n] << endl;
+				cout << "id: " << S.id(n)  << " - name: " << name[n] << " - f: " << f[n] << " - open: " << open[n] << " - qty_payers: " << qty_payers[n]<< endl;
 			}
 
+
 			// Percorrendo por todos os edges
-			cout << "Percorrendo por todos os edges" << endl;
-			for(ListBpGraph::EdgeIt e(g); e!= INVALID; ++e){
-				cout << "arco id: " << g.id(e) ;
-				cout << " - cliente: " << name[g.u(e)] << " - instalacao: " << name[g.v(e)];
-				cout<< " - ca: " << assignment_cost[e] << endl;
+			cout << "Scrolling through all edges" << endl;
+			for(ListBpGraph::EdgeIt e(S); e!= INVALID; ++e){
+				cout << "edge id: " << S.id(e) ;
+				cout << " - client: " << name[S.u(e)] << " - facility: " << name[S.v(e)];
+				cout<< " - ac: " << assignment_cost[e] << " w - " << w[e] << " readyToPayW - " << readyToPayW[e] << endl;
 			}
 		}
 
@@ -887,10 +888,10 @@ solutionType primalDual(int qty_clients, int qty_facilities, double * costF, dou
 						for(int k=0;k<qty_clients;k++){ // marcar que todas os clients daquela instalacao agr nao contribuem mais pra ela
 							adjacency_matrix[k][j] = 0;
 
-							if (DEBUG >= EXIBIR_adjacency_matrix){
+							if (DEBUG >= DISPLAY_ADJ_MATRIX){
 
 								// Exibindo a matriz de adjacencia
-								cout << "Exibindo matriz de adjacencia" << endl;
+								cout << "Scrolling through adjacency matrix" << endl;
 								for(int i2=0;i2<qty_clients;i2++){
 									for(int j2=0;j2<qty_facilities;j2++){
 										cout<< adjacency_matrix[i2][j2] << " ";
@@ -903,8 +904,8 @@ solutionType primalDual(int qty_clients, int qty_facilities, double * costF, dou
 
 						if(open[S.asBlueNode(S.nodeFromId(j + qty_clients))]){ // Se a instalacao j está open
 
-							if(DEBUG >= EXIBIR_ACOES){
-								cout << "Removendo a instalacao " << j << " das opens, pois cliente " << i << " contribui a ela" << endl;
+							if(DEBUG >= DISPLAY_ACTIONS){
+								cout << "Deleting facility " << j << " from opens, since client " << i << " pays to her" << endl;
 							}
 
 							open[S.asBlueNode(S.nodeFromId(j + qty_clients))] = false;
@@ -915,8 +916,8 @@ solutionType primalDual(int qty_clients, int qty_facilities, double * costF, dou
 			}
 		}
 
-		if(DEBUG >= EXIBIR_ACOES){
-			cout << "Removendo a instalacao escolhida " << fac_index + qty_clients << " das opens" << endl;
+		if(DEBUG >= DISPLAY_ACTIONS){
+			cout << "Deleting chosen facility " << fac_index + qty_clients << " from opens" << endl;
 		}
 
 		open[S.asBlueNode(S.nodeFromId(fac_index + qty_clients))] = false;
@@ -924,21 +925,21 @@ solutionType primalDual(int qty_clients, int qty_facilities, double * costF, dou
 	}
 
 
-	if(DEBUG >= EXIBIR_TEMPO){
-		cout <<"[TEMPO] Finalizando contagem de tempo para modelar Tline" << endl;
+	if(DEBUG >= DISPLAY_TIME){
+		cout <<"[TIME] Ending time count for Tline modeling" << endl;
 		//Finalizando a contagem do tempo
 		clock_gettime(CLOCK_REALTIME, &finish);
 
 		// Calculando o tempo gasto
 		timeSpent =  (finish.tv_sec - start.tv_sec);
 		timeSpent += (finish.tv_nsec - start.tv_nsec) / 1000000000.0; // Necessario para obter uma precisao maior 
-		cout << "[TEMPO] Time spent: " << timeSpent << " seconds" << endl;
+		cout << "[TIME] Time spent: " << timeSpent << " seconds" << endl;
 	}
 
 
 
-	if(DEBUG >= EXIBIR_adjacency_matrix){
-		cout << "Exibindo matriz de adjacencia" << endl;
+	if(DEBUG >= DISPLAY_ADJ_MATRIX){
+		cout << "Scrolling through adjacency matrix" << endl;
 		for(int i=0;i<qty_clients;i++){
 			for(int j=0;j<qty_facilities;j++){
 				cout<< adjacency_matrix[i][j] << " ";
@@ -950,12 +951,12 @@ solutionType primalDual(int qty_clients, int qty_facilities, double * costF, dou
 	// // Percorrendo por todos os nós de Tline que sao facilities
 	int qty_fac_Tline = 0;
 
-	if(DEBUG >= EXIBIR_ACOES){
+	if(DEBUG >= DISPLAY_ACTIONS){
 
 		cout<<"-- Tline facilities --" << endl;
 		for(ListBpGraph::BlueNodeIt n(Tline); n != INVALID; ++n){
 			qty_fac_Tline += 1;
-			cout << "no id: " << Tline.id(n) << " - name: " << nameTline[n] << endl;
+			cout << "id: " << Tline.id(n) << " - name: " << nameTline[n] << endl;
 		}
 		cout<<"-------" << endl;
 	}
@@ -966,8 +967,8 @@ solutionType primalDual(int qty_clients, int qty_facilities, double * costF, dou
 	}
 
 
-	if(DEBUG >= EXIBIR_TEMPO){
-		cout <<"[TEMPO] Iniciando contagem de tempo para abrir tudo de Tline e associar os clients" << endl;
+	if(DEBUG >= DISPLAY_TIME){
+		cout <<"[TIME] Starting time count to open everything from Tline and associate clients" << endl;
 		//Iniciando a contagem do tempo
 		clock_gettime(CLOCK_REALTIME, &start);
 	}
@@ -1049,42 +1050,39 @@ solutionType primalDual(int qty_clients, int qty_facilities, double * costF, dou
 		idFacMinDist = -1;
 	}
 
-	if(DEBUG >= EXIBIR_TEMPO){
-		cout <<"[TEMPO] Finalizando contagem de tempo para abrir tudo de Tline e associar os clients" << endl;
+	if(DEBUG >= DISPLAY_TIME){
+		cout <<"[TIME] Ending time count to open everything from Tline and associate clients" << endl;
 		//Finalizando a contagem do tempo
 		clock_gettime(CLOCK_REALTIME, &finish);
 
 		// Calculando o tempo gasto
 		timeSpent =  (finish.tv_sec - start.tv_sec);
 		timeSpent += (finish.tv_nsec - start.tv_nsec) / 1000000000.0; // Necessario para obter uma precisao maior 
-		cout << "[TEMPO] Time spent: " << timeSpent << " seconds" << endl;
+		cout << "[TIME] Time spent: " << timeSpent << " seconds" << endl;
 	
-		cout <<"[TEMPO] Iniciando contagem de tempo para exibir resposta final" << endl;
+		cout <<"[TIME] Starting time count to display final answer" << endl;
 		//Iniciando a contagem do tempo
 		clock_gettime(CLOCK_REALTIME, &start);
 	}
 
 
 	//Resposta final: Grafo Tline
-	if(DEBUG >= EXIBIR_ACOES){
-		cout << endl <<  "Resposta final: GRAFO Tline" << endl;
+	if(DEBUG >= DISPLAY_ACTIONS){
+		cout << endl <<  "Final answer: Tline graph" << endl;
 
 		// Percorrendo por todos os nós A - clients
-		cout << endl << "Percorrendo por todos os clients" << endl;
+		cout << endl <<"Scrolling through all clients" << endl;
 		for(ListBpGraph::RedNodeIt n(Tline); n != INVALID; ++n){
-			cout << "no id: " << Tline.id(n)  << " - name: " << nameTline[n] << endl;
+			cout << "id: " << S.id(n)  << " - name: " << name[n] << endl;
 		}
-	}
-
 
 	// Percorrendo por todos os nós B - facilities
-	if(DEBUG >= EXIBIR_ACOES){
-		cout << endl << "Percorrendo por todos as facilities" << endl;
+		cout << endl << "Scrolling through all facilities" << endl;
 	}
 
 	for(ListBpGraph::BlueNodeIt n(Tline); n != INVALID; ++n){
-		if(DEBUG >= EXIBIR_ACOES){
-			cout << "no id: " << Tline.id(n)  << " - name: " << nameTline[n] << " - f: " << fTline[n] << endl;
+		if(DEBUG >= DISPLAY_ACTIONS){
+			cout << "id: " << Tline.id(n)  << " - name: " << nameTline[n] << " - f: " << fTline[n] << endl;
 		}
 
 		solution.finalTotalCost += fTline[n]; // acrescentando o valor do custo de abrir essa instalacao
@@ -1092,16 +1090,16 @@ solutionType primalDual(int qty_clients, int qty_facilities, double * costF, dou
 
 
 	// Percorrendo por todos os edges
-	if(DEBUG >= EXIBIR_ACOES){
-		cout << endl << "Percorrendo por todos os edges" << endl;
+	if(DEBUG >= DISPLAY_ACTIONS){
+		cout << endl << "Scrolling through all edges" << endl;
 	}
 
 	counter = 0;
 	for(ListBpGraph::EdgeIt e(Tline); e!= INVALID; ++e){
-		if(DEBUG >= EXIBIR_ACOES){
-			cout << "arco id: " << Tline.id(e) ;
-			cout << " - cliente: " << nameTline[Tline.u(e)] << " - instalacao: " << nameTline[Tline.v(e)];
-			cout<< " - ca: " << acTline[e] << endl;
+		if(DEBUG >= DISPLAY_ACTIONS){
+			cout << "edge id: " << S.id(e) ;
+				cout << " - client: " << name[S.u(e)] << " - facility: " << name[S.v(e)];
+				cout<< " - ac: " << assignment_cost[e] << endl;
 		}
 
 		solution.finalTotalCost += acTline[e]; // acrescentando o valor de atribuicao desse cliente a essa instalacao
@@ -1114,15 +1112,15 @@ solutionType primalDual(int qty_clients, int qty_facilities, double * costF, dou
 		counter += 1;
 	}
 
-	if(DEBUG >= EXIBIR_TEMPO){
-		cout <<"[TEMPO] Finalizando contagem de tempo para exibir resposta final" << endl;
+	if(DEBUG >= DISPLAY_TIME){
+		cout <<"[TIME] Ending time count to display final answer" << endl;
 		//Finalizando a contagem do tempo
 		clock_gettime(CLOCK_REALTIME, &finish);
 
 		// Calculando o tempo gasto
 		timeSpent =  (finish.tv_sec - start.tv_sec);
 		timeSpent += (finish.tv_nsec - start.tv_nsec) / 1000000000.0; // Necessario para obter uma precisao maior 
-		cout << "[TEMPO] Time spent: " << timeSpent << " seconds" << endl;
+		cout << "[TIME] Time spent: " << timeSpent << " seconds" << endl;
 	
 
 		// FINALIZANDO A CONTAGEM DE TEMPO DA FUNCAO COMO UM TODO
@@ -1131,7 +1129,7 @@ solutionType primalDual(int qty_clients, int qty_facilities, double * costF, dou
 		// Calculando o tempo gasto total
 		realTimeSpent =  (real_finish.tv_sec - real_start.tv_sec);
 		realTimeSpent += (real_finish.tv_nsec - real_start.tv_nsec) / 1000000000.0; // Necessario para obter uma precisao maior 
-		cout << "Tempo total final da funcao: " << realTimeSpent << " segundos" << endl;
+		cout << "Final Total Function Time: " << realTimeSpent << " seconds" << endl;
 	}
 	
 
