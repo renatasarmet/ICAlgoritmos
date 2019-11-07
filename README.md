@@ -15,3 +15,5 @@ python3 script.py qtd_inst qtd_cli > arquivo.txt
 
 ### Mais detalhes
 Os detalhes de cada pasta estao em um READ.ME especifico da mesma.
+
+(atenção para garantir que baixou os arquivos LFS quando der pull)
