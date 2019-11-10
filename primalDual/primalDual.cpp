@@ -15,7 +15,7 @@
 
 // Observacao importante: ao usar S.nodeFromId() eh necessario passar o ID geral, nao o blue ID nem red ID. 
 // No caso do cliente, o red ID = ID geral, pois os clients foram os primeiros a serem adicionados no grafo.
-// No caso da instalacao, o ID geral = blue ID + qtdclients, pois as facilities foram adicionadas no grafo logo apos todos os clients.
+// No caso da instalacao, o ID geral = blue ID + qty_clients, pois as facilities foram adicionadas no grafo logo apos todos os clients.
 
 using namespace lemon;
 using namespace std;
@@ -183,7 +183,7 @@ solutionType primalDual(int qty_clients, int qty_facilities, double * costF, dou
 		qty_payers[facilities[i]] = 0; // no começo ninguem contribui pra ninguem
 		open[facilities[i]] = false; // indica que a instalação não está open inicialmente
 		isInTline[facilities[i]] = false; // no começo ninguem esta em Tline
-		name[facilities[i]] = i; // nameia de acordo com a numeracao
+		name[facilities[i]] = qty_clients + i; // nameia de acordo com a numeracao
 
 		// Salvando o valor do maior Fi da entrada
 		if(f[facilities[i]]>biggestFi){
@@ -321,6 +321,8 @@ solutionType primalDual(int qty_clients, int qty_facilities, double * costF, dou
 		v[n] += assignment_cost[min];
 	}
 
+	int fac_index;
+
 	// Percorrer todas as arestas para ver quais bateram o custo de atribuicao
 	// Entao, acionar a flag readyToPayW e colocar na matriz de adjacencia.
 	for(ListBpGraph::EdgeIt e(S); e!= INVALID; ++e){
@@ -328,8 +330,8 @@ solutionType primalDual(int qty_clients, int qty_facilities, double * costF, dou
 			readyToPayW[e] = true;
 			qty_payers[S.asBlueNode(S.v(e))] += 1;
 
-			// adjacency_matrix[name[S.u(e)]][name[S.v(e)]] = 1;
-			
+			// fac_index = name[S.v(e)] - qty_clients;
+			// adjacency_matrix[name[S.u(e)]][fac_index] = 1;
 		}
 	}
 
@@ -507,12 +509,15 @@ solutionType primalDual(int qty_clients, int qty_facilities, double * costF, dou
 				w[e] += minAB; 
 				sumW[S.asBlueNode(S.v(e))] += minAB; // aumenta esse valor no somatorio da instalacao correspondente
 
-				adjacency_matrix[name[S.u(e)]][name[S.v(e)]] = 1; // atribui esse novo cliente em sua lista
+				fac_index = name[S.v(e)] - qty_clients;
+				adjacency_matrix[name[S.u(e)]][fac_index] = 1; // atribui esse novo cliente em sua lista
 			}
 			else if(equal(assignment_cost[e],v[S.asRedNode(S.u(e))])){ // SENAO SE: acabou de ficar pronto para contribuir (pagou o c.a.)
 				readyToPayW[e] = true;
 				qty_payers[S.asBlueNode(S.v(e))] += 1;
-				// adjacency_matrix[name[S.u(e)]][name[S.v(e)]] = 1; // atribui esse novo cliente em sua lista
+
+				// fac_index = name[S.v(e)] - qty_clients;
+				// adjacency_matrix[name[S.u(e)]][fac_index] = 1; // atribui esse novo cliente em sua lista
 			}
 		}
 
@@ -755,7 +760,7 @@ solutionType primalDual(int qty_clients, int qty_facilities, double * costF, dou
 		cout << endl<< "Criating Tline" << endl;
 	}
 
-	int fac_index = 0;
+	fac_index = 0;
 
 
 	if(DEBUG >= DISPLAY_ADJ_MATRIX){
@@ -819,8 +824,7 @@ solutionType primalDual(int qty_clients, int qty_facilities, double * costF, dou
 					cout << "Chosen facility " << name[current_fac] << endl;
 				}
 
-				fac_index = name[current_fac];
-
+				fac_index = name[current_fac] - qty_clients;
 				// Tline <- Tline U {i}
 				facTline[qty_facTline] = Tline.addBlueNode();
 				nameTline[facTline[qty_facTline]] = name[current_fac]; // pega o name da instalacao
@@ -911,10 +915,10 @@ solutionType primalDual(int qty_clients, int qty_facilities, double * costF, dou
 		}
 
 		if(DEBUG >= DISPLAY_ACTIONS){
-			cout << "Deleting chosen facility " << fac_index << " from opens" << endl;
+			cout << "Deleting chosen facility " << fac_index + qty_clients << " from opens" << endl;		
 		}
 
-		open[S.asBlueNode(S.nodeFromId(fac_index))] = false;
+		open[S.asBlueNode(S.nodeFromId(fac_index + qty_clients))] = false;
 		qty_open_fac -= 1;
 	}
 
@@ -1099,7 +1103,8 @@ solutionType primalDual(int qty_clients, int qty_facilities, double * costF, dou
 		solution.finalTotalCost += acTline[e]; // acrescentando o valor de atribuicao desse cliente a essa instalacao
 
 		// Colocando as facilities opens mais proximas em um vetor pra retornar na solucao
-		solution.assigned_facilities[counter] = nameTline[Tline.v(e)]; // esse loop percorre todos os clients, então posso usar o counter normalmente aqui
+		fac_index = nameTline[Tline.v(e)] - qty_clients; // colocando -qty_clients para colocar o id correto da inst
+		solution.assigned_facilities[counter] = fac_index;  // esse loop percorre todos os clients, então posso usar o counter normalmente aqui
 		// cout << "cliente " << counter << " com inst " << solution.assigned_facilities[counter] << endl;
 
 		counter += 1;
