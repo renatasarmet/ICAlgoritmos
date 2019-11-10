@@ -762,6 +762,14 @@ solutionType localSearch(int qty_facilities, int qty_clients, double * costF, do
 		cout << "FINAL TOTAL COST: " << solution.finalTotalCost << endl;
 	}
 
+	// Exibir quais instalacoes foram abertas
+	if(DEBUG >= DISPLAY_BASIC){
+		cout << "OPEN FACILITIES: " << endl;
+		for (itr = open_facilities.begin(); itr != open_facilities.end(); ++itr) { // percorrer todas as inst abertas
+			cout << *itr << " ";
+		}
+		cout << endl;
+	}
 
 	if(DEBUG >= DISPLAY_BASIC){
 		cout << "Total moves: " << qty_moves << endl;
