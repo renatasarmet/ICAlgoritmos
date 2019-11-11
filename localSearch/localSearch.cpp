@@ -4,6 +4,7 @@
 #include <set>
 #include <iterator>
 #include <ctime>
+#include <fstream>
 #include "definitions.hpp"
 #define EPSL 0.00000001
 
@@ -18,10 +19,12 @@ using namespace std;
 
 #define DEBUG 1 // OPCOES DE DEBUG: 1 - MOSTRAR A QTD DE MOVIMENTOS, 2 PARA EXIBIR OS MOVIMENTOS REALIZADOS, 3 PARA EXIBIR ACOES, 4 PARA EXIBIR TEMPO, 5 PARA EXIBIR AS MUDANÇAS NO GRAFO
 
-#define TIME_LIMIT 60 //colocando 1 minuto pra dar tempo de fazer todos os testes agora //900 //15 minutos
+#define TIME_LIMIT 900 //15 minutos
+
+#define TIME_COUNTER_STEP 30 // 30 segundos. Isso indicara que vai salvar a melhor solucao encontrada a cada minuto
 
 // Retornar o valor da solucao
-solutionType localSearch(int qty_facilities, int qty_clients, double * costF, double * costA, solutionType solution){
+solutionType localSearch(char * solutionName, int qty_facilities, int qty_clients, double * costF, double * costA, solutionType solution){
 
 	cout << fixed;
    	cout.precision(5);
@@ -33,6 +36,9 @@ solutionType localSearch(int qty_facilities, int qty_clients, double * costF, do
 
 	// Declaracao variavel que marcara o tempo de execucao
 	double timeSpent;
+
+	// Declaracao da variavel que vai indicar o contador para salvar a solucao atual
+	double timeCounter = 0;
 
 	/* Fim declaracoes para calculo de tempo */
 
@@ -89,6 +95,18 @@ solutionType localSearch(int qty_facilities, int qty_clients, double * costF, do
 	set <int, greater <int> > :: iterator itr; 
 	set <int, greater <int> > :: iterator itr2; 
 
+	// Declaracao de variavel auxiliar para formacao do arquivo .log
+	char completeLogSolName[250];
+
+	// Arquivo para salvar o log da solucao
+	ofstream solLog;
+
+	strcat(completeLogSolName,solutionName);
+	strcat(completeLogSolName,".log");
+	solLog.open(completeLogSolName, std::ofstream::out | std::ofstream::trunc);
+
+	//Salvando o cabecalho
+	solLog << "time spent so far, current solution cost, current qty moves" << endl;
 
 	// Criação de nós de instalações e atribuição de seus labels
 	ListBpGraph::BlueNode * facilities;
@@ -236,7 +254,17 @@ solutionType localSearch(int qty_facilities, int qty_clients, double * costF, do
 
 		// Se já passou o tempo limite, devemos parar
 		if(timeSpent >= TIME_LIMIT){
+			// Acrescentando no solLog.txt o tempo final gasto nas iteracoes e o custo da solucao
+			solLog <<timeSpent << "," << solution.finalTotalCost << "," << qty_moves << endl;
+
 			break;
+		}
+		else if(timeSpent >= timeCounter){
+			// aumentando o contador de tempo
+			timeCounter += TIME_COUNTER_STEP;
+
+			// Acrescentando no solLog.txt o tempo gasto nessa iteracao e o custo da solucao
+			solLog <<timeSpent << "," << solution.finalTotalCost << "," << qty_moves << endl;
 		}
 
 		if(DEBUG >= DISPLAY_ACTIONS){
@@ -763,7 +791,7 @@ solutionType localSearch(int qty_facilities, int qty_clients, double * costF, do
 	}
 
 	// Exibir quais instalacoes foram abertas
-	if(DEBUG >= DISPLAY_BASIC){
+	if(DEBUG >= DISPLAY_ACTIONS){
 		cout << "OPEN FACILITIES: " << endl;
 		for (itr = open_facilities.begin(); itr != open_facilities.end(); ++itr) { // percorrer todas as inst abertas
 			cout << *itr << " ";
@@ -775,16 +803,21 @@ solutionType localSearch(int qty_facilities, int qty_clients, double * costF, do
 		cout << "Total moves: " << qty_moves << endl;
 	}
 
+	// FINALIZANDO A CONTAGEM DE TEMPO DA FUNCAO COMO UM TODO
+	clock_gettime(CLOCK_REALTIME, &real_finish);
+
+	// Calculando o tempo gasto total
+	timeSpent =  (real_finish.tv_sec - real_start.tv_sec);
+	timeSpent += (real_finish.tv_nsec - real_start.tv_nsec) / 1000000000.0; // Necessario para obter uma precisao maior 
+
 	if(DEBUG >= DISPLAY_TIME){
-
-		// FINALIZANDO A CONTAGEM DE TEMPO DA FUNCAO COMO UM TODO
-		clock_gettime(CLOCK_REALTIME, &real_finish);
-
-		// Calculando o tempo gasto total
-		timeSpent =  (real_finish.tv_sec - real_start.tv_sec);
-		timeSpent += (real_finish.tv_nsec - real_start.tv_nsec) / 1000000000.0; // Necessario para obter uma precisao maior 
 		cout << "Final Total Function Time: " << timeSpent << " seconds" << endl;
 	}
+
+	// Acrescentando no solLog.txt o tempo gasto final da funcao e o custo final da solucao
+	solLog << timeSpent << "," << solution.finalTotalCost << "," << qty_moves << endl;
+
+	solLog.close();
 
 	free(clients);
 	free(facilities);

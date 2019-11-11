@@ -6,4 +6,4 @@ struct solutionType {
 	bool local_optimum;
 };
 
-solutionType localSearch(int qty_facilities, int qty_clients, double * costF, double * costA, solutionType solution);
+solutionType localSearch(char * solutionName, int qty_facilities, int qty_clients, double * costF, double * costA, solutionType solution);

@@ -236,7 +236,7 @@ int main(int argc, char *argv[]){
 	solution.local_optimum = false;
 
 	// Chamando a funcao que resolve o problema de fato
-	solution = localSearch(qty_facilities, qty_clients, costF, costA, solution);
+	solution = localSearch(solutionName, qty_facilities, qty_clients, costF, costA, solution);
 
 	// Finalizando a contagem do tempo
 	clock_gettime(CLOCK_REALTIME, &finish);
