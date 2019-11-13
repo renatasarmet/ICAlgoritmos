@@ -22,7 +22,7 @@ using namespace std;
 
 #define TIME_LIMIT 900 //15 minutos
 
-#define TIME_COUNTER_STEP 30 // 30 segundos. Isso indicara que vai salvar a melhor solucao encontrada a cada minuto
+#define TIME_COUNTER_STEP 5 // 5 segundos para testar as inst ga250a //30 // 30 segundos. Isso indicara que vai salvar a melhor solucao encontrada a cada minuto
 
 // Retornar o valor da solucao
 solutionType localSearch(char * solutionName, int qty_facilities, int qty_clients, double * costF, double * costA, solutionType solution){
@@ -62,8 +62,14 @@ solutionType localSearch(char * solutionName, int qty_facilities, int qty_client
 	// c_minX - será correnpondente a c(j,X) = min_{i \in X} cij, sendo X as inst abertas
 	ListBpGraph::RedNodeMap<double> c_minX(g);
 
+	// c2_minX - será correnpondente ao segundo menor c(j,X) = min_{i \in X} cij, sendo X as inst abertas exceto a nearest_open_fac
+	ListBpGraph::RedNodeMap<double> c2_minX(g);
+
 	// nearest_open_fac - será correnpondente ao ID da instalacao i tal que min_{i \in X} cij, sendo X as inst abertas
 	ListBpGraph::RedNodeMap<int> nearest_open_fac(g);
+
+	// nearest2_open_fac - será correnpondente ao ID da segunda instalacao i tal que min_{i \in X} cij, sendo X as inst abertas exceto a nearest_open_fac (segunda instalacao aberta mais proxima)
+	ListBpGraph::RedNodeMap<int> nearest2_open_fac(g);
 
 	// temp_nearest_fac - será correnpondente ao ID da instalacao i mais proxima, depois da inst que ela ja esta conectada (temporario)
 	ListBpGraph::RedNodeMap<int> temp_nearest_fac(g);
@@ -150,7 +156,6 @@ solutionType localSearch(char * solutionName, int qty_facilities, int qty_client
 		}
 	}
 
-
 	// assignment_cost - é o custo de atribuir o cliente associado à instalação associada
 	ListBpGraph::EdgeMap<double> assignment_cost(g);
 
@@ -178,9 +183,34 @@ solutionType localSearch(char * solutionName, int qty_facilities, int qty_client
 		}
 	}
 
-	// Atualizando valor c_minX para todos os clientes
+	// Atualizando valor c_minX para todos os clientes e iniciando c2_minX
 	for(int i=0;i<qty_clients;i++){
 		c_minX[clients[i]] = assignment_cost[findEdge(g, clients[i], facilities[solution.assigned_facilities[i]])]; 
+		c2_minX[clients[i]] = biggestCij + 1; // limitante superior tranquilo
+	}
+
+	double aux_cij;
+
+	// Iniciando os labels correspondentes à segunda instalacao aberta mais proxima de cada cliente (c2_minX)
+	for(int i=0;i<qty_clients;i++){ // percorre todos os clientes
+		for (itr = open_facilities.begin(); itr != open_facilities.end(); ++itr) { // percorrer todas as inst abertas
+			aux_cij = assignment_cost[findEdge(g, clients[i], facilities[*itr])];
+			if((aux_cij < c2_minX[clients[i]]) && (*itr != nearest_open_fac[clients[i]])){ // se for melhor que o salvo ate agr, mas nao melhor que o melhor de todos
+				nearest2_open_fac[clients[i]] = *itr;
+				c2_minX[clients[i]] = aux_cij;
+			}
+		}
+		if(c2_minX[clients[i]] > biggestCij){ // se só tinha 1 inst aberta, entao colocamos -1 para indicar invalidez
+			// if(DEBUG >= DISPLAY_ACTIONS){
+				cout << "There is just 1 open facility" << endl;
+			// }
+			c2_minX[clients[i]] = -1;
+			nearest2_open_fac[clients[i]] = -1;
+		}
+
+		if(DEBUG >= DISPLAY_ACTIONS){
+			cout << "Client " << i << " c1: " << c_minX[clients[i]] << " near: " << nearest_open_fac[clients[i]] << " c2: " << c2_minX[clients[i]] << " near2: " << nearest2_open_fac[clients[i]] << endl;
+		}
 	}
 
 
@@ -222,9 +252,8 @@ solutionType localSearch(char * solutionName, int qty_facilities, int qty_client
 	// Variavel utilizada para calcular o custo completo extra do movimento de troca
 	double complete_extra_cost;
 
-	// Variavel que indica o melhor custo cij encontrado pra reatribuicao
-	double best_cij_reassignment;
-
+	// Variavel auxiliar para ajudar quando houver substituicao de informacoes na troca
+	bool closed_nearest = false; 
 
 	// INICIANDO A CONTAGEM DE TEMPO DA FUNCAO
 	clock_gettime(CLOCK_REALTIME, &start);
@@ -313,35 +342,28 @@ solutionType localSearch(char * solutionName, int qty_facilities, int qty_client
 					}
 				}
 				else{
-
 					// Vamos fechar essa instalacao
 
 					extra_cost = -f[n]; // subtrai o custo de abertura dessa inst
 
 					for(ListBpGraph::RedNodeIt n_cli(g); n_cli != INVALID; ++n_cli){		// percorre os clientes
 
-						if(nearest_open_fac[n_cli] == g.id(n)){ // caso esse cliente esteja conectado a essa instalacao
+						if(nearest_open_fac[n_cli] == name[n]){ // caso esse cliente esteja conectado a essa instalacao
 
-							best_cij_reassignment = biggestCij + 1; // limitante superior tranquilo
+							if(c2_minX[n_cli] >= 0){ // CASO EXISTA A SEGUNDA INST MAIS PROXIMA SALVA
 
-							for (itr = open_facilities.begin(); itr != open_facilities.end(); ++itr) { // percorrer todas as inst abertas
+								// Atualizamos o custo extra, subtraindo o custo de atribuicao da antiga inst e somando o custo com a nova
+								extra_cost += c2_minX[n_cli] - c_minX[n_cli];
 
-								if(*itr != g.id(n)){ // nao podemos olhar para a instalacao n, pq vamos fecha-la
-
-									if(assignment_cost[findEdge(g, n_cli, facilities[*itr])] < best_cij_reassignment){ // caso essa seja a inst mais perto ate agr encontrada
-										
-										temp_nearest_fac[n_cli] = *itr; // atualizando a inst mais perto temporaria
-										best_cij_reassignment = assignment_cost[findEdge(g, n_cli, facilities[*itr])];
-									}
+								if(DEBUG >= DISPLAY_ACTIONS){
+									cout << "client: " << name[n_cli] << " new nearest facility " << nearest2_open_fac[n_cli] << endl;
 								}
-							} 
-
-							if(DEBUG >= DISPLAY_ACTIONS){
-								cout << "client: " << name[n_cli] << " new nearest facility " << temp_nearest_fac[n_cli] << endl;
 							}
-
-							// Atualizamos o custo extra, subtraindo o custo de atribuicao da antiga inst e somando o custo com a nova
-							extra_cost = extra_cost + best_cij_reassignment - c_minX[n_cli];
+							else{
+								// if(DEBUG >= DISPLAY_ACTIONS){
+									cout << "THERE IS NO SAVED FACILITY" << endl;
+								// }
+							}
 						}
 					}
 
@@ -364,22 +386,48 @@ solutionType localSearch(char * solutionName, int qty_facilities, int qty_client
 
 						for(ListBpGraph::RedNodeIt n_cli(g); n_cli != INVALID; ++n_cli){		// percorre os clientes
 
-							if(nearest_open_fac[n_cli] == g.id(n)){ // caso esse cliente esteja conectado a essa instalacao
+							closed_nearest = false;
+
+							if(nearest_open_fac[n_cli] == name[n]){ // caso esse cliente esteja conectado a essa instalacao
+
+								closed_nearest = true;
+
 								if(DEBUG >= DISPLAY_ACTIONS){
 									cout << "changing client: " << name[n_cli] << " nearest facility " << name[n] << endl;
-
 								}
 
-								nearest_open_fac[n_cli] = temp_nearest_fac[n_cli]; // reatribuindo com a nova inst mais proxima
-								c_minX[n_cli] = assignment_cost[findEdge(g, n_cli, facilities[nearest_open_fac[n_cli]])]; // atualizando o menor cij desse cli
+								// ATUALIZANDO AQUI A INST MAIS PROXIMA
+								nearest_open_fac[n_cli] = nearest2_open_fac[n_cli]; // reatribuindo com a nova inst mais proxima
+								c_minX[n_cli] = c2_minX[n_cli]; // atualizando o menor cij desse cli
 
+								// SALVANDO A SOLUCAO NOVA
 								solution.assigned_facilities[name[n_cli]] = nearest_open_fac[n_cli]; // salvando alteracoes sobre a inst mais proxima na solucao final
+							}
+
+							if((closed_nearest)||(nearest2_open_fac[n_cli] == name[n])){ // caso esse cliente tinha essa instalacao como primeira ou segunda mais proxima
+								// ATUALIZANDO AQUI A SEGUNDA MAIS PROXIMA
+								c2_minX[n_cli] = biggestCij + 1; // limitante superior tranquilo
+
+								for (itr = open_facilities.begin(); itr != open_facilities.end(); ++itr) { // percorrer todas as inst abertas
+									aux_cij = assignment_cost[findEdge(g, n_cli, facilities[*itr])];
+									if((aux_cij < c2_minX[n_cli]) && (*itr != nearest_open_fac[n_cli]) && (*itr != name[n])){ // se for melhor que o salvo ate agr, mas nao melhor que o melhor de todos nem da que vai fechar
+										nearest2_open_fac[n_cli] = *itr;
+										c2_minX[n_cli] = aux_cij;
+									}
+								}
+								if(c2_minX[n_cli] > biggestCij){ // se só tinha 1 inst aberta, entao colocamos -1 para indicar invalidez
+									// if(DEBUG >= DISPLAY_ACTIONS){
+										cout << "There is just 1 open facility" << endl;
+									// }
+									c2_minX[n_cli] = -1;
+									nearest2_open_fac[n_cli] = -1;
+								}
 							}
 						}
 
 						open[n] = false; // fechando de fato a instalacao
-						open_facilities.erase(g.id(n));
-						closed_facilities.insert(g.id(n));
+						open_facilities.erase(name[n]);
+						closed_facilities.insert(name[n]);
 
 						solution.finalTotalCost += extra_cost; // Atualizando o custo total final
 
@@ -408,13 +456,13 @@ solutionType localSearch(char * solutionName, int qty_facilities, int qty_client
 					if(assignment_cost[e] < c_minX[g.asRedNode(g.u(e))]){ // caso a nova inst seja a mais proxima aberta desse cliente
 
 						if(DEBUG >= DISPLAY_ACTIONS){
-							cout << "client: " << name[g.u(e)] << " new nearest facility " << g.id(n) << endl;
+							cout << "client: " << name[g.u(e)] << " new nearest facility " << name[n] << endl;
 						}
 			
-						temp_nearest_fac[g.asRedNode(g.u(e))] = g.id(n); // atualizando a inst mais perto temporaria
+						temp_nearest_fac[g.asRedNode(g.u(e))] = name[n]; // atualizando a inst mais perto temporaria
 
 						// Atualizamos o custo extra, subtraindo o custo de atribuicao da antiga inst e somando o custo com a nova
-						extra_cost = extra_cost + assignment_cost[e] - c_minX[g.asRedNode(g.u(e))];
+						extra_cost += assignment_cost[e] - c_minX[g.asRedNode(g.u(e))];
 					}
 					else { // senao, caso a nova inst nao seja mais proxima
 						temp_nearest_fac[g.asRedNode(g.u(e))] = nearest_open_fac[g.asRedNode(g.u(e))]; // colocando isso apenas para uso posterior na checagem nao haver lixo
@@ -441,22 +489,33 @@ solutionType localSearch(char * solutionName, int qty_facilities, int qty_client
 
 					for(ListBpGraph::RedNodeIt n_cli(g); n_cli != INVALID; ++n_cli){		// percorre os clientes
 
+						aux_cij = assignment_cost[findEdge(g, n_cli, n)];
+
 						if(nearest_open_fac[n_cli] != temp_nearest_fac[n_cli]) { // caso esse cliente seja mais proximo dessa nova instalacao
 							if(DEBUG >= DISPLAY_ACTIONS){
 								cout << "changing client: " << name[n_cli] << " nearest facility " << name[n] << endl;
-
 							}
 
-							nearest_open_fac[n_cli] = temp_nearest_fac[n_cli]; // reatribuindo com a nova inst mais proxima
-							c_minX[n_cli] = assignment_cost[findEdge(g, n_cli, facilities[nearest_open_fac[n_cli]])]; // atualizando o menor cij desse cli
+							// ATUALIZANDO A SEGUNDA INST MAIS PROXIMA
+							nearest2_open_fac[n_cli] = nearest_open_fac[n_cli];
+							c2_minX[n_cli] = c_minX[n_cli];
+
+							// ATUALIZANDO A INSTALACAO MAIS PROXIMA
+							nearest_open_fac[n_cli] = name[n]; // reatribuindo com a nova inst mais proxima
+							c_minX[n_cli] = aux_cij; // atualizando o menor cij desse cli
 
 							solution.assigned_facilities[name[n_cli]] = nearest_open_fac[n_cli]; // salvando alteracoes na solucao final
+						}
+						else if(aux_cij < c2_minX[n_cli]) { // senao, caso esse cliente tenha essa nova instalacao como segunda mais proxima
+							// ATUALIZANDO A SEGUNDA INST MAIS PROXIMA
+							nearest2_open_fac[n_cli] = name[n];
+							c2_minX[n_cli] = aux_cij;
 						}
 					}
 
 					open[n] = true; // abrindo de fato a instalacao
-					closed_facilities.erase(g.id(n));
-					open_facilities.insert(g.id(n));
+					closed_facilities.erase(name[n]);
+					open_facilities.insert(name[n]);
 
 					solution.finalTotalCost += extra_cost; // Atualizando o custo total final
 
@@ -469,7 +528,6 @@ solutionType localSearch(char * solutionName, int qty_facilities, int qty_client
 				}
 			}
 		}
-
 
 		// CASO DE TROCA
 		if(solution.local_optimum){ // Entra aqui se nao houve nenhuma melhora na tentativa de add ou delete
@@ -503,28 +561,16 @@ solutionType localSearch(char * solutionName, int qty_facilities, int qty_client
 
 						for(ListBpGraph::RedNodeIt n_cli(g); n_cli != INVALID; ++n_cli){		// percorre os clientes
 
-							if(nearest_open_fac[n_cli] == g.id(n)){ // caso esse cliente esteja conectado a essa instalacao
-
-								best_cij_reassignment = biggestCij + 1; // limitante superior tranquilo
-
-								for (itr = open_facilities.begin(); itr != open_facilities.end(); ++itr) { // percorrer todas as inst abertas
-
-									if(*itr != g.id(n)){ // nao podemos olhar para a instalacao n, pq vamos fecha-la
-
-										if(assignment_cost[findEdge(g, n_cli, facilities[*itr])] < best_cij_reassignment){ // caso essa seja a inst mais perto ate agr encontrada
-
-											temp_nearest_fac[n_cli] = *itr; // atualizando a inst mais perto temporaria
-											best_cij_reassignment = assignment_cost[findEdge(g, n_cli, facilities[*itr])];
-										}
-									}
-								} 
+							if(nearest_open_fac[n_cli] == name[n]){ // caso esse cliente esteja conectado a essa instalacao
+								
+								temp_nearest_fac[n_cli] = nearest2_open_fac[n_cli]; // atualizando a inst mais perto temporaria								
 
 								if(DEBUG >= DISPLAY_ACTIONS){
 									cout << "client: " << name[n_cli] << " new nearest facility " << temp_nearest_fac[n_cli] << endl;
 								}
 
 								// Atualizamos o custo extra, subtraindo o custo de atribuicao da antiga inst e somando o custo com a nova
-								extra_cost = extra_cost + best_cij_reassignment - c_minX[n_cli];
+								extra_cost += c2_minX[n_cli] - c_minX[n_cli];
 							}
 							else{
 								temp_nearest_fac[n_cli] = nearest_open_fac[n_cli]; // colocando isso apenas para uso posterior na checagem nao haver lixo
@@ -534,7 +580,6 @@ solutionType localSearch(char * solutionName, int qty_facilities, int qty_client
 						if(DEBUG >= DISPLAY_ACTIONS){
 							cout << "--Partial extra cost:" << extra_cost << endl;
 						}
-
 
 						// Vamos abrir uma outra instalacao no lugar dessa que fechei
 
@@ -550,16 +595,18 @@ solutionType localSearch(char * solutionName, int qty_facilities, int qty_client
 
 							for (ListBpGraph::IncEdgeIt e(g, n2); e != INVALID; ++e) { // Percorre todas arestas desse nó (ligam a clientes)
 
-								if(assignment_cost[e] < assignment_cost[findEdge(g, g.asRedNode(g.u(e)), facilities[temp_nearest_fac[g.asRedNode(g.u(e))]])]){ // caso a nova inst seja a mais proxima aberta desse cliente
+								aux_cij = assignment_cost[findEdge(g, g.asRedNode(g.u(e)), facilities[temp_nearest_fac[g.asRedNode(g.u(e))]])];
+
+								if(assignment_cost[e] < aux_cij){ // caso a nova inst seja a mais proxima aberta desse cliente
 
 									if(DEBUG >= DISPLAY_ACTIONS){
-										cout << "client: " << name[g.u(e)] << " new nearest facility " << g.id(n2) << endl;
+										cout << "client: " << name[g.u(e)] << " new nearest facility " << name[n2] << endl;
 									}
 						
-									temp2_nearest_fac[g.asRedNode(g.u(e))] = g.id(n2); // atualizando a inst mais perto temporaria
+									temp2_nearest_fac[g.asRedNode(g.u(e))] = name[n2]; // atualizando a inst mais perto temporaria
 
 									// Atualizamos o custo extra, subtraindo o custo de atribuicao da antiga inst e somando o custo com a nova
-									complete_extra_cost = complete_extra_cost + assignment_cost[e] - assignment_cost[findEdge(g, g.u(e), facilities[temp_nearest_fac[g.asRedNode(g.u(e))]])];
+									complete_extra_cost += assignment_cost[e] - aux_cij;
 								}
 								else { // senao, caso a nova inst nao seja mais proxima
 									temp2_nearest_fac[g.asRedNode(g.u(e))] = temp_nearest_fac[g.asRedNode(g.u(e))]; // colocando isso apenas para uso posterior na checagem nao haver lixo
@@ -585,26 +632,81 @@ solutionType localSearch(char * solutionName, int qty_facilities, int qty_client
 
 								for(ListBpGraph::RedNodeIt n_cli(g); n_cli != INVALID; ++n_cli){		// percorre os clientes
 
-									if(nearest_open_fac[n_cli] != temp2_nearest_fac[n_cli]) { // caso esse cliente tenha mudado de atribuicao durante o percurso
-										if(DEBUG >= DISPLAY_ACTIONS){
-											cout << "changing client: " << name[n_cli] << " new nearest facility " << temp2_nearest_fac[n_cli] << endl;
+									// SE A NOVA INST QUE ABRIU É A MAIS PROXIMA
+									if(name[n2] == temp2_nearest_fac[n_cli]){
+
+										// SE A QUE FECHOU NÃO ERA A MAIS PROXIMA ANTES
+										if(name[n] != nearest_open_fac[n_cli]){
+											nearest2_open_fac[n_cli] = nearest_open_fac[n_cli]; // atualiza a segunda mais proxima com a mais proxima. obs: se tiver fechado a mais proxima, entao a segunda mais proxima continua igual
+											c2_minX[n_cli] = c_minX[n_cli];
 										}
 
-										nearest_open_fac[n_cli] = temp2_nearest_fac[n_cli]; // reatribuindo com a nova inst mais proxima
-										c_minX[n_cli] = assignment_cost[findEdge(g, n_cli, facilities[nearest_open_fac[n_cli]])]; // atualizando o menor cij desse cli
-
-										solution.assigned_facilities[name[n_cli]] = nearest_open_fac[n_cli]; // salvando alteracoes sobre a inst mais proxima na solucao final
+										nearest_open_fac[n_cli] = name[n2]; // atualiza a mais proxima com a que abriu
+										c_minX[n_cli] = assignment_cost[findEdge(g, n_cli, n2)]; // atualizando o menor cij desse cli
 									}
+									// SENAO, SE A NOVA É A SEGUNDA MAIS PROXIMA
+									else if(assignment_cost[findEdge(g, n_cli, n2)] < c2_minX[n_cli]) { // senao, caso esse cliente tenha essa nova instalacao como segunda mais proxima
+
+										// SE A QUE FECHOU ERA A MAIS PROXIMA
+										if(name[n] == nearest_open_fac[n_cli]){
+											nearest_open_fac[n_cli] = name[n2]; // a mais proxima recebe a nova que abriu
+											c_minX[n_cli] = assignment_cost[findEdge(g, n_cli, n2)];
+										}
+										else{
+											nearest2_open_fac[n_cli] = name[n2]; // a segunda mais proxima recebe a nova que abriu
+											c2_minX[n_cli] = assignment_cost[findEdge(g, n_cli, n2)];
+										}
+									}
+									// SENAO, ELA NAO TEM NENHUMA RELACAO, NEM COMO PRIMEIRA NEM COMO SEGUNDA
+									else {
+
+										// Variavel auxiliar para nao ter perigo de perder informacao importante na substituicao
+										closed_nearest = false;
+
+										// SE A QUE FECHOU ERA A MAIS PROXIMA
+										if(name[n] == nearest_open_fac[n_cli]){
+											nearest_open_fac[n_cli] = nearest2_open_fac[n_cli]; // atualiza a instalacao mais proxima
+											c_minX[n_cli] = c2_minX[n_cli];
+											closed_nearest = true;
+										}
+
+										// SE A QUE FECHOU ERA A MAIS PROXIMA OU A SEGUNDA MAIS PROXIMA
+										if((closed_nearest) || (name[n] == nearest2_open_fac[n_cli])){
+
+											// Percorre para atualizar a segunda mais proxima
+											c2_minX[n_cli] = biggestCij + 1; // limitante superior tranquilo
+
+											for (itr = open_facilities.begin(); itr != open_facilities.end(); ++itr) { // percorrer todas as inst abertas
+												aux_cij = assignment_cost[findEdge(g, n_cli, facilities[*itr])];
+												if((aux_cij < c2_minX[n_cli]) && (*itr != nearest_open_fac[n_cli]) && (*itr != name[n])){ // se for melhor que o salvo ate agr, mas nao melhor que o melhor de todos nem da que vai fechar
+													nearest2_open_fac[n_cli] = *itr;
+													c2_minX[n_cli] = aux_cij;
+												}
+											}
+
+											// nao precisa conferir se a nova nao é a segunda mais proxima (ja q ela nao esta ainda no open_facilities) pois senao entraria no else if anterior
+											
+											if(c2_minX[n_cli] > biggestCij){ // se só tinha 1 inst aberta, entao colocamos -1 para indicar invalidez
+												// if(DEBUG >= DISPLAY_ACTIONS){
+													cout << "There is just 1 open facility" << endl;
+												// }
+												c2_minX[n_cli] = -1;
+												nearest2_open_fac[n_cli] = -1;
+											}
+										}
+									}
+
+									solution.assigned_facilities[name[n_cli]] = nearest_open_fac[n_cli]; // salvando alteracoes sobre a inst mais proxima na solucao final
 								}
 
 								open[n] = false; // fechando de fato a primeira instalacao
-								open_facilities.erase(g.id(n));
-								closed_facilities.insert(g.id(n));
+								open_facilities.erase(name[n]);
+								closed_facilities.insert(name[n]);
 
 
 								open[n2] = true; // abrindo de fato a segunda instalacao
-								open_facilities.insert(g.id(n2));
-								closed_facilities.erase(g.id(n2));
+								open_facilities.insert(name[n2]);
+								closed_facilities.erase(name[n2]);
 
 								solution.finalTotalCost += complete_extra_cost; // Atualizando o custo total final
 
@@ -626,7 +728,6 @@ solutionType localSearch(char * solutionName, int qty_facilities, int qty_client
 					}
 				}
 
-
 				else { // caso a inst esteja fechada
 
 					if(DEBUG >= DISPLAY_ACTIONS){
@@ -642,13 +743,13 @@ solutionType localSearch(char * solutionName, int qty_facilities, int qty_client
 						if(assignment_cost[e] < c_minX[g.asRedNode(g.u(e))]){ // caso a nova inst seja a mais proxima aberta desse cliente
 
 							if(DEBUG >= DISPLAY_ACTIONS){
-								cout << "client: " << name[g.u(e)] << " new nearest facility " << g.id(n) << endl;
+								cout << "client: " << name[g.u(e)] << " new nearest facility " << name[n] << endl;
 							}
 				
-							temp_nearest_fac[g.asRedNode(g.u(e))] = g.id(n); // atualizando a inst mais perto temporaria
+							temp_nearest_fac[g.asRedNode(g.u(e))] = name[n]; // atualizando a inst mais perto temporaria
 
 							// Atualizamos o custo extra, subtraindo o custo de atribuicao da antiga inst e somando o custo com a nova
-							extra_cost = extra_cost + assignment_cost[e] - c_minX[g.asRedNode(g.u(e))];
+							extra_cost += assignment_cost[e] - c_minX[g.asRedNode(g.u(e))];
 						}
 						else { // senao, caso a nova inst nao seja mais proxima
 							temp_nearest_fac[g.asRedNode(g.u(e))] = nearest_open_fac[g.asRedNode(g.u(e))]; // colocando isso apenas para uso posterior na checagem nao haver lixo
@@ -673,49 +774,33 @@ solutionType localSearch(char * solutionName, int qty_facilities, int qty_client
 
 						for(ListBpGraph::RedNodeIt n_cli(g); n_cli != INVALID; ++n_cli){		// percorre os clientes
 
-							if(temp_nearest_fac[n_cli] == g.id(n2)){ // caso esse cliente esteja conectado a essa instalacao
+							if(temp_nearest_fac[n_cli] == name[n2]){ // caso esse cliente esteja conectado a essa instalacao
 
-								best_cij_reassignment = biggestCij + 1; // limitante superior tranquilo
-
-								for (itr2 = open_facilities.begin(); itr2 != open_facilities.end(); ++itr2) { // percorrer todas as inst abertas
-
-									if(*itr2 != g.id(n2)){ // nao podemos olhar para a instalacao n, pq vamos fecha-la
-
-										if(assignment_cost[findEdge(g, n_cli, facilities[*itr2])] < best_cij_reassignment){ // caso essa seja a inst mais perto ate agr encontrada
-										
-											temp2_nearest_fac[n_cli] = *itr2; // atualizando a inst mais perto temporaria
-											best_cij_reassignment = assignment_cost[findEdge(g, n_cli, facilities[*itr2])];
-										}
-
-									}
-								} 
-
-								// Tambem devemos testar com a instalacao que pretendo abrir, que nao esta ainda no conjunto open facilities
-
-								if(assignment_cost[findEdge(g, n_cli, n)] < best_cij_reassignment){ // caso essa seja a inst mais perto ate agr encontrada
+								// Devemos testar nearest2 com a instalacao que pretendo abrir e ver qual é a mais proxima
+								aux_cij = assignment_cost[findEdge(g, n_cli, n)];
+								if(aux_cij < c2_minX[n_cli]){ // caso a nova seja a inst mais perto
 									temp2_nearest_fac[n_cli] = name[n]; // atualizando a inst mais perto temporaria
-
-									best_cij_reassignment = assignment_cost[findEdge(g, n_cli, n)];
+								} 
+								else{ // senao, entao a segunda mais proxima salva ser a mais proxima
+									temp2_nearest_fac[n_cli] = nearest2_open_fac[n_cli]; // atualizando a inst mais perto temporaria
+									aux_cij = c2_minX[n_cli];
 								}
-
 
 								if(DEBUG >= DISPLAY_ACTIONS){
 									cout << "client: " << name[n_cli] << " new nearest facility " << temp2_nearest_fac[n_cli] << endl;
 								}
 
 								// Atualizamos o custo extra, subtraindo o custo de atribuicao da antiga inst e somando o custo com a nova
-								complete_extra_cost = complete_extra_cost + best_cij_reassignment - assignment_cost[findEdge(g, n_cli, facilities[temp_nearest_fac[n_cli]])];
+								complete_extra_cost += aux_cij - assignment_cost[findEdge(g, n_cli, facilities[temp_nearest_fac[n_cli]])];
 							}
 							else{
 								temp2_nearest_fac[n_cli] = temp_nearest_fac[n_cli]; // colocando isso apenas para uso posterior na checagem nao haver lixo
 							}
 						}
 
-
 						if(DEBUG >= DISPLAY_ACTIONS){
 							cout << "--Complete extra cost: " << complete_extra_cost << endl;
 						}
-
 
 						// Caso melhore o custo total final, vamos efetuar de fato essa alteracao
 						if(complete_extra_cost < 0){
@@ -732,26 +817,82 @@ solutionType localSearch(char * solutionName, int qty_facilities, int qty_client
 
 							for(ListBpGraph::RedNodeIt n_cli(g); n_cli != INVALID; ++n_cli){		// percorre os clientes
 
-								if(nearest_open_fac[n_cli] != temp2_nearest_fac[n_cli]) { // caso esse cliente tenha mudado de atribuicao durante o percurso
-									if(DEBUG >= DISPLAY_ACTIONS){
-										cout << "changing client: " << name[n_cli] << " new nearest facility " << temp2_nearest_fac[n_cli] << endl;
+								// SE A NOVA INST QUE ABRIU É A MAIS PROXIMA
+								if(name[n] == temp2_nearest_fac[n_cli]){
+
+									// SE A QUE FECHOU NÃO ERA A MAIS PROXIMA ANTES
+									if(name[n2] != nearest_open_fac[n_cli]){
+										nearest2_open_fac[n_cli] = nearest_open_fac[n_cli]; // atualiza a segunda mais proxima com a mais proxima. obs: se tiver fechado a mais proxima, entao a segunda mais proxima continua igual
+										c2_minX[n_cli] = c_minX[n_cli];
 									}
 
-									nearest_open_fac[n_cli] = temp2_nearest_fac[n_cli]; // reatribuindo com a nova inst mais proxima
-									c_minX[n_cli] = assignment_cost[findEdge(g, n_cli, facilities[nearest_open_fac[n_cli]])]; // atualizando o menor cij desse cli
-
-									solution.assigned_facilities[name[n_cli]] = nearest_open_fac[n_cli]; // salvando alteracoes sobre a inst mais proxima na solucao final
+									nearest_open_fac[n_cli] = name[n]; // atualiza a mais proxima com a que abriu
+									c_minX[n_cli] = assignment_cost[findEdge(g, n_cli, n)]; // atualizando o menor cij desse cli
 								}
+
+								// SENAO, SE A NOVA É A SEGUNDA MAIS PROXIMA
+								else if(assignment_cost[findEdge(g, n_cli, n)] < c2_minX[n_cli]) { // senao, caso esse cliente tenha essa nova instalacao como segunda mais proxima
+
+									// SE A QUE FECHOU ERA A MAIS PROXIMA
+									if(name[n2] == nearest_open_fac[n_cli]){
+										nearest_open_fac[n_cli] = name[n]; // a mais proxima recebe a nova que abriu
+										c_minX[n_cli] = assignment_cost[findEdge(g, n_cli, n)];
+									}
+									else{
+										nearest2_open_fac[n_cli] = name[n]; // a segunda mais proxima recebe a nova que abriu
+										c2_minX[n_cli] = assignment_cost[findEdge(g, n_cli, n)];
+									}
+								}
+								// SENAO, ELA NAO TEM NENHUMA RELACAO, NEM COMO PRIMEIRA NEM COMO SEGUNDA
+								else {
+
+									// Variavel auxiliar para nao ter perigo de perder informacao importante na substituicao
+									closed_nearest = false;
+
+									// SE A QUE FECHOU ERA A MAIS PROXIMA
+									if(name[n2] == nearest_open_fac[n_cli]){
+										nearest_open_fac[n_cli] = nearest2_open_fac[n_cli]; // atualiza a instalacao mais proxima
+										c_minX[n_cli] = c2_minX[n_cli];
+										closed_nearest = true;
+									}
+
+									// SE A QUE FECHOU ERA A MAIS PROXIMA OU A SEGUNDA MAIS PROXIMA
+									if((closed_nearest) || (name[n2] == nearest2_open_fac[n_cli])){
+
+										// Percorre para atualizar a segunda mais proxima
+										c2_minX[n_cli] = biggestCij + 1; // limitante superior tranquilo
+
+										for (itr = open_facilities.begin(); itr != open_facilities.end(); ++itr) { // percorrer todas as inst abertas
+											aux_cij = assignment_cost[findEdge(g, n_cli, facilities[*itr])];
+											if((aux_cij < c2_minX[n_cli]) && (*itr != nearest_open_fac[n_cli]) && (*itr != name[n2])){ // se for melhor que o salvo ate agr, mas nao melhor que o melhor de todos nem da que vai fechar
+												nearest2_open_fac[n_cli] = *itr;
+												c2_minX[n_cli] = aux_cij;
+											}
+										}
+
+										// nao precisa conferir se a nova nao é a segunda mais proxima (ja q ela nao esta ainda no open_facilities) pois senao entraria no else if anterior
+
+										if(c2_minX[n_cli] > biggestCij){ // se só tinha 1 inst aberta, entao colocamos -1 para indicar invalidez
+											// if(DEBUG >= DISPLAY_ACTIONS){
+												cout << "There is just 1 open facility" << endl;
+											// }
+											c2_minX[n_cli] = -1;
+											nearest2_open_fac[n_cli] = -1;
+										}
+									}
+								}
+
+								solution.assigned_facilities[name[n_cli]] = nearest_open_fac[n_cli]; // salvando alteracoes sobre a inst mais proxima na solucao final
 							}
 
 							open[n] = true; // abrindo de fato a primeira instalacao
-							closed_facilities.erase(g.id(n));
-							open_facilities.insert(g.id(n));
+							closed_facilities.erase(name[n]);
+							open_facilities.insert(name[n]);
 
 
 							open[n2] = false; // fechando de fato a segunda instalacao
-							closed_facilities.insert(g.id(n2));
-							open_facilities.erase(g.id(n2));
+							closed_facilities.insert(name[n2]);
+							open_facilities.erase(name[n2]);
 
 							solution.finalTotalCost += complete_extra_cost; // Atualizando o custo total final
 
@@ -770,7 +911,6 @@ solutionType localSearch(char * solutionName, int qty_facilities, int qty_client
 							}
 						}
 					}
-
 				}
 
 				if(swap_done){
