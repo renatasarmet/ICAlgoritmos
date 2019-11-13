@@ -5,6 +5,7 @@
 #include <iterator>
 #include <ctime>
 #include <fstream>
+#include <cstring>
 #include "definitions.hpp"
 #define EPSL 0.00000001
 
@@ -31,19 +32,14 @@ solutionType localSearch(char * solutionName, int qty_facilities, int qty_client
 
 	/* Inicio declaracoes variaveis para calculo de tempo */
 
-	// Declaracao variaveis que indicam o tempo do programa como um todo
-	struct timespec real_start, real_finish, time_so_far;
-
-	// Declaracao variavel que marcara o tempo de execucao
-	double timeSpent;
+	// Declaracao variaveis que indicam o tempo da funcao
+	struct timespec start, finish, time_so_far;
 
 	// Declaracao da variavel que vai indicar o contador para salvar a solucao atual
 	double timeCounter = 0;
 
 	/* Fim declaracoes para calculo de tempo */
 
-	// INICIANDO A CONTAGEM DE TEMPO DA FUNCAO COMO UM TODO
-	clock_gettime(CLOCK_REALTIME, &real_start);
 
 	// Variavel que armazena o maior valor cij dado na entrada, para uso posterior
 	double biggestCij = 0;
@@ -96,11 +92,10 @@ solutionType localSearch(char * solutionName, int qty_facilities, int qty_client
 	set <int, greater <int> > :: iterator itr2; 
 
 	// Declaracao de variavel auxiliar para formacao do arquivo .log
-	char completeLogSolName[250];
+	char completeLogSolName[250] = "";
 
 	// Arquivo para salvar o log da solucao
 	ofstream solLog;
-
 	strcat(completeLogSolName,solutionName);
 	strcat(completeLogSolName,".log");
 	solLog.open(completeLogSolName, std::ofstream::out | std::ofstream::trunc);
@@ -116,15 +111,12 @@ solutionType localSearch(char * solutionName, int qty_facilities, int qty_client
 		exit(1);
 	}
 
-
 	for(int i=0;i<qty_facilities;i++){
 		facilities[i] = g.addBlueNode();
 		f[facilities[i]] = costF[i]; // pegando valor vindo por parametro
 		name[facilities[i]] = i; // nomeia de acordo com a numeracao
 		open[facilities[i]] = false; // indica que a instalação não está aberta inicialmente
 	}
-
-
 
 	// Criação de nós clientes e atribuição de seus labels
 	ListBpGraph::RedNode * clients;
@@ -234,6 +226,9 @@ solutionType localSearch(char * solutionName, int qty_facilities, int qty_client
 	double best_cij_reassignment;
 
 
+	// INICIANDO A CONTAGEM DE TEMPO DA FUNCAO
+	clock_gettime(CLOCK_REALTIME, &start);
+
 	// ****** A partir daqui deve estar em um loop até nao ter mais melhoras possiveis, isto é, encontrar o otimo local
 
 	// OBSERVACAO 1: tambem existe uma condicao de parada relacionada a tempo, feita logo no inicio do loop
@@ -245,26 +240,26 @@ solutionType localSearch(char * solutionName, int qty_facilities, int qty_client
 		clock_gettime(CLOCK_REALTIME, &time_so_far);
 
 		// Calculando o tempo gasto até agora
-		timeSpent =  (time_so_far.tv_sec - real_start.tv_sec);
-		timeSpent += (time_so_far.tv_nsec - real_start.tv_nsec) / 1000000000.0; // Necessario para obter uma precisao maior 
+		solution.timeSpent =  (time_so_far.tv_sec - start.tv_sec);
+		solution.timeSpent += (time_so_far.tv_nsec - start.tv_nsec) / 1000000000.0; // Necessario para obter uma precisao maior 
 
 		if(DEBUG >= DISPLAY_TIME){
-			cout << "Total time spent so far: " << timeSpent << " seconds" << endl;
+			cout << "Total time spent so far: " << solution.timeSpent << " seconds" << endl;
 		}
 
 		// Se já passou o tempo limite, devemos parar
-		if(timeSpent >= TIME_LIMIT){
+		if(solution.timeSpent >= TIME_LIMIT){
 			// Acrescentando no solLog.txt o tempo final gasto nas iteracoes e o custo da solucao
-			solLog <<timeSpent << "," << solution.finalTotalCost << "," << qty_moves << endl;
+			solLog << solution.timeSpent << "," << solution.finalTotalCost << "," << qty_moves << endl;
 
 			break;
 		}
-		else if(timeSpent >= timeCounter){
+		else if(solution.timeSpent >= timeCounter){
 			// aumentando o contador de tempo
 			timeCounter += TIME_COUNTER_STEP;
 
 			// Acrescentando no solLog.txt o tempo gasto nessa iteracao e o custo da solucao
-			solLog <<timeSpent << "," << solution.finalTotalCost << "," << qty_moves << endl;
+			solLog << solution.timeSpent << "," << solution.finalTotalCost << "," << qty_moves << endl;
 		}
 
 		if(DEBUG >= DISPLAY_ACTIONS){
@@ -786,6 +781,9 @@ solutionType localSearch(char * solutionName, int qty_facilities, int qty_client
 		}
 	}
 
+	// FINALIZANDO A CONTAGEM DE TEMPO DA FUNCAO
+	clock_gettime(CLOCK_REALTIME, &finish);
+
 	if(DEBUG >= DISPLAY_ACTIONS){
 		cout << "FINAL TOTAL COST: " << solution.finalTotalCost << endl;
 	}
@@ -803,19 +801,16 @@ solutionType localSearch(char * solutionName, int qty_facilities, int qty_client
 		cout << "Total moves: " << qty_moves << endl;
 	}
 
-	// FINALIZANDO A CONTAGEM DE TEMPO DA FUNCAO COMO UM TODO
-	clock_gettime(CLOCK_REALTIME, &real_finish);
-
-	// Calculando o tempo gasto total
-	timeSpent =  (real_finish.tv_sec - real_start.tv_sec);
-	timeSpent += (real_finish.tv_nsec - real_start.tv_nsec) / 1000000000.0; // Necessario para obter uma precisao maior 
+	// Calculando o tempo gasto da funcao
+	solution.timeSpent =  (finish.tv_sec - start.tv_sec);
+	solution.timeSpent += (finish.tv_nsec - start.tv_nsec) / 1000000000.0; // Necessario para obter uma precisao maior 
 
 	if(DEBUG >= DISPLAY_TIME){
-		cout << "Final Total Function Time: " << timeSpent << " seconds" << endl;
+		cout << "Final Total Function Time: " << solution.timeSpent << " seconds" << endl;
 	}
 
 	// Acrescentando no solLog.txt o tempo gasto final da funcao e o custo final da solucao
-	solLog << timeSpent << "," << solution.finalTotalCost << "," << qty_moves << endl;
+	solLog << solution.timeSpent << "," << solution.finalTotalCost << "," << qty_moves << endl;
 
 	solLog.close();
 
