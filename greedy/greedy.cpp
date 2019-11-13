@@ -139,18 +139,9 @@ solutionType greedy(int qty_clients, int qty_facilities, double * costF, double 
 	/* Inicio declaracoes variaveis para calculo de tempo - finalidade eh encontrar gargalos */
 
 	// Declaracao variaveis que indicam o tempo do programa como um todo
-	struct timespec real_start, real_finish;
-
-	// Declaracao variavel que marcara o tempo de execucao da funcao como um todo
-	double timeSpent;
+	struct timespec start, finish;
 
 	/* Fim declaracoes para calculo de tempo */
-
-
-	if(DEBUG >= DISPLAY_TIME){
-		// INICIANDO A CONTAGEM DE TEMPO DA FUNCAO COMO UM TODO
-		clock_gettime(CLOCK_REALTIME, &real_start);
-	}
 
 	// indica as instalacoes finais atribuidas a cada cliente
 	solution.assigned_facilities = (int*) malloc((qty_clients) * sizeof(int));
@@ -354,6 +345,10 @@ solutionType greedy(int qty_clients, int qty_facilities, double * costF, double 
 	double gain_cij;
 
 
+	// INICIANDO A CONTAGEM DE TEMPO DA FUNCAO COMO UM TODO
+	clock_gettime(CLOCK_REALTIME, &start);
+
+
 	// ****** A partir daqui deve estar em um loop até nao ter mais clientes ativos:
 
 	while(qty_non_active_cli_g > 0){
@@ -395,7 +390,6 @@ solutionType greedy(int qty_clients, int qty_facilities, double * costF, double 
 
 		// fi <- 0
 		f[facilities[id_chosen_fac]] = 0;
-
 
 		// g <- g - Y
 
@@ -449,19 +443,19 @@ solutionType greedy(int qty_clients, int qty_facilities, double * costF, double 
 		counter += 1;
 	}
 
+	// FINALIZANDO A CONTAGEM DE TEMPO DA FUNCAO
+	clock_gettime(CLOCK_REALTIME, &finish);
+
 	if(DEBUG >= DISPLAY_ACTIONS){
 		cout << "FINAL TOTAL COST: " << solution.finalTotalCost << endl;
 	}
 
+	// Calculando o tempo gasto total
+	solution.timeSpent =  (finish.tv_sec - start.tv_sec);
+	solution.timeSpent += (finish.tv_nsec - start.tv_nsec) / 1000000000.0; // Necessario para obter uma precisao maior 
+
 	if(DEBUG >= DISPLAY_TIME){
-
-		// FINALIZANDO A CONTAGEM DE TEMPO DA FUNCAO COMO UM TODO
-		clock_gettime(CLOCK_REALTIME, &real_finish);
-
-		// Calculando o tempo gasto total
-		timeSpent =  (real_finish.tv_sec - real_start.tv_sec);
-		timeSpent += (real_finish.tv_nsec - real_start.tv_nsec) / 1000000000.0; // Necessario para obter uma precisao maior 
-		cout << "Final Total Function Time: " << timeSpent << " seconds" << endl;
+		cout << "Final Total Function Time: " << solution.timeSpent << " seconds" << endl;
 	}
 
 	free(clients);

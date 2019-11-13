@@ -4,7 +4,7 @@
 #include "definitions.hpp"
 
 #define DISPLAY_BASIC 1 // corresponde a exibicao do custo final da solucao
-#define DISPLAY_TIME_SIZE 2 // corresponde a exibicao do tempo total gasto e do tamanho da entrada (quantidade de clientes e de instalacoes)
+#define DISPLAY_SIZE 2 // corresponde a exibicao do tempo total gasto e do tamanho da entrada (quantidade de clientes e de instalacoes)
 #define DISPLAY_ACTIONS 3 // corresponde a todos os cout quando uma informacao eh salva 
 
 #define DEBUG 1 // OPCOES DE DEBUG: 0 PARA NAO EXIBIR NADA, 1 PARA EXIBIR CUSTO FINAL, 2 PARA EXIBIR TEMPO E QTD CLI E INST, 3 PARA EXIBIR AS INFORMACOES SENDO SALVAS
@@ -25,12 +25,6 @@ int main(int argc, char *argv[]){
 	// Arquivo para salvar a solucao
 	ofstream solutionTXT;
 
-	// Declaracao variaveis que indicam o tempo no inicio e fim da execucao
-	struct timespec start, finish;
-
-	// Declaracao variavel que marcara o tempo calculado daquela execucao
-	double timeSpent;
-
 	// Declaracao de variaveis auxiliares para a formacao do arquivo .sol
 	char auxSolName[105];
 
@@ -45,9 +39,6 @@ int main(int argc, char *argv[]){
 	double * costF;
 
 	solutionType solution;
-
-	//Iniciando a contagem do tempo
-	clock_gettime(CLOCK_REALTIME, &start);
 
 	cout << fixed;
 	cout.precision(5);
@@ -68,7 +59,7 @@ int main(int argc, char *argv[]){
 		// Lendo do arquivo os valores que indicam a quantidade de instalacoes e clientes
 		inputFLP >> qty_facilities >> qty_clients; 
 
-		if(DEBUG >= DISPLAY_TIME_SIZE){
+		if(DEBUG >= DISPLAY_SIZE){
 			cout << "QTY FACILITIES: " << qty_facilities << " AND QTY CLIENTS: " << qty_clients << endl;
 		}
 
@@ -127,7 +118,7 @@ int main(int argc, char *argv[]){
 		// Lendo do arquivo os valores que indicam a quantidade de instalacoes e clientes. E descartando o 0
 		inputFLP >> qty_facilities >> qty_clients >> auxRead; 
 
-		if(DEBUG >= DISPLAY_TIME_SIZE){
+		if(DEBUG >= DISPLAY_SIZE){
 			cout << "QTY FACILITIES: " << qty_facilities << " AND QTY CLIENTS: " << qty_clients << endl;
 		}
 		// Vetores que salvarao custos lidos no arquivo
@@ -180,18 +171,8 @@ int main(int argc, char *argv[]){
 	// Chamando a funcao que resolve o problema de fato
 	solution = greedy(qty_clients, qty_facilities, costF, costA);
 
-	// Finalizando a contagem do tempo
-	clock_gettime(CLOCK_REALTIME, &finish);
-
 	if(DEBUG >= DISPLAY_BASIC){
 		cout << "Final total cost: " << solution.finalTotalCost << endl;
-	}
-
-	// Calculando o tempo gasto
-	timeSpent =  (finish.tv_sec - start.tv_sec);
-	timeSpent += (finish.tv_nsec - start.tv_nsec) / 1000000000.0; // Necessario para obter uma precisao maior 
-	if(DEBUG >= DISPLAY_TIME_SIZE){
-		cout << "Time spent: " << timeSpent << " seconds" << endl;
 	}
 
 	//Abertura de arquivo para leitura e escrita do .sol .
@@ -201,7 +182,7 @@ int main(int argc, char *argv[]){
 	solutionTXT << fixed << setprecision(5) << solution.finalTotalCost << " ";
 	
 	// Colocando no solutionTXT o tempo gasto 
-	solutionTXT << timeSpent;
+	solutionTXT << solution.timeSpent;
 
 	// Colocando no solutionsTXT as instalacoes finais conectadas
 	for(int i=0; i < qty_clients; i++){
