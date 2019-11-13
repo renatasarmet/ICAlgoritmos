@@ -201,9 +201,9 @@ solutionType localSearch(char * solutionName, int qty_facilities, int qty_client
 			}
 		}
 		if(c2_minX[clients[i]] > biggestCij){ // se só tinha 1 inst aberta, entao colocamos -1 para indicar invalidez
-			// if(DEBUG >= DISPLAY_ACTIONS){
+			if(DEBUG >= DISPLAY_ACTIONS){
 				cout << "There is just 1 open facility" << endl;
-			// }
+			}
 			c2_minX[clients[i]] = -1;
 			nearest2_open_fac[clients[i]] = -1;
 		}
@@ -360,9 +360,10 @@ solutionType localSearch(char * solutionName, int qty_facilities, int qty_client
 								}
 							}
 							else{
-								// if(DEBUG >= DISPLAY_ACTIONS){
-									cout << "THERE IS NO SAVED FACILITY" << endl;
-								// }
+								if(DEBUG >= DISPLAY_ACTIONS){
+									cout << "You shouldn't be here. There is just 1 open facility and you want to close it." << endl;
+								}
+								continue; // vai para a proxima iteracao
 							}
 						}
 					}
@@ -415,10 +416,10 @@ solutionType localSearch(char * solutionName, int qty_facilities, int qty_client
 										c2_minX[n_cli] = aux_cij;
 									}
 								}
-								if(c2_minX[n_cli] > biggestCij){ // se só tinha 1 inst aberta, entao colocamos -1 para indicar invalidez
-									// if(DEBUG >= DISPLAY_ACTIONS){
+								if(c2_minX[n_cli] > biggestCij){ // se só tinha 1 inst aberta depois do fechamento dessa iteracao, entao colocamos -1 para indicar invalidez
+									if(DEBUG >= DISPLAY_ACTIONS){
 										cout << "There is just 1 open facility" << endl;
-									// }
+									}
 									c2_minX[n_cli] = -1;
 									nearest2_open_fac[n_cli] = -1;
 								}
@@ -506,7 +507,7 @@ solutionType localSearch(char * solutionName, int qty_facilities, int qty_client
 
 							solution.assigned_facilities[name[n_cli]] = nearest_open_fac[n_cli]; // salvando alteracoes na solucao final
 						}
-						else if(aux_cij < c2_minX[n_cli]) { // senao, caso esse cliente tenha essa nova instalacao como segunda mais proxima
+						else if((aux_cij < c2_minX[n_cli])||(c2_minX[n_cli] < 0)) { // senao, caso esse cliente tenha essa nova instalacao como segunda mais proxima (ou nao existia segunda mais proxima)
 							// ATUALIZANDO A SEGUNDA INST MAIS PROXIMA
 							nearest2_open_fac[n_cli] = name[n];
 							c2_minX[n_cli] = aux_cij;
@@ -562,19 +563,29 @@ solutionType localSearch(char * solutionName, int qty_facilities, int qty_client
 						for(ListBpGraph::RedNodeIt n_cli(g); n_cli != INVALID; ++n_cli){		// percorre os clientes
 
 							if(nearest_open_fac[n_cli] == name[n]){ // caso esse cliente esteja conectado a essa instalacao
-								
-								temp_nearest_fac[n_cli] = nearest2_open_fac[n_cli]; // atualizando a inst mais perto temporaria								
 
-								if(DEBUG >= DISPLAY_ACTIONS){
-									cout << "client: " << name[n_cli] << " new nearest facility " << temp_nearest_fac[n_cli] << endl;
+								if(c2_minX[n_cli] >= 0){ // CASO EXISTA A SEGUNDA INST MAIS PROXIMA SALVA
+
+									temp_nearest_fac[n_cli] = nearest2_open_fac[n_cli]; // atualizando a inst mais perto temporaria								
+
+									if(DEBUG >= DISPLAY_ACTIONS){
+										cout << "client: " << name[n_cli] << " new nearest facility " << temp_nearest_fac[n_cli] << endl;
+									}
+
+									// Atualizamos o custo extra, subtraindo o custo de atribuicao da antiga inst e somando o custo com a nova
+									extra_cost += c2_minX[n_cli] - c_minX[n_cli];
 								}
-
-								// Atualizamos o custo extra, subtraindo o custo de atribuicao da antiga inst e somando o custo com a nova
-								extra_cost += c2_minX[n_cli] - c_minX[n_cli];
+								else{
+									if(DEBUG >= DISPLAY_ACTIONS){
+										cout << "You shouldn't be here. There is just 1 open facility and you want to close it." << endl;
+									}
+									continue; // vai para a proxima iteracao
+								}
 							}
 							else{
 								temp_nearest_fac[n_cli] = nearest_open_fac[n_cli]; // colocando isso apenas para uso posterior na checagem nao haver lixo
 							}
+
 						}
 
 						if(DEBUG >= DISPLAY_ACTIONS){
@@ -645,20 +656,20 @@ solutionType localSearch(char * solutionName, int qty_facilities, int qty_client
 										c_minX[n_cli] = assignment_cost[findEdge(g, n_cli, n2)]; // atualizando o menor cij desse cli
 									}
 									// SENAO, SE A NOVA É A SEGUNDA MAIS PROXIMA
-									else if(assignment_cost[findEdge(g, n_cli, n2)] < c2_minX[n_cli]) { // senao, caso esse cliente tenha essa nova instalacao como segunda mais proxima
+									else if((assignment_cost[findEdge(g, n_cli, n2)] < c2_minX[n_cli])||(c2_minX[n_cli] < 0)) { // senao, caso esse cliente tenha essa nova instalacao como segunda mais proxima ou nao exista segunda salva
 
-										// SE A QUE FECHOU ERA A MAIS PROXIMA
+										// SE A QUE FECHOU ERA A MAIS PROXIMA // eu sei que existe pelo menos mais outra, senao nao ia permitir fechar essa, entao nearest2 existe
 										if(name[n] == nearest_open_fac[n_cli]){
 											nearest_open_fac[n_cli] = name[n2]; // a mais proxima recebe a nova que abriu
 											c_minX[n_cli] = assignment_cost[findEdge(g, n_cli, n2)];
 										}
-										else{
+										else{ 
 											nearest2_open_fac[n_cli] = name[n2]; // a segunda mais proxima recebe a nova que abriu
 											c2_minX[n_cli] = assignment_cost[findEdge(g, n_cli, n2)];
 										}
 									}
 									// SENAO, ELA NAO TEM NENHUMA RELACAO, NEM COMO PRIMEIRA NEM COMO SEGUNDA
-									else {
+									else { // eu sei que existe nearest2 pois tinha pelo menos 2 instalacoes ja la
 
 										// Variavel auxiliar para nao ter perigo de perder informacao importante na substituicao
 										closed_nearest = false;
@@ -687,9 +698,9 @@ solutionType localSearch(char * solutionName, int qty_facilities, int qty_client
 											// nao precisa conferir se a nova nao é a segunda mais proxima (ja q ela nao esta ainda no open_facilities) pois senao entraria no else if anterior
 											
 											if(c2_minX[n_cli] > biggestCij){ // se só tinha 1 inst aberta, entao colocamos -1 para indicar invalidez
-												// if(DEBUG >= DISPLAY_ACTIONS){
+												if(DEBUG >= DISPLAY_ACTIONS){
 													cout << "There is just 1 open facility" << endl;
-												// }
+												}
 												c2_minX[n_cli] = -1;
 												nearest2_open_fac[n_cli] = -1;
 											}
@@ -778,7 +789,7 @@ solutionType localSearch(char * solutionName, int qty_facilities, int qty_client
 
 								// Devemos testar nearest2 com a instalacao que pretendo abrir e ver qual é a mais proxima
 								aux_cij = assignment_cost[findEdge(g, n_cli, n)];
-								if(aux_cij < c2_minX[n_cli]){ // caso a nova seja a inst mais perto
+								if((aux_cij < c2_minX[n_cli])||(c2_minX[n_cli] < 0)){ // caso a nova seja a inst mais perto ou nao exista nearest2
 									temp2_nearest_fac[n_cli] = name[n]; // atualizando a inst mais perto temporaria
 								} 
 								else{ // senao, entao a segunda mais proxima salva ser a mais proxima
@@ -831,9 +842,9 @@ solutionType localSearch(char * solutionName, int qty_facilities, int qty_client
 								}
 
 								// SENAO, SE A NOVA É A SEGUNDA MAIS PROXIMA
-								else if(assignment_cost[findEdge(g, n_cli, n)] < c2_minX[n_cli]) { // senao, caso esse cliente tenha essa nova instalacao como segunda mais proxima
+								else if((assignment_cost[findEdge(g, n_cli, n)] < c2_minX[n_cli])||(c2_minX[n_cli] < 0)) { // senao, caso esse cliente tenha essa nova instalacao como segunda mais proxima ou nao exista segunda salva
 
-									// SE A QUE FECHOU ERA A MAIS PROXIMA
+									// SE A QUE FECHOU ERA A MAIS PROXIMA // nearest2 continuara sendo a mesma, mesmo se fosse inexistente
 									if(name[n2] == nearest_open_fac[n_cli]){
 										nearest_open_fac[n_cli] = name[n]; // a mais proxima recebe a nova que abriu
 										c_minX[n_cli] = assignment_cost[findEdge(g, n_cli, n)];
@@ -844,7 +855,7 @@ solutionType localSearch(char * solutionName, int qty_facilities, int qty_client
 									}
 								}
 								// SENAO, ELA NAO TEM NENHUMA RELACAO, NEM COMO PRIMEIRA NEM COMO SEGUNDA
-								else {
+								else { // eu sei que existe nearest2 pois tinha pelo menos 2 instalacoes ja la
 
 									// Variavel auxiliar para nao ter perigo de perder informacao importante na substituicao
 									closed_nearest = false;
@@ -873,9 +884,9 @@ solutionType localSearch(char * solutionName, int qty_facilities, int qty_client
 										// nao precisa conferir se a nova nao é a segunda mais proxima (ja q ela nao esta ainda no open_facilities) pois senao entraria no else if anterior
 
 										if(c2_minX[n_cli] > biggestCij){ // se só tinha 1 inst aberta, entao colocamos -1 para indicar invalidez
-											// if(DEBUG >= DISPLAY_ACTIONS){
+											if(DEBUG >= DISPLAY_ACTIONS){
 												cout << "There is just 1 open facility" << endl;
-											// }
+											}
 											c2_minX[n_cli] = -1;
 											nearest2_open_fac[n_cli] = -1;
 										}
