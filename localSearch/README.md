@@ -14,12 +14,12 @@ Após isso, digite no terminal:
 g++ handlesInput.cpp localSearch.cpp -o lsr
 
 
-Considere que input_type significa 1 para o tipo ORLIB e 2 para o tipo SIMPLE FORMAT.
+Considere que input_type significa 1 para o tipo ORLIB e 2 para o tipo SIMPLE FORMAT. Considere também que ls_type indica 1 para LS completo, 2 para LS apenas com vizinhanca N1 (abrir ou fechar) e 3 para LS apenas com vizinhanca N2 (troca).
 obs: APENAS caso a solução inicial venha do RR, deve-se digitar tambem como parametro a quantidade de testes que foram feitos (qty_tests)
 
 Então, para rodar nosso testador, basta digitar:
 
-python3 tester.py input_type <qty_tests>
+python3 tester.py input_type ls_type <qty_tests>
 
 
 Por fim, para gerar o csv com todos os arquivos listados em "testCasesReader.txt", basta digitar:
@@ -28,10 +28,10 @@ obs: APENAS caso a solução inicial venha do RR, deve-se digitar tambem como pa
 python3 readerSol.py <qty_tests>
 
 
-Caso queira executar apenas um exemplo, considere que input_name é o caminho completo do problema UFL a ser resolvido, initialSolName é o caminho completo da solucao inicial desse caso, solutionName é o caminho completo onde deseja-se guardar a solucao e o input_type é o tipo da entrada (1 para o tipo ORLIB e 2 para o tipo SIMPLE FORMAT).
+Caso queira executar apenas um exemplo, considere que input_name é o caminho completo do problema UFL a ser resolvido, initialSolName é o caminho completo da solucao inicial desse caso, solutionName é o caminho completo onde deseja-se guardar a solucao, o input_type é o tipo da entrada (1 para o tipo ORLIB e 2 para o tipo SIMPLE FORMAT) e ls_type é o tipo de local search desejado (descricao no inicio).
 Então, basta digitar:
 
-./lsr input_name initialSolName solutionName input_type
+./lsr input_name initialSolName solutionName input_type ls_type
 
 
 *SOBRE AS ENTRADAS*

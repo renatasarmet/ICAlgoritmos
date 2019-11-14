@@ -24,6 +24,7 @@ int main(int argc, char *argv[]){
 	char * initialSolName = argv[2];
 	char * solutionName = argv[3];
 	char * inputType = argv[4];
+	int ls_type = stoi(argv[5],nullptr,10); // convertendo argv[5] para inteiro
 
 	// Arquivo para salvar a solucao
 	ofstream solutionTXT;
@@ -226,8 +227,7 @@ int main(int argc, char *argv[]){
 	solution.local_optimum = false;
 
 	// Chamando a funcao que resolve o problema de fato
-	solution = localSearch(solutionName, qty_facilities, qty_clients, costF, costA, solution);
-
+	solution = localSearch(solutionName, qty_facilities, qty_clients, costF, costA, solution, ls_type);
 
 	if(DEBUG >= DISPLAY_BASIC){
 		cout << "Final total cost: " << solution.finalTotalCost << endl;

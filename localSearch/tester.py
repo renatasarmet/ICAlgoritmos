@@ -10,18 +10,38 @@ DEBUG = 1 # OPCOES DE DEBUG: 0 PARA NAO EXIBIR NADA, 1 PARA EXIBIR O NOME DA INS
 if __name__ == '__main__':
 
 	ok = True
-	if len(sys.argv) > 1:
+	if len(sys.argv) > 2:
 		input_type = sys.argv[1].strip()
+		ls_type = sys.argv[2].strip()
+
+		if(ls_type == '1'):
+			if DEBUG >= DISPLAY_NAME:
+				print("Complete LS type")
+
+		elif(ls_type == '2'):
+			if DEBUG >= DISPLAY_NAME:
+				print("LS with neighborhood 1 (LS_N1)")
+
+		elif(ls_type == '3'):
+			if DEBUG >= DISPLAY_NAME:
+				print("LS with neighborhood 2 (LS_N2)")
+
+		else:
+			print("ERROR: Invalid second parameter value")
+			print("SOLUTION: Select 1 for LS, 2 for LS_N1 or 3 for LS_N2")
+			ok = False
+
+
 		n_tests = 1
 		initial_sol_rr = False
 
-		if len(sys.argv) > 2: 
+		if len(sys.argv) > 3: 
 			initial_sol_rr = True # indica que o teste será com soluções iniciais vindas do RR
-			n_tests = int(sys.argv[2].strip()) # entao esse parametro indica a quantidade de testes que foram feitos (o N)
+			n_tests = int(sys.argv[3].strip()) # entao esse parametro indica a quantidade de testes que foram feitos (o N)
 
 			if n_tests <= 0:
-				print("ERROR: Invalid parameter value")
-				print("SOLUTION: The second parameter must be greater than 0")
+				print("ERROR: Invalid third parameter value")
+				print("SOLUTION: The parameter must be greater than 0")
 				ok = False
 
 		if(input_type == '1'):
@@ -35,7 +55,7 @@ if __name__ == '__main__':
 			file_location = 'testCases2.txt'
 
 		else:
-			print("ERROR: Invalid parameter value")
+			print("ERROR: Invalid first parameter value")
 			print("SOLUTION: Select 1 for ORLIB inputs or 2 for SIMPLE FORMAT inputs")
 			ok = False
 			
@@ -65,10 +85,10 @@ if __name__ == '__main__':
 						solutionName = 'solutions/' + file_name + '.sol'
 
 					# Chamando o programa a ser testado
-					os.system(EXE + " " + input_name + " " + initialSolName + " " + solutionName + " " + input_type)
+					os.system(EXE + " " + input_name + " " + initialSolName + " " + solutionName + " " + input_type + " " + ls_type)
 
 	else:
-		print('This test requires an input type. \nFirst please select one: 1 for ORLIB inputs or 2 for SIMPLE FORMAT inputs.')
+		print('This test requires an input type and an LS type. \nFirst please select one: 1 for ORLIB inputs or 2 for SIMPLE FORMAT inputs.\nThen select: 1 for LS, 2 for LS_N1, 3 for LS_N2, 4 for LS_N1_TS.')
 
 
 
