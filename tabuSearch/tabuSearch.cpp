@@ -24,11 +24,15 @@ using namespace std;
 
 #define TIME_COUNTER_STEP 5 // 5 segundos para testar as inst ga250a //30 // 30 segundos. Isso indicara que vai salvar a melhor solucao encontrada a cada minuto
 
+
 // Retornar o valor da solucao
-solutionType tabuSearch(char * solutionName, int qty_facilities, int qty_clients, double * costF, double * costA, solutionType solution){
+solutionType tabuSearch(char * solutionName, int qty_facilities, int qty_clients, double * costF, double * costA, solutionType solution, int a1, int lc1, int lc2, int lo1, int lo2){
 
 	cout << fixed;
    	cout.precision(5);
+
+   	// Semente do numero aleatorio
+   	srand(0); // depois alterar aqui pra pegar por parametro
 
 	/* Inicio declaracoes variaveis para calculo de tempo */
 
@@ -93,6 +97,30 @@ solutionType tabuSearch(char * solutionName, int qty_facilities, int qty_clients
 	// Iteratores para os conjuntos 
 	set <int, greater <int> > :: iterator itr;
 
+
+	// Vetor da short term memory que representa o numero do movimento
+	int * t;
+	t = (int*) malloc(qty_facilities * sizeof(int));
+	if(!t){
+		cout << "Memory Allocation Failed";
+		exit(1);
+	}
+
+	// Vetor que vai indicar se a instalacao está flagged
+	bool * flag;
+	flag = (bool*) malloc(qty_facilities * sizeof(bool));
+	if(!flag){
+		cout << "Memory Allocation Failed";
+		exit(1);
+	}
+
+	// Each facility is kept closed for at least lc moves after it's closed unless aspiration criterion is satisfied
+	int lc = rand() % (lc2 - lc1 + 1) + lc1; // Generate the number between lc1 and lc2
+
+	// Each facility is kept opened for at least lo moves after it's closed unless aspiration criterion is satisfied
+	int lo = rand() % (lo2 - lo1 + 1) + lo1; // Generate the number between lo1 and lo2
+
+
 	// Declaracao de variavel auxiliar para formacao do arquivo .log
 	char completeLogSolName[250] = "";
 
@@ -142,14 +170,17 @@ solutionType tabuSearch(char * solutionName, int qty_facilities, int qty_clients
 	}
 
 
-	// Iniciando o conjunto de instalacoes abertas e fechadas
+	// Iniciando o conjunto de instalacoes abertas e fechadas, alem dos vetores t e flag
 	for(int i=0;i<qty_facilities;i++){
 		if(open[facilities[i]]){
 			open_facilities.insert(i);
+			t[i] = - lo;
 		}
 		else{
 			closed_facilities.insert(i);
+			t[i] = - lc;
 		}
+		flag[i] = false;
 	}
 
 	// assignment_cost - é o custo de atribuir o cliente associado à instalação associada
@@ -209,11 +240,24 @@ solutionType tabuSearch(char * solutionName, int qty_facilities, int qty_clients
 		}
 	}
 
-
 	if(DEBUG >= DISPLAY_ACTIONS){
 		cout << "biggestCij from input : " << biggestCij << endl;
 	}
-	
+
+	// Variavel que indica se foi feito uma troca, se sim, devemos dar um break no for para voltar pro while
+	bool swap_done = false;
+
+	// double melhor_custo_escolhido;
+
+	// Variavel que indica o custo extra de abrir ou fechar uma certa instalacao
+	double extra_cost;
+
+	// Variavel utilizada para calcular o custo completo extra do movimento de troca
+	double complete_extra_cost;
+
+	// Variavel auxiliar para ajudar quando houver substituicao de informacoes na troca
+	bool closed_nearest = false; 
+
 
 	if (DEBUG >= DISPLAY_GRAPH){
 		// Percorrendo por todos os nós A - clientes
@@ -237,19 +281,33 @@ solutionType tabuSearch(char * solutionName, int qty_facilities, int qty_clients
 		}
 	}
 
-	// Variavel que indica se foi feito uma troca, se sim, devemos dar um break no for para voltar pro while
-	bool swap_done = false;
+	/*
+	TABU SEARCH DEFINITIONS
+	*/
 
-	// double melhor_custo_escolhido;
 
-	// Variavel que indica o custo extra de abrir ou fechar uma certa instalacao
-	double extra_cost;
 
-	// Variavel utilizada para calcular o custo completo extra do movimento de troca
-	double complete_extra_cost;
+	// Total cost of the current solution
+	double z = 0;
 
-	// Variavel auxiliar para ajudar quando houver substituicao de informacoes na troca
-	bool closed_nearest = false; 
+	// Total cost of the best solution found in the current search cycle
+	double z0 = z;
+
+	// Total cost of the best solution found in the whole search process
+	double z00 = z;
+
+	// Counter iterations
+	int k = 1;
+
+	// The move number when z0 is updated
+	int k0 = k;
+
+	// Represents the amount of open facilities
+	int n1 = open_facilities.size();
+
+
+
+
 
 	// INICIANDO A CONTAGEM DE TEMPO DA FUNCAO
 	clock_gettime(CLOCK_REALTIME, &start);
