@@ -6,11 +6,24 @@
 #include <ctime>
 #include <fstream>
 #include <cstring>
+#include <cfloat>
 #include "definitions.hpp"
 #define EPSL 0.00000001
 
 using namespace lemon;
 using namespace std;
+
+
+// UPDATE open_facilities e closed_facilities ???
+
+// SALVAR A MELHOR SOLUCAO ENCONTRADA
+
+// DEFINIR MELHOR O QUE SERIA ESSE itr_limit ... ELE NAO EXISTE NO ALGORITMO, POREM PRECISO SABER O TAMANHO Q VOU ALOCAR.. talvez ele estaria definido relacionado a a1??
+
+// SE FOR EXISTIR MESMO itr_limit, COLOCAR UM IF PARA CONDICAO DE PARADA TAMBEM!! (talvez isso ja esteja feito, com aquele for de se nao achar nada... tem q olhar melhor)
+
+// EU SO PRECISO SALVAR O DELTA (extra_cost) ATUAL E O ANTERIOR.... SERA ENTAO QUE NAO DA PRA FAZER UMA MATRIZ COM SÓ DUAS LINHAS? ASSIM NAO PRECISO GASTAR TANTO ESPACO E NAO PRECISO TER DEFINIDO O itr_limit
+
 
 #define DISPLAY_BASIC 1 // corresponde a exibicao da quantidade de movimentos
 #define DISPLAY_MOVES 2 // corresponde a todos os cout quando um movimento é realizado de fato
@@ -18,7 +31,7 @@ using namespace std;
 #define DISPLAY_TIME 4 // corresponde aos calculos de tempo 
 #define DISPLAY_GRAPH 5 // corresponde a descricao dos clientes, instalacoes e arcos
 
-#define DEBUG 1 // OPCOES DE DEBUG: 1 - MOSTRAR A QTD DE MOVIMENTOS, 2 PARA EXIBIR OS MOVIMENTOS REALIZADOS, 3 PARA EXIBIR ACOES, 4 PARA EXIBIR TEMPO, 5 PARA EXIBIR AS MUDANÇAS NO GRAFO
+#define DEBUG 3 // OPCOES DE DEBUG: 1 - MOSTRAR A QTD DE MOVIMENTOS, 2 PARA EXIBIR OS MOVIMENTOS REALIZADOS, 3 PARA EXIBIR ACOES, 4 PARA EXIBIR TEMPO, 5 PARA EXIBIR AS MUDANÇAS NO GRAFO
 
 #define TIME_LIMIT 900 //15 minutos
 
@@ -137,6 +150,9 @@ solutionType tabuSearch(char * solutionName, int qty_facilities, int qty_clients
 	// Vai receber lc ou lo, dependendo da checagem if(open[]), para evitar duplicidade no codigo
 	int aux_l;
 
+	// Represents the amount of open facilities
+	int n1 = 0;
+
 	// Declaracao de variavel auxiliar para formacao do arquivo .log
 	char completeLogSolName[250] = "";
 
@@ -190,6 +206,7 @@ solutionType tabuSearch(char * solutionName, int qty_facilities, int qty_clients
 	for(int i=0;i<qty_facilities;i++){
 		if(open[facilities[i]]){
 			open_facilities.insert(i);
+			n1 += 1;
 			t[i] = - lo;
 		}
 		else{
@@ -263,8 +280,6 @@ solutionType tabuSearch(char * solutionName, int qty_facilities, int qty_clients
 	// Variavel que indica se foi feito uma troca, se sim, devemos dar um break no for para voltar pro while
 	bool swap_done = false;
 
-	// double melhor_custo_escolhido;
-
 	// Variavel que indica o custo extra de abrir ou fechar uma certa instalacao
 	double extra_cost2;
 
@@ -301,13 +316,8 @@ solutionType tabuSearch(char * solutionName, int qty_facilities, int qty_clients
 	TABU SEARCH DEFINITIONS
 	*/
 
-
-
 	// Total cost of the current solution
 	double cur_cost = 0;
-
-	// Total cost of the best solution found in the current search cycle
-	double best_cost_found = cur_cost;
 
 	// Best delta in this iteration
 	double best_extra_cost;
@@ -315,15 +325,27 @@ solutionType tabuSearch(char * solutionName, int qty_facilities, int qty_clients
 	// Which facility corresponds to the best delta in this iteration
 	int fac_best_extra_cost;
 
-	// The move number when best_cost_found is updated
+	// The move number when solution.finalTotalCost is updated
 	int k_last_best = qty_moves;
-
-	// Represents the amount of open facilities
-	int n1 = open_facilities.size();
 
 	// Incates step 3.. if we will move in fact
 	bool lets_move = false;
 
+	// Indica se continua ou nao o loop de busca
+	bool keep_searching = true;
+
+	// Indica se vamos atualizar nearest 1 ou 2
+	bool update_near = false;
+
+	// Auxiliares que indicam a terceira inst mais proxima (c3_minX = custo, nearest3_open_fac = id, aux_cij3 = auxiliar de custo)
+	double c3_minX = -1;
+	int nearest3_open_fac = -1;
+	double aux_cij3 = -1;
+
+
+	/* 
+	STEP 0 - algumas coisas ja foram feitas antes
+	*/
 
 	// Inicializando o vetor extra_cost[0] correspondente a delta z
 	for(ListBpGraph::BlueNodeIt n(g); n != INVALID; ++n){		// percorre as instalacoes
@@ -346,145 +368,389 @@ solutionType tabuSearch(char * solutionName, int qty_facilities, int qty_clients
 	}
 
 
-
 	// INICIANDO A CONTAGEM DE TEMPO DA FUNCAO
 	clock_gettime(CLOCK_REALTIME, &start);
 
 
 
-	/* 
-	STEP 1
-	*/
+	// A partir daqui é loop até acabar a busca
+	while(keep_searching){
+		cout << "qty moves: " << qty_moves << endl;
 
-	// Select a facility that has de minimum extra_cost and is not flagged
-	// TAMBEM TESTAR DEPOIS SE ACHAR UM QUE MELHORA JA FAZ
+		/* 
+		STEP 1
+		*/
 
-	best_extra_cost = DBL_MAX; // limitante superior, maior double possivel
-	fac_best_extra_cost = -1; // indica invalidez
-	for(int i=0;i<qty_facilities;i++){
-		if((extra_cost[qty_moves][i] < best_extra_cost) && ( !flag[i] )){ // se essa for menor do que a ja encontrada ate agr e nao estiver marcada, atualiza
-			best_extra_cost = extra_cost[qty_moves][i];
-			fac_best_extra_cost = i;
-		}
-	}
-
-	if(fac_best_extra_cost == -1){
-		cout << "THERE ARE NO MOVES ANYMORE" << endl;
-	}
-	else{
-
-		// Check the tabu status of the selected move
-		if(open[facilities[fac_best_extra_cost]]){ // se a instalacao está aberta
-			aux_l = lo;
-		}
-		else{ // se a instalacao está fechada
-			aux_l = lc;
+		// Select a facility that has de minimum extra_cost and is not flagged (and extra_cost is not DBL_MAX ---> invalid)
+		// TAMBEM TESTAR DEPOIS SE ACHAR UM QUE MELHORA JA FAZ
+		best_extra_cost = DBL_MAX; // limitante superior, maior double possivel
+		fac_best_extra_cost = -1; // indica invalidez
+		for(int i=0;i<qty_facilities;i++){
+			if((extra_cost[qty_moves][i] < best_extra_cost) && ( !flag[i] )){ // se essa for menor do que a ja encontrada ate agr e nao estiver marcada, atualiza
+				best_extra_cost = extra_cost[qty_moves][i];
+				fac_best_extra_cost = i;
+			}
 		}
 
-		if(qty_moves - t[fac_best_extra_cost] < aux_l){ // Se for tabu
+		if(DEBUG >= DISPLAY_ACTIONS){
+			cout << "Facility " << fac_best_extra_cost << " best delta extra cost: " << best_extra_cost << endl;
+		}
 
-			/* 
-			STEP 2
-			*/
+		if(fac_best_extra_cost == -1){
+			cout << "THERE ARE NO MOVES ANYMORE" << endl;
+			keep_searching = false;
+		}
+		else{
 
-			// Check the aspiration criterion of the selected move
-			if((cur_cost + best_extra_cost) < best_cost_found){ // Se satisfizer o aspiration criterion
+			// Check the tabu status of the selected move
+			if(open[facilities[fac_best_extra_cost]]){ // se a instalacao está aberta
+				aux_l = lo;
+			}
+			else{ // se a instalacao está fechada
+				aux_l = lc;
+			}
+
+			if(qty_moves - t[fac_best_extra_cost] < aux_l){ // Se for tabu
+
+				/* 
+				STEP 2
+				*/
+
+				// Check the aspiration criterion of the selected move
+				if((cur_cost + best_extra_cost) < solution.finalTotalCost){ // Se satisfizer o aspiration criterion
+					/* 
+					go to STEP 3
+					*/
+					lets_move = true;
+				}
+				else{ // Se nao satisfizer o aspiration criterion
+					// Mark facility as flagged
+					flag[fac_best_extra_cost] = true;
+
+					/* 
+					go back to STEP 1 -->> while
+					*/
+					keep_searching = true; // garantindo que o valor será verdadeiro
+				}
+			}
+			else{ //  se nao for tabu
 				/* 
 				go to STEP 3
 				*/
 				lets_move = true;
-			}
-			else{ // Se nao satisfizer o aspiration criterion
-				// Mark facility as flagged
-				flag[fac_best_extra_cost] = true;
+			}	
+
+
+			/* 
+			STEP 3
+			*/
+
+			if(lets_move){
+				// Restaurando 
+				lets_move = false;
+
+				if(open[facilities[fac_best_extra_cost]]){ // se a instalação estiver aberta
+					n1 -= 1;
+				}
+				else { // se a instalação estiver aberta
+					n1 += 1;
+				}
+
+				// Abrindo a inst se estiver fechada e fechando se estiver aberta
+				open[facilities[fac_best_extra_cost]] = !open[facilities[fac_best_extra_cost]];
+
+				// Atualizando o custo atual
+				cur_cost += best_extra_cost;
+
+				// Atualizando a lista tabu
+				t[fac_best_extra_cost] = qty_moves;
+
+				// Aumentando a contagem de movimentos
+				qty_moves += 1;
+
+				// Atualizando a melhor solucao encontrada ate agr
+				if(cur_cost < solution.finalTotalCost){
+					solution.finalTotalCost = cur_cost;
+					k_last_best = qty_moves;
+				}
 
 				/* 
-				go back to STEP 1 -->>>>> while
+				STEP 4
 				*/
-			}
 
-		}
-		else{ //  se nao for tabu
-			/* 
-			go to STEP 3
-			*/
-			lets_move = true;
-		}	
+				/* 
+				Update extra_cost[qty_moves]
+				*/
+
+				// If the facility was closed and we opened
+				if(open[facilities[fac_best_extra_cost]]){
+
+					for(ListBpGraph::BlueNodeIt n2(g); n2 != INVALID; ++n2){		// percorre as instalacoes
+
+						// Open facilities after another facility opened
+						if(open[n2]){ // se a instalacao 2 está aberta
+
+							if(n1 > 2){ // se ela nao era a unica instalacao aberta (entao extra_cost[qty_moves - 1] está definido)
+								extra_cost[qty_moves][name[n2]] = extra_cost[qty_moves-1][name[n2]]; // inicia com o valor da anterior
+
+								for (ListBpGraph::IncEdgeIt e(g, n2); e != INVALID; ++e) { // Percorre todas arestas desse nó (ligam a clientes)
+									if(nearest_open_fac[g.asRedNode(g.u(e))] == name[n2]){ // se esse cliente tinha a inst n2 como inst mais proxima
+
+										//  Pegando o custo de atribuicao desse cliente com a inst que estou abrindo (cij')
+										aux_cij = assignment_cost[findEdge(g, g.asRedNode(g.u(e)), facilities[fac_best_extra_cost])];
+
+										// Tj1 = {i | di1 = j ^ cij' < cij}
+										if(aux_cij < assignment_cost[e]){ // se a que abriu eh melhor que essa inst n2 (Tj1)
+											extra_cost[qty_moves][name[n2]] += assignment_cost[e] - c2_minX[g.asRedNode(g.u(e))];
+
+											// Updating d2 --> dj1 (nearest)
+											nearest2_open_fac[g.asRedNode(g.u(e))] = nearest_open_fac[g.asRedNode(g.u(e))];
+											c2_minX[g.asRedNode(g.u(e))] = c_minX[g.asRedNode(g.u(e))];
+
+											// Updating d1 --> j' (fac_best_extra_cost)
+											nearest_open_fac[g.asRedNode(g.u(e))] = fac_best_extra_cost;
+											c_minX[g.asRedNode(g.u(e))] = aux_cij;
+										}
+
+										// Tj2 = {i | di1 = j ^ cij <= cij' < cidi2}
+										else if((assignment_cost[e] <= aux_cij) && (aux_cij < c2_minX[g.asRedNode(g.u(e))])){ // senao, se a que abriu eh melhor que a segunda inst mais proxima (Tj2)
+											extra_cost[qty_moves][name[n2]] += aux_cij - c2_minX[g.asRedNode(g.u(e))];
+
+											// Updating d2 --> j' (fac_best_extra_cost)
+											nearest2_open_fac[g.asRedNode(g.u(e))] = fac_best_extra_cost;
+											c2_minX[g.asRedNode(g.u(e))] = aux_cij;
+										}
+									}
+								}
+							}
+							else { // se ela era a unica instalacao aberta
+
+								/* 
+								Recomputing extra_cost
+								*/
+
+								extra_cost[qty_moves][name[n2]] = -f[n2]; // inicia com o ganho ao fechar essa inst
+
+								for (ListBpGraph::IncEdgeIt e(g, n2); e != INVALID; ++e) { // Percorre todas arestas desse nó (ligam a clientes)
+
+									if(nearest_open_fac[g.asRedNode(g.u(e))] == name[n2]){ // se essa inst for a mais proxima desse cli. OBS: isso deve sempre ser verdadeiro pois só tinha ela aberta
+
+										//  Pegando o custo de atribuicao desse cliente com a inst que estou abrindo (cij')
+										aux_cij = assignment_cost[findEdge(g, g.asRedNode(g.u(e)), facilities[fac_best_extra_cost])];
+
+										// Se a que abriu agora é a mais proxima
+										if(aux_cij < c_minX[g.asRedNode(g.u(e))]){
+											// Updating d2
+											nearest2_open_fac[g.asRedNode(g.u(e))] = nearest_open_fac[g.asRedNode(g.u(e))];
+											c2_minX[g.asRedNode(g.u(e))] = c_minX[g.asRedNode(g.u(e))];
+
+											// Updating d1
+											nearest_open_fac[g.asRedNode(g.u(e))] = fac_best_extra_cost;
+											c_minX[g.asRedNode(g.u(e))] = aux_cij;
+										}
+										// Se nao, entao a que abriu é a segunda mais proxima
+										else{
+											// Updating d2
+											nearest2_open_fac[g.asRedNode(g.u(e))] = fac_best_extra_cost;
+											c2_minX[g.asRedNode(g.u(e))] = aux_cij;
+										}
+
+										// Complementa com o ganho de reatribuicao
+										extra_cost[qty_moves][name[n2]] += c2_minX[g.asRedNode(g.u(e))] - assignment_cost[e];
+									}
+								}
+							}
+						}
+
+						// Closed facilities after another facility opened
+						else{ // se a instalacao 2 está fechada 
+							extra_cost[qty_moves][name[n2]] = extra_cost[qty_moves-1][name[n2]]; // inicia com o valor da anterior
+
+							for (ListBpGraph::IncEdgeIt e(g, n2); e != INVALID; ++e) { // Percorre todas arestas desse nó (ligam a clientes)
+
+								update_near = false; // a principio nao sabemos se deveremos atualizar ou nao
+
+								//  Pegando o custo de atribuicao desse cliente com a inst que estou abrindo (cij')
+								aux_cij = assignment_cost[findEdge(g, g.asRedNode(g.u(e)), facilities[fac_best_extra_cost])];
+
+								// Sj1 = {i | cij < cij' < cidi1}
+								if((assignment_cost[e] < aux_cij) && (aux_cij < c_minX[g.asRedNode(g.u(e))])){ // se a que abriu eh melhor que a nearest mas pior que essa inst n2 (Sj1)
+									extra_cost[qty_moves][name[n2]] += c_minX[g.asRedNode(g.u(e))] - aux_cij;
+									update_near = true; // indica que vamos atualizar
+								}
+								// Sj2 = {i | cij' <= cij < cidi1}
+								else if((assignment_cost[e] <= aux_cij) && (aux_cij < c_minX[g.asRedNode(g.u(e))])){ // senao, se a que abriu eh melhor que a nearest e essa n2, porem n2 melhor que nearest tbm (Sj2)
+									extra_cost[qty_moves][name[n2]] += c_minX[g.asRedNode(g.u(e))] - assignment_cost[e];
+									update_near = true; // indica que vamos atualizar
+								}
+
+								// Updating d1 and d2
+								if(update_near){
+
+									// Updating d2 --> dj1 (nearest)
+									nearest2_open_fac[g.asRedNode(g.u(e))] = nearest_open_fac[g.asRedNode(g.u(e))];
+									c2_minX[g.asRedNode(g.u(e))] = c_minX[g.asRedNode(g.u(e))];
+
+									// Updating d1 --> j' (fac_best_extra_cost)
+									nearest_open_fac[g.asRedNode(g.u(e))] = fac_best_extra_cost;
+									c_minX[g.asRedNode(g.u(e))] = aux_cij;
+								}
+							}
+						}
 
 
-		/* 
-		STEP 3
-		*/
+						// Mark each facility as unflagged
+						flag[name[n2]] = false;
+					}
+				}
 
-		if(lets_move){
+				// Else, if the facility was opened and we closed
+				else{
 
-			if(open[facilities[fac_best_extra_cost]]){ // se a instalação estiver aberta
-				n1 -= 1;
-			}
-			else { // se a instalação estiver aberta
-				n1 += 1;
-			}
+					for(ListBpGraph::BlueNodeIt n2(g); n2 != INVALID; ++n2){		// percorre as instalacoes
 
-			// Abrindo a insta se estiver fechada e fechando se estiver aberta
-			open[facilities[fac_best_extra_cost]] = !open[facilities[fac_best_extra_cost]];
+						// Open facilities after another facility closed
+						if(open[n2]){ // se a instalacao 2 está aberta
 
-			// Atualizando o custo atual
-			cur_cost += best_extra_cost;
+							if(n1 > 1){ // se ela nao eh a unica instalacao aberta 
+								extra_cost[qty_moves][name[n2]] = extra_cost[qty_moves-1][name[n2]]; // inicia com o valor da anterior
 
-			// Atualizando a lista tabu
-			t[fac_best_extra_cost] = qty_moves;
+								for (ListBpGraph::IncEdgeIt e(g, n2); e != INVALID; ++e) { // Percorre todas arestas desse nó (ligam a clientes)
 
-			// Aumentando a contagem de movimentos
-			qty_moves += 1;
+									//  Pegando o custo de atribuicao desse cliente com a inst que estou fechando (cij')
+									aux_cij = assignment_cost[findEdge(g, g.asRedNode(g.u(e)), facilities[fac_best_extra_cost])];
 
-			// Atualizando a melhor solucao encontrada ate agr
-			if(cur_cost < best_cost_found){
-				best_cost_found = cur_cost;
-				k_last_best = qty_moves;
-			}
+									// Se for Tj1 ou Tj2
+									// Tj1 = {i | di1 = j' ^ di2 = j} 		// Tj2 = {i | di1 = j ^ di2 = j'}
+									if(((nearest_open_fac[g.asRedNode(g.u(e))] == fac_best_extra_cost) && (nearest2_open_fac[g.asRedNode(g.u(e))] == name[n2])) || ((nearest_open_fac[g.asRedNode(g.u(e))] == name[n2]) && (nearest2_open_fac[g.asRedNode(g.u(e))] == fac_best_extra_cost))) { // se estou fechando a mais proxima e n2 é a segunda mais proxima (Tj1)
 
-			/* 
-			STEP 4
-			*/
+										/*
+										Defining nearest3_open_fac e c3_minX
+										*/
+										c3_minX = biggestCij + 1; // limitante superior tranquilo
+										for(itr = open_facilities.begin(); itr != open_facilities.end(); ++itr) { // percorrer todas as inst abertas
+											aux_cij3 = assignment_cost[findEdge(g, g.asRedNode(g.u(e)), facilities[*itr])];
+											if((aux_cij3 < c3_minX) && (*itr != nearest_open_fac[g.asRedNode(g.u(e))]) && (*itr != nearest2_open_fac[g.asRedNode(g.u(e))])){ // se for melhor que o salvo ate agr, mas nao melhor que o melhor de todos nem o segundo melhor salvo
+												nearest3_open_fac = *itr;
+												c3_minX = aux_cij3;
+											}
+										}
+										// incluindo a inst que fechamos na busca, ja q ela nao está mais em open_facilities
+										if((c3_minX > biggestCij) || ((aux_cij < c3_minX) && (fac_best_extra_cost != nearest_open_fac[g.asRedNode(g.u(e))]) && (fac_best_extra_cost != nearest2_open_fac[g.asRedNode(g.u(e))]))) {
+											nearest3_open_fac = fac_best_extra_cost;
+											c3_minX = aux_cij;
+										}
 
-			// Update extra_cost[qty_moves]
+										// Se for Tj1
+										// Tj1 = {i | di1 = j' ^ di2 = j}
+										if((nearest_open_fac[g.asRedNode(g.u(e))] == fac_best_extra_cost) && (nearest2_open_fac[g.asRedNode(g.u(e))] == name[n2])){ // se estou fechando a mais proxima e n2 é a segunda mais proxima (Tj1)
+											extra_cost[qty_moves][name[n2]] += c3_minX - c_minX[g.asRedNode(g.u(e))];
 
+											// Updating d1 --> dj2 (nearest2)
+											nearest_open_fac[g.asRedNode(g.u(e))] = nearest2_open_fac[g.asRedNode(g.u(e))];
+											c_minX[g.asRedNode(g.u(e))] = c2_minX[g.asRedNode(g.u(e))];	
+										}
+										// Senao, se for Tj2
+										// Tj2 = {i | di1 = j ^ di2 = j'}
+										else {  // se estou fechando a segunda mais proxima e n2 é a mais proxima (Tj2)
+											extra_cost[qty_moves][name[n2]] += c3_minX - aux_cij;
 
-			// Mark each facility as unflagged
+										}
 
-			// if qty_moves - k_last_best < a1*n
+										// Updating d2 --> d3 (nearest3), tanto para Tj1 quanto Tj2
+										nearest2_open_fac[g.asRedNode(g.u(e))] = nearest3_open_fac;
+										c2_minX[g.asRedNode(g.u(e))] = c3_minX;
+									}
+								}
+							}
+							else { // se ela era a unica instalacao aberta
+
+								/* 
+								Not possible to have extra_cost because this facility cannot be closed
+								*/
+
+								extra_cost[qty_moves][name[n2]] = DBL_MAX; // indica invalidez
+							}
+						}
+
+						// Closed facilities after another facility closed
+						else{ // se a instalacao 2 está fechada 
+							extra_cost[qty_moves][name[n2]] = extra_cost[qty_moves-1][name[n2]]; // inicia com o valor da anterior
+
+							for (ListBpGraph::IncEdgeIt e(g, n2); e != INVALID; ++e) { // Percorre todas arestas desse nó (ligam a clientes)
+								if(nearest_open_fac[g.asRedNode(g.u(e))] == fac_best_extra_cost){ // se esse cliente tinha a inst fac_best_extra_cost como inst mais proxima
+
+									update_near = false; // a principio nao sabemos se deveremos atualizar ou nao
+
+									// Pegando o custo de atribuicao desse cliente com a inst que estou fechando (cij')
+									aux_cij = assignment_cost[findEdge(g, g.asRedNode(g.u(e)), facilities[fac_best_extra_cost])];
+
+									// Sj1 = {i | di1 = j' ^ cij < cij'}
+									if(assignment_cost[e] < aux_cij){ // se essa inst n2 eh melhor que a que fechou, que era a nearest (Sj1)
+										extra_cost[qty_moves][name[n2]] += aux_cij - c2_minX[g.asRedNode(g.u(e))];
+										update_near = true; // indica que vamos atualizar
+									}
+
+									// Sj2 = {i | di1 = j' ^ cij' <= cij < cidi2}
+									else if((aux_cij <= assignment_cost[e]) && (assignment_cost[e] < c2_minX[g.asRedNode(g.u(e))])){ // senao, se essa inst n2 é melhor que a nearest2 porem nao melhor que a nearest que fechou(Sj2)
+										extra_cost[qty_moves][name[n2]] += assignment_cost[e] - c2_minX[g.asRedNode(g.u(e))];
+										update_near = true; // indica que vamos atualizar
+									}
+
+									// Updating d1 and d2
+									if(update_near){
+
+										// Updating d1 --> dj2 (nearest2)
+										nearest_open_fac[g.asRedNode(g.u(e))] = nearest2_open_fac[g.asRedNode(g.u(e))];
+										c_minX[g.asRedNode(g.u(e))] = c2_minX[g.asRedNode(g.u(e))];
+
+										// Updating d2 --> search again
+										
+										c2_minX[g.asRedNode(g.u(e))] = biggestCij + 1; // limitante superior tranquilo
+
+										for(itr = open_facilities.begin(); itr != open_facilities.end(); ++itr) { // percorrer todas as inst abertas
+											aux_cij = assignment_cost[findEdge(g, g.asRedNode(g.u(e)), facilities[*itr])];
+											if((aux_cij < c2_minX[g.asRedNode(g.u(e))]) && (*itr != nearest_open_fac[g.asRedNode(g.u(e))])){ // se for melhor que o salvo ate agr, mas nao melhor que o melhor de todos
+												nearest2_open_fac[g.asRedNode(g.u(e))] = *itr;
+												c2_minX[g.asRedNode(g.u(e))] = aux_cij;
+											}
+										}
+										if(c2_minX[g.asRedNode(g.u(e))] > biggestCij){ // se só tinha 1 inst aberta, entao colocamos -1 para indicar invalidez
+											if(DEBUG >= DISPLAY_ACTIONS){
+												cout << "There is just 1 open facility" << endl;
+											}
+											c2_minX[g.asRedNode(g.u(e))] = -1;
+											nearest2_open_fac[g.asRedNode(g.u(e))] = -1;
+										}
+									}
+								}
+							}
+						}
+
+						// Mark each facility as unflagged
+						flag[name[n2]] = false;
+					}
+				}
+
+				// Se ainda nao atingiu a condicao de parada respectivo ao a1
+				if(qty_moves - k_last_best <= a1 * qty_facilities){
 					/* 
-					go back to STEP 1 -->>>>> while
+					go back to STEP 1 -->> while
 					*/
-			// else
-					/* 
-					go to STEP 8 
+					keep_searching = true; // garantindo que o valor será verdadeiro
+				}
+						
+				else{
+					/*
+					STOP
 					*/
-
-
-			/* 
-			STEP 8
-			*/
-
-			// If a local optimum has not been found, select a facility according to (10 and go to step 3)
-
+					keep_searching = false;
+				}
+			}
 		}
-
 	}
 
 	
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -762,6 +1028,7 @@ solutionType tabuSearch(char * solutionName, int qty_facilities, int qty_clients
 	// 		}
 	// 	}
 	// }
+
 
 	// FINALIZANDO A CONTAGEM DE TEMPO DA FUNCAO
 	clock_gettime(CLOCK_REALTIME, &finish);

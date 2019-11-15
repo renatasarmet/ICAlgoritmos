@@ -244,8 +244,6 @@ solutionType localSearch(char * solutionName, int qty_facilities, int qty_client
 	// Variavel que indica se foi feito uma troca, se sim, devemos dar um break no for para voltar pro while
 	bool swap_done = false;
 
-	// double melhor_custo_escolhido;
-
 	// Variavel que indica o custo extra de abrir ou fechar uma certa instalacao
 	double extra_cost;
 
