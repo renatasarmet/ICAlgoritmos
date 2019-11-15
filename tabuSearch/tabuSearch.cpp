@@ -25,13 +25,17 @@ using namespace std;
 // EU SO PRECISO SALVAR O DELTA (extra_cost) ATUAL E O ANTERIOR.... SERA ENTAO QUE NAO DA PRA FAZER UMA MATRIZ COM SÓ DUAS LINHAS? ASSIM NAO PRECISO GASTAR TANTO ESPACO E NAO PRECISO TER DEFINIDO O itr_limit
 
 
+// TRANSFERIR MUDANCA DE VIZINHO PARA DEPOIS DE TODA O UPDATE DOS DELTAS EXTRA COST... ASSIM RESOLVE TBM O PROBLEMA DE NAO ESTAR ATUALIZANDO O DA INST ESCOLHIDA.
+
+
 #define DISPLAY_BASIC 1 // corresponde a exibicao da quantidade de movimentos
 #define DISPLAY_MOVES 2 // corresponde a todos os cout quando um movimento é realizado de fato
 #define DISPLAY_ACTIONS 3 // corresponde a todos os cout quando uma acao é feita. 
-#define DISPLAY_TIME 4 // corresponde aos calculos de tempo 
-#define DISPLAY_GRAPH 5 // corresponde a descricao dos clientes, instalacoes e arcos
+#define DISPLAY_DETAILS 4 // corresponde a todos os cout mais detalhados quando uma acao é feita. 
+#define DISPLAY_TIME 5 // corresponde aos calculos de tempo 
+#define DISPLAY_GRAPH 6 // corresponde a descricao dos clientes, instalacoes e arcos
 
-#define DEBUG 3 // OPCOES DE DEBUG: 1 - MOSTRAR A QTD DE MOVIMENTOS, 2 PARA EXIBIR OS MOVIMENTOS REALIZADOS, 3 PARA EXIBIR ACOES, 4 PARA EXIBIR TEMPO, 5 PARA EXIBIR AS MUDANÇAS NO GRAFO
+#define DEBUG 3 // OPCOES DE DEBUG: 1 - MOSTRAR A QTD DE MOVIMENTOS, 2 PARA EXIBIR OS MOVIMENTOS REALIZADOS, 3 PARA EXIBIR ACOES, 4 PARA EXIBIR DETALHES DAS ACOES, 5 PARA EXIBIR TEMPO, 6 PARA EXIBIR AS MUDANÇAS NO GRAFO
 
 #define TIME_LIMIT 900 //15 minutos
 
@@ -196,7 +200,7 @@ solutionType tabuSearch(char * solutionName, int qty_facilities, int qty_clients
 
 		open[facilities[solution.assigned_facilities[i]]] = true; // indica que a instalação está aberta agora
 
-		if(DEBUG >= DISPLAY_ACTIONS){
+		if(DEBUG >= DISPLAY_DETAILS){
 			cout << "Client " << i << " - initial nearest open facility: " << nearest_open_fac[clients[i]] << endl;
 		}
 	}
@@ -268,12 +272,12 @@ solutionType tabuSearch(char * solutionName, int qty_facilities, int qty_clients
 			nearest2_open_fac[clients[i]] = -1;
 		}
 
-		if(DEBUG >= DISPLAY_ACTIONS){
+		if(DEBUG >= DISPLAY_DETAILS){
 			cout << "Client " << i << " c1: " << c_minX[clients[i]] << " near: " << nearest_open_fac[clients[i]] << " c2: " << c2_minX[clients[i]] << " near2: " << nearest2_open_fac[clients[i]] << endl;
 		}
 	}
 
-	if(DEBUG >= DISPLAY_ACTIONS){
+	if(DEBUG >= DISPLAY_DETAILS){
 		cout << "biggestCij from input : " << biggestCij << endl;
 	}
 
@@ -342,6 +346,9 @@ solutionType tabuSearch(char * solutionName, int qty_facilities, int qty_clients
 	int nearest3_open_fac = -1;
 	double aux_cij3 = -1;
 
+	// Indica qual foi o caso do movimento
+	int move_case;
+
 
 	/* 
 	STEP 0 - algumas coisas ja foram feitas antes
@@ -373,9 +380,21 @@ solutionType tabuSearch(char * solutionName, int qty_facilities, int qty_clients
 
 
 
+
+	
+	for(ListBpGraph::RedNodeIt n(g); n != INVALID; ++n){
+		if(nearest_open_fac[n]==108)
+			cout << "YESSS client " << name[n] << " near2: "<< nearest2_open_fac[n] << endl;
+	}
+
+
+
+
 	// A partir daqui é loop até acabar a busca
 	while(keep_searching){
-		cout << "qty moves: " << qty_moves << endl;
+		if(DEBUG >= DISPLAY_ACTIONS){
+			cout << endl << "-------------------------- NEXT MOVE " << qty_moves << " ---------------------------" << endl << endl;
+		}
 
 		/* 
 		STEP 1
@@ -404,13 +423,23 @@ solutionType tabuSearch(char * solutionName, int qty_facilities, int qty_clients
 
 			// Check the tabu status of the selected move
 			if(open[facilities[fac_best_extra_cost]]){ // se a instalacao está aberta
+				if(DEBUG >= DISPLAY_ACTIONS){
+					cout << "We will close it" << endl;
+				}
 				aux_l = lo;
 			}
 			else{ // se a instalacao está fechada
+				if(DEBUG >= DISPLAY_ACTIONS){
+					cout << "We will open it" << endl;
+				}
 				aux_l = lc;
 			}
 
 			if(qty_moves - t[fac_best_extra_cost] < aux_l){ // Se for tabu
+
+				if(DEBUG >= DISPLAY_ACTIONS){
+					cout << "It is tabu" << endl;
+				}
 
 				/* 
 				STEP 2
@@ -418,12 +447,18 @@ solutionType tabuSearch(char * solutionName, int qty_facilities, int qty_clients
 
 				// Check the aspiration criterion of the selected move
 				if((cur_cost + best_extra_cost) < solution.finalTotalCost){ // Se satisfizer o aspiration criterion
+					if(DEBUG >= DISPLAY_ACTIONS){
+						cout << "It satisfies the aspiration criterion" << endl;
+					}
 					/* 
 					go to STEP 3
 					*/
 					lets_move = true;
 				}
 				else{ // Se nao satisfizer o aspiration criterion
+					if(DEBUG >= DISPLAY_ACTIONS){
+						cout << "It does not satisfy the aspiration criterion" << endl;
+					}
 					// Mark facility as flagged
 					flag[fac_best_extra_cost] = true;
 
@@ -434,6 +469,10 @@ solutionType tabuSearch(char * solutionName, int qty_facilities, int qty_clients
 				}
 			}
 			else{ //  se nao for tabu
+				if(DEBUG >= DISPLAY_ACTIONS){
+					cout << "It is not tabu" << endl;
+				}
+
 				/* 
 				go to STEP 3
 				*/
@@ -446,6 +485,10 @@ solutionType tabuSearch(char * solutionName, int qty_facilities, int qty_clients
 			*/
 
 			if(lets_move){
+				if(DEBUG >= DISPLAY_ACTIONS){
+					cout << "Lets move!" << endl;
+				}
+
 				// Restaurando 
 				lets_move = false;
 
@@ -484,12 +527,20 @@ solutionType tabuSearch(char * solutionName, int qty_facilities, int qty_clients
 
 				// If the facility was closed and we opened
 				if(open[facilities[fac_best_extra_cost]]){
+					move_case = 1; 
+
+					if(DEBUG >= DISPLAY_ACTIONS){
+						cout << "The facility was closed and we opened. Lets update delta extra cost from other facilities" << endl;
+					}
 
 					for(ListBpGraph::BlueNodeIt n2(g); n2 != INVALID; ++n2){		// percorre as instalacoes
 
 						// Open facilities after another facility opened
 						if(open[n2]){ // se a instalacao 2 está aberta
 
+							if(DEBUG >= DISPLAY_ACTIONS){
+								cout << "OPEN FACILITY: " << name[n2] << endl;
+							}
 							if(n1 > 2){ // se ela nao era a unica instalacao aberta (entao extra_cost[qty_moves - 1] está definido)
 								extra_cost[qty_moves][name[n2]] = extra_cost[qty_moves-1][name[n2]]; // inicia com o valor da anterior
 
@@ -524,7 +575,9 @@ solutionType tabuSearch(char * solutionName, int qty_facilities, int qty_clients
 								}
 							}
 							else { // se ela era a unica instalacao aberta
-
+								if(DEBUG >= DISPLAY_ACTIONS){
+									cout << "It was the only open facility. We need to recompute the delta extra cost." << name[n2] << endl;
+								}
 								/* 
 								Recomputing extra_cost
 								*/
@@ -564,6 +617,10 @@ solutionType tabuSearch(char * solutionName, int qty_facilities, int qty_clients
 
 						// Closed facilities after another facility opened
 						else{ // se a instalacao 2 está fechada 
+							if(DEBUG >= DISPLAY_ACTIONS){
+								cout << "CLOSED FACILITY: " << name[n2] << endl;
+							}
+
 							extra_cost[qty_moves][name[n2]] = extra_cost[qty_moves-1][name[n2]]; // inicia com o valor da anterior
 
 							for (ListBpGraph::IncEdgeIt e(g, n2); e != INVALID; ++e) { // Percorre todas arestas desse nó (ligam a clientes)
@@ -606,11 +663,20 @@ solutionType tabuSearch(char * solutionName, int qty_facilities, int qty_clients
 
 				// Else, if the facility was opened and we closed
 				else{
+					move_case = 2;
+
+					if(DEBUG >= DISPLAY_ACTIONS){
+						cout << "The facility was opened and we closed. Lets update delta extra cost from other facilities" << endl;
+					}
 
 					for(ListBpGraph::BlueNodeIt n2(g); n2 != INVALID; ++n2){		// percorre as instalacoes
 
 						// Open facilities after another facility closed
 						if(open[n2]){ // se a instalacao 2 está aberta
+
+							if(DEBUG >= DISPLAY_ACTIONS){
+								cout << "OPEN FACILITY: " << name[n2] << endl;
+							}
 
 							if(n1 > 1){ // se ela nao eh a unica instalacao aberta 
 								extra_cost[qty_moves][name[n2]] = extra_cost[qty_moves-1][name[n2]]; // inicia com o valor da anterior
@@ -664,7 +730,9 @@ solutionType tabuSearch(char * solutionName, int qty_facilities, int qty_clients
 								}
 							}
 							else { // se ela era a unica instalacao aberta
-
+								if(DEBUG >= DISPLAY_ACTIONS){
+									cout << "It was the only open facility. We cannot define a new delta extra cost." << name[n2] << endl;
+								}
 								/* 
 								Not possible to have extra_cost because this facility cannot be closed
 								*/
@@ -675,9 +743,17 @@ solutionType tabuSearch(char * solutionName, int qty_facilities, int qty_clients
 
 						// Closed facilities after another facility closed
 						else{ // se a instalacao 2 está fechada 
+							if(DEBUG >= DISPLAY_ACTIONS){
+								cout << "CLOSED FACILITY: " << name[n2] << endl;
+							}
+
 							extra_cost[qty_moves][name[n2]] = extra_cost[qty_moves-1][name[n2]]; // inicia com o valor da anterior
 
 							for (ListBpGraph::IncEdgeIt e(g, n2); e != INVALID; ++e) { // Percorre todas arestas desse nó (ligam a clientes)
+								if(name[n2]==108){
+									cout << name[g.asRedNode(g.u(e))] << " near: " << nearest_open_fac[g.asRedNode(g.u(e))] << endl;
+								}
+							
 								if(nearest_open_fac[g.asRedNode(g.u(e))] == fac_best_extra_cost){ // se esse cliente tinha a inst fac_best_extra_cost como inst mais proxima
 
 									update_near = false; // a principio nao sabemos se deveremos atualizar ou nao
@@ -687,14 +763,24 @@ solutionType tabuSearch(char * solutionName, int qty_facilities, int qty_clients
 
 									// Sj1 = {i | di1 = j' ^ cij < cij'}
 									if(assignment_cost[e] < aux_cij){ // se essa inst n2 eh melhor que a que fechou, que era a nearest (Sj1)
+										if(name[n2]==108){
+											cout << "Sj1!!" << endl;
+										}
 										extra_cost[qty_moves][name[n2]] += aux_cij - c2_minX[g.asRedNode(g.u(e))];
 										update_near = true; // indica que vamos atualizar
 									}
 
 									// Sj2 = {i | di1 = j' ^ cij' <= cij < cidi2}
 									else if((aux_cij <= assignment_cost[e]) && (assignment_cost[e] < c2_minX[g.asRedNode(g.u(e))])){ // senao, se essa inst n2 é melhor que a nearest2 porem nao melhor que a nearest que fechou(Sj2)
+										if(name[n2]==108){
+											cout << "Sj2!!" << endl;
+										}
 										extra_cost[qty_moves][name[n2]] += assignment_cost[e] - c2_minX[g.asRedNode(g.u(e))];
 										update_near = true; // indica que vamos atualizar
+									}
+
+									if(name[n2]==108){
+										cout << "delta extra cost: " << extra_cost[qty_moves][name[n2]] << endl;
 									}
 
 									// Updating d1 and d2
@@ -722,6 +808,11 @@ solutionType tabuSearch(char * solutionName, int qty_facilities, int qty_clients
 											c2_minX[g.asRedNode(g.u(e))] = -1;
 											nearest2_open_fac[g.asRedNode(g.u(e))] = -1;
 										}
+
+										if(name[n2]==108){
+											cout << "new d1:" << nearest_open_fac[g.asRedNode(g.u(e))] << " com cij: "<< c_minX[g.asRedNode(g.u(e))] << endl;
+											cout << "new d2:" << nearest2_open_fac[g.asRedNode(g.u(e))] << " com cij: "<< c2_minX[g.asRedNode(g.u(e))] << endl;
+										}
 									}
 								}
 							}
@@ -741,6 +832,9 @@ solutionType tabuSearch(char * solutionName, int qty_facilities, int qty_clients
 				}
 						
 				else{
+					if(DEBUG >= DISPLAY_ACTIONS){
+						cout << "Stop criterion a1" << endl;
+					}
 					/*
 					STOP
 					*/
