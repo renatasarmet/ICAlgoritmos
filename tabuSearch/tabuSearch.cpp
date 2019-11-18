@@ -13,10 +13,6 @@
 using namespace lemon;
 using namespace std;
 
-
-// DEFINIR MELHOR O QUE SERIA ESSE itr_limit ... ELE NAO EXISTE NO ALGORITMO, POREM PRECISO SABER O TAMANHO Q VOU ALOCAR.. talvez ele estaria definido relacionado a a1??
-
-
 #define DISPLAY_BASIC 1 // corresponde a exibicao da quantidade de movimentos
 #define DISPLAY_MOVES 2 // corresponde a todos os cout quando um movimento é realizado de fato
 #define DISPLAY_ACTIONS 3 // corresponde a todos os cout quando uma acao é feita. 
@@ -32,7 +28,7 @@ using namespace std;
 
 
 // Retornar o valor da solucao
-solutionType tabuSearch(char * solutionName, int qty_facilities, int qty_clients, double * costF, double * costA, solutionType solution, int a1, int lc1, int lc2, int lo1, int lo2, int itr_limit){
+solutionType tabuSearch(char * solutionName, int qty_facilities, int qty_clients, double * costF, double * costA, solutionType solution, int a1, int lc1, int lc2, int lo1, int lo2){
 
 	cout << fixed;
    	cout.precision(5);
@@ -420,7 +416,9 @@ solutionType tabuSearch(char * solutionName, int qty_facilities, int qty_clients
 		}
 
 		if(fac_best_extra_cost == -1){
-			cout << "THERE ARE NO MOVES ANYMORE" << endl;
+			if(DEBUG >= DISPLAY_BASIC){
+				cout << "Stop criterion: THERE ARE NO MOVES ANYMORE" << endl;
+			}
 			keep_searching = false;
 		}
 		else{
@@ -901,7 +899,7 @@ solutionType tabuSearch(char * solutionName, int qty_facilities, int qty_clients
 				}
 						
 				else{
-					if(DEBUG >= DISPLAY_ACTIONS){
+					if(DEBUG >= DISPLAY_BASIC){
 						cout << "Stop criterion a1" << endl;
 					}
 					/*
@@ -909,16 +907,6 @@ solutionType tabuSearch(char * solutionName, int qty_facilities, int qty_clients
 					*/
 					keep_searching = false;
 				}
-			}
-
-			if(qty_moves == itr_limit - 1){
-				if(DEBUG >= DISPLAY_ACTIONS){
-					cout << "Stop criterion itr_limit" << endl;
-				}
-				/*
-				STOP
-				*/
-				keep_searching = false;
 			}
 		}
 	}
