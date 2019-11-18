@@ -14,6 +14,9 @@ using namespace lemon;
 using namespace std;
 
 
+// QUANDO ESTÁ NO CASO DE SÓ 1 INSTALACAO ABERTA, TA TUDO ERRADO
+
+
 // DEFINIR MELHOR O QUE SERIA ESSE itr_limit ... ELE NAO EXISTE NO ALGORITMO, POREM PRECISO SABER O TAMANHO Q VOU ALOCAR.. talvez ele estaria definido relacionado a a1??
 
 // EU SO PRECISO SALVAR O DELTA (extra_cost) ATUAL E O ANTERIOR.... SERA ENTAO QUE NAO DA PRA FAZER UMA MATRIZ COM SÓ DUAS LINHAS? ASSIM NAO PRECISO GASTAR TANTO ESPACO E NAO PRECISO TER DEFINIDO O itr_limit
@@ -26,7 +29,7 @@ using namespace std;
 #define DISPLAY_TIME 5 // corresponde aos calculos de tempo 
 #define DISPLAY_GRAPH 6 // corresponde a descricao dos clientes, instalacoes e arcos
 
-#define DEBUG 1 // OPCOES DE DEBUG: 1 - MOSTRAR A QTD DE MOVIMENTOS, 2 PARA EXIBIR OS MOVIMENTOS REALIZADOS, 3 PARA EXIBIR ACOES, 4 PARA EXIBIR DETALHES DAS ACOES, 5 PARA EXIBIR TEMPO, 6 PARA EXIBIR AS MUDANÇAS NO GRAFO
+#define DEBUG 3 // OPCOES DE DEBUG: 1 - MOSTRAR A QTD DE MOVIMENTOS, 2 PARA EXIBIR OS MOVIMENTOS REALIZADOS, 3 PARA EXIBIR ACOES, 4 PARA EXIBIR DETALHES DAS ACOES, 5 PARA EXIBIR TEMPO, 6 PARA EXIBIR AS MUDANÇAS NO GRAFO
 
 #define TIME_LIMIT 900 //15 minutos
 
@@ -262,7 +265,7 @@ solutionType tabuSearch(char * solutionName, int qty_facilities, int qty_clients
 		}
 		if(c2_minX[clients[i]] > biggestCij){ // se só tinha 1 inst aberta, entao colocamos -1 para indicar invalidez
 			if(DEBUG >= DISPLAY_ACTIONS){
-				cout << "There is just 1 open facility" << endl;
+				cout << "Starting - There is just 1 open facility" << endl;
 			}
 			c2_minX[clients[i]] = -1;
 			nearest2_open_fac[clients[i]] = -1;
@@ -526,7 +529,7 @@ solutionType tabuSearch(char * solutionName, int qty_facilities, int qty_clients
 					k_last_best = qty_moves;	
 				}
 				else{
-					if(DEBUG >= DISPLAY_MOVES){
+					if(DEBUG >= DISPLAY_ACTIONS){
 						cout << "IT IS NOT BETTER. current cost: " << cur_cost << endl;
 					}
 				}
@@ -774,6 +777,7 @@ solutionType tabuSearch(char * solutionName, int qty_facilities, int qty_clients
 									Not possible to have extra_cost because this facility cannot be closed
 									*/
 
+									cout << "AAAAAAA " << endl;
 									extra_cost[qty_moves][name[n2]] = DBL_MAX; // indica invalidez
 
 									// NAO DEVO SALVAR AQUI NADA DO NEAREST?????
