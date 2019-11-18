@@ -16,8 +16,6 @@ using namespace std;
 
 // DEFINIR MELHOR O QUE SERIA ESSE itr_limit ... ELE NAO EXISTE NO ALGORITMO, POREM PRECISO SABER O TAMANHO Q VOU ALOCAR.. talvez ele estaria definido relacionado a a1??
 
-// EU SO PRECISO SALVAR O DELTA (extra_cost) ATUAL E O ANTERIOR.... SERA ENTAO QUE NAO DA PRA FAZER UMA MATRIZ COM SÓ DUAS LINHAS? ASSIM NAO PRECISO GASTAR TANTO ESPACO E NAO PRECISO TER DEFINIDO O itr_limit
-
 
 #define DISPLAY_BASIC 1 // corresponde a exibicao da quantidade de movimentos
 #define DISPLAY_MOVES 2 // corresponde a todos os cout quando um movimento é realizado de fato
@@ -128,11 +126,14 @@ solutionType tabuSearch(char * solutionName, int qty_facilities, int qty_clients
 		exit(1);
 	}
 
+	// Serao utilizados para acessar o vetor extra_cost, funciona como modulo 2
+	int cur_index_extra = 0;
+	int old_index_extra = 0;
 
 	// extra_cost - será o delta z para cada iteracao, para cada instalacao
-	double **extra_cost = (double**) malloc((itr_limit) * sizeof(double*));
+	double **extra_cost = (double**) malloc((2) * sizeof(double*));
 
-	for(int i = 0; i < itr_limit; i++) {
+	for(int i = 0; i < 2; i++) {
 		extra_cost[i] = (double *)malloc(qty_facilities * sizeof(double));
 	}
 
@@ -407,8 +408,8 @@ solutionType tabuSearch(char * solutionName, int qty_facilities, int qty_clients
 		fac_best_extra_cost = -1; // indica invalidez
 		for(int i=0;i<qty_facilities;i++){
 			if(!((open[facilities[i]])&&(n1 == 1))){ // se ela nao for a unica instalacao aberta
-				if((extra_cost[qty_moves][i] < best_extra_cost) && ( !flag[i] )){ // se essa for menor do que a ja encontrada ate agr e nao estiver marcada, atualiza
-					best_extra_cost = extra_cost[qty_moves][i];
+				if((extra_cost[cur_index_extra][i] < best_extra_cost) && ( !flag[i] )){ // se essa for menor do que a ja encontrada ate agr e nao estiver marcada, atualiza
+					best_extra_cost = extra_cost[cur_index_extra][i];
 					fac_best_extra_cost = i;
 				}
 			}
@@ -519,6 +520,10 @@ solutionType tabuSearch(char * solutionName, int qty_facilities, int qty_clients
 				// Aumentando a contagem de movimentos
 				qty_moves += 1;
 
+				// Atualizando os indices para acessar o vetor extra_cost
+				cur_index_extra = qty_moves % 2;
+				old_index_extra = !cur_index_extra;
+
 				// Atualizando a melhor solucao encontrada ate agr
 				if(cur_cost < solution.finalTotalCost){
 					if(DEBUG >= DISPLAY_MOVES){
@@ -539,7 +544,7 @@ solutionType tabuSearch(char * solutionName, int qty_facilities, int qty_clients
 				*/
 
 				/* 
-				Update extra_cost[qty_moves]
+				Update extra_cost[cur_index_extra]
 				*/
 
 				// If the facility was closed and we opened
@@ -559,7 +564,7 @@ solutionType tabuSearch(char * solutionName, int qty_facilities, int qty_clients
 									cout << "OPEN FACILITY: " << name[n2] << endl;
 								}
 								if(n1 > 2){ // se ela nao era a unica instalacao aberta (entao extra_cost[qty_moves - 1] está definido)
-									extra_cost[qty_moves][name[n2]] = extra_cost[qty_moves-1][name[n2]]; // inicia com o valor da anterior
+									extra_cost[cur_index_extra][name[n2]] = extra_cost[old_index_extra][name[n2]]; // inicia com o valor da anterior
 
 									for (ListBpGraph::IncEdgeIt e(g, n2); e != INVALID; ++e) { // Percorre todas arestas desse nó (ligam a clientes)
 										if(nearest_open_fac[g.asRedNode(g.u(e))] == name[n2]){ // se esse cliente tinha a inst n2 como inst mais proxima
@@ -569,7 +574,7 @@ solutionType tabuSearch(char * solutionName, int qty_facilities, int qty_clients
 
 											// Tj1 = {i | di1 = j ^ cij' < cij}
 											if(aux_cij < assignment_cost[e]){ // se a que abriu eh melhor que essa inst n2 (Tj1)
-												extra_cost[qty_moves][name[n2]] += assignment_cost[e] - c2_minX[g.asRedNode(g.u(e))];
+												extra_cost[cur_index_extra][name[n2]] += assignment_cost[e] - c2_minX[g.asRedNode(g.u(e))];
 
 												// Updating d2 --> dj1 (nearest)
 												temp_nearest2_fac[g.asRedNode(g.u(e))] = nearest_open_fac[g.asRedNode(g.u(e))];
@@ -582,7 +587,7 @@ solutionType tabuSearch(char * solutionName, int qty_facilities, int qty_clients
 
 											// Tj2 = {i | di1 = j ^ cij <= cij' < cidi2}
 											else if((assignment_cost[e] <= aux_cij) && (aux_cij < c2_minX[g.asRedNode(g.u(e))])){ // senao, se a que abriu eh melhor que a segunda inst mais proxima (Tj2)
-												extra_cost[qty_moves][name[n2]] += aux_cij - c2_minX[g.asRedNode(g.u(e))];
+												extra_cost[cur_index_extra][name[n2]] += aux_cij - c2_minX[g.asRedNode(g.u(e))];
 
 												// Saving d1 temp
 												temp_nearest_fac[g.asRedNode(g.u(e))] = nearest_open_fac[g.asRedNode(g.u(e))];
@@ -602,7 +607,7 @@ solutionType tabuSearch(char * solutionName, int qty_facilities, int qty_clients
 									/* 
 									Recomputing extra_cost
 									*/
-									extra_cost[qty_moves][name[n2]] = -f[n2]; // inicia com o ganho ao fechar essa inst
+									extra_cost[cur_index_extra][name[n2]] = -f[n2]; // inicia com o ganho ao fechar essa inst
 
 									for (ListBpGraph::IncEdgeIt e(g, n2); e != INVALID; ++e) { // Percorre todas arestas desse nó (ligam a clientes)
 
@@ -633,7 +638,7 @@ solutionType tabuSearch(char * solutionName, int qty_facilities, int qty_clients
 												temp_c2_minX[g.asRedNode(g.u(e))] = aux_cij;
 
 												// Complementa com o ganho de reatribuicao
-												extra_cost[qty_moves][name[n2]] += temp_c2_minX[g.asRedNode(g.u(e))] - assignment_cost[e];
+												extra_cost[cur_index_extra][name[n2]] += temp_c2_minX[g.asRedNode(g.u(e))] - assignment_cost[e];
 											}
 										}
 									}
@@ -646,7 +651,7 @@ solutionType tabuSearch(char * solutionName, int qty_facilities, int qty_clients
 									cout << "CLOSED FACILITY: " << name[n2] << endl;
 								}
 
-								extra_cost[qty_moves][name[n2]] = extra_cost[qty_moves-1][name[n2]]; // inicia com o valor da anterior
+								extra_cost[cur_index_extra][name[n2]] = extra_cost[old_index_extra][name[n2]]; // inicia com o valor da anterior
 
 								for (ListBpGraph::IncEdgeIt e(g, n2); e != INVALID; ++e) { // Percorre todas arestas desse nó (ligam a clientes)
 
@@ -657,12 +662,12 @@ solutionType tabuSearch(char * solutionName, int qty_facilities, int qty_clients
 
 									// Sj1 = {i | cij < cij' < cidi1}
 									if((assignment_cost[e] < aux_cij) && (aux_cij < c_minX[g.asRedNode(g.u(e))])){ // se a que abriu eh melhor que a nearest mas pior que essa inst n2 (Sj1)
-										extra_cost[qty_moves][name[n2]] += c_minX[g.asRedNode(g.u(e))] - aux_cij;
+										extra_cost[cur_index_extra][name[n2]] += c_minX[g.asRedNode(g.u(e))] - aux_cij;
 										update_near = true; // indica que vamos atualizar
 									}
 									// Sj2 = {i | cij' <= cij < cidi1}
 									else if((aux_cij <= assignment_cost[e]) && (assignment_cost[e] < c_minX[g.asRedNode(g.u(e))])){ // senao, se a que abriu eh melhor que a nearest e essa n2, porem n2 melhor que nearest tbm (Sj2)
-										extra_cost[qty_moves][name[n2]] += c_minX[g.asRedNode(g.u(e))] - assignment_cost[e];
+										extra_cost[cur_index_extra][name[n2]] += c_minX[g.asRedNode(g.u(e))] - assignment_cost[e];
 										update_near = true; // indica que vamos atualizar
 									}
 
@@ -686,11 +691,11 @@ solutionType tabuSearch(char * solutionName, int qty_facilities, int qty_clients
 					}
 
 					// Updating extra_cost for this chosen facility -> don't need to recalculate
-					extra_cost[qty_moves][fac_best_extra_cost] = - best_extra_cost;
-					// extra_cost[qty_moves][fac_best_extra_cost] = -f[facilities[fac_best_extra_cost]];
+					extra_cost[cur_index_extra][fac_best_extra_cost] = - best_extra_cost;
+					// extra_cost[cur_index_extra][fac_best_extra_cost] = -f[facilities[fac_best_extra_cost]];
 					// for (ListBpGraph::IncEdgeIt e(g, facilities[fac_best_extra_cost]); e != INVALID; ++e) { // Percorre todas arestas desse nó (ligam a clientes)
 					// 	if(temp_nearest_fac[g.asRedNode(g.u(e))] == name[facilities[fac_best_extra_cost]]){ // se essa inst for a mais proxima desse cli
-					// 		extra_cost[qty_moves][fac_best_extra_cost] += temp_c2_minX[g.asRedNode(g.u(e))] - assignment_cost[e];
+					// 		extra_cost[cur_index_extra][fac_best_extra_cost] += temp_c2_minX[g.asRedNode(g.u(e))] - assignment_cost[e];
 					// 	}
 					// }
 				}
@@ -713,7 +718,7 @@ solutionType tabuSearch(char * solutionName, int qty_facilities, int qty_clients
 
 								if(n1 > 1){ // se ela nao eh a unica instalacao aberta 
 
-									extra_cost[qty_moves][name[n2]] = extra_cost[qty_moves-1][name[n2]]; // inicia com o valor da anterior
+									extra_cost[cur_index_extra][name[n2]] = extra_cost[old_index_extra][name[n2]]; // inicia com o valor da anterior
 
 									for (ListBpGraph::IncEdgeIt e(g, n2); e != INVALID; ++e) { // Percorre todas arestas desse nó (ligam a clientes)
 
@@ -743,7 +748,7 @@ solutionType tabuSearch(char * solutionName, int qty_facilities, int qty_clients
 											// Se for Tj1
 											// Tj1 = {i | di1 = j' ^ di2 = j}
 											if((nearest_open_fac[g.asRedNode(g.u(e))] == fac_best_extra_cost) && (nearest2_open_fac[g.asRedNode(g.u(e))] == name[n2])){ // se estou fechando a mais proxima e n2 é a segunda mais proxima (Tj1)
-												extra_cost[qty_moves][name[n2]] += c3_minX - assignment_cost[e];
+												extra_cost[cur_index_extra][name[n2]] += c3_minX - assignment_cost[e];
 
 												// Updating d1 --> dj2 (nearest2)
 												temp_nearest_fac[g.asRedNode(g.u(e))] = nearest2_open_fac[g.asRedNode(g.u(e))];
@@ -752,7 +757,7 @@ solutionType tabuSearch(char * solutionName, int qty_facilities, int qty_clients
 											// Senao, se for Tj2
 											// Tj2 = {i | di1 = j ^ di2 = j'}
 											else {  // se estou fechando a segunda mais proxima e n2 é a mais proxima (Tj2)
-												extra_cost[qty_moves][name[n2]] += c3_minX - aux_cij;
+												extra_cost[cur_index_extra][name[n2]] += c3_minX - aux_cij;
 
 												// saving temp d1
 												temp_nearest_fac[g.asRedNode(g.u(e))] = nearest_open_fac[g.asRedNode(g.u(e))];
@@ -775,7 +780,7 @@ solutionType tabuSearch(char * solutionName, int qty_facilities, int qty_clients
 									Not possible to have extra_cost because this facility cannot be closed
 									*/
 
-									extra_cost[qty_moves][name[n2]] = DBL_MAX; // indica invalidez
+									extra_cost[cur_index_extra][name[n2]] = DBL_MAX; // indica invalidez
 
 									for (ListBpGraph::IncEdgeIt e(g, n2); e != INVALID; ++e) { // Percorre todas arestas desse nó (ligam a clientes)
 										// colocando ela como inst mais proxima de todos os clientes
@@ -795,7 +800,7 @@ solutionType tabuSearch(char * solutionName, int qty_facilities, int qty_clients
 									cout << "CLOSED FACILITY: " << name[n2] << endl;
 								}
 
-								extra_cost[qty_moves][name[n2]] = extra_cost[qty_moves-1][name[n2]]; // inicia com o valor da anterior
+								extra_cost[cur_index_extra][name[n2]] = extra_cost[old_index_extra][name[n2]]; // inicia com o valor da anterior
 
 								for (ListBpGraph::IncEdgeIt e(g, n2); e != INVALID; ++e) { // Percorre todas arestas desse nó (ligam a clientes)
 								
@@ -808,13 +813,13 @@ solutionType tabuSearch(char * solutionName, int qty_facilities, int qty_clients
 
 										// Sj1 = {i | di1 = j' ^ cij < cij'}
 										if(assignment_cost[e] < aux_cij){ // se essa inst n2 eh melhor que a que fechou, que era a nearest (Sj1)
-											extra_cost[qty_moves][name[n2]] += aux_cij - c2_minX[g.asRedNode(g.u(e))];
+											extra_cost[cur_index_extra][name[n2]] += aux_cij - c2_minX[g.asRedNode(g.u(e))];
 											update_near = true; // indica que vamos atualizar
 										}
 
 										// Sj2 = {i | di1 = j' ^ cij' <= cij < cidi2}
 										else if((aux_cij <= assignment_cost[e]) && (assignment_cost[e] < c2_minX[g.asRedNode(g.u(e))])){ // senao, se essa inst n2 é melhor que a nearest2 porem nao melhor que a nearest que fechou(Sj2)
-											extra_cost[qty_moves][name[n2]] += assignment_cost[e] - c2_minX[g.asRedNode(g.u(e))];
+											extra_cost[cur_index_extra][name[n2]] += assignment_cost[e] - c2_minX[g.asRedNode(g.u(e))];
 											update_near = true; // indica que vamos atualizar
 										}
 
@@ -853,12 +858,12 @@ solutionType tabuSearch(char * solutionName, int qty_facilities, int qty_clients
 						}
 					}
 					// Updating extra_cost for this chosen facility -> don't need to recalculate
-					extra_cost[qty_moves][fac_best_extra_cost] = - best_extra_cost;
-					// extra_cost[qty_moves][fac_best_extra_cost] = f[facilities[fac_best_extra_cost]];
+					extra_cost[cur_index_extra][fac_best_extra_cost] = - best_extra_cost;
+					// extra_cost[cur_index_extra][fac_best_extra_cost] = f[facilities[fac_best_extra_cost]];
 
 					// for (ListBpGraph::IncEdgeIt e(g, facilities[fac_best_extra_cost]); e != INVALID; ++e) { // Percorre todas arestas desse nó (ligam a clientes)
 					// 	if(assignment_cost[e] < temp_c_minX[g.asRedNode(g.u(e))]){ // se essa inst for a mais proxima desse cli
-					// 		extra_cost[qty_moves][fac_best_extra_cost] += assignment_cost[e] - temp_c_minX[g.asRedNode(g.u(e))];
+					// 		extra_cost[cur_index_extra][fac_best_extra_cost] += assignment_cost[e] - temp_c_minX[g.asRedNode(g.u(e))];
 					// 	}
 					// }
 
