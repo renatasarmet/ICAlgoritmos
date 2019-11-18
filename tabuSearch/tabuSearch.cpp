@@ -767,18 +767,25 @@ solutionType tabuSearch(char * solutionName, int qty_facilities, int qty_clients
 									}
 
 								}
-								else { // se ela era a unica instalacao aberta
-									if(DEBUG >= DISPLAY_ACTIONS){
-										cout << "It was the only open facility. We cannot define a new delta extra cost." << name[n2] << endl;
-									}
+								else { // se ela eh a unica instalacao aberta
+									// if(DEBUG >= DISPLAY_ACTIONS){
+										cout << "It was the only one open facility. We cannot define a new delta extra cost. Fac: " << name[n2] << endl;
+									// }
 									/* 
 									Not possible to have extra_cost because this facility cannot be closed
 									*/
 
-									cout << "AAAAAAA " << endl;
 									extra_cost[qty_moves][name[n2]] = DBL_MAX; // indica invalidez
 
-									// NAO DEVO SALVAR AQUI NADA DO NEAREST?????
+									for (ListBpGraph::IncEdgeIt e(g, n2); e != INVALID; ++e) { // Percorre todas arestas desse nó (ligam a clientes)
+										// colocando ela como inst mais proxima de todos os clientes
+										temp_nearest_fac[g.asRedNode(g.u(e))] = name[n2];
+										temp_c_minX[g.asRedNode(g.u(e))] = assignment_cost[e];
+
+										// indicando invalidez
+										temp_nearest2_fac[g.asRedNode(g.u(e))] = -1;
+										temp_c2_minX[g.asRedNode(g.u(e))] = -1;
+									}
 								}
 							}
 
