@@ -15,8 +15,8 @@ using namespace std;
 
 int main(int argc, char *argv[]){
 
-	if(argc < 10){
-		cout << "Error in the parameters. You must enter 9 parameters" << endl;
+	if(argc < 11){
+		cout << "Error in the parameters. You must enter 10 parameters" << endl;
 		return 0;
 	}
 
@@ -29,6 +29,7 @@ int main(int argc, char *argv[]){
 	int lc2 = stoi(argv[7],nullptr,10); // convertendo argv[7] para inteiro
 	int lo1 = stoi(argv[8],nullptr,10); // convertendo argv[8] para inteiro
 	int lo2 = stoi(argv[9],nullptr,10); // convertendo argv[9] para inteiro
+	int seed = stoi(argv[10],nullptr,10); // convertendo argv[9] para inteiro
 
 	// Arquivo para salvar a solucao
 	ofstream solutionTXT;
@@ -231,7 +232,7 @@ int main(int argc, char *argv[]){
 	solution.local_optimum = false;
 
 	// Chamando a funcao que resolve o problema de fato
-	solution = tabuSearch(solutionName, qty_facilities, qty_clients, costF, costA, solution, a1, lc1, lc2, lo1, lo2);
+	solution = tabuSearch(solutionName, qty_facilities, qty_clients, costF, costA, solution, a1, lc1, lc2, lo1, lo2, seed);
 
 	if(DEBUG >= DISPLAY_BASIC){
 		cout << "Final total cost: " << solution.finalTotalCost << endl;

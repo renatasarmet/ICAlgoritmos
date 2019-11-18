@@ -22,27 +22,19 @@ using namespace std;
 
 #define DEBUG 1 // OPCOES DE DEBUG: 1 - MOSTRAR A QTD DE MOVIMENTOS, 2 PARA EXIBIR OS MOVIMENTOS REALIZADOS, 3 PARA EXIBIR ACOES, 4 PARA EXIBIR DETALHES DAS ACOES, 5 PARA EXIBIR TEMPO, 6 PARA EXIBIR AS MUDANÇAS NO GRAFO
 
-#define TIME_LIMIT 900 //15 minutos
-
-#define TIME_COUNTER_STEP 5 // 5 segundos para testar as inst ga250a //30 // 30 segundos. Isso indicara que vai salvar a melhor solucao encontrada a cada minuto
-
-
 // Retornar o valor da solucao
-solutionType tabuSearch(char * solutionName, int qty_facilities, int qty_clients, double * costF, double * costA, solutionType solution, int a1, int lc1, int lc2, int lo1, int lo2){
+solutionType tabuSearch(char * solutionName, int qty_facilities, int qty_clients, double * costF, double * costA, solutionType solution, int a1, int lc1, int lc2, int lo1, int lo2, int seed){
 
 	cout << fixed;
    	cout.precision(5);
 
    	// Semente do numero aleatorio
-   	srand(0); // depois alterar aqui pra pegar por parametro
+   	srand(seed);
 
 	/* Inicio declaracoes variaveis para calculo de tempo */
 
 	// Declaracao variaveis que indicam o tempo da funcao
 	struct timespec start, finish, time_so_far;
-
-	// Declaracao da variavel que vai indicar o contador para salvar a solucao atual
-	double timeCounter = 0;
 
 	/* Fim declaracoes para calculo de tempo */
 
@@ -390,6 +382,7 @@ solutionType tabuSearch(char * solutionName, int qty_facilities, int qty_clients
 
 	// A partir daqui é loop até acabar a busca
 	while(keep_searching){
+
 		if(DEBUG >= DISPLAY_MOVES){
 			cout << endl << "-------------------------- NEXT MOVE " << qty_moves << " ---------------------------" << endl << endl;
 		}
@@ -528,7 +521,21 @@ solutionType tabuSearch(char * solutionName, int qty_facilities, int qty_clients
 						cout << "Updating the best cost found so far: " << cur_cost << endl;
 					}
 					solution.finalTotalCost = cur_cost;
-					k_last_best = qty_moves;	
+					k_last_best = qty_moves;
+
+					// CHECANDO A CONTAGEM DE TEMPO GASTO ATÉ AGORA
+					clock_gettime(CLOCK_REALTIME, &time_so_far);
+
+					// Calculando o tempo gasto até agora
+					solution.timeSpent =  (time_so_far.tv_sec - start.tv_sec);
+					solution.timeSpent += (time_so_far.tv_nsec - start.tv_nsec) / 1000000000.0; // Necessario para obter uma precisao maior 
+
+					if(DEBUG >= DISPLAY_TIME){
+						cout << "Total time spent so far: " << solution.timeSpent << " seconds" << endl;
+					}
+
+					// Acrescentando no solLog.txt o tempo gasto nessa iteracao e o custo da solucao
+					solLog << solution.timeSpent << "," << solution.finalTotalCost << "," << qty_moves << endl;
 				}
 				else{
 					if(DEBUG >= DISPLAY_ACTIONS){

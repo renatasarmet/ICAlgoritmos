@@ -13,17 +13,19 @@ if __name__ == '__main__':
 	if len(sys.argv) > 1:
 		input_type = sys.argv[1].strip()
 
-		if len(sys.argv) > 6:
+		if len(sys.argv) > 7:
 			a1 = sys.argv[2].strip()
 			lc1 = sys.argv[3].strip()
 			lc2 = sys.argv[4].strip()
 			lo1 = sys.argv[5].strip()
 			lo2 = sys.argv[6].strip()
+			seed = sys.argv[7].strip()
 
 		else: # se eu nao passei por parametro, coloca os padroes
 			a1 = "1" #"2.5"
 			lc1 = lo1 = "10"
 			lc2 = lo2 = "20"
+			seed = "0"
 
 		n_tests = 1
 		initial_sol_rr = False
@@ -65,20 +67,20 @@ if __name__ == '__main__':
 					print()
 					print("Input file:", file_name)
 
-				for seed in range(1,n_tests+1): # Repete n_tests vezes
+				for _seed in range(1,n_tests+1): # Repete n_tests vezes
 
 					input_name = '../baseDeTestes/facilityTestCases/tests/' + file_name
 
 					if initial_sol_rr:
-						initialSolName = 'initialSolutions/' + file_name + "_" + str(seed) + '.sol'
-						solutionName = 'solutions/' + file_name + "_" + str(seed) + '.sol'
+						initialSolName = 'initialSolutions/' + file_name + "_" + str(_seed) + '.sol'
+						solutionName = 'solutions/' + file_name + "_" + str(_seed) + '.sol'
 
 					else:
 						initialSolName = 'initialSolutions/' + file_name + '.sol'
 						solutionName = 'solutions/' + file_name + '.sol'
 
 					# Chamando o programa a ser testado
-					os.system(EXE + " " + input_name + " " + initialSolName + " " + solutionName + " " + input_type + " " + a1 + " " + lc1 + " " + lc2 + " " + lo1 + " " + lo2)
+					os.system(EXE + " " + input_name + " " + initialSolName + " " + solutionName + " " + input_type + " " + a1 + " " + lc1 + " " + lc2 + " " + lo1 + " " + lo2 + " " + seed)
 
 	else:
 		print('This test requires an input type and an LS type. \nFirst please select one: 1 for ORLIB inputs or 2 for SIMPLE FORMAT inputs.')
