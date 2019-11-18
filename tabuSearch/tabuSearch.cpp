@@ -14,9 +14,6 @@ using namespace lemon;
 using namespace std;
 
 
-// QUANDO ESTÁ NO CASO DE SÓ 1 INSTALACAO ABERTA, TA TUDO ERRADO
-
-
 // DEFINIR MELHOR O QUE SERIA ESSE itr_limit ... ELE NAO EXISTE NO ALGORITMO, POREM PRECISO SABER O TAMANHO Q VOU ALOCAR.. talvez ele estaria definido relacionado a a1??
 
 // EU SO PRECISO SALVAR O DELTA (extra_cost) ATUAL E O ANTERIOR.... SERA ENTAO QUE NAO DA PRA FAZER UMA MATRIZ COM SÓ DUAS LINHAS? ASSIM NAO PRECISO GASTAR TANTO ESPACO E NAO PRECISO TER DEFINIDO O itr_limit
@@ -29,7 +26,7 @@ using namespace std;
 #define DISPLAY_TIME 5 // corresponde aos calculos de tempo 
 #define DISPLAY_GRAPH 6 // corresponde a descricao dos clientes, instalacoes e arcos
 
-#define DEBUG 3 // OPCOES DE DEBUG: 1 - MOSTRAR A QTD DE MOVIMENTOS, 2 PARA EXIBIR OS MOVIMENTOS REALIZADOS, 3 PARA EXIBIR ACOES, 4 PARA EXIBIR DETALHES DAS ACOES, 5 PARA EXIBIR TEMPO, 6 PARA EXIBIR AS MUDANÇAS NO GRAFO
+#define DEBUG 1 // OPCOES DE DEBUG: 1 - MOSTRAR A QTD DE MOVIMENTOS, 2 PARA EXIBIR OS MOVIMENTOS REALIZADOS, 3 PARA EXIBIR ACOES, 4 PARA EXIBIR DETALHES DAS ACOES, 5 PARA EXIBIR TEMPO, 6 PARA EXIBIR AS MUDANÇAS NO GRAFO
 
 #define TIME_LIMIT 900 //15 minutos
 
@@ -409,9 +406,11 @@ solutionType tabuSearch(char * solutionName, int qty_facilities, int qty_clients
 		best_extra_cost = DBL_MAX; // limitante superior, maior double possivel
 		fac_best_extra_cost = -1; // indica invalidez
 		for(int i=0;i<qty_facilities;i++){
-			if((extra_cost[qty_moves][i] < best_extra_cost) && ( !flag[i] )){ // se essa for menor do que a ja encontrada ate agr e nao estiver marcada, atualiza
-				best_extra_cost = extra_cost[qty_moves][i];
-				fac_best_extra_cost = i;
+			if(!((open[facilities[i]])&&(n1 == 1))){ // se ela nao for a unica instalacao aberta
+				if((extra_cost[qty_moves][i] < best_extra_cost) && ( !flag[i] )){ // se essa for menor do que a ja encontrada ate agr e nao estiver marcada, atualiza
+					best_extra_cost = extra_cost[qty_moves][i];
+					fac_best_extra_cost = i;
+				}
 			}
 		}
 
@@ -598,12 +597,11 @@ solutionType tabuSearch(char * solutionName, int qty_facilities, int qty_clients
 								}
 								else { // se ela era a unica instalacao aberta
 									if(DEBUG >= DISPLAY_ACTIONS){
-										cout << "It was the only open facility. We need to recompute the delta extra cost." << name[n2] << endl;
+										cout << "It was the only one open facility. We need to recompute the delta extra cost. Fac: " << name[n2] << endl;
 									}
 									/* 
 									Recomputing extra_cost
 									*/
-
 									extra_cost[qty_moves][name[n2]] = -f[n2]; // inicia com o ganho ao fechar essa inst
 
 									for (ListBpGraph::IncEdgeIt e(g, n2); e != INVALID; ++e) { // Percorre todas arestas desse nó (ligam a clientes)
@@ -633,10 +631,10 @@ solutionType tabuSearch(char * solutionName, int qty_facilities, int qty_clients
 												// Updating d2
 												temp_nearest2_fac[g.asRedNode(g.u(e))] = fac_best_extra_cost;
 												temp_c2_minX[g.asRedNode(g.u(e))] = aux_cij;
-											}
 
-											// Complementa com o ganho de reatribuicao
-											extra_cost[qty_moves][name[n2]] += c2_minX[g.asRedNode(g.u(e))] - assignment_cost[e];
+												// Complementa com o ganho de reatribuicao
+												extra_cost[qty_moves][name[n2]] += temp_c2_minX[g.asRedNode(g.u(e))] - assignment_cost[e];
+											}
 										}
 									}
 								}
