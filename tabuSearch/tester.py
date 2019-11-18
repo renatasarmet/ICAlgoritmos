@@ -25,7 +25,7 @@ if __name__ == '__main__':
 			a1 = "1" #"2.5"
 			lc1 = lo1 = "10"
 			lc2 = lo2 = "20"
-			itr_limit = "20" # ????????
+			itr_limit = "16" # ????????
 
 		n_tests = 1
 		initial_sol_rr = False

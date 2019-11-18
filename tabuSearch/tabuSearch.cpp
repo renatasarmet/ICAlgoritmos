@@ -26,7 +26,7 @@ using namespace std;
 #define DISPLAY_TIME 5 // corresponde aos calculos de tempo 
 #define DISPLAY_GRAPH 6 // corresponde a descricao dos clientes, instalacoes e arcos
 
-#define DEBUG 2 // OPCOES DE DEBUG: 1 - MOSTRAR A QTD DE MOVIMENTOS, 2 PARA EXIBIR OS MOVIMENTOS REALIZADOS, 3 PARA EXIBIR ACOES, 4 PARA EXIBIR DETALHES DAS ACOES, 5 PARA EXIBIR TEMPO, 6 PARA EXIBIR AS MUDANÇAS NO GRAFO
+#define DEBUG 1 // OPCOES DE DEBUG: 1 - MOSTRAR A QTD DE MOVIMENTOS, 2 PARA EXIBIR OS MOVIMENTOS REALIZADOS, 3 PARA EXIBIR ACOES, 4 PARA EXIBIR DETALHES DAS ACOES, 5 PARA EXIBIR TEMPO, 6 PARA EXIBIR AS MUDANÇAS NO GRAFO
 
 #define TIME_LIMIT 900 //15 minutos
 
@@ -342,9 +342,6 @@ solutionType tabuSearch(char * solutionName, int qty_facilities, int qty_clients
 	int nearest3_open_fac = -1;
 	double aux_cij3 = -1;
 
-	// Indica qual foi o caso do movimento
-	int move_case;
-
 	// cout <<"Initial assigned facilities" << endl;
 	// for(ListBpGraph::RedNodeIt n_cli(g); n_cli != INVALID; ++n_cli){		// percorre os clientes
 	// 	cout << "Client " << name[n_cli] << ": " << solution.assigned_facilities[name[n_cli]] << endl; 
@@ -376,28 +373,18 @@ solutionType tabuSearch(char * solutionName, int qty_facilities, int qty_clients
 
 
 
-	cout << "TESTE SE A SOLUCAO TA CERTA" << endl;
-	double coost = 0;
-	for(ListBpGraph::BlueNodeIt n(g); n != INVALID; ++n){		// percorre as instalacoes
-		if(open[n]){
-			coost += f[n];
-		}
-	}
-	for(ListBpGraph::RedNodeIt n(g); n != INVALID; ++n){		// percorre as instalacoes
-		coost += c_minX[n];
-	}
-	cout << "CUSTO INICIAL REAL: " << coost << endl;
+	// cout << "TESTE SE A SOLUCAO TA CERTA" << endl;
+	// double coost = 0;
 
+	// for (itr = open_facilities.begin(); itr != open_facilities.end(); ++itr) { // percorrer todas as inst abertas
+	// 	coost += f[facilities[*itr]];
+	// }
 
+	// for(ListBpGraph::RedNodeIt n(g); n != INVALID; ++n){		// percorre as instalacoes
+	// 	coost += assignment_cost[findEdge(g, n, facilities[solution.assigned_facilities[name[n]]])]; 
+	// }
 
-
-
-
-
-
-
-
-
+	// cout << "CUSTO INICIAL REAL: " << coost << endl;
 
 
 
@@ -406,7 +393,7 @@ solutionType tabuSearch(char * solutionName, int qty_facilities, int qty_clients
 
 	// A partir daqui é loop até acabar a busca
 	while(keep_searching){
-		if(DEBUG >= DISPLAY_ACTIONS){
+		if(DEBUG >= DISPLAY_MOVES){
 			cout << endl << "-------------------------- NEXT MOVE " << qty_moves << " ---------------------------" << endl << endl;
 		}
 
@@ -500,9 +487,11 @@ solutionType tabuSearch(char * solutionName, int qty_facilities, int qty_clients
 			*/
 
 			if(lets_move){
+
 				if(DEBUG >= DISPLAY_MOVES){
 					cout << "Lets move!" << endl;
 				}
+
 
 				// Restaurando 
 				lets_move = false;
@@ -534,19 +523,14 @@ solutionType tabuSearch(char * solutionName, int qty_facilities, int qty_clients
 						cout << "Updating the best cost found so far: " << cur_cost << endl;
 					}
 					solution.finalTotalCost = cur_cost;
-					k_last_best = qty_moves;
-
-					// for(ListBpGraph::RedNodeIt n_cli(g); n_cli != INVALID; ++n_cli){		// percorre os clientes
-					// 	// SALVANDO A SOLUCAO NOVA
-					// 	solution.assigned_facilities[name[n_cli]] = nearest_open_fac[n_cli]; // salvando alteracoes sobre a inst mais proxima na solucao final
-					// 	cout << "new Client " << name[n_cli] << ": " << solution.assigned_facilities[name[n_cli]] << endl; 
-					// }		
+					k_last_best = qty_moves;	
 				}
 				else{
 					if(DEBUG >= DISPLAY_MOVES){
 						cout << "IT IS NOT BETTER. current cost: " << cur_cost << endl;
 					}
 				}
+
 
 				/* 
 				STEP 4
@@ -558,7 +542,6 @@ solutionType tabuSearch(char * solutionName, int qty_facilities, int qty_clients
 
 				// If the facility was closed and we opened
 				if(open[facilities[fac_best_extra_cost]]){
-					move_case = 1; 
 
 					if(DEBUG >= DISPLAY_ACTIONS){
 						cout << "The facility was closed and we opened. Lets update delta extra cost from other facilities" << endl;
@@ -570,7 +553,7 @@ solutionType tabuSearch(char * solutionName, int qty_facilities, int qty_clients
 							// Open facilities after another facility opened
 							if(open[n2]){ // se a instalacao 2 está aberta
 
-								if(DEBUG >= DISPLAY_ACTIONS){
+								if(DEBUG >= DISPLAY_DETAILS){
 									cout << "OPEN FACILITY: " << name[n2] << endl;
 								}
 								if(n1 > 2){ // se ela nao era a unica instalacao aberta (entao extra_cost[qty_moves - 1] está definido)
@@ -658,7 +641,7 @@ solutionType tabuSearch(char * solutionName, int qty_facilities, int qty_clients
 
 							// Closed facilities after another facility opened
 							else{ // se a instalacao 2 está fechada 
-								if(DEBUG >= DISPLAY_ACTIONS){
+								if(DEBUG >= DISPLAY_DETAILS){
 									cout << "CLOSED FACILITY: " << name[n2] << endl;
 								}
 
@@ -713,19 +696,17 @@ solutionType tabuSearch(char * solutionName, int qty_facilities, int qty_clients
 
 				// Else, if the facility was opened and we closed
 				else{
-					move_case = 2;
 
 					if(DEBUG >= DISPLAY_ACTIONS){
 						cout << "The facility was opened and we closed. Lets update delta extra cost from other facilities" << endl;
 					}
-
 					for(ListBpGraph::BlueNodeIt n2(g); n2 != INVALID; ++n2){		// percorre as instalacoes
 						if(name[n2]!=fac_best_extra_cost){ // se nao for exatamente a inst que eu estou abrindo
 
 							// Open facilities after another facility closed
 							if(open[n2]){ // se a instalacao 2 está aberta
 
-								if(DEBUG >= DISPLAY_ACTIONS){
+								if(DEBUG >= DISPLAY_DETAILS){
 									cout << "OPEN FACILITY: " << name[n2] << endl;
 								}
 
@@ -741,7 +722,6 @@ solutionType tabuSearch(char * solutionName, int qty_facilities, int qty_clients
 										// Se for Tj1 ou Tj2
 										// Tj1 = {i | di1 = j' ^ di2 = j} 		// Tj2 = {i | di1 = j ^ di2 = j'}
 										if(((nearest_open_fac[g.asRedNode(g.u(e))] == fac_best_extra_cost) && (nearest2_open_fac[g.asRedNode(g.u(e))] == name[n2])) || ((nearest_open_fac[g.asRedNode(g.u(e))] == name[n2]) && (nearest2_open_fac[g.asRedNode(g.u(e))] == fac_best_extra_cost))) { // se estou fechando a mais proxima e n2 é a segunda mais proxima (Tj1)
-
 											/*
 											Defining nearest3_open_fac e c3_minX
 											*/
@@ -762,7 +742,7 @@ solutionType tabuSearch(char * solutionName, int qty_facilities, int qty_clients
 											// Se for Tj1
 											// Tj1 = {i | di1 = j' ^ di2 = j}
 											if((nearest_open_fac[g.asRedNode(g.u(e))] == fac_best_extra_cost) && (nearest2_open_fac[g.asRedNode(g.u(e))] == name[n2])){ // se estou fechando a mais proxima e n2 é a segunda mais proxima (Tj1)
-												extra_cost[qty_moves][name[n2]] += c3_minX - c_minX[g.asRedNode(g.u(e))];
+												extra_cost[qty_moves][name[n2]] += c3_minX - assignment_cost[e];
 
 												// Updating d1 --> dj2 (nearest2)
 												temp_nearest_fac[g.asRedNode(g.u(e))] = nearest2_open_fac[g.asRedNode(g.u(e))];
@@ -797,13 +777,12 @@ solutionType tabuSearch(char * solutionName, int qty_facilities, int qty_clients
 									extra_cost[qty_moves][name[n2]] = DBL_MAX; // indica invalidez
 
 									// NAO DEVO SALVAR AQUI NADA DO NEAREST?????
-
 								}
 							}
 
 							// Closed facilities after another facility closed
 							else{ // se a instalacao 2 está fechada 
-								if(DEBUG >= DISPLAY_ACTIONS){
+								if(DEBUG >= DISPLAY_DETAILS){
 									cout << "CLOSED FACILITY: " << name[n2] << endl;
 								}
 
@@ -873,6 +852,7 @@ solutionType tabuSearch(char * solutionName, int qty_facilities, int qty_clients
 					// 		extra_cost[qty_moves][fac_best_extra_cost] += assignment_cost[e] - temp_c_minX[g.asRedNode(g.u(e))];
 					// 	}
 					// }
+
 				}
 
 				/*
@@ -887,17 +867,17 @@ solutionType tabuSearch(char * solutionName, int qty_facilities, int qty_clients
 	 					nearest2_open_fac[n_cli] = temp_nearest2_fac[n_cli];
 	 					c2_minX[n_cli] = temp_c2_minX[n_cli];
 
-	 					// Se a solucao final foi atualizada nessa iteracao
-	 					if(k_last_best == qty_moves){
-	 						// SALVANDO A SOLUCAO NOVA
-							solution.assigned_facilities[name[n_cli]] = nearest_open_fac[n_cli]; // salvando alteracoes sobre a inst mais proxima na solucao final
-	 					}
-
 	 					temp_nearest_fac[n_cli] = -1; // resetando
+ 					}
+
+ 					// Se a solucao final foi atualizada nessa iteracao
+ 					if(k_last_best == qty_moves){ 
+ 						// SALVANDO A SOLUCAO NOVA
+						solution.assigned_facilities[name[n_cli]] = nearest_open_fac[n_cli]; // salvando alteracoes sobre a inst mais proxima na solucao final
  					}
 				}
 
-
+				
 				// Se ainda nao atingiu a condicao de parada respectivo ao a1
 				if(qty_moves - k_last_best <= a1 * qty_facilities){
 					/* 
@@ -928,286 +908,6 @@ solutionType tabuSearch(char * solutionName, int qty_facilities, int qty_clients
 			}
 		}
 	}
-
-	
-
-
-
-
-	// // ****** A partir daqui deve estar em um loop até nao ter mais melhoras possiveis, isto é, encontrar o otimo local
-
-	// // OBSERVACAO 1: tambem existe uma condicao de parada relacionada a tempo, feita logo no inicio do loop
-	// // OBSERVACAO 2: solution.local_optimum (variavel que indica se ja encontramos o otimo local) foi inicializado com valor falso na leitura da solução inicial (handlesInput.cpp)
-
-	// while(!solution.local_optimum){
-
-	// 	// CHECANDO A CONTAGEM DE TEMPO GASTO ATÉ AGORA
-	// 	clock_gettime(CLOCK_REALTIME, &time_so_far);
-
-	// 	// Calculando o tempo gasto até agora
-	// 	solution.timeSpent =  (time_so_far.tv_sec - start.tv_sec);
-	// 	solution.timeSpent += (time_so_far.tv_nsec - start.tv_nsec) / 1000000000.0; // Necessario para obter uma precisao maior 
-
-	// 	if(DEBUG >= DISPLAY_TIME){
-	// 		cout << "Total time spent so far: " << solution.timeSpent << " seconds" << endl;
-	// 	}
-
-	// 	// Se já passou o tempo limite, devemos parar
-	// 	if(solution.timeSpent >= TIME_LIMIT){
-	// 		// Acrescentando no solLog.txt o tempo final gasto nas iteracoes e o custo da solucao
-	// 		solLog << solution.timeSpent << "," << solution.finalTotalCost << "," << qty_moves << endl;
-
-	// 		break;
-	// 	}
-	// 	else if(solution.timeSpent >= timeCounter){
-	// 		// aumentando o contador de tempo
-	// 		timeCounter += TIME_COUNTER_STEP;
-
-	// 		// Acrescentando no solLog.txt o tempo gasto nessa iteracao e o custo da solucao
-	// 		solLog << solution.timeSpent << "," << solution.finalTotalCost << "," << qty_moves << endl;
-	// 	}
-
-	// 	if(DEBUG >= DISPLAY_ACTIONS){
-	// 		cout << endl << "------------------------------ NEXT MOVE ------------------------------" << endl << endl;
-	// 	}
-		
-	// 	// Primeiramente vamos percorrer todas as instalacoes
-	// 	// Caso a instalacao esteja aberta, vamos tentar fechá-la e ver se há alguma melhora
-	// 	// Lembrando que temos que reatribuir todas os clientes a ela conectados, mudando para a prox inst mais proxima
-	// 	// Se houver melhora no custo total, efetuamos de fato a operacao
-	// 	// Da mesma forma, caso a instalacao esteja fechada, vamos tentar abri-la e ver se melhora
-	// 	// Lembrando que temos que buscar todos os clientes que possuem ela como inst aberta mais proxima para conecta-los
-	// 	// Esse teste sera sequencialmente feito com um for ate o final de percorrer as instalacoes
-	// 	// Apos isso, caso tenha encontrado alguma melhora, parte para a proxima iteracao do while e o for será repetido
-	// 	// Caso nenhuma melhora tenha sido encontrada, parte para o caso da troca
-
-	// 	// Apos testar todas as opcoes de add e delete e nada melhorar a solucao, vamos tentar a troca
-	// 	// Portanto havera um outro for, embaixo desse primeiro for, ainda dentro do while, no qual percorrera todas as inst
-	// 	// Caso a inst esteja aberta tenta fechar ela e haverá um for inteiro para tentar abrir as instalacoes SUBSEQUENTES (nao precisa repetir as anteriores, mas nao sei se consigo fazer isso no iterator) que estao fechadas atualmente
-	// 	// Caso esse movimento de troca resulte em uma melhora, será de fato feita a operacao
-	// 	// Do contrario, continuará percorrendo o for interno na busca por abrir a proxima inst fechada
-	// 	// Se nenhuma for encontrada, vai para a proxima iteracao do for externo e repete o processo
-	// 	// OBSERVAÇÃO IMPORTANTE: Quando encontrar o primeiro caso de troca bem sucedido, esse for para imediatamente, indo para a proxima iteracao do while
-	// 	// Assim serao testados novamente os movimentos de add ou delete, que sao mais simples
-	// 	// Só voltando novamente para a troca caso nenhum add nem delete melhore nada
-	// 	// OBSERVAÇÃO IMPORTANTE 2: Quando em nenhum caso de troca for encontrado melhora, encontramos de fato o minimo local!! E o while deve terminar
-
-
-	// 	// Podemos considerar que inicialmente estamos no otimo local ate que se prove o contrario. 
-	// 	// Entao, vou percorrer todas as instalacoes e, caso eu encontre alguma melhora no percurso, modifico esse otimo local para falso
-	// 	// Na proxima iteracao volto a considerar que estamos no otimo local e repito o processo
-	// 	// No momento que eu percorrer todas as instalacoes e nenhuma conseguir melhorar nada, entao eu realmente estava no otimo local e finalizo o while
-	// 	// Encaixando a operação de troca, será um for logo depois desse primeiro for, que só ira entrar caso finalize o primeiro for com solution.local_optimum = true, pois indica que nada melhorou por ali
-	// 	solution.local_optimum = true; 
-
-	// 	// VIZINHANCA 1: ABRIR OU FECHAR UMA INSTALACAO
-	// 	for(ListBpGraph::BlueNodeIt n(g); n != INVALID; ++n){		// percorre as instalacoes
-
-	// 		if(DEBUG >= DISPLAY_ACTIONS){
-	// 			cout << "Let's move facility " << name[n] << endl;
-	// 		}
-
-	// 		if(open[n]){ // caso a inst esteja aberta
-
-	// 			if(DEBUG >= DISPLAY_ACTIONS){
-	// 				cout << "It is OPEN, let's close it" << endl;
-	// 			}
-
-	// 			if(open_facilities.size() <= 1){
-	// 				if(DEBUG >= DISPLAY_ACTIONS){
-	// 					cout << "Sorry, you can't close it because it is the only one that is open." << endl;
-	// 				}
-	// 			}
-	// 			else{
-	// 				// Vamos fechar essa instalacao
-
-	// 				extra_cost2 = -f[n]; // subtrai o custo de abertura dessa inst
-
-	// 				for(ListBpGraph::RedNodeIt n_cli(g); n_cli != INVALID; ++n_cli){		// percorre os clientes
-
-	// 					if(nearest_open_fac[n_cli] == name[n]){ // caso esse cliente esteja conectado a essa instalacao
-
-	// 						if(c2_minX[n_cli] >= 0){ // CASO EXISTA A SEGUNDA INST MAIS PROXIMA SALVA
-
-	// 							// Atualizamos o custo extra, subtraindo o custo de atribuicao da antiga inst e somando o custo com a nova
-	// 							extra_cost2 += c2_minX[n_cli] - c_minX[n_cli];
-
-	// 							if(DEBUG >= DISPLAY_ACTIONS){
-	// 								cout << "client: " << name[n_cli] << " new nearest facility " << nearest2_open_fac[n_cli] << endl;
-	// 							}
-	// 						}
-	// 						else{
-	// 							if(DEBUG >= DISPLAY_ACTIONS){
-	// 								cout << "You shouldn't be here. There is just 1 open facility and you want to close it." << endl;
-	// 							}
-	// 							continue; // vai para a proxima iteracao
-	// 						}
-	// 					}
-	// 				}
-
-	// 				if(DEBUG >= DISPLAY_ACTIONS){
-	// 					cout << "--- EXTRA COST: " << extra_cost2 << endl;
-	// 				}
-
-	// 				// Caso melhore o custo total final, vamos efetuar de fato essa alteracao
-	// 				if(extra_cost2 < 0){
-
-	// 					if(DEBUG >= DISPLAY_ACTIONS){
-	// 						cout << "YEEES THE COST IS BETTER, LET'S DO IT " << endl;
-	// 					}
-
-	// 					if(DEBUG >= DISPLAY_MOVES){
-	// 						cout << "Move CLOSE facility: "<< name[n] << endl;
-	// 					}
-
-	// 					qty_moves += 1;
-
-	// 					for(ListBpGraph::RedNodeIt n_cli(g); n_cli != INVALID; ++n_cli){		// percorre os clientes
-
-	// 						closed_nearest = false;
-
-	// 						if(nearest_open_fac[n_cli] == name[n]){ // caso esse cliente esteja conectado a essa instalacao
-
-	// 							closed_nearest = true;
-
-	// 							if(DEBUG >= DISPLAY_ACTIONS){
-	// 								cout << "changing client: " << name[n_cli] << " nearest facility " << name[n] << endl;
-	// 							}
-
-	// 							// ATUALIZANDO AQUI A INST MAIS PROXIMA
-	// 							nearest_open_fac[n_cli] = nearest2_open_fac[n_cli]; // reatribuindo com a nova inst mais proxima
-	// 							c_minX[n_cli] = c2_minX[n_cli]; // atualizando o menor cij desse cli
-
-	// 							// SALVANDO A SOLUCAO NOVA
-	// 							solution.assigned_facilities[name[n_cli]] = nearest_open_fac[n_cli]; // salvando alteracoes sobre a inst mais proxima na solucao final
-	// 						}
-
-	// 						if((closed_nearest)||(nearest2_open_fac[n_cli] == name[n])){ // caso esse cliente tinha essa instalacao como primeira ou segunda mais proxima
-	// 							// ATUALIZANDO AQUI A SEGUNDA MAIS PROXIMA
-	// 							c2_minX[n_cli] = biggestCij + 1; // limitante superior tranquilo
-
-	// 							for (itr = open_facilities.begin(); itr != open_facilities.end(); ++itr) { // percorrer todas as inst abertas
-	// 								aux_cij = assignment_cost[findEdge(g, n_cli, facilities[*itr])];
-	// 								if((aux_cij < c2_minX[n_cli]) && (*itr != nearest_open_fac[n_cli]) && (*itr != name[n])){ // se for melhor que o salvo ate agr, mas nao melhor que o melhor de todos nem da que vai fechar
-	// 									nearest2_open_fac[n_cli] = *itr;
-	// 									c2_minX[n_cli] = aux_cij;
-	// 								}
-	// 							}
-	// 							if(c2_minX[n_cli] > biggestCij){ // se só tinha 1 inst aberta depois do fechamento dessa iteracao, entao colocamos -1 para indicar invalidez
-	// 								if(DEBUG >= DISPLAY_ACTIONS){
-	// 									cout << "There is just 1 open facility" << endl;
-	// 								}
-	// 								c2_minX[n_cli] = -1;
-	// 								nearest2_open_fac[n_cli] = -1;
-	// 							}
-	// 						}
-	// 					}
-
-	// 					open[n] = false; // fechando de fato a instalacao
-	// 					open_facilities.erase(name[n]);
-	// 					closed_facilities.insert(name[n]);
-
-	// 					solution.finalTotalCost += extra_cost2; // Atualizando o custo total final
-
-	// 					solution.local_optimum = false; // Como encontrei uma melhora, entao eu nao estava no otimo local, portanto o while deve continuar
-	// 				}
-	// 				else {
-	// 					if(DEBUG >= DISPLAY_ACTIONS){
-	// 						cout << "NO! IT GOT WORSE" << endl;
-	// 					}
-	// 				}
-	// 			}
-	// 		}
-
-	// 		else { // caso a inst esteja fechada
-
-	// 			if(DEBUG >= DISPLAY_ACTIONS){
-	// 				cout <<"It is CLOSED, let's open it" << endl;
-	// 			}
-
-	// 			// Vamos abrir essa instalacao
-
-	// 			extra_cost2 = f[n]; // soma o custo de abertura dessa inst
-
-	// 			for (ListBpGraph::IncEdgeIt e(g, n); e != INVALID; ++e) { // Percorre todas arestas desse nó (ligam a clientes)
-
-	// 				if(assignment_cost[e] < c_minX[g.asRedNode(g.u(e))]){ // caso a nova inst seja a mais proxima aberta desse cliente
-
-	// 					if(DEBUG >= DISPLAY_ACTIONS){
-	// 						cout << "client: " << name[g.u(e)] << " new nearest facility " << name[n] << endl;
-	// 					}
-			
-	// 					temp_nearest_fac[g.asRedNode(g.u(e))] = name[n]; // atualizando a inst mais perto temporaria
-
-	// 					// Atualizamos o custo extra, subtraindo o custo de atribuicao da antiga inst e somando o custo com a nova
-	// 					extra_cost2 += assignment_cost[e] - c_minX[g.asRedNode(g.u(e))];
-	// 				}
-	// 				else { // senao, caso a nova inst nao seja mais proxima
-	// 					temp_nearest_fac[g.asRedNode(g.u(e))] = nearest_open_fac[g.asRedNode(g.u(e))]; // colocando isso apenas para uso posterior na checagem nao haver lixo
-	// 				}
-	// 			}
-
-	// 			if(DEBUG >= DISPLAY_ACTIONS){
-	// 				cout << "--- EXTRA COST: " << extra_cost2 << endl;
-	// 			}
-
-	// 			// Caso melhore o custo total final, vamos efetuar de fato essa alteracao
-	// 			if(extra_cost2 < 0){
-
-	// 				if(DEBUG >= DISPLAY_ACTIONS){
-	// 					cout << "YEEES THE COST IS BETTER, LET'S DO IT " << endl;
-	// 				}
-
-	// 				if(DEBUG >= DISPLAY_MOVES){
-	// 					cout << "Move OPEN facility: "<< name[n] << endl;
-
-	// 				}
-
-	// 				qty_moves += 1;
-
-	// 				for(ListBpGraph::RedNodeIt n_cli(g); n_cli != INVALID; ++n_cli){		// percorre os clientes
-
-	// 					aux_cij = assignment_cost[findEdge(g, n_cli, n)];
-
-	// 					if(nearest_open_fac[n_cli] != temp_nearest_fac[n_cli]) { // caso esse cliente seja mais proximo dessa nova instalacao
-	// 						if(DEBUG >= DISPLAY_ACTIONS){
-	// 							cout << "changing client: " << name[n_cli] << " nearest facility " << name[n] << endl;
-	// 						}
-
-	// 						// ATUALIZANDO A SEGUNDA INST MAIS PROXIMA
-	// 						nearest2_open_fac[n_cli] = nearest_open_fac[n_cli];
-	// 						c2_minX[n_cli] = c_minX[n_cli];
-
-	// 						// ATUALIZANDO A INSTALACAO MAIS PROXIMA
-	// 						nearest_open_fac[n_cli] = name[n]; // reatribuindo com a nova inst mais proxima
-	// 						c_minX[n_cli] = aux_cij; // atualizando o menor cij desse cli
-
-	// 						solution.assigned_facilities[name[n_cli]] = nearest_open_fac[n_cli]; // salvando alteracoes na solucao final
-	// 					}
-	// 					else if((aux_cij < c2_minX[n_cli])||(c2_minX[n_cli] < 0)) { // senao, caso esse cliente tenha essa nova instalacao como segunda mais proxima (ou nao existia segunda mais proxima)
-	// 						// ATUALIZANDO A SEGUNDA INST MAIS PROXIMA
-	// 						nearest2_open_fac[n_cli] = name[n];
-	// 						c2_minX[n_cli] = aux_cij;
-	// 					}
-	// 				}
-
-	// 				open[n] = true; // abrindo de fato a instalacao
-	// 				closed_facilities.erase(name[n]);
-	// 				open_facilities.insert(name[n]);
-
-	// 				solution.finalTotalCost += extra_cost2; // Atualizando o custo total final
-
-	// 				solution.local_optimum = false; // Como encontrei uma melhora, entao eu nao estava no otimo local, portanto o while deve continuar
-	// 			}
-	// 			else {
-	// 				if(DEBUG >= DISPLAY_ACTIONS){
-	// 					cout << "NO! IT GOT WORSE" << endl;
-	// 				}
-	// 			}
-	// 		}
-	// 	}
-	// }
-
 
 	// FINALIZANDO A CONTAGEM DE TEMPO DA FUNCAO
 	clock_gettime(CLOCK_REALTIME, &finish);
