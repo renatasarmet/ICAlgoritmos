@@ -3,7 +3,7 @@ import numpy
 import os
 import sys
 
-def get_solutions(file_location,initial_sol_rr):
+def get_solutions(file_location, initial_sol_rr, pp_type):
 	with open(file_location, 'r') as input_csv_data_file:
 		input_csv_data = input_csv_data_file.read()
 
@@ -13,18 +13,26 @@ def get_solutions(file_location,initial_sol_rr):
 	solution_list = []
 
 	if not initial_sol_rr: # if the initial solution does not come from RR
+		if pp_type == 1: # represents cost
+			index = 1
+		else: # represents time
+			index = 2 
 		for file in files_test:
 			elements = file.split(",")
 
 			if len(elements) > 1 : # not to count any empty lines you might have
-				solution_list.append(elements[1]) # get the cost of the solution
+				solution_list.append(elements[index]) # get the cost of the solution
 
 	else: # if the initial solution comes from RR
+		if pp_type == 1: # represents cost
+			index = 3
+		else: # represents time
+			index = 6
 		for file in files_test:
 			elements = file.split(",")
 
 			if len(elements) > 1 : # not to count any empty lines you might have
-				solution_list.append(elements[3]) # get the average solution cost
+				solution_list.append(elements[index]) # get the average solution cost
 
 	return solution_list
 
@@ -34,7 +42,6 @@ def calculate_best(solutions):
 
 	for i in range(len(solutions[0])): # scroll through each instance
 		best.append(float("inf")) # starts with an infinite value
-		
 		for alg in solutions: # scroll through algorithm types
 			if float(alg[i]) < best[-1]: # updates the value of the best solution for this instance
 				best[-1] = float(alg[i])
@@ -75,28 +82,52 @@ def prepare_graphic(x_values,solutions, distances):
 
 if __name__ == '__main__':
 
+	if len(sys.argv) > 1:
+		pp_type = int(sys.argv[1].strip()) # 1 - cost, 2 - time
+		if(pp_type == 1):
+			print("Performance Profile - Cost")
+		else:
+			print("Performance Profile - Time")
+	else:
+		print("Performance Profile - Cost")
+		pp_type = 1; # default is cost 
+
 	ZOOM = -1 # Used if you want to zoom the graph, ignoring the maximum value found in the solution. Note: use -1 if you do not want to zoom or set the desired maximum value
 
 	solutions = [] # it will store the solutions of each algorithm
 	legend = [] # it will indicate the order of the caption on the graph
 
 	# Getting csv solution information from each algorithm
-	solutions.append(get_solutions("gurobi/solutionsTrivial.csv", False))
-	legend.append("Trivial")
-	solutions.append(get_solutions("greedy/solutions.csv", False))
+	# solutions.append(get_solutions("gurobi/solutionsTrivial.csv", False, pp_type))
+	# legend.append("Trivial")
+	# solutions.append(get_solutions("greedy/solutions.csv", False, pp_type))
+	# legend.append("Greedy")
+	# solutions.append(get_solutions("randomizedRounding/solutions.csv", True, pp_type))
+	# legend.append("Randomized Rounding")
+	# solutions.append(get_solutions("primalDual/solutions.csv",False, pp_type))
+	# legend.append("Primal Dual")
+	# solutions.append(get_solutions("localSearch/solutionsTrivial.csv",False, pp_type))
+	# legend.append("LS - Trivial")
+	# solutions.append(get_solutions("localSearch/solutionsGreedy.csv",False, pp_type))
+	# legend.append("LS - Greedy")
+	# solutions.append(get_solutions("localSearch/solutionsRR.csv",True, pp_type))
+	# legend.append("LS - RR")
+	# solutions.append(get_solutions("localSearch/solutionsDual.csv",False, pp_type))
+	# legend.append("LS - PD")
+
+	# testing just ga250a instances
+	solutions.append(get_solutions("greedy/solutions.csv", False, pp_type))
 	legend.append("Greedy")
-	solutions.append(get_solutions("randomizedRounding/solutions.csv", True))
-	legend.append("Randomized Rounding")
-	solutions.append(get_solutions("primalDual/solutions.csv",False))
-	legend.append("Primal Dual")
-	solutions.append(get_solutions("localSearch/solutionsTrivial.csv",False))
-	legend.append("LS - Trivial")
-	solutions.append(get_solutions("localSearch/solutionsGreedy.csv",False))
-	legend.append("LS - Greedy")
-	solutions.append(get_solutions("localSearch/solutionsRR.csv",True))
-	legend.append("LS - RR")
-	solutions.append(get_solutions("localSearch/solutionsDual.csv",False))
-	legend.append("LS - PD")
+	solutions.append(get_solutions("localSearch/solutions_LS_G_N1.csv",False, pp_type))
+	legend.append("LS_G_N1")
+	solutions.append(get_solutions("localSearch/solutions_LS_G_N2.csv",False, pp_type))
+	legend.append("LS_G_N2")
+	solutions.append(get_solutions("localSearch/solutions_LS_G.csv",False, pp_type))
+	legend.append("LS_G")
+	solutions.append(get_solutions("tabuSearch/solutionsGreedy.csv",False, pp_type))
+	legend.append("TS_G")
+	solutions.append(get_solutions("tabuSearch/solutionsTrivial.csv",False, pp_type))
+	legend.append("TS_T")
 
 	# Saving the best solution for each instance
 	best_solutions = calculate_best(solutions)
@@ -115,7 +146,7 @@ if __name__ == '__main__':
 	# scroll through algorithm types
 	for alg in distances: 
 		i = 0
-		while(alg[i]==0): # Guarantees that the minimum will not be 0
+		while ((i < len(alg)) and (alg[i]==0)): # Guarantees that the minimum will not be 0
 			i+=1
 
 		# Saving the smallest and the biggest distance found
@@ -124,12 +155,20 @@ if __name__ == '__main__':
 		if (ZOOM < 0) and (alg[-1] > maximum):
 			maximum = alg[-1]
 
+	print("minimum: ", minimum)
+	print("maximum: ", maximum)
+	print("max / min: ", (maximum+minimum)/minimum)
 	# if everything equals 0, the step will be 1
 	if minimum == float("inf"):
 		minimum = 1
-	# if the minimum is too small, we change for reasons of memory capacity
-	elif minimum < 0.01:
-		minimum = 0.01
+	# # if the minimum is too small, we change for reasons of memory capacity
+	# elif minimum < 0.0001:
+	# 	minimum = 0.0001
+
+	# we change for reasons of memory capacity (check which values to put here)
+	if ((maximum+minimum)/minimum) > 1000:
+		print("Changing minimum for reasons of memory capacity")
+		minimum = 0.1
 
 	# If you want to ignore the real maximum and zoom the graph
 	if ZOOM >= 0:
@@ -156,9 +195,12 @@ if __name__ == '__main__':
 	plt.xlabel('x - % approximation') 
 	# naming the y axis 
 	plt.ylabel('y - % quantity') 
-	  
+	
 	# giving a title to my graph 
-	plt.title('Performance Profile UFL') 
+	if pp_type == 1: # if it's cost
+		plt.title('Performance Profile UFL - Cost') 
+	else: # if it's time
+		plt.title('Performance Profile UFL - Time') 
 
 	# Plotting the lines of each algorithm
 	for i in range(len(solutions)):

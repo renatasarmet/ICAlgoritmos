@@ -13,6 +13,13 @@ Codigos para resolver o problema da localizacao de instalacoes sem capacidade
 
 python3 script.py qtd_inst qtd_cli > arquivo.txt
 
+## Performance Profile
+Considere pp_type como 1 para custo e 2 para tempo [OPCIONAL]. 
+Para gerar o gráfico basta digitar:
+
+python3 perf_profile <pp_type>
+
+
 ### Mais detalhes
 Os detalhes de cada pasta estao em um READ.ME especifico da mesma.
 
