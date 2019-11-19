@@ -20,7 +20,7 @@ using namespace std;
 #define DISPLAY_TIME 5 // corresponde aos calculos de tempo 
 #define DISPLAY_GRAPH 6 // corresponde a descricao dos clientes, instalacoes e arcos
 
-#define DEBUG 3 // OPCOES DE DEBUG: 1 - MOSTRAR A QTD DE MOVIMENTOS, 2 PARA EXIBIR OS MOVIMENTOS REALIZADOS, 3 PARA EXIBIR ACOES, 4 PARA EXIBIR DETALHES DAS ACOES, 5 PARA EXIBIR TEMPO, 6 PARA EXIBIR AS MUDANÇAS NO GRAFO
+#define DEBUG 1 // OPCOES DE DEBUG: 1 - MOSTRAR A QTD DE MOVIMENTOS, 2 PARA EXIBIR OS MOVIMENTOS REALIZADOS, 3 PARA EXIBIR ACOES, 4 PARA EXIBIR DETALHES DAS ACOES, 5 PARA EXIBIR TEMPO, 6 PARA EXIBIR AS MUDANÇAS NO GRAFO
 
 // Retornar o valor da solucao
 solutionType tabuSearch(char * solutionName, int qty_facilities, int qty_clients, double * costF, double * costA, solutionType solution, int a1, int lc1, int lc2, int lo1, int lo2, int seed){
@@ -146,14 +146,26 @@ solutionType tabuSearch(char * solutionName, int qty_facilities, int qty_clients
 	// Declaracao de variavel auxiliar para formacao do arquivo .log
 	char completeLogSolName[250] = "";
 
+	// Declaracao de variavel auxiliar para formacao do arquivo .log
+	char completeLogDetailName[300] = "";
+
 	// Arquivo para salvar o log da solucao
 	ofstream solLog;
 	strcat(completeLogSolName,solutionName);
 	strcat(completeLogSolName,".log");
 	solLog.open(completeLogSolName, std::ofstream::out | std::ofstream::trunc);
 
+	// Arquivo para salvar o log detail da solucao
+	ofstream logDetail;
+	strcat(completeLogDetailName,solutionName);
+	strcat(completeLogDetailName,".log_detail");
+	logDetail.open(completeLogDetailName, std::ofstream::out | std::ofstream::trunc);
+
 	//Salvando o cabecalho
 	solLog << "time spent so far, current solution cost, current qty moves" << endl;
+
+	//Salvando o cabecalho
+	logDetail << "time spent so far, current solution cost, current qty moves" << endl;
 
 	// Criação de nós de instalações e atribuição de seus labels
 	ListBpGraph::BlueNode * facilities;
@@ -375,7 +387,18 @@ solutionType tabuSearch(char * solutionName, int qty_facilities, int qty_clients
 
 	// cout << "CUSTO INICIAL REAL: " << coost << endl;
 
+	// CHECANDO A CONTAGEM DE TEMPO GASTO ATÉ AGORA
+	clock_gettime(CLOCK_REALTIME, &time_so_far);
 
+	// Calculando o tempo gasto até agora
+	solution.timeSpent =  (time_so_far.tv_sec - start.tv_sec);
+	solution.timeSpent += (time_so_far.tv_nsec - start.tv_nsec) / 1000000000.0; // Necessario para obter uma precisao maior 
+
+	// Acrescentando no solLog.txt o tempo e o custo inicial
+	solLog << solution.timeSpent << "," << solution.finalTotalCost << "," << qty_moves << endl;
+
+	// Acrescentando no logDetail.txt o tempo e o custo inicial
+	logDetail << solution.timeSpent << "," << cur_cost << "," << qty_moves << endl;
 
 	// INICIANDO A CONTAGEM DE TEMPO DA FUNCAO
 	clock_gettime(CLOCK_REALTIME, &start);
@@ -515,6 +538,20 @@ solutionType tabuSearch(char * solutionName, int qty_facilities, int qty_clients
 				cur_index_extra = qty_moves % 2;
 				old_index_extra = !cur_index_extra;
 
+				// CHECANDO A CONTAGEM DE TEMPO GASTO ATÉ AGORA
+				clock_gettime(CLOCK_REALTIME, &time_so_far);
+
+				// Calculando o tempo gasto até agora
+				solution.timeSpent =  (time_so_far.tv_sec - start.tv_sec);
+				solution.timeSpent += (time_so_far.tv_nsec - start.tv_nsec) / 1000000000.0; // Necessario para obter uma precisao maior 
+
+				if(DEBUG >= DISPLAY_TIME){
+					cout << "Total time spent so far: " << solution.timeSpent << " seconds" << endl;
+				}
+
+				// Acrescentando no logDetail.txt o tempo gasto nessa iteracao e o custo da solucao
+				logDetail << solution.timeSpent << "," << cur_cost << "," << qty_moves << endl;
+
 				// Atualizando a melhor solucao encontrada ate agr
 				if(cur_cost < solution.finalTotalCost){
 					if(DEBUG >= DISPLAY_MOVES){
@@ -522,18 +559,7 @@ solutionType tabuSearch(char * solutionName, int qty_facilities, int qty_clients
 					}
 					solution.finalTotalCost = cur_cost;
 					k_last_best = qty_moves;
-
-					// CHECANDO A CONTAGEM DE TEMPO GASTO ATÉ AGORA
-					clock_gettime(CLOCK_REALTIME, &time_so_far);
-
-					// Calculando o tempo gasto até agora
-					solution.timeSpent =  (time_so_far.tv_sec - start.tv_sec);
-					solution.timeSpent += (time_so_far.tv_nsec - start.tv_nsec) / 1000000000.0; // Necessario para obter uma precisao maior 
-
-					if(DEBUG >= DISPLAY_TIME){
-						cout << "Total time spent so far: " << solution.timeSpent << " seconds" << endl;
-					}
-
+					
 					// Acrescentando no solLog.txt o tempo gasto nessa iteracao e o custo da solucao
 					solLog << solution.timeSpent << "," << solution.finalTotalCost << "," << qty_moves << endl;
 				}
@@ -952,6 +978,7 @@ solutionType tabuSearch(char * solutionName, int qty_facilities, int qty_clients
 	solLog << solution.timeSpent << "," << solution.finalTotalCost << "," << qty_moves << endl;
 
 	solLog.close();
+	logDetail.close();
 
 	free(clients);
 	free(facilities);
