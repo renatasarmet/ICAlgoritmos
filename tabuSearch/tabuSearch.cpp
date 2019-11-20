@@ -438,22 +438,17 @@ solutionType tabuSearch(char * solutionName, int qty_facilities, int qty_clients
 			keep_searching = false;
 		}
 		else{
+			if(DEBUG >= DISPLAY_MOVES){
+				if(open[facilities[fac_best_extra_cost]]){ // se a instalacao está aberta
+					cout << "We want to close it" << endl;
+				}
+				else{ // se a instalacao está fechada
+					cout << "We want to open it" << endl;
+				}
+			}
 
 			// Check the tabu status of the selected move
-			if(open[facilities[fac_best_extra_cost]]){ // se a instalacao está aberta
-				if(DEBUG >= DISPLAY_MOVES){
-					cout << "We will close it" << endl;
-				}
-				aux_l = lo;
-			}
-			else{ // se a instalacao está fechada
-				if(DEBUG >= DISPLAY_MOVES){
-					cout << "We will open it" << endl;
-				}
-				aux_l = lc;
-			}
-
-			if(qty_moves - t[fac_best_extra_cost] < aux_l){ // Se for tabu
+			if(qty_moves < t[fac_best_extra_cost]){ // Se for tabu
 
 				if(DEBUG >= DISPLAY_MOVES){
 					cout << "It is tabu" << endl;
@@ -509,27 +504,31 @@ solutionType tabuSearch(char * solutionName, int qty_facilities, int qty_clients
 					cout << "Lets move!" << endl;
 				}
 
-
 				// Restaurando 
 				lets_move = false;
 
-				if(open[facilities[fac_best_extra_cost]]){ // se a instalação estiver aberta
-					n1 -= 1;
-					open_facilities.erase(fac_best_extra_cost);
-				}
-				else { // senao, se a instalação estiver fechada
-					n1 += 1;
-					open_facilities.insert(fac_best_extra_cost);
-				}
-
 				// Abrindo a inst se estiver fechada e fechando se estiver aberta
 				open[facilities[fac_best_extra_cost]] = !open[facilities[fac_best_extra_cost]];
+
+				if(open[facilities[fac_best_extra_cost]]){ // se a instalação estiver aberta agora
+					n1 += 1;
+					open_facilities.insert(fac_best_extra_cost);
+					lo = rand() % (lo2 - lo1 + 1) + lo1; // Generate the number between lo1 and lo2
+					aux_l = lo;
+				}
+				else { // senao, se a instalação estiver fechada agora
+					n1 -= 1;
+					open_facilities.erase(fac_best_extra_cost);
+					lc = rand() % (lc2 - lc1 + 1) + lc1; // Generate the number between lc1 and lc2
+					aux_l = lc;
+				}
+
 
 				// Atualizando o custo atual
 				cur_cost += best_extra_cost;
 
 				// Atualizando a lista tabu
-				t[fac_best_extra_cost] = qty_moves;
+				t[fac_best_extra_cost] = qty_moves + aux_l;
 
 				// Aumentando a contagem de movimentos
 				qty_moves += 1;

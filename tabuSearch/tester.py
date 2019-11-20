@@ -22,7 +22,7 @@ if __name__ == '__main__':
 			seed = sys.argv[7].strip()
 
 		else: # se eu nao passei por parametro, coloca os padroes
-			a1 = "1" #"2.5"
+			a1 = "1" #"0.5" #"1" #"2.5"
 			lc1 = lo1 = "10"
 			lc2 = lo2 = "20"
 			seed = "0"
@@ -77,7 +77,7 @@ if __name__ == '__main__':
 
 					else:
 						initialSolName = 'initialSolutions/' + file_name + '.sol'
-						solutionName = 'solutions/' + file_name + '.sol'
+						solutionName = 'solutions/' + file_name + '__a1-' + a1 + '_l-' + lc1 + '-' + lc2 + '.sol'
 
 					# Chamando o programa a ser testado
 					os.system(EXE + " " + input_name + " " + initialSolName + " " + solutionName + " " + input_type + " " + a1 + " " + lc1 + " " + lc2 + " " + lo1 + " " + lo2 + " " + seed)
