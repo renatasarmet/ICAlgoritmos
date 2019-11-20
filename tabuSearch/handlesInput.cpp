@@ -9,7 +9,7 @@
 #define DISPLAY_SIZE 2 // corresponde a exibicao do tamanho da entrada (quantidade de clientes e de instalacoes)
 #define DISPLAY_ACTIONS 3 // corresponde a todos os cout quando uma informacao eh salva 
 
-#define DEBUG 1 // OPCOES DE DEBUG: 0 PARA NAO EXIBIR NADA, 1 PARA EXIBIR CUSTO INICIAL E FINAL, 2 PARA EXIBIR TEMPO E QTD CLI E INST, 3 PARA EXIBIR AS INFORMACOES SENDO SALVAS
+#define DEBUG 2 // OPCOES DE DEBUG: 0 PARA NAO EXIBIR NADA, 1 PARA EXIBIR CUSTO INICIAL E FINAL, 2 PARA EXIBIR TEMPO E QTD CLI E INST, 3 PARA EXIBIR AS INFORMACOES SENDO SALVAS
 
 using namespace std;
 
@@ -24,11 +24,11 @@ int main(int argc, char *argv[]){
 	char * initialSolName = argv[2];
 	char * solutionName = argv[3];
 	char * inputType = argv[4];
-	int a1 = stoi(argv[5],nullptr,10); // convertendo argv[5] para inteiro
-	int lc1 = stoi(argv[6],nullptr,10); // convertendo argv[6] para inteiro
-	int lc2 = stoi(argv[7],nullptr,10); // convertendo argv[7] para inteiro
-	int lo1 = stoi(argv[8],nullptr,10); // convertendo argv[8] para inteiro
-	int lo2 = stoi(argv[9],nullptr,10); // convertendo argv[9] para inteiro
+	double a1 = stod(argv[5],nullptr); // convertendo argv[5] para double
+	double bc1 = stod(argv[6],nullptr); // convertendo argv[6] para double
+	double bc2 = stod(argv[7],nullptr); // convertendo argv[7] para double
+	double bo1 = stod(argv[8],nullptr); // convertendo argv[8] para double
+	double bo2 = stod(argv[9],nullptr); // convertendo argv[9] para double
 	int seed = stoi(argv[10],nullptr,10); // convertendo argv[9] para inteiro
 
 	// Arquivo para salvar a solucao
@@ -230,6 +230,16 @@ int main(int argc, char *argv[]){
 
 	// Variavel que indica se ja encontramos o otimo local -- condicao de parada da busca
 	solution.local_optimum = false;
+
+	// Preparando intervalo lc e lo (por enquanto os intervalos serao iguais)
+	int lc1, lc2, lo1, lo2;
+
+	lc1 = lo1 = bc1 * qty_facilities;
+	lc2 = lo2 = bc2 * qty_facilities;
+
+	if(DEBUG >= DISPLAY_SIZE){
+		cout << "Tabu tenure -> start: " << lc1 << "  end: " << lc2 << endl;
+	}
 
 	// Chamando a funcao que resolve o problema de fato
 	solution = tabuSearch(solutionName, qty_facilities, qty_clients, costF, costA, solution, a1, lc1, lc2, lo1, lo2, seed);

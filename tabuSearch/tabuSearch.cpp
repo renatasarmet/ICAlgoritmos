@@ -23,7 +23,7 @@ using namespace std;
 #define DEBUG 1 // OPCOES DE DEBUG: 1 - MOSTRAR A QTD DE MOVIMENTOS, 2 PARA EXIBIR OS MOVIMENTOS REALIZADOS, 3 PARA EXIBIR ACOES, 4 PARA EXIBIR DETALHES DAS ACOES, 5 PARA EXIBIR TEMPO, 6 PARA EXIBIR AS MUDANÇAS NO GRAFO
 
 // Retornar o valor da solucao
-solutionType tabuSearch(char * solutionName, int qty_facilities, int qty_clients, double * costF, double * costA, solutionType solution, int a1, int lc1, int lc2, int lo1, int lo2, int seed){
+solutionType tabuSearch(char * solutionName, int qty_facilities, int qty_clients, double * costF, double * costA, solutionType solution, double a1, int lc1, int lc2, int lo1, int lo2, int seed){
 
 	cout << fixed;
    	cout.precision(5);
@@ -136,6 +136,10 @@ solutionType tabuSearch(char * solutionName, int qty_facilities, int qty_clients
 
 	// Each facility is kept opened for at least lo moves after it's closed unless aspiration criterion is satisfied
 	int lo = rand() % (lo2 - lo1 + 1) + lo1; // Generate the number between lo1 and lo2
+
+	if(DEBUG >= DISPLAY_BASIC){
+		cout << "A1 criterion: " << int(a1 * qty_facilities) << " iterations without improvement" << endl;
+	}
 
 	// Vai receber lc ou lo, dependendo da checagem if(open[]), para evitar duplicidade no codigo
 	int aux_l;

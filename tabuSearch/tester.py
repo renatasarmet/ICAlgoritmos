@@ -15,16 +15,16 @@ if __name__ == '__main__':
 
 		if len(sys.argv) > 7:
 			a1 = sys.argv[2].strip()
-			lc1 = sys.argv[3].strip()
-			lc2 = sys.argv[4].strip()
-			lo1 = sys.argv[5].strip()
-			lo2 = sys.argv[6].strip()
+			bc1 = sys.argv[3].strip()
+			bc2 = sys.argv[4].strip()
+			bo1 = sys.argv[5].strip()
+			bo2 = sys.argv[6].strip()
 			seed = sys.argv[7].strip()
 
 		else: # se eu nao passei por parametro, coloca os padroes
-			a1 = "1" #"0.5" #"1" #"2.5"
-			lc1 = lo1 = "10"
-			lc2 = lo2 = "20"
+			a1 = "2.5" #"0.1" #"0.5" #"1" #"2.5"
+			bc1 = bo1 = "0.04" #"0.01" #"0.04" #"0.1"
+			bc2 = bo2 = "0.08" #"0.05" #"0.08" #"0.2"
 			seed = "0"
 
 		n_tests = 1
@@ -77,10 +77,10 @@ if __name__ == '__main__':
 
 					else:
 						initialSolName = 'initialSolutions/' + file_name + '.sol'
-						solutionName = 'solutions/' + file_name + '__a1-' + a1 + '_l-' + lc1 + '-' + lc2 + '.sol'
+						solutionName = 'solutions/' + file_name + '__a1-' + a1 + '_l-' + bc1 + '-' + bc2 + '.sol'
 
 					# Chamando o programa a ser testado
-					os.system(EXE + " " + input_name + " " + initialSolName + " " + solutionName + " " + input_type + " " + a1 + " " + lc1 + " " + lc2 + " " + lo1 + " " + lo2 + " " + seed)
+					os.system(EXE + " " + input_name + " " + initialSolName + " " + solutionName + " " + input_type + " " + a1 + " " + bc1 + " " + bc2 + " " + bo1 + " " + bo2 + " " + seed)
 
 	else:
 		print('This test requires an input type and an LS type. \nFirst please select one: 1 for ORLIB inputs or 2 for SIMPLE FORMAT inputs.')
