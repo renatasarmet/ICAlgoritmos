@@ -36,9 +36,7 @@ if __name__ == '__main__':
 	if len(sys.argv) > 1:
 		path = sys.argv[1].strip()
 	else:
-		# path = "localSearch/sol_LS_G/ga250a-1.sol.log"
-		# path = "tabuSearch/solutions/ga250a-1.sol.log_detail"
-		path = "tabuSearch/solutions/ga250a-1.sol.log"
+		path = "tabuSearch/solParametersG/ga250a-1__a1-0.1_l-0.04-0.08.sol.log_detail"
 
 
 	# testing just ga250a instances
@@ -62,8 +60,7 @@ if __name__ == '__main__':
 		step = 1
 	# print("len: ", len(solution))
 	# print("step: ", step)
-	plt.xticks(numpy.arange(0,len(solution)+1,step))
-
+	plt.xticks(numpy.arange(0,len(solution),step))
 
 	# naming the x axis 
 	plt.xlabel('x - iterations') 

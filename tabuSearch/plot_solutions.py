@@ -43,7 +43,6 @@ if __name__ == '__main__':
 
 	qtd = len(bc1)
 
-	# Testing just for ga250a-1
 	initialPath = "solutions/"
 
 	# Where all test cases are listed
