@@ -14,8 +14,10 @@ def export_csv(output_file,solution_list):
 if __name__ == '__main__':
 
 	# Parameters values
-	bc1 = ["0.01","0.04","0.1"] # equal to bo1
-	bc2 = ["0.05","0.08","0.2"] # equal to bo2
+	# bc1 = ["0.01","0.04","0.1"] # equal to bo1
+	# bc2 = ["0.05","0.08","0.2"] # equal to bo2
+	bc1 = ["0.01"]
+	bc2 = ["0.08"]
 	a1 = ["2.5","1","0.5","0.1"] #["0.1","0.5","1","2.5"]
 
 	qtd = len(bc1)
