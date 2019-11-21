@@ -34,6 +34,19 @@ Então, basta digitar:
 
 ./ts input_name initialSolName solutionName input_type a1 lc1 lc2 lo1 lo2
 
+-- PARA RODAR COM VARIOS PARAMETROS DIFERENTES
+Abra o arquivo call_tester.py e edite os valores de bc1, bc2 e a1. Edite o arquivo testCases2.txt contendo o nome das instancias que voce deseja testar (não se esqueça que elas devem estar na pasta initialSolutions). Então, basta digitar no terminal
+
+python3 call_tester.py
+
+Em seguida, para gerar o csi, abra o arquivo readerSolParameters.py e edite também os valores de bc1, bc2 e a1. Edite o arquivo testCasesReader.txt com o nome das instancias que deseja ler. Então basta digitar no terminal
+
+python3 readerSolParameters.py
+
+Caso queira gerar gráficos, utilize o arquivo plot_solutions.py . Da mesma forma, edite os valores de bc1, bc2 e a1 e atualize o arquivo testCasesPlot.txt com o nome das instancias desejadas. Então, basta rodar no terminal
+
+python3 plot_solutions.py
+
 
 *SOBRE AS ENTRADAS*
 

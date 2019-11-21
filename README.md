@@ -19,6 +19,9 @@ Para gerar o gráfico basta digitar:
 
 python3 perf_profile <pp_type>
 
+## Plot Graphic
+Utilize o arquivo plot_sol.py para visualizar o gráfico com a evolução da sua solução.
+
 
 ### Mais detalhes
 Os detalhes de cada pasta estao em um READ.ME especifico da mesma.
