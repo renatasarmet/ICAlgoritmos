@@ -28,8 +28,8 @@ if __name__ == '__main__':
 
 		else: # se eu nao passei por parametro, coloca os padroes
 			best_fit = "0" # 1 para best fit 0 para first fit
-			a1 = "0.5" #"0.1" #"0.5" #"1" #"2.5"
-			limit_idle = "0.1" #???
+			a1 = "1" #"0.1" #"0.5" #"1" #"2.5"
+			limit_idle = "0.02" #??? #0.1 #0.02
 			lh = "50"#"5" #????
 
 		n_tests = 1

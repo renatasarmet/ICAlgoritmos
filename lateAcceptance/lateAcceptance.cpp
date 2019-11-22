@@ -13,6 +13,15 @@
 using namespace lemon;
 using namespace std;
 
+
+
+// FIRST FIT: PROBLEM!
+
+// (qty_moves<291) acontece algo que deixa a solucao invalida
+
+
+
+
 #define DISPLAY_BASIC 1 // corresponde a exibicao da quantidade de movimentos
 #define DISPLAY_MOVES 2 // corresponde a todos os cout quando um movimento é realizado de fato
 #define DISPLAY_ACTIONS 3 // corresponde a todos os cout quando uma acao é feita. 
@@ -20,7 +29,7 @@ using namespace std;
 #define DISPLAY_TIME 5 // corresponde aos calculos de tempo 
 #define DISPLAY_GRAPH 6 // corresponde a descricao dos clientes, instalacoes e arcos
 
-#define DEBUG 1 // OPCOES DE DEBUG: 1 - MOSTRAR A QTD DE MOVIMENTOS, 2 PARA EXIBIR OS MOVIMENTOS REALIZADOS, 3 PARA EXIBIR ACOES, 4 PARA EXIBIR DETALHES DAS ACOES, 5 PARA EXIBIR TEMPO, 6 PARA EXIBIR AS MUDANÇAS NO GRAFO
+#define DEBUG 0 // OPCOES DE DEBUG: 1 - MOSTRAR A QTD DE MOVIMENTOS, 2 PARA EXIBIR OS MOVIMENTOS REALIZADOS, 3 PARA EXIBIR ACOES, 4 PARA EXIBIR DETALHES DAS ACOES, 5 PARA EXIBIR TEMPO, 6 PARA EXIBIR AS MUDANÇAS NO GRAFO
 
 // Retornar o valor da solucao
 solutionType lateAcceptance(char * solutionName, int qty_facilities, int qty_clients, double * costF, double * costA, solutionType solution, bool best_fit, double a1, double limit_idle, int lh){
@@ -376,18 +385,18 @@ solutionType lateAcceptance(char * solutionName, int qty_facilities, int qty_cli
 
 
 
-	// cout << "TESTE SE A SOLUCAO TA CERTA" << endl;
-	// double coost = 0;
+	cout << "TESTE SE A SOLUCAO TA CERTA" << endl;
+	double coost = 0;
 
-	// for (itr = open_facilities.begin(); itr != open_facilities.end(); ++itr) { // percorrer todas as inst abertas
-	// 	coost += f[facilities[*itr]];
-	// }
+	for (itr = open_facilities.begin(); itr != open_facilities.end(); ++itr) { // percorrer todas as inst abertas
+		coost += f[facilities[*itr]];
+	}
 
-	// for(ListBpGraph::RedNodeIt n(g); n != INVALID; ++n){		// percorre as instalacoes
-	// 	coost += assignment_cost[findEdge(g, n, facilities[solution.assigned_facilities[name[n]]])]; 
-	// }
+	for(ListBpGraph::RedNodeIt n(g); n != INVALID; ++n){		// percorre as instalacoes
+		coost += assignment_cost[findEdge(g, n, facilities[solution.assigned_facilities[name[n]]])]; 
+	}
 
-	// cout << "CUSTO INICIAL REAL: " << coost << endl;
+	cout << "CUSTO INICIAL REAL: " << coost << endl;
 
 	// CHECANDO A CONTAGEM DE TEMPO GASTO ATÉ AGORA
 	clock_gettime(CLOCK_REALTIME, &time_so_far);
@@ -439,8 +448,9 @@ solutionType lateAcceptance(char * solutionName, int qty_facilities, int qty_cli
 				fac_best_extra_cost = qty_inst_used % qty_facilities; // cada hora pega a proxima
 				qty_inst_used += 1;
 				counter += 1;
+				cout << "vamo la tentando" << endl;
 			}
-			if(counter >= qty_facilities){ // nao tem inst disponivel mais
+			if((counter >= qty_facilities)&&(open[facilities[fac_best_extra_cost]])&&(n1 == 1)){ // nao tem inst disponivel mais
 				fac_best_extra_cost = -1;
 			}
 			else{
@@ -560,10 +570,8 @@ solutionType lateAcceptance(char * solutionName, int qty_facilities, int qty_cli
 					open_facilities.erase(fac_best_extra_cost);
 				}
 
-
 				// Atualizando o custo atual
 				cur_cost += best_extra_cost;
-
 
 				// Atualizando os indices para acessar o vetor extra_cost
 				cur_index_extra = qty_moves % 2;
