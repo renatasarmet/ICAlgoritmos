@@ -23,7 +23,7 @@ using namespace std;
 #define DEBUG 1 // OPCOES DE DEBUG: 1 - MOSTRAR A QTD DE MOVIMENTOS, 2 PARA EXIBIR OS MOVIMENTOS REALIZADOS, 3 PARA EXIBIR ACOES, 4 PARA EXIBIR DETALHES DAS ACOES, 5 PARA EXIBIR TEMPO, 6 PARA EXIBIR AS MUDANÇAS NO GRAFO
 
 // Retornar o valor da solucao
-solutionType lateAcceptance(char * solutionName, int qty_facilities, int qty_clients, double * costF, double * costA, solutionType solution, double a1, double limit_idle, int lh){
+solutionType lateAcceptance(char * solutionName, int qty_facilities, int qty_clients, double * costF, double * costA, solutionType solution, bool best_fit, double a1, double limit_idle, int lh){
 
 	cout << fixed;
    	cout.precision(5);
@@ -43,6 +43,8 @@ solutionType lateAcceptance(char * solutionName, int qty_facilities, int qty_cli
 	// Variavel que marca quantas movimentacoes foram feitas de fato
 	int qty_moves = 0;
 
+	// Auxiliar para escolher a instalacao no first fir
+	int qty_inst_used = 0;
 
 	/* Sobre os grafos bipartidos, teremos
 	
@@ -414,18 +416,38 @@ solutionType lateAcceptance(char * solutionName, int qty_facilities, int qty_cli
 		STEP 1
 		*/
 
-		// Select a facility that has de minimum extra_cost (and extra_cost is not DBL_MAX ---> invalid)
-		// TAMBEM TESTAR DEPOIS SE ACHAR UM QUE MELHORA JA FAZ
-		best_extra_cost = DBL_MAX; // limitante superior, maior double possivel
-		fac_best_extra_cost = -1; // indica invalidez
-		for(int i=0;i<qty_facilities;i++){
-			if(!((open[facilities[i]])&&(n1 == 1))){ // se ela nao for a unica instalacao aberta
-				if((extra_cost[cur_index_extra][i] < best_extra_cost) && ( !flag[i] )){ // se essa for menor do que a ja encontrada ate agr e nao estiver marcada, atualiza
-					best_extra_cost = extra_cost[cur_index_extra][i];
-					fac_best_extra_cost = i;
+		// Tecnica best fit
+		if(best_fit){
+			// Select a facility that has de minimum extra_cost (and extra_cost is not DBL_MAX ---> invalid)
+			best_extra_cost = DBL_MAX; // limitante superior, maior double possivel
+			fac_best_extra_cost = -1; // indica invalidez
+			for(int i=0;i<qty_facilities;i++){
+				if(!((open[facilities[i]])&&(n1 == 1))){ // se ela nao for a unica instalacao aberta
+					if((extra_cost[cur_index_extra][i] < best_extra_cost) && ( !flag[i] )){ // se essa for menor do que a ja encontrada ate agr e nao estiver marcada, atualiza
+						best_extra_cost = extra_cost[cur_index_extra][i];
+						fac_best_extra_cost = i;
+					}
 				}
 			}
 		}
+		// Tecnica first fit
+		else{
+			fac_best_extra_cost = qty_inst_used % qty_facilities; // cada hora pega a proxima
+			qty_inst_used += 1;
+			counter = 0;
+			while((open[facilities[fac_best_extra_cost]])&&(n1 == 1)&&(counter < qty_facilities)){ // enquanto ela for a unica instalacao aberta
+				fac_best_extra_cost = qty_inst_used % qty_facilities; // cada hora pega a proxima
+				qty_inst_used += 1;
+				counter += 1;
+			}
+			if(counter >= qty_facilities){ // nao tem inst disponivel mais
+				fac_best_extra_cost = -1;
+			}
+			else{
+				best_extra_cost = extra_cost[cur_index_extra][fac_best_extra_cost];
+			}
+		}
+		
 
 		if(DEBUG >= DISPLAY_MOVES){
 			cout << "Facility " << fac_best_extra_cost << " best delta extra cost: " << best_extra_cost << endl;

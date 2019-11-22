@@ -13,12 +13,21 @@ if __name__ == '__main__':
 	if len(sys.argv) > 1:
 		input_type = sys.argv[1].strip()
 
-		if len(sys.argv) > 4:
-			a1 = sys.argv[2].strip()
-			limit_idle = sys.argv[3].strip()
-			lh = sys.argv[4].strip()
+		if len(sys.argv) > 5:
+			best_fit = sys.argv[2].strip()
+
+			# Garantindo que os valores serao validos
+			if(int(best_fit) > 0):
+				best_fit = "1"
+			else:
+				best_fit = "0"
+
+			a1 = sys.argv[3].strip()
+			limit_idle = sys.argv[4].strip()
+			lh = sys.argv[5].strip()
 
 		else: # se eu nao passei por parametro, coloca os padroes
+			best_fit = "0" # 1 para best fit 0 para first fit
 			a1 = "0.5" #"0.1" #"0.5" #"1" #"2.5"
 			limit_idle = "0.1" #???
 			lh = "50"#"5" #????
@@ -26,9 +35,9 @@ if __name__ == '__main__':
 		n_tests = 1
 		initial_sol_rr = False
 
-		if len(sys.argv) > 5: 
+		if len(sys.argv) > 6: 
 			initial_sol_rr = True # indica que o teste será com soluções iniciais vindas do RR
-			n_tests = int(sys.argv[4].strip()) # entao esse parametro indica a quantidade de testes que foram feitos (o N)
+			n_tests = int(sys.argv[6].strip()) # entao esse parametro indica a quantidade de testes que foram feitos (o N)
 
 			if n_tests <= 0:
 				print("ERROR: Invalid third parameter value")
@@ -73,10 +82,10 @@ if __name__ == '__main__':
 
 					else:
 						initialSolName = 'initialSolutions/' + file_name + '.sol'
-						solutionName = 'solutions/' + file_name + '__a1-' + a1 + '_idle-' + limit_idle + '_lh-' + lh + '.sol'
+						solutionName = 'solutions/' + file_name + '__bf-' + best_fit + '_a1-' + a1 + '_idle-' + limit_idle + '_lh-' + lh + '.sol'
 
 					# Chamando o programa a ser testado
-					os.system(EXE + " " + input_name + " " + initialSolName + " " + solutionName + " " + input_type + " " + a1 + " " + limit_idle + " " + lh)
+					os.system(EXE + " " + input_name + " " + initialSolName + " " + solutionName + " " + input_type + " " + best_fit + " " + a1 + " " + limit_idle + " " + lh)
 
 	else:
 		print('This test requires an input type. \nFirst please select one: 1 for ORLIB inputs or 2 for SIMPLE FORMAT inputs.')

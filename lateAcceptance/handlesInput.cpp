@@ -15,8 +15,8 @@ using namespace std;
 
 int main(int argc, char *argv[]){
 
-	if(argc < 8){
-		cout << "Error in the parameters. You must enter 10 parameters" << endl;
+	if(argc < 9){
+		cout << "Error in the parameters. You must enter 8 parameters" << endl;
 		return 0;
 	}
 
@@ -24,9 +24,10 @@ int main(int argc, char *argv[]){
 	char * initialSolName = argv[2];
 	char * solutionName = argv[3];
 	char * inputType = argv[4];
-	double a1 = stod(argv[5],nullptr); // convertendo argv[5] para double
-	double limit_idle = stod(argv[6],nullptr); // convertendo argv[6] para double
-	int lh = stoi(argv[7],nullptr,10); // convertendo argv[7] para inteiro
+	int best_fit = stoi(argv[5],nullptr,10); // convertendo argv[5] para inteiro
+	double a1 = stod(argv[6],nullptr); // convertendo argv[6] para double
+	double limit_idle = stod(argv[7],nullptr); // convertendo argv[7] para double
+	int lh = stoi(argv[8],nullptr,10); // convertendo argv[8] para inteiro
 
 	// Arquivo para salvar a solucao
 	ofstream solutionTXT;
@@ -230,7 +231,7 @@ int main(int argc, char *argv[]){
 
 
 	// Chamando a funcao que resolve o problema de fato
-	solution = lateAcceptance(solutionName, qty_facilities, qty_clients, costF, costA, solution, a1, limit_idle, lh);
+	solution = lateAcceptance(solutionName, qty_facilities, qty_clients, costF, costA, solution, best_fit, a1, limit_idle, lh);
 
 	if(DEBUG >= DISPLAY_BASIC){
 		cout << "Final total cost: " << solution.finalTotalCost << endl;
