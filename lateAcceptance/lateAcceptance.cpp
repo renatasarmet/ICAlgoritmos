@@ -20,7 +20,7 @@ using namespace std;
 #define DISPLAY_TIME 5 // corresponde aos calculos de tempo 
 #define DISPLAY_GRAPH 6 // corresponde a descricao dos clientes, instalacoes e arcos
 
-#define DEBUG 3 // OPCOES DE DEBUG: 1 - MOSTRAR A QTD DE MOVIMENTOS, 2 PARA EXIBIR OS MOVIMENTOS REALIZADOS, 3 PARA EXIBIR ACOES, 4 PARA EXIBIR DETALHES DAS ACOES, 5 PARA EXIBIR TEMPO, 6 PARA EXIBIR AS MUDANÇAS NO GRAFO
+#define DEBUG 1 // OPCOES DE DEBUG: 1 - MOSTRAR A QTD DE MOVIMENTOS, 2 PARA EXIBIR OS MOVIMENTOS REALIZADOS, 3 PARA EXIBIR ACOES, 4 PARA EXIBIR DETALHES DAS ACOES, 5 PARA EXIBIR TEMPO, 6 PARA EXIBIR AS MUDANÇAS NO GRAFO
 
 // Retornar o valor da solucao
 solutionType lateAcceptance(char * solutionName, int qty_facilities, int qty_clients, double * costF, double * costA, solutionType solution, double a1, double limit_idle, int lh){
@@ -943,7 +943,7 @@ solutionType lateAcceptance(char * solutionName, int qty_facilities, int qty_cli
 			}
 					
 			else{
-				if(DEBUG >= DISPLAY_BASIC){
+				if(DEBUG >= DISPLAY_MOVES){
 					cout << "Stop criterion idle: " << idle_itr << " > " <<  qty_moves * limit_idle << endl;
 				}
 				// Se ainda nao atingiu a condicao de parada respectivo ao a1
@@ -960,7 +960,7 @@ solutionType lateAcceptance(char * solutionName, int qty_facilities, int qty_cli
 					keep_searching = false;
 
 					if(DEBUG >= DISPLAY_BASIC){
-						cout << "Stop criterion a1" << endl;
+						cout << "Stop criterion a1 and idle itr" << endl;
 					}
 				}
 			}
@@ -1004,6 +1004,9 @@ solutionType lateAcceptance(char * solutionName, int qty_facilities, int qty_cli
 
 	// Acrescentando no solLog.txt o tempo gasto final da funcao e o custo final da solucao
 	solLog << solution.timeSpent << "," << solution.finalTotalCost << "," << qty_moves << endl;
+
+	// Acrescentando no logDetail.txt o tempo gasto nessa iteracao e o custo da solucao
+	logDetail << solution.timeSpent << "," << cur_cost << "," << qty_moves << endl;
 
 	solLog.close();
 	logDetail.close();

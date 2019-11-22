@@ -36,7 +36,7 @@ if __name__ == '__main__':
 	if len(sys.argv) > 1:
 		path = sys.argv[1].strip()
 	else:
-		path = "tabuSearch/solutions/ga500a-1__a1-2.5_l-0.04-0.08.sol.log_detail"
+		path = "lateAcceptance/solutions/ga250a-1__a1-0.5_idle-0.1_lh-50.sol.log_detail"
 
 
 	# testing just ga250a instances

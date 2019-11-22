@@ -19,9 +19,9 @@ if __name__ == '__main__':
 			lh = sys.argv[4].strip()
 
 		else: # se eu nao passei por parametro, coloca os padroes
-			a1 = "0.1" #"0.1" #"0.5" #"1" #"2.5"
-			limit_idle = "0.02" #???
-			lh = "5" #????
+			a1 = "0.5" #"0.1" #"0.5" #"1" #"2.5"
+			limit_idle = "0.1" #???
+			lh = "50"#"5" #????
 
 		n_tests = 1
 		initial_sol_rr = False
