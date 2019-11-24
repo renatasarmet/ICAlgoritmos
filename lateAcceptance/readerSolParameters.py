@@ -14,16 +14,17 @@ def export_csv(output_file,solution_list):
 if __name__ == '__main__':
 
 	# Parameters values
-	# bc1 = ["0.01","0.04","0.1"] # equal to bo1
-	# bc2 = ["0.05","0.08","0.2"] # equal to bo2
 
-	bc1 = ["0.01","0.04","0.01"]
-	bc2 = ["0.05","0.08","0.08"]
+	best_fit = ["0","1"]  # 1 para best fit 0 para first fit
+	
+	# a1 = ["0.1","0.5","1","2.5"]
+	a1 = ["1"]
 
-	# a1 = ["2.5","1","0.5","0.1"] #["0.1","0.5","1","2.5"]
-	a1 = ["2.5"]
+	limit_idle = ["0.02"] #??? #0.1 #0.02
 
-	qtd = len(bc1)
+	# lh = ["5","50","150"] #????
+	lh = ["1","10","1000","10000"] #????
+
 
 	# Where all test cases are listed
 	file_location = 'testCasesReader.txt'
@@ -39,22 +40,23 @@ if __name__ == '__main__':
 		if file_name != ".DS_Store": # ignore this file
 			print("Input file:", file_name)
 
+			# Fazendo as combinacoes bf, lh, li e a1 para esse file_name
+			for bf in best_fit:
+				for l in lh:
+					for li in limit_idle:
+						for a in a1:
+							instance_name = file_name + '__bf-' + bf + '_a1-' + a1 + '_idle-' + li + '_lh-' + l
+							complete_file_name = 'solutions/' + instance_name + '.sol'
 
-			# Fazendo as combinacoes a1 com bc para esse file_name
-			for i in range(qtd):
-				for a in a1:
-					instance_name = file_name + '__a1-' + a + '_l-' + bc1[i] + '-' + bc2[i]
-					complete_file_name = 'solutions/' + instance_name + '.sol'
+							with open(complete_file_name, 'r') as input_data_file:
+								input_data = input_data_file.read()
 
-					with open(complete_file_name, 'r') as input_data_file:
-						input_data = input_data_file.read()
+							if(input_data):
+								# solution :: 0 - cost, 1 - timeSpent, 2 - optimal, 3....qty_clients - connected facility
+								solution = input_data.split(" ")
 
-					if(input_data):
-						# solution :: 0 - cost, 1 - timeSpent, 2 - optimal, 3....qty_clients - connected facility
-						solution = input_data.split(" ")
-
-						if len(solution) >= 3: # checking if the solution is in a correct format
-							solution_list.append((instance_name,solution[0],solution[1],solution[2])) 
+								if len(solution) >= 3: # checking if the solution is in a correct format
+									solution_list.append((instance_name,solution[0],solution[1],solution[2])) 
 
 	# Exporting csv 
 	export_csv("solutionsParameters.csv",solution_list)

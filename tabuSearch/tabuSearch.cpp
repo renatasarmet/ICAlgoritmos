@@ -983,6 +983,10 @@ solutionType tabuSearch(char * solutionName, int qty_facilities, int qty_clients
 	solLog.close();
 	logDetail.close();
 
+	free(t);
+	free(flag);
+	free(extra_cost);
+	
 	free(clients);
 	free(facilities);
 	free(edges);

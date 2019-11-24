@@ -13,15 +13,6 @@
 using namespace lemon;
 using namespace std;
 
-
-
-// FIRST FIT: PROBLEM!
-
-// (qty_moves<291) acontece algo que deixa a solucao invalida
-
-
-
-
 #define DISPLAY_BASIC 1 // corresponde a exibicao da quantidade de movimentos
 #define DISPLAY_MOVES 2 // corresponde a todos os cout quando um movimento é realizado de fato
 #define DISPLAY_ACTIONS 3 // corresponde a todos os cout quando uma acao é feita. 
@@ -29,7 +20,7 @@ using namespace std;
 #define DISPLAY_TIME 5 // corresponde aos calculos de tempo 
 #define DISPLAY_GRAPH 6 // corresponde a descricao dos clientes, instalacoes e arcos
 
-#define DEBUG 0 // OPCOES DE DEBUG: 1 - MOSTRAR A QTD DE MOVIMENTOS, 2 PARA EXIBIR OS MOVIMENTOS REALIZADOS, 3 PARA EXIBIR ACOES, 4 PARA EXIBIR DETALHES DAS ACOES, 5 PARA EXIBIR TEMPO, 6 PARA EXIBIR AS MUDANÇAS NO GRAFO
+#define DEBUG 1 // OPCOES DE DEBUG: 1 - MOSTRAR A QTD DE MOVIMENTOS, 2 PARA EXIBIR OS MOVIMENTOS REALIZADOS, 3 PARA EXIBIR ACOES, 4 PARA EXIBIR DETALHES DAS ACOES, 5 PARA EXIBIR TEMPO, 6 PARA EXIBIR AS MUDANÇAS NO GRAFO
 
 // Retornar o valor da solucao
 solutionType lateAcceptance(char * solutionName, int qty_facilities, int qty_clients, double * costF, double * costA, solutionType solution, bool best_fit, double a1, double limit_idle, int lh){
@@ -49,11 +40,14 @@ solutionType lateAcceptance(char * solutionName, int qty_facilities, int qty_cli
 	double biggestCij = 0;
 	
 
-	// Variavel que marca quantas movimentacoes foram feitas de fato
+	// Variavel que marca quantas movimentacoes foram tentadas
 	int qty_moves = 0;
 
 	// Auxiliar para escolher a instalacao no first fir
 	int qty_inst_used = 0;
+
+	// Variavel que marca quantas movimentacoes foram feitas de fato
+	int qty_moves_done = 0;
 
 	/* Sobre os grafos bipartidos, teremos
 	
@@ -139,6 +133,11 @@ solutionType lateAcceptance(char * solutionName, int qty_facilities, int qty_cli
     }
 
 	if(DEBUG >= DISPLAY_BASIC){
+		if(best_fit)
+			cout << "BEST FIT - ";
+		else
+			cout << "FIRST FIT - ";
+		cout << "Lh: " << lh << endl;
 		cout << "A1 criterion: " << int(a1 * qty_facilities) << " iterations without improvement best" << endl;
 		cout << "Idle criterion: " << limit_idle << " * iterations without improvement current" << endl;
 	}
@@ -384,19 +383,19 @@ solutionType lateAcceptance(char * solutionName, int qty_facilities, int qty_cli
 	}
 
 
+	// cout << "TESTE SE A SOLUCAO TA CERTA" << endl;
+	// double coost = 0;
 
-	cout << "TESTE SE A SOLUCAO TA CERTA" << endl;
-	double coost = 0;
+	// for (itr = open_facilities.begin(); itr != open_facilities.end(); ++itr) { // percorrer todas as inst abertas
+	// 	coost += f[facilities[*itr]];
+	// }
 
-	for (itr = open_facilities.begin(); itr != open_facilities.end(); ++itr) { // percorrer todas as inst abertas
-		coost += f[facilities[*itr]];
-	}
+	// for(ListBpGraph::RedNodeIt n(g); n != INVALID; ++n){		// percorre as instalacoes
+	// 	coost += assignment_cost[findEdge(g, n, facilities[solution.assigned_facilities[name[n]]])]; 
+	// }
 
-	for(ListBpGraph::RedNodeIt n(g); n != INVALID; ++n){		// percorre as instalacoes
-		coost += assignment_cost[findEdge(g, n, facilities[solution.assigned_facilities[name[n]]])]; 
-	}
+	// cout << "CUSTO INICIAL REAL: " << coost << endl;
 
-	cout << "CUSTO INICIAL REAL: " << coost << endl;
 
 	// CHECANDO A CONTAGEM DE TEMPO GASTO ATÉ AGORA
 	clock_gettime(CLOCK_REALTIME, &time_so_far);
@@ -448,7 +447,6 @@ solutionType lateAcceptance(char * solutionName, int qty_facilities, int qty_cli
 				fac_best_extra_cost = qty_inst_used % qty_facilities; // cada hora pega a proxima
 				qty_inst_used += 1;
 				counter += 1;
-				cout << "vamo la tentando" << endl;
 			}
 			if((counter >= qty_facilities)&&(open[facilities[fac_best_extra_cost]])&&(n1 == 1)){ // nao tem inst disponivel mais
 				fac_best_extra_cost = -1;
@@ -518,30 +516,6 @@ solutionType lateAcceptance(char * solutionName, int qty_facilities, int qty_cli
 				}
 			}
 
-
-			// if((cur_cost + best_extra_cost) < solution.finalTotalCost){ // Se satisfizer o aspiration criterion
-			// 	if(DEBUG >= DISPLAY_MOVES){
-			// 		cout << "It satisfies the aspiration criterion" << endl;
-			// 	}
-			// 	/* 
-			// 	go to STEP 3
-			// 	*/
-			// 	lets_move = true;
-			// }
-			// else{ // Se nao satisfizer o aspiration criterion
-			// 	if(DEBUG >= DISPLAY_MOVES){
-			// 		cout << "It does not satisfy the aspiration criterion" << endl;
-			// 	}
-
-			// 	/* 
-			// 	go back to STEP 1 -->> while
-			// 	*/
-			// 	lets_move = false; // garantindo que o valor será falso
-			// 	keep_searching = true; // garantindo que o valor será verdadeiro
-			// }
-
-
-
 			// Aumentando a contagem de movimentos
 			qty_moves += 1;
 
@@ -550,6 +524,9 @@ solutionType lateAcceptance(char * solutionName, int qty_facilities, int qty_cli
 			*/
 
 			if(lets_move){
+
+				// Aumentando a contagem de movimentos
+				qty_moves_done += 1;
 
 				if(DEBUG >= DISPLAY_MOVES){
 					cout << "Lets move!" << endl;
@@ -574,7 +551,7 @@ solutionType lateAcceptance(char * solutionName, int qty_facilities, int qty_cli
 				cur_cost += best_extra_cost;
 
 				// Atualizando os indices para acessar o vetor extra_cost
-				cur_index_extra = qty_moves % 2;
+				cur_index_extra = qty_moves_done % 2;
 				old_index_extra = !cur_index_extra;
 
 				// CHECANDO A CONTAGEM DE TEMPO GASTO ATÉ AGORA
@@ -759,15 +736,8 @@ solutionType lateAcceptance(char * solutionName, int qty_facilities, int qty_cli
 							flag[name[n2]] = false;
 						}
 					}
-
 					// Updating extra_cost for this chosen facility -> don't need to recalculate
 					extra_cost[cur_index_extra][fac_best_extra_cost] = - best_extra_cost;
-					// extra_cost[cur_index_extra][fac_best_extra_cost] = -f[facilities[fac_best_extra_cost]];
-					// for (ListBpGraph::IncEdgeIt e(g, facilities[fac_best_extra_cost]); e != INVALID; ++e) { // Percorre todas arestas desse nó (ligam a clientes)
-					// 	if(temp_nearest_fac[g.asRedNode(g.u(e))] == name[facilities[fac_best_extra_cost]]){ // se essa inst for a mais proxima desse cli
-					// 		extra_cost[cur_index_extra][fac_best_extra_cost] += temp_c2_minX[g.asRedNode(g.u(e))] - assignment_cost[e];
-					// 	}
-					// }
 				}
 
 				// Else, if the facility was opened and we closed
@@ -927,16 +897,9 @@ solutionType lateAcceptance(char * solutionName, int qty_facilities, int qty_cli
 							flag[name[n2]] = false;
 						}
 					}
+
 					// Updating extra_cost for this chosen facility -> don't need to recalculate
 					extra_cost[cur_index_extra][fac_best_extra_cost] = - best_extra_cost;
-					// extra_cost[cur_index_extra][fac_best_extra_cost] = f[facilities[fac_best_extra_cost]];
-
-					// for (ListBpGraph::IncEdgeIt e(g, facilities[fac_best_extra_cost]); e != INVALID; ++e) { // Percorre todas arestas desse nó (ligam a clientes)
-					// 	if(assignment_cost[e] < temp_c_minX[g.asRedNode(g.u(e))]){ // se essa inst for a mais proxima desse cli
-					// 		extra_cost[cur_index_extra][fac_best_extra_cost] += assignment_cost[e] - temp_c_minX[g.asRedNode(g.u(e))];
-					// 	}
-					// }
-
 				}
 
 				/*
@@ -1040,6 +1003,10 @@ solutionType lateAcceptance(char * solutionName, int qty_facilities, int qty_cli
 
 	solLog.close();
 	logDetail.close();
+
+	free(fa);
+	free(flag);
+	free(extra_cost);
 
 	free(clients);
 	free(facilities);

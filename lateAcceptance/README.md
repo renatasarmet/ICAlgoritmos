@@ -1,7 +1,7 @@
 Codigos para resolver o problema da localizacao de instalacoes sem capacidade
 
 
--------- ALGORITMO LATE ACCEPTANCE (nao atualizado ainda) --------
+-------- ALGORITMO LATE ACCEPTANCE --------
 
 
 *COMO RODAR?*
@@ -14,13 +14,13 @@ Após isso, digite no terminal:
 g++ handlesInput.cpp lateAcceptance.cpp -o la
 
 
-Considere que input_type significa 1 para o tipo ORLIB e 2 para o tipo SIMPLE FORMAT e best_fit significa 1 para a tecnica de escolher o melhor e 0 para escolher o primeiro
-Considere também a1 que relaciona com a condicao de parada, lh com o numero de iteracoes anteriores que irei olhar [TODOS ESSES SAO OPCIONAIS, MAS SE QUISER PASSAR QLQ UM DOS OPCIONAIS, TEM Q DIGITAR TODOS ESSES ANTERIORES]
+Considere que input_type significa 1 para o tipo ORLIB e 2 para o tipo SIMPLE FORMAT.
+Considere também best_fit significa 1 para a tecnica de escolher o melhor e 0 para escolher o primeiro, a1 que relaciona com a condicao de parada, lh com o numero de iteracoes anteriores que irei olhar e limit_idle com condicao de parada respectiva a proporcao de iteracoes sem melhora [TODOS ESSES SAO OPCIONAIS, MAS SE QUISER PASSAR QLQ UM DOS OPCIONAIS, TEM Q DIGITAR TODOS ESSES ANTERIORES]
 obs: APENAS caso a solução inicial venha do RR, deve-se digitar tambem como parametro a quantidade de testes que foram feitos (qty_tests)
 
 Então, para rodar nosso testador, basta digitar:
 
-python3 tester.py input_type best_fit <a1> <lh> <qty_tests>
+python3 tester.py input_type <best_fit> <a1> <limit_idle> <lh> <qty_tests>
 
 
 Por fim, para gerar o csv com todos os arquivos listados em "testCasesReader.txt", basta digitar:
@@ -35,15 +35,15 @@ Então, basta digitar:
 ./la input_name initialSolName solutionName input_type best_fit a1 lh
 
 -- PARA RODAR COM VARIOS PARAMETROS DIFERENTES
-Abra o arquivo call_tester.py e edite os valores de bc1, bc2 e a1. Edite o arquivo testCases2.txt contendo o nome das instancias que voce deseja testar (não se esqueça que elas devem estar na pasta initialSolutions). Então, basta digitar no terminal
+Abra o arquivo call_tester.py e edite os valores dos parametros. Edite o arquivo testCases2.txt contendo o nome das instancias que voce deseja testar (não se esqueça que elas devem estar na pasta initialSolutions). Então, basta digitar no terminal
 
 python3 call_tester.py
 
-Em seguida, para gerar o csi, abra o arquivo readerSolParameters.py e edite também os valores de bc1, bc2 e a1. Edite o arquivo testCasesReader.txt com o nome das instancias que deseja ler. Então basta digitar no terminal
+Em seguida, para gerar o csi, abra o arquivo readerSolParameters.py e edite também os valores dos parametros. Edite o arquivo testCasesReader.txt com o nome das instancias que deseja ler. Então basta digitar no terminal
 
 python3 readerSolParameters.py
 
-Caso queira gerar gráficos, utilize o arquivo plot_solutions.py . Da mesma forma, edite os valores de bc1, bc2 e a1 e atualize o arquivo testCasesPlot.txt com o nome das instancias desejadas. Então, basta rodar no terminal
+Caso queira gerar gráficos, utilize o arquivo plot_solutions.py . Da mesma forma, edite os valores dos parametros e atualize o arquivo testCasesPlot.txt com o nome das instancias desejadas. Então, basta rodar no terminal
 
 python3 plot_solutions.py
 
