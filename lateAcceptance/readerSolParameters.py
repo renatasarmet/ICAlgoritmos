@@ -45,7 +45,7 @@ if __name__ == '__main__':
 				for l in lh:
 					for li in limit_idle:
 						for a in a1:
-							instance_name = file_name + '__bf-' + bf + '_a1-' + a1 + '_idle-' + li + '_lh-' + l
+							instance_name = file_name + '__bf-' + bf + '_a1-' + a + '_idle-' + li + '_lh-' + l
 							complete_file_name = 'solutions/' + instance_name + '.sol'
 
 							with open(complete_file_name, 'r') as input_data_file:

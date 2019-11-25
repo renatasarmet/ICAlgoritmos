@@ -45,8 +45,8 @@ if __name__ == '__main__':
 
 	limit_idle = ["0.02"] #??? #0.1 #0.02
 
-	# lh = ["5","50","150"] #????
-	lh = ["1","10","1000","10000"] #????
+	# lh = ["1","10","1000","10000"] #????
+	lh = ["10000","1000","10","1"] #????
 
 	initialPath = "solutions/"
 
@@ -70,7 +70,7 @@ if __name__ == '__main__':
 				for l in lh:
 					for li in limit_idle:
 						for a in a1:
-							instance_name = file_name + '__bf-' + bf + '_a1-' + a1 + '_idle-' + li + '_lh-' + l
+							instance_name = file_name + '__bf-' + bf + '_a1-' + a + '_idle-' + li + '_lh-' + l
 							instance_file = instance_name + '.sol.log'
 							path = initialPath + instance_file
 							print(instance_name)
@@ -149,6 +149,7 @@ if __name__ == '__main__':
 
 			# show a legend on the plot 
 			# plt.legend(loc='upper left', bbox_to_anchor=(0.1, 1), ncol=2, fancybox=True, shadow=True)
+			# plt.legend(loc='upper left', bbox_to_anchor=(0.4, 1), ncol=1, fancybox=True, shadow=True)
 			plt.legend() 
 
 			plt.show()
