@@ -34,19 +34,19 @@ def get_solution(file_location):
 
 if __name__ == '__main__':
 
-	ZOOM = -1 # Used if you want to zoom the graph, ignoring the maximum value found in the solution. Note: use -1 if you do not want to zoom or set the desired maximum value
+	ZOOM = 25 # Used if you want to zoom the graph, ignoring the maximum value found in the solution. Note: use -1 if you do not want to zoom or set the desired maximum value
 
 	# Parameters values
 
-	best_fit = ["0","1"]  # 1 para best fit 0 para first fit
+	best_fit = ["1"] #["0","1"]  # 1 para best fit 0 para first fit
 	
 	# a1 = ["0.1","0.5","1","2.5"]
-	a1 = ["1"]
+	a1 = ["2.5"]#["1"]
 
 	limit_idle = ["0.02"] #??? #0.1 #0.02
 
-	# lh = ["1","10","1000","10000"] #????
-	lh = ["10000","1000","10","1"] #????
+	lh = ["10","1"]
+	# lh = ["10000","1000","250","50","10","1"] #????
 
 	initialPath = "solutions/"
 
