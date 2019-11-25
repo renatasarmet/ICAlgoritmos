@@ -23,7 +23,7 @@ using namespace std;
 #define DEBUG 1 // OPCOES DE DEBUG: 1 - MOSTRAR A QTD DE MOVIMENTOS, 2 PARA EXIBIR OS MOVIMENTOS REALIZADOS, 3 PARA EXIBIR ACOES, 4 PARA EXIBIR DETALHES DAS ACOES, 5 PARA EXIBIR TEMPO, 6 PARA EXIBIR AS MUDANÇAS NO GRAFO
 
 // Retornar o valor da solucao
-solutionType tabuSearch(char * solutionName, int qty_facilities, int qty_clients, double * costF, double * costA, solutionType solution, double a1, int lc1, int lc2, int lo1, int lo2, int seed){
+solutionType tabuSearch(char * solutionName, int qty_facilities, int qty_clients, double * costF, double * costA, solutionType solution, bool best_fit, double a1, int lc1, int lc2, int lo1, int lo2, int seed){
 
 	cout << fixed;
    	cout.precision(5);
@@ -138,6 +138,10 @@ solutionType tabuSearch(char * solutionName, int qty_facilities, int qty_clients
 	int lo = rand() % (lo2 - lo1 + 1) + lo1; // Generate the number between lo1 and lo2
 
 	if(DEBUG >= DISPLAY_BASIC){
+		if(best_fit)
+			cout << "BEST FIT - ";
+		else
+			cout << "FIRST FIT - ";
 		cout << "A1 criterion: " << int(a1 * qty_facilities) << " iterations without improvement" << endl;
 	}
 
@@ -418,15 +422,36 @@ solutionType tabuSearch(char * solutionName, int qty_facilities, int qty_clients
 		STEP 1
 		*/
 
-		// Select a facility that has de minimum extra_cost and is not flagged (and extra_cost is not DBL_MAX ---> invalid)
-		// TAMBEM TESTAR DEPOIS SE ACHAR UM QUE MELHORA JA FAZ
-		best_extra_cost = DBL_MAX; // limitante superior, maior double possivel
-		fac_best_extra_cost = -1; // indica invalidez
-		for(int i=0;i<qty_facilities;i++){
-			if(!((open[facilities[i]])&&(n1 == 1))){ // se ela nao for a unica instalacao aberta
-				if((extra_cost[cur_index_extra][i] < best_extra_cost) && ( !flag[i] )){ // se essa for menor do que a ja encontrada ate agr e nao estiver marcada, atualiza
-					best_extra_cost = extra_cost[cur_index_extra][i];
-					fac_best_extra_cost = i;
+		// Tecnica best fit
+		if(best_fit){
+			// Select a facility that has de minimum extra_cost and is not flagged (and extra_cost is not DBL_MAX ---> invalid)
+			best_extra_cost = DBL_MAX; // limitante superior, maior double possivel
+			fac_best_extra_cost = -1; // indica invalidez
+			for(int i=0;i<qty_facilities;i++){
+				if(!((open[facilities[i]])&&(n1 == 1))){ // se ela nao for a unica instalacao aberta
+					if((extra_cost[cur_index_extra][i] < best_extra_cost) && ( !flag[i] )){ // se essa for menor do que a ja encontrada ate agr e nao estiver marcada, atualiza
+						best_extra_cost = extra_cost[cur_index_extra][i];
+						fac_best_extra_cost = i;
+					}
+				}
+			}
+		}
+		// Tecnica first fit que melhora, senao o best menos ruim
+		else{
+			// Select a facility that has a negative extra_cost and is not flagged or the minimum one positive
+			best_extra_cost = DBL_MAX; // limitante superior, maior double possivel
+			fac_best_extra_cost = -1; // indica invalidez
+			for(int i=0;i<qty_facilities;i++){
+				if(!((open[facilities[i]]) && (n1 == 1)) && ( !flag[i] )){ // se ela nao for a unica instalacao aberta e nao estiver flagged
+					if((extra_cost[cur_index_extra][i] < 0)){ // se ela melhorar a solucao final
+						best_extra_cost = extra_cost[cur_index_extra][i];
+						fac_best_extra_cost = i;
+						break; // sai com essa
+					}
+					else if((extra_cost[cur_index_extra][i] < best_extra_cost)){ // se essa for menor do que a ja encontrada ate agr, atualiza
+						best_extra_cost = extra_cost[cur_index_extra][i];
+						fac_best_extra_cost = i;
+					}
 				}
 			}
 		}

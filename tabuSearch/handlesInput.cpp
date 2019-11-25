@@ -15,7 +15,7 @@ using namespace std;
 
 int main(int argc, char *argv[]){
 
-	if(argc < 11){
+	if(argc < 12){
 		cout << "Error in the parameters. You must enter 10 parameters" << endl;
 		return 0;
 	}
@@ -24,12 +24,13 @@ int main(int argc, char *argv[]){
 	char * initialSolName = argv[2];
 	char * solutionName = argv[3];
 	char * inputType = argv[4];
-	double a1 = stod(argv[5],nullptr); // convertendo argv[5] para double
-	double bc1 = stod(argv[6],nullptr); // convertendo argv[6] para double
-	double bc2 = stod(argv[7],nullptr); // convertendo argv[7] para double
-	double bo1 = stod(argv[8],nullptr); // convertendo argv[8] para double
-	double bo2 = stod(argv[9],nullptr); // convertendo argv[9] para double
-	int seed = stoi(argv[10],nullptr,10); // convertendo argv[9] para inteiro
+	int best_fit = stoi(argv[5],nullptr,10); // convertendo argv[5] para inteiro
+	double a1 = stod(argv[6],nullptr); // convertendo argv[6] para double
+	double bc1 = stod(argv[7],nullptr); // convertendo argv[7] para double
+	double bc2 = stod(argv[8],nullptr); // convertendo argv[8] para double
+	double bo1 = stod(argv[9],nullptr); // convertendo argv[9] para double
+	double bo2 = stod(argv[10],nullptr); // convertendo argv[10] para double
+	int seed = stoi(argv[11],nullptr,10); // convertendo argv[11] para inteiro
 
 	// Arquivo para salvar a solucao
 	ofstream solutionTXT;
@@ -242,7 +243,7 @@ int main(int argc, char *argv[]){
 	}
 
 	// Chamando a funcao que resolve o problema de fato
-	solution = tabuSearch(solutionName, qty_facilities, qty_clients, costF, costA, solution, a1, lc1, lc2, lo1, lo2, seed);
+	solution = tabuSearch(solutionName, qty_facilities, qty_clients, costF, costA, solution, best_fit, a1, lc1, lc2, lo1, lo2, seed);
 
 	if(DEBUG >= DISPLAY_BASIC){
 		cout << "Final total cost: " << solution.finalTotalCost << endl;
