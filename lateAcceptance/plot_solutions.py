@@ -34,7 +34,7 @@ def get_solution(file_location):
 
 if __name__ == '__main__':
 
-	ZOOM = 25 # Used if you want to zoom the graph, ignoring the maximum value found in the solution. Note: use -1 if you do not want to zoom or set the desired maximum value
+	ZOOM = -1 # Used if you want to zoom the graph, ignoring the maximum value found in the solution. Note: use -1 if you do not want to zoom or set the desired maximum value
 
 	# Parameters values
 
@@ -46,7 +46,8 @@ if __name__ == '__main__':
 	limit_idle = ["0.02"] #??? #0.1 #0.02
 
 	lh = ["10","1"]
-	# lh = ["10000","1000","250","50","10","1"] #????
+	# lh = ["10000","1000","500","250","50","10","1"] #????
+	# lh = ["1","10","50","250","500","1000","10000"] # para visualizar invertido
 
 	initialPath = "solutions/"
 

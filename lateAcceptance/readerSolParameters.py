@@ -15,15 +15,16 @@ if __name__ == '__main__':
 
 	# Parameters values
 
-	best_fit = ["0"] #["0","1"]  # 1 para best fit 0 para first fit
+	best_fit = ["1"] #["0","1"]  # 1 para best fit 0 para first fit
 	
 	# a1 = ["0.1","0.5","1","2.5"]
 	a1 = ["2.5"]
 
 	limit_idle = ["0.02"] #??? #0.1 #0.02
 
-	# lh = ["1","10"]
-	lh = ["1","10","50","250","1000","10000"] #????
+	lh = ["1","10"]
+	# lh = ["1","10","50","250","500","1000","10000"] #????
+	# lh = ["1","10","50","250","1000","10000"] #????
 
 
 	# Where all test cases are listed
