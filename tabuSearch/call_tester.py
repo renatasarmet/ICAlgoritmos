@@ -3,13 +3,12 @@ import sys
 
 if __name__ == '__main__':
 
+	print("Test Tabu Search")
+
 	inputType = "2"
 	seed = "0"
 
-	best_fit = ["1"]#["0","1"]  # 1 para best fit 0 para first fit
-
-	# bc1 = ["0.01","0.04","0.1"]
-	# bc2 = ["0.05","0.08","0.2"]
+	best_fit = ["0","1"]  # 1 para best fit 0 para first fit
 
 	bc1 = ["0.01","0.04","0.01"]
 	bc2 = ["0.05","0.08","0.08"]

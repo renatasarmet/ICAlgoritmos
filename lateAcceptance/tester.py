@@ -15,6 +15,9 @@ if __name__ == '__main__':
 
 		if len(sys.argv) > 5:
 			best_fit = sys.argv[2].strip()
+			a1 = sys.argv[3].strip()
+			limit_idle = sys.argv[4].strip()
+			a_lh = sys.argv[5].strip()
 
 			# Garantindo que os valores serao validos
 			if(int(best_fit) > 0):
@@ -22,16 +25,12 @@ if __name__ == '__main__':
 			else:
 				best_fit = "0"
 
-			a1 = sys.argv[3].strip()
-			limit_idle = sys.argv[4].strip()
-			lh = sys.argv[5].strip()
-
 		else: # se eu nao passei por parametro, coloca os padroes
 			best_fit = "0" # 1 para best fit 0 para first fit
 			a1 = "2.5" #"0.1" #"0.5" #"1" #"2.5"
 			limit_idle = "0.02" #??? #0.1 #0.02
-			lh = "250"#"10" #????
-
+			a_lh = "0.5" #????
+			
 		n_tests = 1
 		initial_sol_rr = False
 
@@ -82,10 +81,10 @@ if __name__ == '__main__':
 
 					else:
 						initialSolName = 'initialSolutions/' + file_name + '.sol'
-						solutionName = 'solutions/' + file_name + '__bf-' + best_fit + '_a1-' + a1 + '_idle-' + limit_idle + '_lh-' + lh + '.sol'
+						solutionName = 'solutions/' + file_name + '__bf-' + best_fit + '_a1-' + a1 + '_idle-' + limit_idle + '_lh-' + a_lh + '.sol'
 
 					# Chamando o programa a ser testado
-					os.system(EXE + " " + input_name + " " + initialSolName + " " + solutionName + " " + input_type + " " + best_fit + " " + a1 + " " + limit_idle + " " + lh)
+					os.system(EXE + " " + input_name + " " + initialSolName + " " + solutionName + " " + input_type + " " + best_fit + " " + a1 + " " + limit_idle + " " + a_lh)
 
 	else:
 		print('This test requires an input type. \nFirst please select one: 1 for ORLIB inputs or 2 for SIMPLE FORMAT inputs.')

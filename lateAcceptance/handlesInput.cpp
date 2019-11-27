@@ -27,7 +27,7 @@ int main(int argc, char *argv[]){
 	int best_fit = stoi(argv[5],nullptr,10); // convertendo argv[5] para inteiro
 	double a1 = stod(argv[6],nullptr); // convertendo argv[6] para double
 	double limit_idle = stod(argv[7],nullptr); // convertendo argv[7] para double
-	int lh = stoi(argv[8],nullptr,10); // convertendo argv[8] para inteiro
+	double a_lh = stod(argv[8],nullptr); // convertendo argv[8] para double
 
 	// Arquivo para salvar a solucao
 	ofstream solutionTXT;
@@ -229,6 +229,11 @@ int main(int argc, char *argv[]){
 	// Variavel que indica se ja encontramos o otimo local -- condicao de parada da busca
 	solution.local_optimum = false;
 
+	int lh;
+	if(best_fit)
+		lh = a_lh;
+	else
+		lh = a_lh * qty_facilities;
 
 	// Chamando a funcao que resolve o problema de fato
 	solution = lateAcceptance(solutionName, qty_facilities, qty_clients, costF, costA, solution, best_fit, a1, limit_idle, lh);
