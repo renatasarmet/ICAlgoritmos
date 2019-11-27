@@ -30,7 +30,7 @@ if __name__ == '__main__':
 			best_fit = "0" # 1 para best fit 0 para first fit
 			a1 = "2.5" #"0.1" #"0.5" #"1" #"2.5"
 			limit_idle = "0.02" #??? #0.1 #0.02
-			lh = "10"#"10" #????
+			lh = "250"#"10" #????
 
 		n_tests = 1
 		initial_sol_rr = False

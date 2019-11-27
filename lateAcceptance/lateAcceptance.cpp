@@ -477,7 +477,7 @@ solutionType lateAcceptance(char * solutionName, int qty_facilities, int qty_cli
 				}
 			}
 
-			// Check if the new cost is better then the old one
+			// Check if the new cost is better than the old one
 			if(best_extra_cost >= 0){ 
 				idle_itr += 1;
 			}
@@ -499,7 +499,7 @@ solutionType lateAcceptance(char * solutionName, int qty_facilities, int qty_cli
 				*/
 				lets_move = true;
 				if(DEBUG >= DISPLAY_ACTIONS){
-					cout << "It's better then the current cost or the f[v]!" << endl;
+					cout << "It's better than the current cost or the f[v]!" << endl;
 				}
 			}
 			else{
@@ -512,7 +512,7 @@ solutionType lateAcceptance(char * solutionName, int qty_facilities, int qty_cli
 				keep_searching = true; // garantindo que o valor será verdadeiro
 
 				if(DEBUG >= DISPLAY_ACTIONS){
-					cout << "It's NOT better then the current and the f[v]." << endl;
+					cout << "It's NOT better than the current and the f[v]." << endl;
 				}
 			}
 

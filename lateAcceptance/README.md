@@ -11,7 +11,7 @@ Primeiramente, eh provavel que seja necessario ter instalado a biblioteca Lemon 
 
 Após isso, digite no terminal:
 
-g++ handlesInput.cpp lateAcceptance.cpp -o la
+g++ handlesInput.cpp lateAcceptance.cpp -o la -Ofast
 
 
 Considere que input_type significa 1 para o tipo ORLIB e 2 para o tipo SIMPLE FORMAT.
