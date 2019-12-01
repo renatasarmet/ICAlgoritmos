@@ -8,21 +8,24 @@ def export_csv(output_file,solution_list):
 		w = csv.writer(csvfile, dialect='excel')
 		w.writerow(["Input file name", "Solution cost", "Time spent", "Optimal"])
 		for sol in solution_list:
-			w.writerow([sol[0],sol[1],sol[2],sol[3]])
+			if sol[0] == "":
+				w.writerow([])
+			else:
+				w.writerow([sol[0],sol[1],sol[2],sol[3]])
 
 
 if __name__ == '__main__':
 
 	# Parameters values
 
-	best_fit = ["1"] #["0","1"]  # 1 para best fit 0 para first fit
+	best_fit = ["0","1"]  # 1 para best fit 0 para first fit
 	
 	# a1 = ["0.1","0.5","1","2.5"]
 	a1 = ["2.5"]
 
 	limit_idle = ["0.02"] #??? #0.1 #0.02
 
-	lh = ["1","10"]
+	# lh = ["1","10"]
 	# lh = ["1","10","50","250","500","1000","10000"] #????
 	# lh = ["1","10","50","250","1000","10000"] #????
 
@@ -43,7 +46,11 @@ if __name__ == '__main__':
 
 			# Fazendo as combinacoes bf, lh, li e a1 para esse file_name
 			for bf in best_fit:
-				for l in lh:
+				if bf == "1":
+					a_lh = ["10"] # nesse caso sera o valor de lh mesmo
+				else:
+					a_lh = ["0.05","0.1","0.5","1"] # nesse caso sera multiplicado pelo numero de instalacoes
+				for l in a_lh:
 					for li in limit_idle:
 						for a in a1:
 							instance_name = file_name + '__bf-' + bf + '_a1-' + a + '_idle-' + li + '_lh-' + l
@@ -58,6 +65,10 @@ if __name__ == '__main__':
 
 								if len(solution) >= 3: # checking if the solution is in a correct format
 									solution_list.append((instance_name,solution[0],solution[1],solution[2])) 
+
+
+			solution_list.append(("","","","")) 
+			solution_list.append(("","","","")) 
 
 	# Exporting csv 
 	export_csv("solutionsParameters.csv",solution_list)
