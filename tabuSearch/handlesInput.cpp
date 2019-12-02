@@ -1,6 +1,7 @@
 #include <iostream>
 #include <cstdlib>
 #include <fstream>
+#include <iomanip>
 #include "definitions.hpp"
 
 #define EPS 0.001

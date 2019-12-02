@@ -106,13 +106,13 @@ solutionType tabuSearch(char * solutionName, int qty_facilities, int qty_clients
 		exit(1);
 	}
 
-	// Vetor que vai indicar se a instalacao está flagged
-	bool * flag;
-	flag = (bool*) malloc(qty_facilities * sizeof(bool));
-	if(!flag){
-		cout << "Memory Allocation Failed";
-		exit(1);
-	}
+	// // Vetor que vai indicar se a instalacao está flagged
+	// bool * flag;
+	// flag = (bool*) malloc(qty_facilities * sizeof(bool));
+	// if(!flag){
+	// 	cout << "Memory Allocation Failed";
+	// 	exit(1);
+	// }
 
 	// Serao utilizados para acessar o vetor extra_cost, funciona como modulo 2
 	int cur_index_extra = 0;
@@ -222,7 +222,7 @@ solutionType tabuSearch(char * solutionName, int qty_facilities, int qty_clients
 		else{
 			t[i] = - lc;
 		}
-		flag[i] = false;
+		// flag[i] = false;
 	}
 
 	// assignment_cost - é o custo de atribuir o cliente associado à instalação associada
@@ -408,6 +408,8 @@ solutionType tabuSearch(char * solutionName, int qty_facilities, int qty_clients
 	// Acrescentando no logDetail.txt o tempo e o custo inicial
 	logDetail << solution.timeSpent << "," << cur_cost << "," << qty_moves << endl;
 
+	bool accept;
+
 	// INICIANDO A CONTAGEM DE TEMPO DA FUNCAO
 	clock_gettime(CLOCK_REALTIME, &start);
 
@@ -423,38 +425,70 @@ solutionType tabuSearch(char * solutionName, int qty_facilities, int qty_clients
 		*/
 
 		// Tecnica best fit
-		if(best_fit){
-			// Select a facility that has de minimum extra_cost and is not flagged (and extra_cost is not DBL_MAX ---> invalid)
-			best_extra_cost = DBL_MAX; // limitante superior, maior double possivel
-			fac_best_extra_cost = -1; // indica invalidez
-			for(int i=0;i<qty_facilities;i++){
-				if(!((open[facilities[i]])&&(n1 == 1))){ // se ela nao for a unica instalacao aberta
-					if((extra_cost[cur_index_extra][i] < best_extra_cost) && ( !flag[i] )){ // se essa for menor do que a ja encontrada ate agr e nao estiver marcada, atualiza
+		// if(best_fit){
+		accept = false;
+		// Select a facility that has de minimum extra_cost and is not flagged (and extra_cost is not DBL_MAX ---> invalid)
+		best_extra_cost = DBL_MAX; // limitante superior, maior double possivel
+		fac_best_extra_cost = -1; // indica invalidez
+
+		for(int i=0;i<qty_facilities;i++){
+			if(!((open[facilities[i]])&&(n1 == 1))){ // se ela nao for a unica instalacao aberta
+				if(extra_cost[cur_index_extra][i] < best_extra_cost){ // se essa for menor do que a ja encontrada ate agr, atualiza
+					// Check the tabu status of the selected move
+					if(qty_moves < t[i]){ // Se for tabu
+
+						if(DEBUG >= DISPLAY_MOVES){
+							cout << "It is tabu" << endl;
+						}
+
+						// Check the aspiration criterion of the selected move
+						if((cur_cost + extra_cost[cur_index_extra][i]) < solution.finalTotalCost){ // Se satisfizer o aspiration criterion
+
+							if(DEBUG >= DISPLAY_MOVES){
+								cout << "It satisfies the aspiration criterion" << endl;
+							}
+
+							accept = true;
+						}
+					}
+					else { // se nao for tabu
+
+						if(DEBUG >= DISPLAY_MOVES){
+							cout << "It is not tabu" << endl;
+						}
+
+						accept = true;
+					}
+
+					if(accept){
+						accept = false;
 						best_extra_cost = extra_cost[cur_index_extra][i];
 						fac_best_extra_cost = i;
 					}
 				}
 			}
 		}
-		// Tecnica first fit que melhora, senao o best menos ruim
-		else{
-			// Select a facility that has a negative extra_cost and is not flagged or the minimum one positive
-			best_extra_cost = DBL_MAX; // limitante superior, maior double possivel
-			fac_best_extra_cost = -1; // indica invalidez
-			for(int i=0;i<qty_facilities;i++){
-				if(!((open[facilities[i]]) && (n1 == 1)) && ( !flag[i] )){ // se ela nao for a unica instalacao aberta e nao estiver flagged
-					if((extra_cost[cur_index_extra][i] < 0)){ // se ela melhorar a solucao final
-						best_extra_cost = extra_cost[cur_index_extra][i];
-						fac_best_extra_cost = i;
-						break; // sai com essa
-					}
-					else if((extra_cost[cur_index_extra][i] < best_extra_cost)){ // se essa for menor do que a ja encontrada ate agr, atualiza
-						best_extra_cost = extra_cost[cur_index_extra][i];
-						fac_best_extra_cost = i;
-					}
-				}
-			}
-		}
+
+		// }
+		// // Tecnica first fit que melhora, senao o best menos ruim
+		// else{
+		// 	// Select a facility that has a negative extra_cost and is not flagged or the minimum one positive
+		// 	best_extra_cost = DBL_MAX; // limitante superior, maior double possivel
+		// 	fac_best_extra_cost = -1; // indica invalidez
+		// 	for(int i=0;i<qty_facilities;i++){
+		// 		if(!((open[facilities[i]]) && (n1 == 1)) && ( !flag[i] )){ // se ela nao for a unica instalacao aberta e nao estiver flagged
+		// 			if((extra_cost[cur_index_extra][i] < 0)){ // se ela melhorar a solucao final
+		// 				best_extra_cost = extra_cost[cur_index_extra][i];
+		// 				fac_best_extra_cost = i;
+		// 				break; // sai com essa
+		// 			}
+		// 			else if((extra_cost[cur_index_extra][i] < best_extra_cost)){ // se essa for menor do que a ja encontrada ate agr, atualiza
+		// 				best_extra_cost = extra_cost[cur_index_extra][i];
+		// 				fac_best_extra_cost = i;
+		// 			}
+		// 		}
+		// 	}
+		// }
 
 		if(DEBUG >= DISPLAY_MOVES){
 			cout << "Facility " << fac_best_extra_cost << " best delta extra cost: " << best_extra_cost << endl;
@@ -467,6 +501,7 @@ solutionType tabuSearch(char * solutionName, int qty_facilities, int qty_clients
 			keep_searching = false;
 		}
 		else{
+			lets_move = true;
 			if(DEBUG >= DISPLAY_MOVES){
 				if(open[facilities[fac_best_extra_cost]]){ // se a instalacao está aberta
 					cout << "We want to close it" << endl;
@@ -476,51 +511,51 @@ solutionType tabuSearch(char * solutionName, int qty_facilities, int qty_clients
 				}
 			}
 
-			// Check the tabu status of the selected move
-			if(qty_moves < t[fac_best_extra_cost]){ // Se for tabu
+		// 	// Check the tabu status of the selected move
+		// 	if(qty_moves < t[fac_best_extra_cost]){ // Se for tabu
 
-				if(DEBUG >= DISPLAY_MOVES){
-					cout << "It is tabu" << endl;
-				}
+		// 		if(DEBUG >= DISPLAY_MOVES){
+		// 			cout << "It is tabu" << endl;
+		// 		}
 
-				/* 
-				STEP 2
-				*/
+		// 		/* 
+		// 		STEP 2
+		// 		*/
 
-				// Check the aspiration criterion of the selected move
-				if((cur_cost + best_extra_cost) < solution.finalTotalCost){ // Se satisfizer o aspiration criterion
-					if(DEBUG >= DISPLAY_MOVES){
-						cout << "It satisfies the aspiration criterion" << endl;
-					}
-					/* 
-					go to STEP 3
-					*/
-					lets_move = true;
-				}
-				else{ // Se nao satisfizer o aspiration criterion
-					if(DEBUG >= DISPLAY_MOVES){
-						cout << "It does not satisfy the aspiration criterion" << endl;
-					}
-					// Mark facility as flagged
-					flag[fac_best_extra_cost] = true;
+		// 		// Check the aspiration criterion of the selected move
+		// 		if((cur_cost + best_extra_cost) < solution.finalTotalCost){ // Se satisfizer o aspiration criterion
+		// 			if(DEBUG >= DISPLAY_MOVES){
+		// 				cout << "It satisfies the aspiration criterion" << endl;
+		// 			}
+		// 			/* 
+		// 			go to STEP 3
+		// 			*/
+		// 			lets_move = true;
+		// 		}
+		// 		else{ // Se nao satisfizer o aspiration criterion
+		// 			if(DEBUG >= DISPLAY_MOVES){
+		// 				cout << "It does not satisfy the aspiration criterion" << endl;
+		// 			}
+		// 			// Mark facility as flagged
+		// 			flag[fac_best_extra_cost] = true;
 
-					/* 
-					go back to STEP 1 -->> while
-					*/
-					lets_move = false; // garantindo que o valor será falso
-					keep_searching = true; // garantindo que o valor será verdadeiro
-				}
-			}
-			else{ //  se nao for tabu
-				if(DEBUG >= DISPLAY_MOVES){
-					cout << "It is not tabu" << endl;
-				}
+		// 			/* 
+		// 			go back to STEP 1 -->> while
+		// 			*/
+		// 			lets_move = false; // garantindo que o valor será falso
+		// 			keep_searching = true; // garantindo que o valor será verdadeiro
+		// 		}
+		// 	}
+		// 	else{ //  se nao for tabu
+		// 		if(DEBUG >= DISPLAY_MOVES){
+		// 			cout << "It is not tabu" << endl;
+		// 		}
 
-				/* 
-				go to STEP 3
-				*/
-				lets_move = true;
-			}	
+		// 		/* 
+		// 		go to STEP 3
+		// 		*/
+		// 		lets_move = true;
+		// 	}	
 
 
 			/* 
@@ -744,8 +779,8 @@ solutionType tabuSearch(char * solutionName, int qty_facilities, int qty_clients
 								}
 							}
 
-							// Mark each facility as unflagged
-							flag[name[n2]] = false;
+							// // Mark each facility as unflagged
+							// flag[name[n2]] = false;
 						}
 					}
 
@@ -912,8 +947,8 @@ solutionType tabuSearch(char * solutionName, int qty_facilities, int qty_clients
 								}
 							}
 
-							// Mark each facility as unflagged
-							flag[name[n2]] = false;
+							// // Mark each facility as unflagged
+							// flag[name[n2]] = false;
 						}
 					}
 					// Updating extra_cost for this chosen facility -> don't need to recalculate
@@ -1009,7 +1044,7 @@ solutionType tabuSearch(char * solutionName, int qty_facilities, int qty_clients
 	logDetail.close();
 
 	free(t);
-	free(flag);
+	// free(flag);
 	free(extra_cost);
 	
 	free(clients);
