@@ -17,16 +17,16 @@ def export_csv(output_file,solution_list):
 if __name__ == '__main__':
 
 	# Parameters values
-
-	best_fit = ["0","1"]  # 1 para best fit 0 para first fit
-
-	bc1 = ["0.01","0.04","0.01"] # equal to bo1
-	bc2 = ["0.05","0.08","0.08"] # equal to bo2
-
-	# a1 = ["2.5","1","0.5","0.1"] #["0.1","0.5","1","2.5"]
-	a1 = ["2.5"]
+	bc1 = ["0.01","0.04"] #["0.01","0.04","0.01"]
+	bc2 = ["0.05","0.08"] #["0.05","0.08","0.08"]
 
 	qtd = len(bc1)
+
+	a1 = ["2.5"]
+
+	limit_idle = ["0.02"] #??? #0.1 #0.02
+	
+	lh = ["10", "50", "100", "500"] 
 
 	# Where all test cases are listed
 	file_location = 'testCasesReader.txt'
@@ -44,21 +44,23 @@ if __name__ == '__main__':
 
 
 			# Fazendo as combinacoes a1 com bc para esse file_name
-			for bf in best_fit:
-				for i in range(qtd):
-					for a in a1:
-						instance_name = file_name + '__bf-' + bf + '_a1-' + a + '_l-' + bc1[i] + '-' + bc2[i]
-						complete_file_name = 'solutions/' + instance_name + '.sol'
+			for l in lh:
+				for li in limit_idle:
+					for i in range(qtd):
+						for a in a1:
 
-						with open(complete_file_name, 'r') as input_data_file:
-							input_data = input_data_file.read()
+							instance_name = file_name + '__a1-' + a + '_l-' + bc1[i] + '-' + bc2[i] + '_idle-' + li + '_lh' + l
+							complete_file_name = 'solutions/' + instance_name + '.sol'
 
-						if(input_data):
-							# solution :: 0 - cost, 1 - timeSpent, 2 - optimal, 3....qty_clients - connected facility
-							solution = input_data.split(" ")
+							with open(complete_file_name, 'r') as input_data_file:
+								input_data = input_data_file.read()
 
-							if len(solution) >= 3: # checking if the solution is in a correct format
-								solution_list.append((instance_name,solution[0],solution[1],solution[2])) 
+							if(input_data):
+								# solution :: 0 - cost, 1 - timeSpent, 2 - optimal, 3....qty_clients - connected facility
+								solution = input_data.split(" ")
+
+								if len(solution) >= 3: # checking if the solution is in a correct format
+									solution_list.append((instance_name,solution[0],solution[1],solution[2])) 
 
 			solution_list.append(("","","","")) 
 

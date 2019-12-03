@@ -32,6 +32,8 @@ def get_solutions(file_location):
 			solution_list.append([elements[0],elements[1]])
 			solution_list.append([elements[0],elements[1]])
 			solution_list.append([elements[0],elements[1]])
+			solution_list.append([elements[0],elements[1]])
+			solution_list.append([elements[0],elements[1]])
 
 			solution_list.append([""]) # write blank line
 
