@@ -8,19 +8,21 @@ if __name__ == '__main__':
 	inputType = "2"
 	seed = "0"
 
-	best_fit = ["0","1"]  # 1 para best fit 0 para first fit
-
-	bc1 = ["0.01","0.04","0.01"]
-	bc2 = ["0.05","0.08","0.08"]
-
-	# a1 = ["0.1","0.5","1","2.5"]
-	a1 = ["2.5"]
+	bc1 = ["0.01","0.04"] #["0.01","0.04","0.01"]
+	bc2 = ["0.05","0.08"] #["0.05","0.08","0.08"]
 
 	qtd = len(bc1)
 
-	for bf in best_fit:
-		for i in range(qtd):
-			for a in a1:
-				# Chamando o programa a ser testado
-				os.system("python3 tester.py " + inputType + " " + bf + " " + a + " " + bc1[i] + " " + bc2[i] + " " + bc1[i] + " " + bc2[i] + " " + seed)
+	a1 = ["2.5"]
+
+	limit_idle = ["0.02"] #??? #0.1 #0.02
+	
+	lh = ["10", "50", "100", "500"] 
+
+	for l in lh:
+		for li in limit_idle:
+			for i in range(qtd):
+				for a in a1:
+					# Chamando o programa a ser testado
+					os.system("python3 tester.py " + inputType + " " + a + " " + bc1[i] + " " + bc2[i] + " " + bc1[i] + " " + bc2[i] + " " + seed + " " + li + " " + l)
 

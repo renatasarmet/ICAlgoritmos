@@ -23,7 +23,7 @@ using namespace std;
 #define DEBUG 1 // OPCOES DE DEBUG: 1 - MOSTRAR A QTD DE MOVIMENTOS, 2 PARA EXIBIR OS MOVIMENTOS REALIZADOS, 3 PARA EXIBIR ACOES, 4 PARA EXIBIR DETALHES DAS ACOES, 5 PARA EXIBIR TEMPO, 6 PARA EXIBIR AS MUDANÇAS NO GRAFO
 
 // Retornar o valor da solucao
-solutionType tabuSearch(char * solutionName, int qty_facilities, int qty_clients, double * costF, double * costA, solutionType solution, bool best_fit, double a1, int lc1, int lc2, int lo1, int lo2, int seed){
+solutionType latabu(char * solutionName, int qty_facilities, int qty_clients, double * costF, double * costA, solutionType solution, double a1, int lc1, int lc2, int lo1, int lo2, int seed, double limit_idle, int lh){
 
 	cout << fixed;
    	cout.precision(5);
@@ -45,6 +45,9 @@ solutionType tabuSearch(char * solutionName, int qty_facilities, int qty_clients
 
 	// Variavel que marca quantas movimentacoes foram feitas de fato
 	int qty_moves = 0;
+
+	// Variavel que marca quantas movimentacoes foram feitas de fato
+	int qty_moves_done = 0;
 
 
 	/* Sobre os grafos bipartidos, teremos
@@ -98,6 +101,15 @@ solutionType tabuSearch(char * solutionName, int qty_facilities, int qty_clients
 	set <int, greater <int> > :: iterator itr;
 
 
+	// Vetor fitness array que representa as solucoes anteriores, que vou usar para comparacao (tamanho lh)
+	double * fa;
+	fa = (double*) malloc(lh * sizeof(double));
+	if(!fa){
+		cout << "Memory Allocation Failed";
+		exit(1);
+	}
+
+
 	// Vetor da short term memory que representa o numero do movimento
 	int * t;
 	t = (int*) malloc(qty_facilities * sizeof(int));
@@ -138,11 +150,10 @@ solutionType tabuSearch(char * solutionName, int qty_facilities, int qty_clients
 	int lo = rand() % (lo2 - lo1 + 1) + lo1; // Generate the number between lo1 and lo2
 
 	if(DEBUG >= DISPLAY_BASIC){
-		if(best_fit)
-			cout << "BEST FIT - ";
-		else
-			cout << "FIRST FIT - ";
-		cout << "A1 criterion: " << int(a1 * qty_facilities) << " iterations without improvement" << endl;
+		cout << "BEST FIT - ";
+		cout << "Lh: " << lh << endl;
+		cout << "A1 criterion: " << int(a1 * qty_facilities) << " iterations without improvement best" << endl;
+		cout << "Idle criterion: " << limit_idle << " * iterations without improvement current" << endl;
 	}
 
 	// Vai receber lc ou lo, dependendo da checagem if(open[]), para evitar duplicidade no codigo
@@ -351,6 +362,11 @@ solutionType tabuSearch(char * solutionName, int qty_facilities, int qty_clients
 	int nearest3_open_fac = -1;
 	double aux_cij3 = -1;
 
+	int idle_itr = 0;
+
+	// virtual beggining
+	int v;
+
 	// cout <<"Initial assigned facilities" << endl;
 	// for(ListBpGraph::RedNodeIt n_cli(g); n_cli != INVALID; ++n_cli){		// percorre os clientes
 	// 	cout << "Client " << name[n_cli] << ": " << solution.assigned_facilities[name[n_cli]] << endl; 
@@ -380,6 +396,11 @@ solutionType tabuSearch(char * solutionName, int qty_facilities, int qty_clients
 		}
 	}
 
+
+	// Iniciando o vetor fa
+	for(int i=0;i<lh;i++){
+		fa[i] = solution.finalTotalCost;
+	}
 
 
 	// cout << "TESTE SE A SOLUCAO TA CERTA" << endl;
@@ -422,36 +443,14 @@ solutionType tabuSearch(char * solutionName, int qty_facilities, int qty_clients
 		STEP 1
 		*/
 
-		// Tecnica best fit
-		if(best_fit){
-			// Select a facility that has de minimum extra_cost and is not flagged (and extra_cost is not DBL_MAX ---> invalid)
-			best_extra_cost = DBL_MAX; // limitante superior, maior double possivel
-			fac_best_extra_cost = -1; // indica invalidez
-			for(int i=0;i<qty_facilities;i++){
-				if(!((open[facilities[i]])&&(n1 == 1))){ // se ela nao for a unica instalacao aberta
-					if((extra_cost[cur_index_extra][i] < best_extra_cost) && ( !flag[i] )){ // se essa for menor do que a ja encontrada ate agr e nao estiver marcada, atualiza
-						best_extra_cost = extra_cost[cur_index_extra][i];
-						fac_best_extra_cost = i;
-					}
-				}
-			}
-		}
-		// Tecnica first fit que melhora, senao o best menos ruim
-		else{
-			// Select a facility that has a negative extra_cost and is not flagged or the minimum one positive
-			best_extra_cost = DBL_MAX; // limitante superior, maior double possivel
-			fac_best_extra_cost = -1; // indica invalidez
-			for(int i=0;i<qty_facilities;i++){
-				if(!((open[facilities[i]]) && (n1 == 1)) && ( !flag[i] )){ // se ela nao for a unica instalacao aberta e nao estiver flagged
-					if((extra_cost[cur_index_extra][i] < 0)){ // se ela melhorar a solucao final
-						best_extra_cost = extra_cost[cur_index_extra][i];
-						fac_best_extra_cost = i;
-						break; // sai com essa
-					}
-					else if((extra_cost[cur_index_extra][i] < best_extra_cost)){ // se essa for menor do que a ja encontrada ate agr, atualiza
-						best_extra_cost = extra_cost[cur_index_extra][i];
-						fac_best_extra_cost = i;
-					}
+		// Select a facility that has de minimum extra_cost and is not flagged (and extra_cost is not DBL_MAX ---> invalid)
+		best_extra_cost = DBL_MAX; // limitante superior, maior double possivel
+		fac_best_extra_cost = -1; // indica invalidez
+		for(int i=0;i<qty_facilities;i++){
+			if(!((open[facilities[i]])&&(n1 == 1))){ // se ela nao for a unica instalacao aberta
+				if((extra_cost[cur_index_extra][i] < best_extra_cost) && ( !flag[i] )){ // se essa for menor do que a ja encontrada ate agr e nao estiver marcada, atualiza
+					best_extra_cost = extra_cost[cur_index_extra][i];
+					fac_best_extra_cost = i;
 				}
 			}
 		}
@@ -474,6 +473,22 @@ solutionType tabuSearch(char * solutionName, int qty_facilities, int qty_clients
 				else{ // se a instalacao está fechada
 					cout << "We want to open it" << endl;
 				}
+			}
+
+			// Check if the new cost is better than the old one
+			if(best_extra_cost >= 0){ 
+				idle_itr += 1;
+			}
+			else{
+				idle_itr = 0;
+			}
+
+			// Calculating the virtual beggining
+			v = qty_moves % lh;
+
+			if(DEBUG >= DISPLAY_ACTIONS){
+				cout << "V = " << v << endl;
+				cout << "F[v]: " << fa[v] << "  old: " << cur_cost << "  new: " << cur_cost + best_extra_cost << endl;
 			}
 
 			// Check the tabu status of the selected move
@@ -516,12 +531,34 @@ solutionType tabuSearch(char * solutionName, int qty_facilities, int qty_clients
 					cout << "It is not tabu" << endl;
 				}
 
-				/* 
-				go to STEP 3
-				*/
-				lets_move = true;
-			}	
+				// se melhora a solucao atual ou a do fitness array
+				if(((cur_cost + best_extra_cost) < fa[v]) || (best_extra_cost <= 0)){
+					/* 
+					go to STEP 3
+					*/
+					lets_move = true;
+					if(DEBUG >= DISPLAY_ACTIONS){
+						cout << "It's better than the current cost or the f[v]!" << endl;
+					}
+				}
+				else{
+					// Mark facility as flagged
+					flag[fac_best_extra_cost] = true;
 
+					/* 
+					go back to STEP 1 -->> while
+					*/
+					lets_move = false; // garantindo que o valor será falso
+					keep_searching = true; // garantindo que o valor será verdadeiro
+
+					if(DEBUG >= DISPLAY_ACTIONS){
+						cout << "It's NOT better than the current and the f[v]." << endl;
+					}
+				}
+			}
+
+			// Aumentando a contagem de movimentos
+			qty_moves += 1;
 
 			/* 
 			STEP 3
@@ -557,13 +594,13 @@ solutionType tabuSearch(char * solutionName, int qty_facilities, int qty_clients
 				cur_cost += best_extra_cost;
 
 				// Atualizando a lista tabu
-				t[fac_best_extra_cost] = qty_moves + aux_l;
+				t[fac_best_extra_cost] = (qty_moves - 1) + aux_l;
 
 				// Aumentando a contagem de movimentos
-				qty_moves += 1;
+				qty_moves_done += 1;
 
 				// Atualizando os indices para acessar o vetor extra_cost
-				cur_index_extra = qty_moves % 2;
+				cur_index_extra = qty_moves_done % 2;
 				old_index_extra = !cur_index_extra;
 
 				// CHECANDO A CONTAGEM DE TEMPO GASTO ATÉ AGORA
@@ -949,8 +986,20 @@ solutionType tabuSearch(char * solutionName, int qty_facilities, int qty_clients
 						solution.assigned_facilities[name[n_cli]] = nearest_open_fac[n_cli]; // salvando alteracoes sobre a inst mais proxima na solucao final
  					}
 				}
+			}
+			// Se ainda nao atingiu a condicao de parada respectivo ao idle itr
+			if(idle_itr <= qty_moves * limit_idle){
+				/* 
+				go back to STEP 1 -->> while
+				*/
+				keep_searching = true; // garantindo que o valor será verdadeiro
+			}
+					
+			else{
+				if(DEBUG >= DISPLAY_MOVES){
+					cout << "Stop criterion idle: " << idle_itr << " > " <<  qty_moves * limit_idle << endl;
+				}
 
-				
 				// Se ainda nao atingiu a condicao de parada respectivo ao a1
 				if(qty_moves - k_last_best <= a1 * qty_facilities){
 					/* 
@@ -958,16 +1007,20 @@ solutionType tabuSearch(char * solutionName, int qty_facilities, int qty_clients
 					*/
 					keep_searching = true; // garantindo que o valor será verdadeiro
 				}
-						
 				else{
 					if(DEBUG >= DISPLAY_BASIC){
-						cout << "Stop criterion a1" << endl;
+						cout << "Stop criterion a1 and idle itr" << endl;
 					}
 					/*
 					STOP
 					*/
 					keep_searching = false;
 				}
+			}
+
+			// Updating the fitness array
+			if(cur_cost < fa[v]){
+				fa[v] = cur_cost;
 			}
 		}
 	}
@@ -998,12 +1051,15 @@ solutionType tabuSearch(char * solutionName, int qty_facilities, int qty_clients
 	solution.timeSpent =  (finish.tv_sec - start.tv_sec);
 	solution.timeSpent += (finish.tv_nsec - start.tv_nsec) / 1000000000.0; // Necessario para obter uma precisao maior 
 
-	if(DEBUG >= DISPLAY_TIME){
+	if(DEBUG >= DISPLAY_BASIC){
 		cout << "Final Total Function Time: " << solution.timeSpent << " seconds" << endl;
 	}
 
 	// Acrescentando no solLog.txt o tempo gasto final da funcao e o custo final da solucao
 	solLog << solution.timeSpent << "," << solution.finalTotalCost << "," << qty_moves << endl;
+
+	// Acrescentando no solLog.txt o tempo gasto final da funcao e o custo final da solucao
+	logDetail << solution.timeSpent << "," << cur_cost << "," << qty_moves << endl;
 
 	solLog.close();
 	logDetail.close();

@@ -37,16 +37,16 @@ if __name__ == '__main__':
 	ZOOM = -1 # Used if you want to zoom the graph, ignoring the maximum value found in the solution. Note: use -1 if you do not want to zoom or set the desired maximum value
 
 	# Parameters values
-	# bc1 = ["0.01","0.04","0.1"] # equal to bo1
-	# bc2 = ["0.05","0.08","0.2"] # equal to bo2
-	
-	bc1 = ["0.01","0.04","0.01"]
-	bc2 = ["0.05","0.08","0.08"]
-
-	# a1 = ["2.5","1","0.5","0.1"] #["0.1","0.5","1","2.5"]
-	a1 = ["2.5"]
+	bc1 = ["0.01"] #["0.01","0.04","0.01"]
+	bc2 = ["0.05"] #["0.05","0.08","0.08"]
 
 	qtd = len(bc1)
+
+	a1 = ["2.5"]
+
+	limit_idle = ["0.02"] 
+	
+	lh = ["500", "100", "50", "10"] 
 
 	initialPath = "solutions/"
 
@@ -66,14 +66,16 @@ if __name__ == '__main__':
 			legends = []
 
 			# Fazendo as combinacoes a1 com bc para esse file_name
-			for i in range(qtd):
-				for a in a1:
-					instance_name = file_name + '__a1-' + a + '_l-' + bc1[i] + '-' + bc2[i]
-					instance_file = instance_name + '.sol.log'
-					path = initialPath + instance_file
-					print(instance_name)
-					solutions.append(get_solution(path))
-					legends.append(instance_name)
+			for l in lh:
+				for li in limit_idle:
+					for i in range(qtd):
+						for a in a1:
+							instance_name = file_name + '__a1-' + a + '_l-' + bc1[i] + '-' + bc2[i] + '_idle-' + li + '_lh' + l
+							instance_file = instance_name + '.sol.log_detail'
+							path = initialPath + instance_file
+							print(instance_name)
+							solutions.append(get_solution(path))
+							legends.append(instance_name)
 
 			# Pegando o maior e menor valor do custo (para eixo y) e o maior numero de iteracoes (para eixo x)
 			max_itr = -1
