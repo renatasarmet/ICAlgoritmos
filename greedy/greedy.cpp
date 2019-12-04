@@ -324,7 +324,7 @@ solutionType greedy(int qty_clients, int qty_facilities, double * costF, double 
 		// ordenando o vetor
 		mergeSort(sorted_cij[g.id(n)], sorted_cijID[g.id(n)], 0, (counter-1));
 
-		if (DEBUG >= DISPLAY_ACTIONS){
+		if (DEBUG >= DISPLAY_GRAPH){
 			cout << "sorted to facility " << g.id(n) << endl;
 			for(int i=0;i<counter;i++){
 				cout << sorted_cij[g.id(n)][i] << endl; // Adicionar o cliente j no conjunto de 

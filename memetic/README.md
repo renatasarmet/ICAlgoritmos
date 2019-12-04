@@ -11,16 +11,15 @@ Primeiramente, eh provavel que seja necessario ter instalado a biblioteca Lemon 
 
 Após isso, digite no terminal:
 
-g++ handlesInput.cpp memetic.cpp -o ma -Ofast
+g++ handlesInput.cpp memetic.cpp utils.cpp ../greedy/greedy.cpp ../localSearch/localSearch.cpp -o ma -Ofast
 
 
 Considere que input_type significa 1 para o tipo ORLIB e 2 para o tipo SIMPLE FORMAT. 
-Considere também best_fit significa 1 para a tecnica de escolher o melhor e 0 para escolher o primeiro, a1 que relaciona com a condicao de parada, lc1 e lc2 intervalo de manter fechado, lo1 e lo2 intervalo de manter aberto [TODOS ESSES SAO OPCIONAIS, MAS SE QUISER PASSAR QLQ UM DOS OPCIONAIS, TEM Q DIGITAR TODOS ESSES ANTERIORES]
 obs: APENAS caso a solução inicial venha do RR, deve-se digitar tambem como parametro a quantidade de testes que foram feitos (qty_tests)
 
 Então, para rodar nosso testador, basta digitar:
 
-python3 tester.py input_type <best_fit> <a1> <lc1> <lc2> <lo1> <lo2> <qty_tests>
+python3 tester.py input_type <qty_tests>
 
 
 Por fim, para gerar o csv com todos os arquivos listados em "testCasesReader.txt", basta digitar:
@@ -29,21 +28,21 @@ obs: APENAS caso a solução inicial venha do RR, deve-se digitar tambem como pa
 python3 readerSol.py <qty_tests>
 
 
-Caso queira executar apenas um exemplo, considere que input_name é o caminho completo do problema UFL a ser resolvido, initialSolName é o caminho completo da solucao inicial desse caso, solutionName é o caminho completo onde deseja-se guardar a solucao e o input_type é o tipo da entrada (1 para o tipo ORLIB e 2 para o tipo SIMPLE FORMAT). Considere a1 lc1 lc2 lo1 lo2 como definido acima.
+Caso queira executar apenas um exemplo, considere que input_name é o caminho completo do problema UFL a ser resolvido, initialSolName é o caminho completo da solucao inicial desse caso, solutionName é o caminho completo onde deseja-se guardar a solucao e o input_type é o tipo da entrada (1 para o tipo ORLIB e 2 para o tipo SIMPLE FORMAT). 
 Então, basta digitar:
 
-./ma input_name initialSolName solutionName input_type best_fit a1 lc1 lc2 lo1 lo2
+./ma input_name initialSolName solutionName input_type 
 
 -- PARA RODAR COM VARIOS PARAMETROS DIFERENTES
-Abra o arquivo call_tester.py e edite os valores de bc1, bc2 e a1. Edite o arquivo testCases2.txt contendo o nome das instancias que voce deseja testar (não se esqueça que elas devem estar na pasta initialSolutions). Então, basta digitar no terminal
+Abra o arquivo call_tester.py e edite como preferir. Edite o arquivo testCases2.txt contendo o nome das instancias que voce deseja testar (não se esqueça que elas devem estar na pasta initialSolutions). Então, basta digitar no terminal
 
 python3 call_tester.py
 
-Em seguida, para gerar o csi, abra o arquivo readerSolParameters.py e edite também os valores de bc1, bc2 e a1. Edite o arquivo testCasesReader.txt com o nome das instancias que deseja ler. Então basta digitar no terminal
+Em seguida, para gerar o csv, abra o arquivo readerSolParameters.py e edite como preferir. Edite o arquivo testCasesReader.txt com o nome das instancias que deseja ler. Então basta digitar no terminal
 
 python3 readerSolParameters.py
 
-Caso queira gerar gráficos, utilize o arquivo plot_solutions.py . Da mesma forma, edite os valores de bc1, bc2 e a1 e atualize o arquivo testCasesPlot.txt com o nome das instancias desejadas. Então, basta rodar no terminal
+Caso queira gerar gráficos, utilize o arquivo plot_solutions.py . Da mesma forma, atualize o arquivo testCasesPlot.txt com o nome das instancias desejadas. Então, basta rodar no terminal
 
 python3 plot_solutions.py
 

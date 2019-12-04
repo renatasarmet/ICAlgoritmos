@@ -16,7 +16,7 @@ using namespace std;
 
 int main(int argc, char *argv[]){
 
-	if(argc < 12){
+	if(argc < 4){
 		cout << "Error in the parameters. You must enter 10 parameters" << endl;
 		return 0;
 	}
@@ -25,13 +25,6 @@ int main(int argc, char *argv[]){
 	char * initialSolName = argv[2];
 	char * solutionName = argv[3];
 	char * inputType = argv[4];
-	int best_fit = stoi(argv[5],nullptr,10); // convertendo argv[5] para inteiro
-	double a1 = stod(argv[6],nullptr); // convertendo argv[6] para double
-	double bc1 = stod(argv[7],nullptr); // convertendo argv[7] para double
-	double bc2 = stod(argv[8],nullptr); // convertendo argv[8] para double
-	double bo1 = stod(argv[9],nullptr); // convertendo argv[9] para double
-	double bo2 = stod(argv[10],nullptr); // convertendo argv[10] para double
-	int seed = stoi(argv[11],nullptr,10); // convertendo argv[11] para inteiro
 
 	// Arquivo para salvar a solucao
 	ofstream solutionTXT;
@@ -233,18 +226,8 @@ int main(int argc, char *argv[]){
 	// Variavel que indica se ja encontramos o otimo local -- condicao de parada da busca
 	solution.local_optimum = false;
 
-	// Preparando intervalo lc e lo (por enquanto os intervalos serao iguais)
-	int lc1, lc2, lo1, lo2;
-
-	lc1 = lo1 = bc1 * qty_facilities;
-	lc2 = lo2 = bc2 * qty_facilities;
-
-	if(DEBUG >= DISPLAY_SIZE){
-		cout << "Tabu tenure -> start: " << lc1 << "  end: " << lc2 << endl;
-	}
-
 	// Chamando a funcao que resolve o problema de fato
-	solution = tabuSearch(solutionName, qty_facilities, qty_clients, costF, costA, solution, best_fit, a1, lc1, lc2, lo1, lo2, seed);
+	solution = memetic(solutionName, qty_facilities, qty_clients, costF, costA);
 
 	if(DEBUG >= DISPLAY_BASIC){
 		cout << "Final total cost: " << solution.finalTotalCost << endl;

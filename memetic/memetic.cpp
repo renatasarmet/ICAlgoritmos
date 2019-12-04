@@ -1,17 +1,11 @@
-#include <lemon/list_graph.h>
-#include <algorithm>
 #include <iostream>
-#include <set>
 #include <ctime>
 #include <fstream>
-#include <cstring>
-#include <cfloat>
 #include "definitions.hpp"
 
 #define QTY_NODES_TREE 13
 #define QTY_CHILDREN_NODE 5 // inclui pocket and current //??
 
-using namespace lemon;
 using namespace std;
 
 #define DISPLAY_BASIC 1 // corresponde a exibicao da quantidade de movimentos
@@ -24,64 +18,8 @@ using namespace std;
 #define DEBUG 1 // OPCOES DE DEBUG: 1 - MOSTRAR A QTD DE MOVIMENTOS, 2 PARA EXIBIR OS MOVIMENTOS REALIZADOS, 3 PARA EXIBIR ACOES, 4 PARA EXIBIR DETALHES DAS ACOES, 5 PARA EXIBIR TEMPO, 6 PARA EXIBIR AS MUDANÇAS NO GRAFO
 
 
-void mergeSort(double *vector, int *vectorID, int startPosition, int endPosition) {
-
-    int i, j, k, halfSize, *tempVectorID;
-    double *tempVector;
-    if(startPosition == endPosition) return;
-    halfSize = (startPosition + endPosition ) / 2;
-
-    mergeSort(vector, vectorID, startPosition, halfSize);
-    mergeSort(vector, vectorID, halfSize + 1, endPosition);
-
-    i = startPosition;
-    j = halfSize + 1;
-    k = 0;
-    tempVector = (double *) malloc(sizeof(double) * (endPosition - startPosition + 1));
-    tempVectorID = (int *) malloc(sizeof(int) * (endPosition - startPosition + 1));
-
-    while(i < halfSize + 1 || j  < endPosition + 1) {
-        if (i == halfSize + 1 ) { 
-            tempVector[k] = vector[vectorID[j]];
-            tempVectorID[k] = vectorID[j];
-            j++;
-            k++;
-        }
-        else {
-            if (j == endPosition + 1) {
-                tempVector[k] = vector[vectorID[i]];
-                tempVectorID[k] = vectorID[i];
-                i++;
-                k++;
-            }
-            else {
-                if (vector[vectorID[i]] < vector[vectorID[j]]) {
-                    tempVector[k] = vector[vectorID[i]];
-                    tempVectorID[k] = vectorID[i];
-                    i++;
-                    k++;
-                }
-                else {
-                    tempVector[k] = vector[vectorID[j]];
-                    tempVectorID[k] = vectorID[j];
-                    j++;
-                    k++;
-                }
-            }
-        }
-    }
-    for(i = startPosition; i <= endPosition; i++) {
-        vectorID[i] = tempVectorID[i - startPosition];
-    }
-    free(tempVector);
-    free(tempVectorID);
-}
-
-
-
-
 // Retornar o valor da solucao
-solutionType memetic(char * solutionName, int qty_facilities, int qty_clients, double * costF, double * costA, solutionType solution, bool best_fit, double a1, int lc1, int lc2, int lo1, int lo2, int seed){
+solutionType memetic(char * solutionName, int qty_facilities, int qty_clients, double * costF, double * costA){
 
 	cout << fixed;
    	cout.precision(5);
@@ -92,18 +30,28 @@ solutionType memetic(char * solutionName, int qty_facilities, int qty_clients, d
 	// FUTURO: SALVAR LOG E LOG_DETAILS
 
 
-
 	// Declaracao dos nós da arvore. Cada nó é uma solucao
 	solutionType nodes[QTY_NODES_TREE][QTY_CHILDREN_NODE];
 
-	// Inicializando todas as solucoes com todas as inst fechadas
+
+	// Alocando memoria para as instalacoes abertas e instalacoes atribuidas de cada cliente
 	for(int i=0;i<QTY_NODES_TREE;i++){
 		for(int j=0;j<QTY_CHILDREN_NODE;j++){
-			for(int k=0;k<qty_facilities;k++){
-				nodes[i][j].open_facilities[k] = false;
-			}
+
+			// indica as instalacoes abertas atualmente em cada solucao
+			nodes[i][j].open_facilities = (int*) malloc((qty_facilities) * sizeof(int));
+
+		    // indicara as instalacoes atribuidas a cada cliente na resposta
+		    nodes[i][j].assigned_facilities = (int*) malloc((qty_clients) * sizeof(int));
+
+		    if((!nodes[i][j].open_facilities)||(!nodes[i][j].assigned_facilities)){
+		        cout << "Memory Allocation Failed";
+		        exit(1);
+		    }
 		}
 	}
+
+
 
 	// TO DO: VERIFICAR POR CADA NÓ, MARCAR COMO ABERTA TODAS AS INSTALACOES QUE APARECEREM EM ALGUM ASSIGNED_FACILITIES[i]
 
@@ -124,20 +72,29 @@ solutionType memetic(char * solutionName, int qty_facilities, int qty_clients, d
         exit(1);
     }
 
-    // Colocar os valores em assignment_cost
+    // Colocar os valores em assignment_cost e colocar valores ainda nao ordenados no sorted_cijID
     int counter = 0;
 	for(int i=0;i<qty_clients;i++){
 		for(int j=0;j<qty_facilities;j++){
 			assignment_cost[i][j] = costA[counter]; // pegando valor vindo por parametro
+			sorted_cijID[i][j] = j;
 			counter++;
 		}
+
+    	// Ordenar sorted_cijID
+    	mergeSortID(assignment_cost[i], sorted_cijID[i], 0, qty_facilities - 1);
 	}
 
 
-    // Colocar valores ainda nao ordenados no sorted_cijID
+	// Inicializar as soluções iniciais - os 13 nós apenas 1 pocket
+	nodes[1][0] = set_initial_sol_G(qty_facilities, qty_clients, costF, costA); // solucao com greedy
+	nodes[0][0] = set_initial_sol_LS_G(solutionName, 1, qty_facilities, qty_clients, costF, costA, nodes[1][0]); // solucao com local search com solucao inicial do greedy
+
+	for(int i=2;i<QTY_NODES_TREE;i++){
+		nodes[i][0] = set_initial_sol_RANDOM(qty_facilities, qty_clients, costF, costA, i-2); // 11 solucoes aleatorias com sementes de 0 a 10
+	}
 
 
-    // Ordenar sorted_cijID
 
 
 
@@ -162,5 +119,5 @@ solutionType memetic(char * solutionName, int qty_facilities, int qty_clients, d
 	free(assignment_cost);
 	free(sorted_cijID);
 
-	return(solution);
+	return(nodes[0][0]);
 }

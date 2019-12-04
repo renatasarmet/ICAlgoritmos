@@ -1,6 +1,7 @@
 #include <iostream>
 #include <cstdlib>
 #include <fstream>
+#include <iomanip>
 #include "definitions.hpp"
 
 #define DISPLAY_BASIC 1 // corresponde a exibicao do custo final da solucao
