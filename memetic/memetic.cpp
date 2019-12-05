@@ -14,6 +14,9 @@ solutionType memetic(char * solutionName, int qty_facilities, int qty_clients, d
 	cout << fixed;
    	cout.precision(5);
 
+   	// Semente dos numeros aleatorios
+	srand(0);
+
 	// Declaracao variaveis que indicam o tempo da funcao
 	struct timespec start, finish;
 
@@ -28,7 +31,7 @@ solutionType memetic(char * solutionName, int qty_facilities, int qty_clients, d
 	solutionType **nodes = (solutionType**) malloc((QTY_NODES_TREE) * sizeof(solutionType*));
 
 	for(int i = 0; i < QTY_NODES_TREE; i++) {
-		nodes[i] = (solutionType *)malloc(QTY_POCKETS_NODE * sizeof(solutionType));
+		nodes[i] = (solutionType *)malloc((QTY_POCKETS_NODE + 1) * sizeof(solutionType));
 	}
 
 	// best_pocket_node[i] Guarda o indice (de 0 a QTY_POCKETS_NODE-1) do node com melhor valor dentro daquele nó i (de 0 a QTY_NODES_TREE)
@@ -45,7 +48,7 @@ solutionType memetic(char * solutionName, int qty_facilities, int qty_clients, d
 		// Inicialmente o melhor pocket de todos os nós será da posiçao 0, pois só ele estará inicializado
 		best_pocket_node[i] = 0;
 
-		for(int j=0;j<QTY_POCKETS_NODE;j++){
+		for(int j=0;j< QTY_POCKETS_NODE+1; j++){
 
 			// indica as instalacoes abertas atualmente em cada solucao
 			nodes[i][j].open_facilities = (int*) malloc((qty_facilities) * sizeof(int));
@@ -94,6 +97,10 @@ solutionType memetic(char * solutionName, int qty_facilities, int qty_clients, d
 	}
 
 
+	// Quantidade de instalacoes que sofrerão mutação quando um filho for gerado
+	const int QTY_INST_MUTATION = qty_facilities * MUTATION_RATE; 
+
+
 	if(DEBUG >= DISPLAY_MOVES){
 		cout << "Initializing population" << endl;
 	}
@@ -108,7 +115,7 @@ solutionType memetic(char * solutionName, int qty_facilities, int qty_clients, d
 	}
 
 	for(int i=2;i<QTY_NODES_TREE;i++){
-		set_initial_sol_RANDOM(&nodes[i][0], qty_facilities, qty_clients, costF, assignment_cost, i-2, sorted_cijID); // 11 solucoes aleatorias com sementes de 0 a 10
+		set_initial_sol_RANDOM(&nodes[i][0], qty_facilities, qty_clients, costF, assignment_cost, sorted_cijID); // 11 solucoes aleatorias com sementes de 0 a 10
 		
 		if(DEBUG >= DISPLAY_DETAILS){
 			cout << "Random - node[" << i << "][0]:" << nodes[i][0].finalTotalCost << endl;
@@ -130,6 +137,7 @@ solutionType memetic(char * solutionName, int qty_facilities, int qty_clients, d
 
 	// A partir daqui estará em um loop até um número grande de iterações sem melhora for atingido
 
+	// Levando as melhores solucoes para cima -> Update Population
 	update_population(nodes, best_pocket_node);
 	
 	if(DEBUG >= DISPLAY_ACTIONS){
@@ -139,6 +147,13 @@ solutionType memetic(char * solutionName, int qty_facilities, int qty_clients, d
 			print_tree_pockets(nodes);
 		}
 	}
+
+	solutionType * child;
+
+	// crossover para cada par pai e filho
+	// crossover_mutation(nodes[0][0], nodes[1][0], qty_facilities, QTY_INST_MUTATION);
+
+
 
 
 	// FINALIZANDO A CONTAGEM DE TEMPO DA FUNCAO

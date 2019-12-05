@@ -112,10 +112,7 @@ void call_local_search(solutionType * node, char * solutionName, int qty_facilit
 
 
 // Recebe node por referencia. Modificacoes feitas no node aqui refletem diretamente la
-void set_initial_sol_RANDOM(solutionType * node, int qty_facilities, int qty_clients, double * costF, double ** assignment_cost, int seed, int ** sorted_cijID){ // type: 0 para greedy, 1 para LS_G, 2 para aleatorio
-
-	// Semente do numero aleatorio
-	srand(seed);
+void set_initial_sol_RANDOM(solutionType * node, int qty_facilities, int qty_clients, double * costF, double ** assignment_cost, int ** sorted_cijID){ // type: 0 para greedy, 1 para LS_G, 2 para aleatorio
 
 	int randNum;
 	bool used;
@@ -230,6 +227,86 @@ void print_tree_best(solutionType ** nodes, int * best_pocket_node){
 		cout << "	";
 	}
 	cout << endl << endl;
-
 }
+
+
+void print_individual(int * open_facilities, int qty_facilities){
+	cout << endl;
+
+	for(int i=0;i<qty_facilities;i++){  
+		cout << open_facilities[i] << "	";
+	}
+	cout << endl << endl;
+}
+
+
+// Recebe nodes por referencia. Modificacoes feitas no node aqui refletem diretamente la. OBS: nao deve alterar o pai nem a mae aqui
+void mutation(solutionType * child, int qty_facilities, int QTY_INST_MUTATION){
+	// MUTATION_RATE % das instalações sofrerão mutação
+
+	if(DEBUG >= DISPLAY_ACTIONS){
+		cout << "MUTATION" << endl;
+	}
+
+	int randNum;
+
+	// QTY_INST_MUTATION instalacoes sofrerao mutação
+	for(int i=0; i<QTY_INST_MUTATION; i++){
+		randNum = rand() % qty_facilities; // Generate a random number between 0 and qty_facilities
+		child->open_facilities[i] = !child->open_facilities[i];
+
+		if(DEBUG >= DISPLAY_DETAILS){
+			cout << "Facility " << i << " changes open to: " << child->open_facilities[i] << endl;
+		}
+	}
+
+	if(DEBUG >= DISPLAY_ACTIONS){
+		cout << "Child after mutation: ";
+		print_individual(child->open_facilities, qty_facilities);
+	}
+}
+
+
+
+// Recebe nodes por referencia. Modificacoes feitas no node aqui refletem diretamente la. OBS: nao deve alterar o pai nem a mae aqui
+void crossover_mutation(solutionType * child, solutionType * father, solutionType * mother, int qty_facilities, int QTY_INST_MUTATION){
+	int randNum;
+
+	if(DEBUG >= DISPLAY_ACTIONS){
+		cout << "CROSSOVER" << endl;
+		cout << "Mother: ";
+		print_individual(mother->open_facilities, qty_facilities);
+		cout << "Father: ";
+		print_individual(father->open_facilities, qty_facilities);
+	}
+
+	// crossover uniforme: copia para o filho o que é igual e sorteia o que for diferente
+	for(int i=0; i<qty_facilities; i++){
+		if(father->open_facilities[i] == mother->open_facilities[i]){
+			child->open_facilities[i] = mother->open_facilities[i];
+
+			if(DEBUG >= DISPLAY_DETAILS){
+				cout << "Facility " << i << " copy its parent: " << child->open_facilities[i] << endl;
+			}
+		}
+		else{
+			randNum = rand() % 2; // Generate a random number between 0 and 1
+			child->open_facilities[i] = randNum;
+
+			if(DEBUG >= DISPLAY_DETAILS){
+				cout << "Facility " << i << " generate open: " << child->open_facilities[i] << endl;
+			}
+		}
+	}
+
+	if(DEBUG >= DISPLAY_ACTIONS){
+		cout << "Child after crossover: ";
+		print_individual(child->open_facilities, qty_facilities);
+	}
+
+	// mutation 
+	mutation(child, qty_facilities, QTY_INST_MUTATION);
+}
+
+
 
