@@ -148,11 +148,16 @@ solutionType memetic(char * solutionName, int qty_facilities, int qty_clients, d
 		}
 	}
 
-	solutionType * child;
+	// crossover para cada par pai e filho, seguido da mutacao de cada filho e reatribuicao de todos os clientes
+	crossover_mutation(&nodes[1][INDEX_CURRENT], nodes[0][0], nodes[1][0], qty_facilities, QTY_INST_MUTATION, qty_clients, sorted_cijID, costF, assignment_cost);
 
-	// crossover para cada par pai e filho
-	// crossover_mutation(nodes[0][0], nodes[1][0], qty_facilities, QTY_INST_MUTATION);
 
+	// LA em cada filho gerado
+
+
+	// Update population (verificar se os currents entrarao no refSet ou nao e depois fazer o real update_population)
+
+	
 
 
 

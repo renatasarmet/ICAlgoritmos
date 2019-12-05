@@ -81,6 +81,44 @@ void connect_nearest(solutionType * node, int qty_clients, int ** sorted_cijID, 
 }
 
 
+// Chama a função que conecta os clientes à instalacao aberta mais proxima, fecha as instalacoes que nao tem ninguem conectado e atualiza o finalTotalCost
+void connect_and_update_facilities(solutionType * node, int qty_facilities, int qty_clients, int ** sorted_cijID, double * costF, double ** assignment_cost){
+
+	bool used;
+
+	// Zera o custo total final
+	node->finalTotalCost = 0;
+
+	// Conectando cada cliente com a instalacao aberta mais proxima
+	connect_nearest(node, qty_clients, sorted_cijID, assignment_cost);
+
+	// Fechar as instalacoes que nao foram conectadas a ninguem
+	for(int i=0; i<qty_facilities; i++){
+		used = false;
+		if(node->open_facilities[i]){ // se essa instalacao estiver aberta
+			for(int j=0;j<qty_clients;j++){ // percorre pelos clientes para ver se alguem está conectada nela
+				if(node->assigned_facilities[j] == i){
+					used = true;
+					break; // encontrou alguem concetado, entao sai
+				}
+			}
+			if(!used){ // se nao tem ninguem conectado nela, vamos fecha-la
+				node->open_facilities[i] = false;
+
+				if(DEBUG >= DISPLAY_DETAILS){
+					cout << "Closing facility " << i << " because no clients were assigned to it"<< endl;
+				}
+			}
+			else{ // Se essa instalacao esta sendo usada, vai continuar aberta e devemos somar o custo
+				node->finalTotalCost += costF[i];
+			}
+		}
+	}
+}
+
+
+
+
 // Recebe node por referencia. Modificacoes feitas no node aqui refletem diretamente la
 void set_initial_sol_G(solutionType * node, int qty_facilities, int qty_clients, double * costF, double * costA){ 
 
@@ -115,10 +153,6 @@ void call_local_search(solutionType * node, char * solutionName, int qty_facilit
 void set_initial_sol_RANDOM(solutionType * node, int qty_facilities, int qty_clients, double * costF, double ** assignment_cost, int ** sorted_cijID){ // type: 0 para greedy, 1 para LS_G, 2 para aleatorio
 
 	int randNum;
-	bool used;
-
-	// Inicializando struct 
-	node->finalTotalCost = 0;
 
 	// Verificando quais instalacoes estarão abertas: 50% de chance de cada uma
 	for(int i=0; i<qty_facilities; i++){
@@ -126,27 +160,8 @@ void set_initial_sol_RANDOM(solutionType * node, int qty_facilities, int qty_cli
 		node->open_facilities[i] = randNum;
 	}
 
-	// Conectando cada cliente com a instalacao aberta mais proxima
-	connect_nearest(node, qty_clients, sorted_cijID, assignment_cost);
-
-	// Fechar as instalacoes que nao foram conectadas a ninguem
-	for(int i=0; i<qty_facilities; i++){
-		used = false;
-		if(node->open_facilities[i]){ // se essa instalacao estiver aberta
-			for(int j=0;j<qty_clients;j++){ // percorre pelos clientes para ver se alguem está conectada nela
-				if(node->assigned_facilities[j] == i){
-					used = true;
-					break; // encontrou alguem concetado, entao sai
-				}
-			}
-			if(!used){ // se nao tem ninguem conectado nela, vamos fecha-la
-				node->open_facilities[i] = false;
-			}
-			else{ // Se essa instalacao esta sendo usada, vai continuar aberta e devemos somar o custo
-				node->finalTotalCost += costF[i];
-			}
-		}
-	}
+	// Conectando cada cliente com a instalacao aberta mais proxima e fechando as instalacoes que nao foram conectadas a ninguem. Custo final também é atualizado
+	connect_and_update_facilities(node, qty_facilities, qty_clients, sorted_cijID, costF, assignment_cost);
 }
 
 
@@ -234,7 +249,7 @@ void print_individual(int * open_facilities, int qty_facilities){
 	cout << endl;
 
 	for(int i=0;i<qty_facilities;i++){  
-		cout << open_facilities[i] << "	";
+		cout << open_facilities[i] << " ";
 	}
 	cout << endl << endl;
 }
@@ -253,10 +268,10 @@ void mutation(solutionType * child, int qty_facilities, int QTY_INST_MUTATION){
 	// QTY_INST_MUTATION instalacoes sofrerao mutação
 	for(int i=0; i<QTY_INST_MUTATION; i++){
 		randNum = rand() % qty_facilities; // Generate a random number between 0 and qty_facilities
-		child->open_facilities[i] = !child->open_facilities[i];
+		child->open_facilities[randNum] = !child->open_facilities[randNum];
 
 		if(DEBUG >= DISPLAY_DETAILS){
-			cout << "Facility " << i << " changes open to: " << child->open_facilities[i] << endl;
+			cout << "Facility " << randNum << " changes open to: " << child->open_facilities[randNum] << endl;
 		}
 	}
 
@@ -268,22 +283,22 @@ void mutation(solutionType * child, int qty_facilities, int QTY_INST_MUTATION){
 
 
 
-// Recebe nodes por referencia. Modificacoes feitas no node aqui refletem diretamente la. OBS: nao deve alterar o pai nem a mae aqui
-void crossover_mutation(solutionType * child, solutionType * father, solutionType * mother, int qty_facilities, int QTY_INST_MUTATION){
+// Recebe node child por referencia. Modificacoes feitas no node aqui refletem diretamente la.
+void crossover_mutation(solutionType * child, solutionType father, solutionType mother, int qty_facilities, int QTY_INST_MUTATION, int qty_clients, int ** sorted_cijID, double * costF, double ** assignment_cost){
 	int randNum;
 
 	if(DEBUG >= DISPLAY_ACTIONS){
 		cout << "CROSSOVER" << endl;
 		cout << "Mother: ";
-		print_individual(mother->open_facilities, qty_facilities);
+		print_individual(mother.open_facilities, qty_facilities);
 		cout << "Father: ";
-		print_individual(father->open_facilities, qty_facilities);
+		print_individual(father.open_facilities, qty_facilities);
 	}
 
 	// crossover uniforme: copia para o filho o que é igual e sorteia o que for diferente
 	for(int i=0; i<qty_facilities; i++){
-		if(father->open_facilities[i] == mother->open_facilities[i]){
-			child->open_facilities[i] = mother->open_facilities[i];
+		if(father.open_facilities[i] == mother.open_facilities[i]){
+			child->open_facilities[i] = mother.open_facilities[i];
 
 			if(DEBUG >= DISPLAY_DETAILS){
 				cout << "Facility " << i << " copy its parent: " << child->open_facilities[i] << endl;
@@ -306,6 +321,19 @@ void crossover_mutation(solutionType * child, solutionType * father, solutionTyp
 
 	// mutation 
 	mutation(child, qty_facilities, QTY_INST_MUTATION);
+
+	if(DEBUG >= DISPLAY_ACTIONS){
+		cout << "ASSIGNING CLIENTS";
+	}
+
+	// Conectando cada cliente com a instalacao aberta mais proxima e fechando as instalacoes que nao foram conectadas a ninguem. Custo final também é atualizado
+	connect_and_update_facilities(child, qty_facilities, qty_clients, sorted_cijID, costF, assignment_cost);
+
+	if(DEBUG >= DISPLAY_ACTIONS){
+		cout << "Child after connecting clients: ";
+		print_individual(child->open_facilities, qty_facilities);
+	}
+
 }
 
 
