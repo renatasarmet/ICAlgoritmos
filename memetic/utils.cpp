@@ -61,6 +61,24 @@ void mergeSortID(double *vector, int *vectorID, int startPosition, int endPositi
 }
 
 
+// Conecta os clientes à instalacao aberta mais proxima. Parametro por referencia.
+void connect_nearest(solutionType * node, int qty_clients, int ** sorted_cijID, double ** assignment_cost){
+    int cont;
+    for(int i=0;i<qty_clients;i++){
+        cont = 0;
+        // Percorrendo pelo vetor ordenado de ID do cij, quando encontrar a primeira inst que estiver aberta, para
+        while(!node->open_facilities[sorted_cijID[i][cont]]){
+            cont+=1;
+        }
+        // Atribui essa inst como inst aberta mais proxima
+        node->assigned_facilities[i] = sorted_cijID[i][cont];
+
+        // Aumenta no custo total final
+        node->finalTotalCost += assignment_cost[i][sorted_cijID[i][cont]];
+    }
+}
+
+
 solutionType set_initial_sol_G(int qty_facilities, int qty_clients, double * costF, double * costA){ 
     solutionType node;
 
@@ -99,40 +117,44 @@ solutionType set_initial_sol_LS_G(char * solutionName, int qty_facilities, int q
 }
 
 
-solutionType set_initial_sol_RANDOM(int qty_facilities, int qty_clients, double * costF, double * costA, int seed){ // type: 0 para greedy, 1 para LS_G, 2 para aleatorio
-    
+// Recebe node por referencia. Modificacoes feitas aqui refletem diretamente la
+void set_initial_sol_RANDOM(solutionType * node, int qty_facilities, int qty_clients, double * costF, double ** assignment_cost, int seed, int ** sorted_cijID){ // type: 0 para greedy, 1 para LS_G, 2 para aleatorio
+
     // Semente do numero aleatorio
     srand(seed);
 
-    // Struct que vai retornar a solução
-    solutionType solution;
-
     int randNum;
+    bool used;
 
     // Inicializando struct 
-    solution.finalTotalCost = 0;
-
-    // indicara as instalacoes atribuidas a cada cliente na resposta
-    solution.assigned_facilities = (int*) malloc((qty_clients) * sizeof(int));
-    if(!solution.assigned_facilities){
-        cout << "Memory Allocation Failed";
-        exit(1);
-    }
+    node->finalTotalCost = 0;
 
     // Verificando quais instalacoes estarão abertas: 50% de chance de cada uma
     for(int i=0; i<qty_facilities; i++){
         randNum = rand() % 2; // Generate a random number between 0 and 1
-        node.open_facilities[k] = randNum;
+        node->open_facilities[i] = randNum;
     }
 
     // Conectando cada cliente com a instalacao aberta mais proxima
-    
-    
-    
+    connect_nearest(node, qty_clients, sorted_cijID, assignment_cost);
 
-    return(solution);
-
-
-
+    // Fechar as instalacoes que nao foram conectadas a ninguem
+    for(int i=0; i<qty_facilities; i++){
+        used = false;
+        if(node->open_facilities[i]){ // se essa instalacao estiver aberta
+            for(int j=0;j<qty_clients;j++){ // percorre pelos clientes para ver se alguem está conectada nela
+                if(node->assigned_facilities[j] == i){
+                    used = true;
+                    break; // encontrou alguem concetado, entao sai
+                }
+            }
+            if(!used){ // se nao tem ninguem conectado nela, vamos fecha-la
+                node->open_facilities[i] = false;
+            }
+            else{ // Se essa instalacao esta sendo usada, vai continuar aberta e devemos somar o custo
+                node->finalTotalCost += costF[i];
+            }
+        }
+    }
 }
 

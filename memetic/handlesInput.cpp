@@ -22,9 +22,8 @@ int main(int argc, char *argv[]){
 	}
 
 	char * inputName = argv[1];
-	char * initialSolName = argv[2];
-	char * solutionName = argv[3];
-	char * inputType = argv[4];
+	char * solutionName = argv[2];
+	char * inputType = argv[3];
 
 	// Arquivo para salvar a solucao
 	ofstream solutionTXT;
@@ -41,7 +40,6 @@ int main(int argc, char *argv[]){
 	double * costF;
 
 	ifstream inputFLP;
-	ifstream initialSol;
 
 	solutionType solution;
 
@@ -176,53 +174,6 @@ int main(int argc, char *argv[]){
 	******************************************/
 
 
-	/**************************************
-	Lendo o arquivo com a solução inicial
-	*/
-
-	if(DEBUG >= DISPLAY_ACTIONS){
-		cout << "initial solution" << endl;  
-	}
-
-	// Abrindo arquivo de entrada
-	initialSol.open(initialSolName); 
-
-	if (!initialSol) {
-		cout << "Unable to open file";
-		exit(1); // terminate with error
-	}
-
-	// Lendo do arquivo o valor que indica o custo total
-	initialSol >> solution.finalTotalCost; 
-	if(DEBUG >= DISPLAY_BASIC){
-		cout << "Initial total cost: " << solution.finalTotalCost << endl;
-	}
-
-	initialSol >> auxCRead; // Descartando o tempo gasto
-	// cout << "Discard time: " << auxCRead << endl;
-
-
-	// indica as instalacoes iniciais atribuidas a cada cliente
-	solution.assigned_facilities = (int*) malloc((qty_clients) * sizeof(int));
-	if(!solution.assigned_facilities){
-		cout << "Memory Allocation Failed";
-		exit(1);
-	}
-
-
-	// Lendo do arquivo as instalacoes iniciais atribuidas a cada cliente e salvando no vetor solution.assigned_facilities
-	for(int i=0;i<qty_clients;i++){
-		initialSol >> solution.assigned_facilities[i]; 
-
-		if(DEBUG >= DISPLAY_ACTIONS){
-			cout << "client " << i << " =  " << solution.assigned_facilities[i] << endl;  
-		}  
-	}
-
-  /*
-	Fim ler o arquivo com a solução inicial
-	******************************************/
-
 	// Variavel que indica se ja encontramos o otimo local -- condicao de parada da busca
 	solution.local_optimum = false;
 
@@ -242,8 +193,8 @@ int main(int argc, char *argv[]){
 	// Colocando no solutionTXT o tempo gasto 
 	solutionTXT << solution.timeSpent << " ";
 
-	// Colocando no solutionTXT se o otimo local foi encontrado
-	solutionTXT << solution.local_optimum;
+	// // Colocando no solutionTXT se o otimo local foi encontrado
+	// solutionTXT << solution.local_optimum;
 
 	// Colocando no solutionsTXT as instalacoes finais conectadas
 	for(int i=0; i < qty_clients; i++){
@@ -252,7 +203,6 @@ int main(int argc, char *argv[]){
 
 	// Fechando os arquivos
 	inputFLP.close();
-	initialSol.close();
 	solutionTXT.close();
 
 	// Liberando memoria

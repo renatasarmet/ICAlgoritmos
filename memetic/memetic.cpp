@@ -27,6 +27,10 @@ solutionType memetic(char * solutionName, int qty_facilities, int qty_clients, d
 	// Declaracao variaveis que indicam o tempo da funcao
 	struct timespec start, finish;
 
+
+	// INICIANDO A CONTAGEM DE TEMPO DA FUNCAO
+	clock_gettime(CLOCK_REALTIME, &start);
+
 	// FUTURO: SALVAR LOG E LOG_DETAILS
 
 
@@ -50,10 +54,6 @@ solutionType memetic(char * solutionName, int qty_facilities, int qty_clients, d
 		    }
 		}
 	}
-
-
-
-	// TO DO: VERIFICAR POR CADA NÓ, MARCAR COMO ABERTA TODAS AS INSTALACOES QUE APARECEREM EM ALGUM ASSIGNED_FACILITIES[i]
 
 
 	// assignment_cost - metor que indica o custo de atribuicao de cada cliente para cada instalacao
@@ -87,11 +87,15 @@ solutionType memetic(char * solutionName, int qty_facilities, int qty_clients, d
 
 
 	// Inicializar as soluções iniciais - os 13 nós apenas 1 pocket
-	nodes[1][0] = set_initial_sol_G(qty_facilities, qty_clients, costF, costA); // solucao com greedy
-	nodes[0][0] = set_initial_sol_LS_G(solutionName, 1, qty_facilities, qty_clients, costF, costA, nodes[1][0]); // solucao com local search com solucao inicial do greedy
+	// cout << "VOU PEGAR O GREEDY" << endl;
+	// nodes[1][0] = set_initial_sol_G(qty_facilities, qty_clients, costF, costA); // solucao com greedy
+
+	// cout << "VOU PEGAR O LS" << endl;
+	// nodes[0][0] = set_initial_sol_LS_G(solutionName, qty_facilities, qty_clients, costF, costA, nodes[1][0]); // solucao com local search com solucao inicial do greedy
 
 	for(int i=2;i<QTY_NODES_TREE;i++){
-		nodes[i][0] = set_initial_sol_RANDOM(qty_facilities, qty_clients, costF, costA, i-2); // 11 solucoes aleatorias com sementes de 0 a 10
+		set_initial_sol_RANDOM(&nodes[i][0], qty_facilities, qty_clients, costF, assignment_cost, i-2, sorted_cijID); // 11 solucoes aleatorias com sementes de 0 a 10
+		// cout << "FINAL DESSE: " << nodes[i][0].finalTotalCost << endl;
 	}
 
 
@@ -99,8 +103,6 @@ solutionType memetic(char * solutionName, int qty_facilities, int qty_clients, d
 
 
 
-	// INICIANDO A CONTAGEM DE TEMPO DA FUNCAO
-	clock_gettime(CLOCK_REALTIME, &start);
 	
 
 	// FINALIZANDO A CONTAGEM DE TEMPO DA FUNCAO
@@ -119,5 +121,5 @@ solutionType memetic(char * solutionName, int qty_facilities, int qty_clients, d
 	free(assignment_cost);
 	free(sorted_cijID);
 
-	return(nodes[0][0]);
+	return(nodes[2][0]);
 }

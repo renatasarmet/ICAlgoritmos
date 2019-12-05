@@ -58,15 +58,13 @@ if __name__ == '__main__':
 					input_name = '../baseDeTestes/facilityTestCases/tests/' + file_name
 
 					if initial_sol_rr:
-						initialSolName = 'initialSolutions/' + file_name + "_" + str(_seed) + '.sol'
 						solutionName = 'solutions/' + file_name + "_" + str(_seed) + '.sol'
 
 					else:
-						initialSolName = 'initialSolutions/' + file_name + '.sol'
 						solutionName = 'solutions/' + file_name + '.sol'
 
 					# Chamando o programa a ser testado
-					os.system(EXE + " " + input_name + " " + initialSolName + " " + solutionName + " " + input_type)
+					os.system(EXE + " " + input_name + " " + solutionName + " " + input_type)
 
 	else:
 		print('This test requires an input type. \nFirst please select one: 1 for ORLIB inputs or 2 for SIMPLE FORMAT inputs.')
