@@ -25,13 +25,15 @@ void connect_and_update_facilities(solutionType * node, int qty_facilities, int 
 
 void set_initial_sol_G(solutionType * node, int qty_facilities, int qty_clients, double * costF, double * costA);
 
+void set_initial_sol_RANDOM(solutionType * node, int qty_facilities, int qty_clients, double * costF, double ** assignment_cost, int ** sorted_cijID);
+
 void call_local_search(solutionType * node, char * solutionName, int qty_facilities, int qty_clients, double * costF, double * costA, solutionType initial_sol);
 
-void set_initial_sol_RANDOM(solutionType * node, int qty_facilities, int qty_clients, double * costF, double ** assignment_cost, int ** sorted_cijID);
+void call_late_acceptance(solutionType * node, char * solutionName, int qty_facilities, int qty_clients, double * costF, double * costA, solutionType initial_sol);
 
 void update_sub_pop(solutionType ** nodes, int * best_pocket_node, int id_parent);
 
-void update_population(solutionType ** nodes, int * best_pocket_node);
+void update_population(solutionType ** nodes, int * best_pocket_node, int QTY_SUBS);
 
 void print_tree_best(solutionType ** nodes, int * best_pocket_node);
 
@@ -41,4 +43,4 @@ void print_individual(int * open_facilities, int qty_facilities);
 
 void mutation(solutionType * child, int qty_facilities, int QTY_INST_MUTATION);
 
-void crossover_mutation(solutionType * child, solutionType father, solutionType mother, int qty_facilities, int QTY_INST_MUTATION, int qty_clients, int ** sorted_cijID, double * costF, double ** assignment_cost);
+void crossover_mutation(solutionType * child, solutionType mother, solutionType father, int qty_facilities, int QTY_INST_MUTATION, int qty_clients, int ** sorted_cijID, double * costF, double ** assignment_cost);

@@ -100,6 +100,14 @@ solutionType memetic(char * solutionName, int qty_facilities, int qty_clients, d
 	// Quantidade de instalacoes que sofrerão mutação quando um filho for gerado
 	const int QTY_INST_MUTATION = qty_facilities * MUTATION_RATE; 
 
+	// Quantidade de pais que existem (quantidade de sub arvores)
+	const int QTY_SUBS = (QTY_NODES_TREE - 1) / QTY_CHILDREN;
+
+	// Auxiliar para obtencao de index, principalmente de filhos
+	int index_child;
+
+	// Auxiliares para escolha do pocket da mae e do filho no crossover
+	int pocket_mother, pocket_child;
 
 	if(DEBUG >= DISPLAY_MOVES){
 		cout << "Initializing population" << endl;
@@ -138,7 +146,7 @@ solutionType memetic(char * solutionName, int qty_facilities, int qty_clients, d
 	// A partir daqui estará em um loop até um número grande de iterações sem melhora for atingido
 
 	// Levando as melhores solucoes para cima -> Update Population
-	update_population(nodes, best_pocket_node);
+	update_population(nodes, best_pocket_node, QTY_SUBS);
 	
 	if(DEBUG >= DISPLAY_ACTIONS){
 		print_tree_best(nodes, best_pocket_node);
@@ -148,11 +156,38 @@ solutionType memetic(char * solutionName, int qty_facilities, int qty_clients, d
 		}
 	}
 
-	// crossover para cada par pai e filho, seguido da mutacao de cada filho e reatribuicao de todos os clientes
-	crossover_mutation(&nodes[1][INDEX_CURRENT], nodes[0][0], nodes[1][0], qty_facilities, QTY_INST_MUTATION, qty_clients, sorted_cijID, costF, assignment_cost);
+	// crossover para cada par mãe e filho, seguido da mutacao de cada child gerado e reatribuicao de todos os clientes e por fim late acceptance em todos os filhos gerados
+	// (o pocket será escolhido de forma aleatoria em cada nó)
+	for(int id_mother = 0; id_mother < QTY_SUBS; id_mother++){ // para cada mãe
+		if(DEBUG >= DISPLAY_ACTIONS){
+			cout << "------ MOTHER " << id_mother << "-------" << endl;
+		}
+		for(int i=0; i < QTY_CHILDREN; i++){ // Para cada filho dessa mae
 
+			index_child = id_mother * 3 + i + 1; // encontra o indice correto do filho
 
-	// LA em cada filho gerado
+			if(DEBUG >= DISPLAY_ACTIONS){
+				cout << "------ CHILD " << index_child << "-------" << endl;
+			}
+
+			// sorteia o pocket da mae
+			pocket_mother = rand() % QTY_POCKETS_NODE; // Generate a random number between 0 and QTY_POCKETS_NODE
+
+			// sorteia o pocket do filho
+			pocket_child = rand() % QTY_POCKETS_NODE; // Generate a random number between 0 and QTY_POCKETS_NODE
+
+			crossover_mutation(&nodes[index_child][INDEX_CURRENT], nodes[id_mother][pocket_mother], nodes[index_child][pocket_child], qty_facilities, QTY_INST_MUTATION, qty_clients, sorted_cijID, costF, assignment_cost);
+
+			// LA em cada filho gerado
+			call_late_acceptance(&nodes[index_child][INDEX_CURRENT], solutionName, qty_facilities, qty_clients, costF, costA, nodes[index_child][INDEX_CURRENT]);
+
+			if(DEBUG >= DISPLAY_ACTIONS){
+				// cout << "Child " << 1 < " after late acceptance: ";			
+				cout << "Child after late acceptance: ";
+				print_individual(nodes[index_child][INDEX_CURRENT].open_facilities, qty_facilities);
+			}
+		}
+	} 
 
 
 	// Update population (verificar se os currents entrarao no refSet ou nao e depois fazer o real update_population)

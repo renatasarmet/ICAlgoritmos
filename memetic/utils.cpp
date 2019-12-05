@@ -4,6 +4,7 @@
 #include "definitions.hpp"
 #include "../greedy/definitions.hpp"
 #include "../localSearch/definitions.hpp"
+#include "../lateAcceptance/definitions.hpp"
 
 using namespace std;
 
@@ -144,12 +145,6 @@ void set_initial_sol_G(solutionType * node, int qty_facilities, int qty_clients,
 
 
 // Recebe node por referencia. Modificacoes feitas no node aqui refletem diretamente la
-void call_local_search(solutionType * node, char * solutionName, int qty_facilities, int qty_clients, double * costF, double * costA, solutionType initial_sol){
-	*node = localSearch(solutionName, qty_facilities, qty_clients, costF, costA, initial_sol, 1); // tipo LS completo
-}
-
-
-// Recebe node por referencia. Modificacoes feitas no node aqui refletem diretamente la
 void set_initial_sol_RANDOM(solutionType * node, int qty_facilities, int qty_clients, double * costF, double ** assignment_cost, int ** sorted_cijID){ // type: 0 para greedy, 1 para LS_G, 2 para aleatorio
 
 	int randNum;
@@ -162,6 +157,18 @@ void set_initial_sol_RANDOM(solutionType * node, int qty_facilities, int qty_cli
 
 	// Conectando cada cliente com a instalacao aberta mais proxima e fechando as instalacoes que nao foram conectadas a ninguem. Custo final também é atualizado
 	connect_and_update_facilities(node, qty_facilities, qty_clients, sorted_cijID, costF, assignment_cost);
+}
+
+
+// Recebe node por referencia. Modificacoes feitas no node aqui refletem diretamente la
+void call_local_search(solutionType * node, char * solutionName, int qty_facilities, int qty_clients, double * costF, double * costA, solutionType initial_sol){
+	*node = localSearch(solutionName, qty_facilities, qty_clients, costF, costA, initial_sol, 1); // tipo LS completo
+}
+
+
+// Recebe node por referencia. Modificacoes feitas no node aqui refletem diretamente la
+void call_late_acceptance(solutionType * node, char * solutionName, int qty_facilities, int qty_clients, double * costF, double * costA, solutionType initial_sol){
+	*node = lateAcceptance(solutionName, qty_facilities, qty_clients, costF, costA, initial_sol, true, 2.5, 0.02, 10); // best_fit = true, a1 = 2.5, limit_idle = 0.02, lh = 10
 }
 
 
@@ -197,12 +204,11 @@ void update_sub_pop(solutionType ** nodes, int * best_pocket_node, int id_parent
 
 
 // Recebe nodes por referencia. Modificacoes feitas no node aqui refletem diretamente la
-void update_population(solutionType ** nodes, int * best_pocket_node){
+void update_population(solutionType ** nodes, int * best_pocket_node, int QTY_SUBS){
 	// Compara best do filho com o best do pai
-	int qty_subs = (QTY_NODES_TREE - 1) / QTY_CHILDREN;
 
 	// Para cada pai, chama para atualizar essa sub populacao
-	for(int i = qty_subs-1; i>=0; i--){
+	for(int i = QTY_SUBS-1; i>=0; i--){
 		update_sub_pop(nodes, best_pocket_node, i);
 	}
 }
@@ -284,7 +290,7 @@ void mutation(solutionType * child, int qty_facilities, int QTY_INST_MUTATION){
 
 
 // Recebe node child por referencia. Modificacoes feitas no node aqui refletem diretamente la.
-void crossover_mutation(solutionType * child, solutionType father, solutionType mother, int qty_facilities, int QTY_INST_MUTATION, int qty_clients, int ** sorted_cijID, double * costF, double ** assignment_cost){
+void crossover_mutation(solutionType * child, solutionType mother, solutionType father, int qty_facilities, int QTY_INST_MUTATION, int qty_clients, int ** sorted_cijID, double * costF, double ** assignment_cost){
 	int randNum;
 
 	if(DEBUG >= DISPLAY_ACTIONS){
@@ -323,7 +329,7 @@ void crossover_mutation(solutionType * child, solutionType father, solutionType 
 	mutation(child, qty_facilities, QTY_INST_MUTATION);
 
 	if(DEBUG >= DISPLAY_ACTIONS){
-		cout << "ASSIGNING CLIENTS";
+		cout << "ASSIGNING CLIENTS" << endl;
 	}
 
 	// Conectando cada cliente com a instalacao aberta mais proxima e fechando as instalacoes que nao foram conectadas a ninguem. Custo final também é atualizado

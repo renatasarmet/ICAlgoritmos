@@ -20,7 +20,7 @@ using namespace std;
 #define DISPLAY_TIME 5 // corresponde aos calculos de tempo 
 #define DISPLAY_GRAPH 6 // corresponde a descricao dos clientes, instalacoes e arcos
 
-#define DEBUG 1 // OPCOES DE DEBUG: 1 - MOSTRAR A QTD DE MOVIMENTOS, 2 PARA EXIBIR OS MOVIMENTOS REALIZADOS, 3 PARA EXIBIR ACOES, 4 PARA EXIBIR DETALHES DAS ACOES, 5 PARA EXIBIR TEMPO, 6 PARA EXIBIR AS MUDANÇAS NO GRAFO
+#define DEBUG 0 // OPCOES DE DEBUG: 1 - MOSTRAR A QTD DE MOVIMENTOS, 2 PARA EXIBIR OS MOVIMENTOS REALIZADOS, 3 PARA EXIBIR ACOES, 4 PARA EXIBIR DETALHES DAS ACOES, 5 PARA EXIBIR TEMPO, 6 PARA EXIBIR AS MUDANÇAS NO GRAFO
 
 // Retornar o valor da solucao
 solutionType lateAcceptance(char * solutionName, int qty_facilities, int qty_clients, double * costF, double * costA, solutionType solution, bool best_fit, double a1, double limit_idle, int lh){
@@ -537,6 +537,7 @@ solutionType lateAcceptance(char * solutionName, int qty_facilities, int qty_cli
 
 				// Abrindo a inst se estiver fechada e fechando se estiver aberta
 				open[facilities[fac_best_extra_cost]] = !open[facilities[fac_best_extra_cost]];
+				solution.open_facilities[fac_best_extra_cost] = !solution.open_facilities[fac_best_extra_cost];
 
 				if(open[facilities[fac_best_extra_cost]]){ // se a instalação estiver aberta agora
 					n1 += 1;
@@ -968,7 +969,7 @@ solutionType lateAcceptance(char * solutionName, int qty_facilities, int qty_cli
 	// FINALIZANDO A CONTAGEM DE TEMPO DA FUNCAO
 	clock_gettime(CLOCK_REALTIME, &finish);
 
-	if(DEBUG >= DISPLAY_ACTIONS){
+	if(DEBUG >= DISPLAY_MOVES){
 		cout << "FINAL TOTAL COST: " << solution.finalTotalCost << endl;
 	}
 
