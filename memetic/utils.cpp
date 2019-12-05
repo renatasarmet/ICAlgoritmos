@@ -7,6 +7,8 @@
 
 using namespace std;
 
+#define DEBUG 3 // OPCOES DE DEBUG: 1 - MOSTRAR A QTD DE MOVIMENTOS, 2 PARA EXIBIR OS MOVIMENTOS REALIZADOS, 3 PARA EXIBIR ACOES, 4 PARA EXIBIR DETALHES DAS ACOES, 5 PARA EXIBIR TEMPO, 6 PARA EXIBIR AS MUDANÇAS NO GRAFO
+
 void mergeSortID(double *vector, int *vectorID, int startPosition, int endPosition) {
 
     int i, j, k, halfSize, *tempVectorID;
@@ -104,19 +106,8 @@ void set_initial_sol_G(solutionType * node, int qty_facilities, int qty_clients,
 
 
 // Recebe node por referencia. Modificacoes feitas no node aqui refletem diretamente la
-void set_initial_sol_LS_G(solutionType * node, char * solutionName, int qty_facilities, int qty_clients, double * costF, double * costA, solutionType initial_sol){
-
+void call_local_search(solutionType * node, char * solutionName, int qty_facilities, int qty_clients, double * costF, double * costA, solutionType initial_sol){
     *node = localSearch(solutionName, qty_facilities, qty_clients, costF, costA, initial_sol, 1); // tipo LS completo
-
-    // Inicializando todas as inst fechadas
-    for(int k=0;k<qty_facilities;k++){
-        node->open_facilities[k] = false;
-    }
-
-    // Atualizando as instalacoes abertas
-    for(int i=0;i<qty_clients;i++){
-        node->open_facilities[node->assigned_facilities[i]] = true;
-    }        
 }
 
 
@@ -158,6 +149,49 @@ void set_initial_sol_RANDOM(solutionType * node, int qty_facilities, int qty_cli
                 node->finalTotalCost += costF[i];
             }
         }
+    }
+}
+
+
+// Recebe nodes por referencia. Modificacoes feitas no node aqui refletem diretamente la
+void update_sub_pop(solutionType ** nodes, int * best_pocket_node, int id_parent){
+    int index_child;
+    solutionType aux;
+    for(int i=0; i< QTY_CHILDREN; i++){ // para todos os filhos
+        index_child = id_parent * 3 + i + 1; // encontra o indice correto do filho
+        if(nodes[index_child][best_pocket_node[index_child]].finalTotalCost < nodes[id_parent][best_pocket_node[id_parent]].finalTotalCost){ // Se o best do filho for menor que o best do pai
+            if(DEBUG >= DISPLAY_ACTIONS){
+                cout << "Swapping child " << index_child << "(" << nodes[index_child][best_pocket_node[index_child]].finalTotalCost << ") with parent " << id_parent << " (" << nodes[id_parent][best_pocket_node[id_parent]].finalTotalCost << ")" << endl;
+            }
+
+
+            // Inverte
+            aux = nodes[id_parent][best_pocket_node[id_parent]];
+            nodes[id_parent][best_pocket_node[id_parent]] = nodes[index_child][best_pocket_node[index_child]];
+            nodes[index_child][best_pocket_node[index_child]] = aux;
+
+            // Update indice de best_pocket do filho
+            for(int j=0; j < QTY_POCKETS_NODE; j++){ // percorre por todos os pockets
+                if(nodes[index_child][j].finalTotalCost < 0){ // pocket vazio, entao todos pra frente tambem estarão
+                    break;
+                }
+                else if(nodes[index_child][j].finalTotalCost < nodes[index_child][best_pocket_node[index_child]].finalTotalCost){ // se encontrou um melhor, atualiza 
+                    best_pocket_node[index_child] = j;
+                }
+            }
+        }
+    }
+}
+
+
+// Recebe nodes por referencia. Modificacoes feitas no node aqui refletem diretamente la
+void update_population(solutionType ** nodes, int * best_pocket_node){
+    // Compara best do filho com o best do pai
+    int qty_subs = (QTY_NODES_TREE - 1) / QTY_CHILDREN;
+
+    // Para cada pai, chama para atualizar essa sub populacao
+    for(int i = qty_subs-1; i>=0; i--){
+        update_sub_pop(nodes, best_pocket_node, i);
     }
 }
 

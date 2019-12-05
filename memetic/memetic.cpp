@@ -3,16 +3,7 @@
 #include <fstream>
 #include "definitions.hpp"
 
-#define QTY_NODES_TREE 13
-#define QTY_CHILDREN_NODE 5 // inclui pocket and current //??
-
 using namespace std;
-
-#define DISPLAY_BASIC 1 // corresponde a exibicao da quantidade de movimentos
-#define DISPLAY_MOVES 2 // corresponde a todos os cout quando um movimento é realizado de fato
-#define DISPLAY_ACTIONS 3 // corresponde a todos os cout quando uma acao é feita. 
-#define DISPLAY_DETAILS 4 // corresponde a todos os cout mais detalhados quando uma acao é feita. 
-#define DISPLAY_TIME 5 // corresponde aos calculos de tempo 
 
 #define DEBUG 3 // OPCOES DE DEBUG: 1 - MOSTRAR A QTD DE MOVIMENTOS, 2 PARA EXIBIR OS MOVIMENTOS REALIZADOS, 3 PARA EXIBIR ACOES, 4 PARA EXIBIR DETALHES DAS ACOES, 5 PARA EXIBIR TEMPO, 6 PARA EXIBIR AS MUDANÇAS NO GRAFO
 
@@ -34,12 +25,27 @@ solutionType memetic(char * solutionName, int qty_facilities, int qty_clients, d
 
 
 	// Declaracao dos nós da arvore. Cada nó é uma solucao
-	solutionType nodes[QTY_NODES_TREE][QTY_CHILDREN_NODE];
+	solutionType **nodes = (solutionType**) malloc((QTY_NODES_TREE) * sizeof(solutionType*));
+
+	for(int i = 0; i < QTY_NODES_TREE; i++) {
+		nodes[i] = (solutionType *)malloc(QTY_POCKETS_NODE * sizeof(solutionType));
+	}
+
+	// best_pocket_node[i] Guarda o indice (de 0 a QTY_POCKETS_NODE-1) do node com melhor valor dentro daquele nó i (de 0 a QTY_NODES_TREE)
+	int *best_pocket_node = (int*) malloc((QTY_NODES_TREE) * sizeof(int));
+
+    if((!nodes)||(!best_pocket_node)){
+        cout << "Memory Allocation Failed";
+        exit(1);
+    }
 
 
 	// Alocando memoria para as instalacoes abertas e instalacoes atribuidas de cada cliente
 	for(int i=0;i<QTY_NODES_TREE;i++){
-		for(int j=0;j<QTY_CHILDREN_NODE;j++){
+		// Inicialmente o melhor pocket de todos os nós será da posiçao 0, pois só ele estará inicializado
+		best_pocket_node[i] = 0;
+
+		for(int j=0;j<QTY_POCKETS_NODE;j++){
 
 			// indica as instalacoes abertas atualmente em cada solucao
 			nodes[i][j].open_facilities = (int*) malloc((qty_facilities) * sizeof(int));
@@ -51,6 +57,9 @@ solutionType memetic(char * solutionName, int qty_facilities, int qty_clients, d
 		        cout << "Memory Allocation Failed";
 		        exit(1);
 		    }
+
+		    // Iniciando finalTotalCost com -1 para indicar que está vazio
+		    nodes[i][j].finalTotalCost = -1;
 		}
 	}
 
@@ -87,12 +96,12 @@ solutionType memetic(char * solutionName, int qty_facilities, int qty_clients, d
 
 	// Inicializar as soluções iniciais - os 13 nós apenas 1 pocket
 	set_initial_sol_G(&nodes[1][0], qty_facilities, qty_clients, costF, costA); // solucao com greedy
-	set_initial_sol_LS_G(&nodes[0][0], solutionName, qty_facilities, qty_clients, costF, costA, nodes[1][0]); // solucao com local search com solucao inicial do greedy
+	call_local_search(&nodes[0][0], solutionName, qty_facilities, qty_clients, costF, costA, nodes[1][0]); // solucao com local search com solucao inicial do greedy
 
 	if(DEBUG >= DISPLAY_ACTIONS){
 		cout << "Initial solutions:"<< endl;
 		cout << "LS_G - node[0][0]: " << nodes[0][0].finalTotalCost << endl;
-		cout << "Greedy - node[1][0]: " << nodes[1][0].finalTotalCost << endl;
+		cout << "Greedy - node[1][0]: " << nodes[1][0].finalTotalCost << endl << endl;
 	}
 
 	for(int i=2;i<QTY_NODES_TREE;i++){
@@ -101,7 +110,34 @@ solutionType memetic(char * solutionName, int qty_facilities, int qty_clients, d
 		if(DEBUG >= DISPLAY_ACTIONS){
 			cout << "Random - node[" << i << "][0]:" << nodes[i][0].finalTotalCost << endl;
 		}
+
+		// Roda LS completo para todas as solucoes geradas com random
+		call_local_search(&nodes[i][0], solutionName, qty_facilities, qty_clients, costF, costA, nodes[i][0]); 
+
+		if(DEBUG >= DISPLAY_ACTIONS){
+			cout << "LS_R -> node[" << i << "][0]:" << nodes[i][0].finalTotalCost << endl << endl;
+		}
 	}
+
+
+
+	// A partir daqui estará em um loop até um número grande de iterações sem melhora for atingido
+
+	update_population(nodes, best_pocket_node);
+	
+	if(DEBUG >= DISPLAY_ACTIONS){
+		for(int i=0;i<QTY_NODES_TREE;i++){	
+			cout << "node[" << i << "][0]:" << nodes[i][0].finalTotalCost << endl;
+		}
+	}
+
+
+
+
+
+
+
+
 
 
 	// FINALIZANDO A CONTAGEM DE TEMPO DA FUNCAO
@@ -119,6 +155,7 @@ solutionType memetic(char * solutionName, int qty_facilities, int qty_clients, d
 
 	free(assignment_cost);
 	free(sorted_cijID);
+	free(best_pocket_node);
 
 	return(nodes[0][0]);
 }

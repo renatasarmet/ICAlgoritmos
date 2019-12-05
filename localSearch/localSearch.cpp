@@ -429,6 +429,7 @@ solutionType localSearch(char * solutionName, int qty_facilities, int qty_client
 							}
 
 							open[n] = false; // fechando de fato a instalacao
+							solution.open_facilities[name[n]] = false;
 							open_facilities.erase(name[n]);
 							closed_facilities.insert(name[n]);
 
@@ -517,6 +518,7 @@ solutionType localSearch(char * solutionName, int qty_facilities, int qty_client
 						}
 
 						open[n] = true; // abrindo de fato a instalacao
+						solution.open_facilities[name[n]] = true;
 						closed_facilities.erase(name[n]);
 						open_facilities.insert(name[n]);
 
@@ -715,11 +717,13 @@ solutionType localSearch(char * solutionName, int qty_facilities, int qty_client
 									}
 
 									open[n] = false; // fechando de fato a primeira instalacao
+									solution.open_facilities[name[n]] = false;
 									open_facilities.erase(name[n]);
 									closed_facilities.insert(name[n]);
 
 
 									open[n2] = true; // abrindo de fato a segunda instalacao
+									solution.open_facilities[name[n2]] = true; 
 									open_facilities.insert(name[n2]);
 									closed_facilities.erase(name[n2]);
 
@@ -901,11 +905,13 @@ solutionType localSearch(char * solutionName, int qty_facilities, int qty_client
 								}
 
 								open[n] = true; // abrindo de fato a primeira instalacao
+								solution.open_facilities[name[n]] = true;
 								closed_facilities.erase(name[n]);
 								open_facilities.insert(name[n]);
 
 
 								open[n2] = false; // fechando de fato a segunda instalacao
+								solution.open_facilities[name[n2]] = false; 
 								closed_facilities.insert(name[n2]);
 								open_facilities.erase(name[n2]);
 
