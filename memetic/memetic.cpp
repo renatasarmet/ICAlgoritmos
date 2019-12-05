@@ -13,9 +13,8 @@ using namespace std;
 #define DISPLAY_ACTIONS 3 // corresponde a todos os cout quando uma acao é feita. 
 #define DISPLAY_DETAILS 4 // corresponde a todos os cout mais detalhados quando uma acao é feita. 
 #define DISPLAY_TIME 5 // corresponde aos calculos de tempo 
-#define DISPLAY_GRAPH 6 // corresponde a descricao dos clientes, instalacoes e arcos
 
-#define DEBUG 1 // OPCOES DE DEBUG: 1 - MOSTRAR A QTD DE MOVIMENTOS, 2 PARA EXIBIR OS MOVIMENTOS REALIZADOS, 3 PARA EXIBIR ACOES, 4 PARA EXIBIR DETALHES DAS ACOES, 5 PARA EXIBIR TEMPO, 6 PARA EXIBIR AS MUDANÇAS NO GRAFO
+#define DEBUG 3 // OPCOES DE DEBUG: 1 - MOSTRAR A QTD DE MOVIMENTOS, 2 PARA EXIBIR OS MOVIMENTOS REALIZADOS, 3 PARA EXIBIR ACOES, 4 PARA EXIBIR DETALHES DAS ACOES, 5 PARA EXIBIR TEMPO, 6 PARA EXIBIR AS MUDANÇAS NO GRAFO
 
 
 // Retornar o valor da solucao
@@ -87,23 +86,23 @@ solutionType memetic(char * solutionName, int qty_facilities, int qty_clients, d
 
 
 	// Inicializar as soluções iniciais - os 13 nós apenas 1 pocket
-	// cout << "VOU PEGAR O GREEDY" << endl;
-	// nodes[1][0] = set_initial_sol_G(qty_facilities, qty_clients, costF, costA); // solucao com greedy
+	set_initial_sol_G(&nodes[1][0], qty_facilities, qty_clients, costF, costA); // solucao com greedy
+	set_initial_sol_LS_G(&nodes[0][0], solutionName, qty_facilities, qty_clients, costF, costA, nodes[1][0]); // solucao com local search com solucao inicial do greedy
 
-	// cout << "VOU PEGAR O LS" << endl;
-	// nodes[0][0] = set_initial_sol_LS_G(solutionName, qty_facilities, qty_clients, costF, costA, nodes[1][0]); // solucao com local search com solucao inicial do greedy
+	if(DEBUG >= DISPLAY_ACTIONS){
+		cout << "Initial solutions:"<< endl;
+		cout << "LS_G - node[0][0]: " << nodes[0][0].finalTotalCost << endl;
+		cout << "Greedy - node[1][0]: " << nodes[1][0].finalTotalCost << endl;
+	}
 
 	for(int i=2;i<QTY_NODES_TREE;i++){
 		set_initial_sol_RANDOM(&nodes[i][0], qty_facilities, qty_clients, costF, assignment_cost, i-2, sorted_cijID); // 11 solucoes aleatorias com sementes de 0 a 10
-		// cout << "FINAL DESSE: " << nodes[i][0].finalTotalCost << endl;
+		
+		if(DEBUG >= DISPLAY_ACTIONS){
+			cout << "Random - node[" << i << "][0]:" << nodes[i][0].finalTotalCost << endl;
+		}
 	}
 
-
-
-
-
-
-	
 
 	// FINALIZANDO A CONTAGEM DE TEMPO DA FUNCAO
 	clock_gettime(CLOCK_REALTIME, &finish);
@@ -121,5 +120,5 @@ solutionType memetic(char * solutionName, int qty_facilities, int qty_clients, d
 	free(assignment_cost);
 	free(sorted_cijID);
 
-	return(nodes[2][0]);
+	return(nodes[0][0]);
 }

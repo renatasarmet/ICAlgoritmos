@@ -18,7 +18,7 @@ using namespace std;
 #define DISPLAY_TIME 4 // corresponde aos calculos de tempo 
 #define DISPLAY_GRAPH 5 // corresponde a descricao dos clientes, instalacoes e arcos
 
-#define DEBUG 1 // OPCOES DE DEBUG: 1 - MOSTRAR A QTD DE MOVIMENTOS, 2 PARA EXIBIR OS MOVIMENTOS REALIZADOS, 3 PARA EXIBIR ACOES, 4 PARA EXIBIR TEMPO, 5 PARA EXIBIR AS MUDANÇAS NO GRAFO
+#define DEBUG 0 // OPCOES DE DEBUG: 1 - MOSTRAR A QTD DE MOVIMENTOS, 2 PARA EXIBIR OS MOVIMENTOS REALIZADOS, 3 PARA EXIBIR ACOES, 4 PARA EXIBIR TEMPO, 5 PARA EXIBIR AS MUDANÇAS NO GRAFO
 
 #define TIME_LIMIT 900 //15 minutos
 
@@ -259,7 +259,9 @@ solutionType localSearch(char * solutionName, int qty_facilities, int qty_client
 	// ****** A partir daqui deve estar em um loop até nao ter mais melhoras possiveis, isto é, encontrar o otimo local
 
 	// OBSERVACAO 1: tambem existe uma condicao de parada relacionada a tempo, feita logo no inicio do loop
-	// OBSERVACAO 2: solution.local_optimum (variavel que indica se ja encontramos o otimo local) foi inicializado com valor falso na leitura da solução inicial (handlesInput.cpp)
+	// OBSERVACAO 2: solution.local_optimum (variavel que indica se ja encontramos o otimo local)
+
+	solution.local_optimum = false;
 
 	while(!solution.local_optimum){
 

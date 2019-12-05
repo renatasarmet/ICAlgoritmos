@@ -79,45 +79,48 @@ void connect_nearest(solutionType * node, int qty_clients, int ** sorted_cijID, 
 }
 
 
-solutionType set_initial_sol_G(int qty_facilities, int qty_clients, double * costF, double * costA){ 
-    solutionType node;
+// Recebe node por referencia. Modificacoes feitas no node aqui refletem diretamente la
+void set_initial_sol_G(solutionType * node, int qty_facilities, int qty_clients, double * costF, double * costA){ 
 
-    node = greedy(qty_clients, qty_facilities, costF, costA);
+    *node = greedy(qty_clients, qty_facilities, costF, costA);
+
+    // Alocando memoria para as instalacoes abertas
+    node->open_facilities = (int*) malloc((qty_facilities) * sizeof(int));
+    if(!node->open_facilities){
+        cout << "Memory Allocation Failed open_facilities";
+        exit(1);
+    }
 
     // Inicializando todas as inst fechadas
-    for(int k=0;k<qty_facilities;k++){
-        node.open_facilities[k] = false;
+    for(int i=0; i<qty_facilities; i++){
+        node->open_facilities[i] = false;
     }
 
     // Atualizando as instalacoes abertas
     for(int i=0;i<qty_clients;i++){
-        node.open_facilities[node.assigned_facilities[i]] = true;
-    }        
-
-    return node;
+        node->open_facilities[node->assigned_facilities[i]] = true;
+    }
 }
 
 
-solutionType set_initial_sol_LS_G(char * solutionName, int qty_facilities, int qty_clients, double * costF, double * costA, solutionType initial_sol){
-    solutionType node;
+// Recebe node por referencia. Modificacoes feitas no node aqui refletem diretamente la
+void set_initial_sol_LS_G(solutionType * node, char * solutionName, int qty_facilities, int qty_clients, double * costF, double * costA, solutionType initial_sol){
 
-    node = localSearch(solutionName, qty_facilities, qty_clients, costF, costA, initial_sol, 1); // tipo LS completo
+    *node = localSearch(solutionName, qty_facilities, qty_clients, costF, costA, initial_sol, 1); // tipo LS completo
 
     // Inicializando todas as inst fechadas
     for(int k=0;k<qty_facilities;k++){
-        node.open_facilities[k] = false;
+        node->open_facilities[k] = false;
     }
 
     // Atualizando as instalacoes abertas
     for(int i=0;i<qty_clients;i++){
-        node.open_facilities[node.assigned_facilities[i]] = true;
+        node->open_facilities[node->assigned_facilities[i]] = true;
     }        
-
-    return node;
 }
 
 
-// Recebe node por referencia. Modificacoes feitas aqui refletem diretamente la
+// Recebe node por referencia. Modificacoes feitas no node aqui refletem diretamente la
 void set_initial_sol_RANDOM(solutionType * node, int qty_facilities, int qty_clients, double * costF, double ** assignment_cost, int seed, int ** sorted_cijID){ // type: 0 para greedy, 1 para LS_G, 2 para aleatorio
 
     // Semente do numero aleatorio
