@@ -27,3 +27,7 @@ void set_initial_sol_RANDOM(solutionType * node, int qty_facilities, int qty_cli
 void update_sub_pop(solutionType ** nodes, int * best_pocket_node, int id_parent);
 
 void update_population(solutionType ** nodes, int * best_pocket_node);
+
+void print_tree_best(solutionType ** nodes, int * best_pocket_node);
+
+void print_tree_pockets(solutionType ** nodes);
