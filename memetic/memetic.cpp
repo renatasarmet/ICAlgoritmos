@@ -34,10 +34,13 @@ solutionType memetic(char * solutionName, int qty_facilities, int qty_clients, d
 		nodes[i] = (solutionType *)malloc((QTY_POCKETS_NODE + 1) * sizeof(solutionType));
 	}
 
-	// best_pocket_node[i] Guarda o indice (de 0 a QTY_POCKETS_NODE-1) do node com melhor valor dentro daquele nó i (de 0 a QTY_NODES_TREE)
+	// best_pocket_node[i] Guarda o indice (de 0 a QTY_POCKETS_NODE-1) do node com melhor valor dentro daquele nó i (de 0 a QTY_NODES_TREE -1)
 	int *best_pocket_node = (int*) malloc((QTY_NODES_TREE) * sizeof(int));
 
-    if((!nodes)||(!best_pocket_node)){
+	// worst_pocket_node[i] Guarda o indice (de 0 a QTY_POCKETS_NODE-1) do node com pior valor dentro daquele nó i (de 0 a QTY_NODES_TREE -1)
+	int *worst_pocket_node = (int*) malloc((QTY_NODES_TREE) * sizeof(int));
+
+    if((!nodes)||(!best_pocket_node)||(!worst_pocket_node)){
         cout << "Memory Allocation Failed";
         exit(1);
     }
@@ -45,8 +48,9 @@ solutionType memetic(char * solutionName, int qty_facilities, int qty_clients, d
 
 	// Alocando memoria para as instalacoes abertas e instalacoes atribuidas de cada cliente
 	for(int i=0;i<QTY_NODES_TREE;i++){
-		// Inicialmente o melhor pocket de todos os nós será da posiçao 0, pois só ele estará inicializado
+		// Inicialmente o melhor e o pior pocket de todos os nós será da posiçao 0, pois só ele estará inicializado
 		best_pocket_node[i] = 0;
+		worst_pocket_node[i] = 0;
 
 		for(int j=0;j< QTY_POCKETS_NODE+1; j++){
 
@@ -67,7 +71,7 @@ solutionType memetic(char * solutionName, int qty_facilities, int qty_clients, d
 	}
 
 
-	// assignment_cost - metor que indica o custo de atribuicao de cada cliente para cada instalacao
+	// assignment_cost - vetor que indica o custo de atribuicao de cada cliente para cada instalacao
 	double **assignment_cost = (double**) malloc((qty_clients) * sizeof(double*));
 
 	// sorted_cijID - será o ID das instalacoes ordenadas pelo cij àquele cliente
@@ -109,6 +113,9 @@ solutionType memetic(char * solutionName, int qty_facilities, int qty_clients, d
 	// Auxiliares para escolha do pocket da mae e do filho no crossover
 	int pocket_mother, pocket_child;
 
+	// Indica quantos pockets estao preenchidos em cada nós
+	int used_pockets = 0;
+
 	if(DEBUG >= DISPLAY_MOVES){
 		cout << "Initializing population" << endl;
 	}
@@ -137,6 +144,9 @@ solutionType memetic(char * solutionName, int qty_facilities, int qty_clients, d
 		}
 	}
 
+	// Aumentando a contagem de pockets utilizados
+	used_pockets += 1;
+
 	if(DEBUG >= DISPLAY_MOVES){
 		cout << "Initial tree:" << endl;
 		print_tree_best(nodes, best_pocket_node);
@@ -146,13 +156,13 @@ solutionType memetic(char * solutionName, int qty_facilities, int qty_clients, d
 	// A partir daqui estará em um loop até um número grande de iterações sem melhora for atingido
 
 	// Levando as melhores solucoes para cima -> Update Population
-	update_population(nodes, best_pocket_node, QTY_SUBS);
+	update_population(nodes, best_pocket_node, worst_pocket_node, used_pockets, QTY_SUBS);
 	
 	if(DEBUG >= DISPLAY_ACTIONS){
 		print_tree_best(nodes, best_pocket_node);
 
 		if(DEBUG >= DISPLAY_DETAILS){
-			print_tree_pockets(nodes);
+			print_tree_pockets(nodes, false);
 		}
 	}
 
@@ -170,11 +180,20 @@ solutionType memetic(char * solutionName, int qty_facilities, int qty_clients, d
 				cout << "------ CHILD " << index_child << "-------" << endl;
 			}
 
-			// sorteia o pocket da mae
-			pocket_mother = rand() % QTY_POCKETS_NODE; // Generate a random number between 0 and QTY_POCKETS_NODE
+			if(id_mother == 0){ // Se for a raiz, só existe um pocket, entao escolhe ele
+				pocket_mother = 0;
+			}
+			else{ // senao, sorteia o pocket da mae
+				pocket_mother = rand() % (used_pockets); // Generate a random number between 0 and used_pockets - 1		
+			}
 
 			// sorteia o pocket do filho
-			pocket_child = rand() % QTY_POCKETS_NODE; // Generate a random number between 0 and QTY_POCKETS_NODE
+			pocket_child = rand() % (used_pockets); // Generate a random number between 0 and used_pockets - 1
+
+
+			if(DEBUG >= DISPLAY_DETAILS){
+				cout << "Pockets: mother " << pocket_mother << " child " << pocket_child << endl;
+			}
 
 			crossover_mutation(&nodes[index_child][INDEX_CURRENT], nodes[id_mother][pocket_mother], nodes[index_child][pocket_child], qty_facilities, QTY_INST_MUTATION, qty_clients, sorted_cijID, costF, assignment_cost);
 
@@ -189,11 +208,69 @@ solutionType memetic(char * solutionName, int qty_facilities, int qty_clients, d
 		}
 	} 
 
+	if(DEBUG >= DISPLAY_ACTIONS){
+		cout << "POCKETS AFTER CROSSOVER, MUTATION AND LA" << endl;
+		print_tree_pockets(nodes, true);
 
-	// Update population (verificar se os currents entrarao no refSet ou nao e depois fazer o real update_population)
+		if(DEBUG >= DISPLAY_DETAILS){
+			print_tree_best(nodes, best_pocket_node);
+		}
+	}
+
+	// Verificar se os currents entrarao no refSet ou nao e ja atualizar best_pocket_node e worst_pocket_node
+	if(used_pockets < QTY_POCKETS_NODE){ // se ainda tiver pocket vazio, entra
+		for(int i = 1; i < QTY_NODES_TREE; i++){ // para todos os nós, exceto a raiz
+			nodes[i][used_pockets] = nodes[i][INDEX_CURRENT];
+
+			// Atualiza o best_pocket_node
+			if(nodes[i][used_pockets].finalTotalCost < nodes[i][best_pocket_node[i]].finalTotalCost){ // se esse current que entrou no refset é melhor que o melhor salvo, atualiza
+				best_pocket_node[i] = used_pockets;
+			}
+		}
+		used_pockets += 1;
+	}
+	else{ // senao, se todos os pockets estiverem ocupados, verifica se o current é melhor que o pior
+		for(int i = 1; i < QTY_NODES_TREE; i++){ // para todos os nós, exceto a raiz
+			if(nodes[i][INDEX_CURRENT].finalTotalCost < nodes[i][worst_pocket_node[i]].finalTotalCost){ // se o current for melhor que o pior, atualiza
+				nodes[i][worst_pocket_node[i]] = nodes[i][INDEX_CURRENT];
+
+				// Atualiza o best_pocket_node
+				if(nodes[i][worst_pocket_node[i]].finalTotalCost < nodes[i][best_pocket_node[i]].finalTotalCost){ // se esse current que entrou no refset é melhor que o melhor salvo, atualiza
+					best_pocket_node[i] = worst_pocket_node[i];
+				}
+
+				// Atualizar o worst_pocket_node
+				for(int j=0; j < QTY_POCKETS_NODE; j++){ // percorre por todos os pockets utilizados
+					if(nodes[i][j].finalTotalCost > nodes[i][worst_pocket_node[i]].finalTotalCost){ // se encontrou um pior, atualiza 
+						worst_pocket_node[i] = j;
+					}
+				}
+			}
+		}
+	}
+
+
+	if(DEBUG >= DISPLAY_ACTIONS){
+		cout << "AFTER UPDATING REFSET" << endl;
+		print_tree_best(nodes, best_pocket_node);
+
+		if(DEBUG >= DISPLAY_DETAILS){
+			print_tree_pockets(nodes, true);
+		}
+	}
 
 	
+	// Levando as melhores solucoes para cima -> Update Population
+	update_population(nodes, best_pocket_node, worst_pocket_node, used_pockets, QTY_SUBS);
+	
+	if(DEBUG >= DISPLAY_ACTIONS){
+		cout << "AFTER UPDATING POPULATION" << endl;
+		print_tree_best(nodes, best_pocket_node);
 
+		if(DEBUG >= DISPLAY_DETAILS){
+			print_tree_pockets(nodes, false);
+		}
+	}
 
 
 	// FINALIZANDO A CONTAGEM DE TEMPO DA FUNCAO

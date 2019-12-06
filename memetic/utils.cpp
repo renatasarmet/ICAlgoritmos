@@ -173,7 +173,7 @@ void call_late_acceptance(solutionType * node, char * solutionName, int qty_faci
 
 
 // Recebe nodes por referencia. Modificacoes feitas no node aqui refletem diretamente la
-void update_sub_pop(solutionType ** nodes, int * best_pocket_node, int id_parent){
+void update_sub_pop(solutionType ** nodes, int * best_pocket_node, int * worst_pocket_node, int used_pockets, int id_parent){
 	int index_child;
 	solutionType aux;
 	for(int i=0; i< QTY_CHILDREN; i++){ // para todos os filhos
@@ -190,12 +190,17 @@ void update_sub_pop(solutionType ** nodes, int * best_pocket_node, int id_parent
 			nodes[index_child][best_pocket_node[index_child]] = aux;
 
 			// Update indice de best_pocket do filho
-			for(int j=0; j < QTY_POCKETS_NODE; j++){ // percorre por todos os pockets
-				if(nodes[index_child][j].finalTotalCost < 0){ // pocket vazio, entao todos pra frente tambem estarão
-					break;
-				}
-				else if(nodes[index_child][j].finalTotalCost < nodes[index_child][best_pocket_node[index_child]].finalTotalCost){ // se encontrou um melhor, atualiza 
+			for(int j=0; j < used_pockets; j++){ // percorre por todos os pockets utilizados
+				if(nodes[index_child][j].finalTotalCost < nodes[index_child][best_pocket_node[index_child]].finalTotalCost){ // se encontrou um melhor, atualiza 
 					best_pocket_node[index_child] = j;
+				}
+			}
+			// Update indice de worst do pai, se ele era o pior
+			if(worst_pocket_node[id_parent] == best_pocket_node[id_parent]){
+				for(int j=0; j < used_pockets; j++){ // percorre por todos os pockets utilizados
+					if(nodes[id_parent][j].finalTotalCost > nodes[id_parent][worst_pocket_node[id_parent]].finalTotalCost){ // se encontrou um pior, atualiza 
+						worst_pocket_node[id_parent] = j;
+					}
 				}
 			}
 		}
@@ -204,20 +209,26 @@ void update_sub_pop(solutionType ** nodes, int * best_pocket_node, int id_parent
 
 
 // Recebe nodes por referencia. Modificacoes feitas no node aqui refletem diretamente la
-void update_population(solutionType ** nodes, int * best_pocket_node, int QTY_SUBS){
+void update_population(solutionType ** nodes, int * best_pocket_node, int * worst_pocket_node, int used_pockets, int QTY_SUBS){
 	// Compara best do filho com o best do pai
 
 	// Para cada pai, chama para atualizar essa sub populacao
 	for(int i = QTY_SUBS-1; i>=0; i--){
-		update_sub_pop(nodes, best_pocket_node, i);
+		update_sub_pop(nodes, best_pocket_node, worst_pocket_node, used_pockets, i);
 	}
 }
 
 
 
-void print_tree_pockets(solutionType ** nodes){
+void print_tree_pockets(solutionType ** nodes, bool display_current){
+	int qty_pockets_display = QTY_POCKETS_NODE;
+
+	if(display_current){
+		qty_pockets_display += 1;
+	}
+
 	for(int i=0;i<QTY_NODES_TREE;i++){	
-		for(int j=0; j<QTY_POCKETS_NODE; j++){
+		for(int j=0; j<qty_pockets_display; j++){
 			cout << "node[" << i << "][" << j << "]:" << nodes[i][j].finalTotalCost << endl;
 		}
 		cout << endl;

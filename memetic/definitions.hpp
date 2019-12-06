@@ -31,13 +31,13 @@ void call_local_search(solutionType * node, char * solutionName, int qty_facilit
 
 void call_late_acceptance(solutionType * node, char * solutionName, int qty_facilities, int qty_clients, double * costF, double * costA, solutionType initial_sol);
 
-void update_sub_pop(solutionType ** nodes, int * best_pocket_node, int id_parent);
+void update_sub_pop(solutionType ** nodes, int * best_pocket_node, int * worst_pocket_node, int used_pockets, int id_parent);
 
-void update_population(solutionType ** nodes, int * best_pocket_node, int QTY_SUBS);
+void update_population(solutionType ** nodes, int * best_pocket_node, int * worst_pocket_node, int used_pockets, int QTY_SUBS);
 
 void print_tree_best(solutionType ** nodes, int * best_pocket_node);
 
-void print_tree_pockets(solutionType ** nodes);
+void print_tree_pockets(solutionType ** nodes, bool display_current);
 
 void print_individual(int * open_facilities, int qty_facilities);
 
