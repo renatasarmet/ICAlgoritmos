@@ -7,6 +7,7 @@
 #define QTY_CHILDREN 3 // quantos nós filhos cada nó pai tem
 
 #define MUTATION_RATE 0.05 // 5% * qty_facilities
+#define MAX_GEN_NO_IMPROVEMENT 15 // quantidade de geracoes sem melhora
 
 #define DISPLAY_BASIC 1 // corresponde a exibicao da quantidade de movimentos
 #define DISPLAY_MOVES 2 // corresponde a todos os cout quando um movimento é realizado de fato
