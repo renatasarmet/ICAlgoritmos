@@ -20,6 +20,8 @@ solutionType memetic(char * solutionName, int qty_facilities, int qty_clients, d
 
 void mergeSortID(double *vector, int *vectorID, int startPosition, int endPosition);
 
+int qty_open_facilities(int * open_facilities, int qty_facilities);
+
 void connect_nearest(solutionType * node, int qty_clients, int ** sorted_cijID, double ** assignment_cost);
 
 void connect_and_update_facilities(solutionType * node, int qty_facilities, int qty_clients, int ** sorted_cijID, double * costF, double ** assignment_cost);

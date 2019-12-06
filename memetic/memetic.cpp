@@ -133,6 +133,14 @@ solutionType memetic(char * solutionName, int qty_facilities, int qty_clients, d
 	set_initial_sol_G(&nodes[1][0], qty_facilities, qty_clients, costF, costA); // solucao com greedy
 	call_local_search(&nodes[0][0], solutionName, qty_facilities, qty_clients, costF, costA, nodes[1][0]); // solucao com local search com solucao inicial do greedy
 
+	if(DEBUG >= DISPLAY_MOVES){
+		cout << "LS_G: ";
+		cout << qty_open_facilities(nodes[0][0].open_facilities, qty_facilities) << " open facilities" << endl;	
+		cout << "GREEDY: ";
+		cout << qty_open_facilities(nodes[1][0].open_facilities, qty_facilities) << " open facilities" << endl;
+	}
+
+
 	if(DEBUG >= DISPLAY_DETAILS){
 		cout << "LS_G - node[0][0]: " << nodes[0][0].finalTotalCost << endl;
 		cout << "Greedy - node[1][0]: " << nodes[1][0].finalTotalCost << endl << endl;
@@ -150,6 +158,11 @@ solutionType memetic(char * solutionName, int qty_facilities, int qty_clients, d
 
 		if(DEBUG >= DISPLAY_DETAILS){
 			cout << "LS_R -> node[" << i << "][0]:" << nodes[i][0].finalTotalCost << endl << endl;
+		}
+
+		if(DEBUG >= DISPLAY_MOVES){
+			cout << "RANDOM after LS: ";
+			cout << qty_open_facilities(nodes[i][0].open_facilities, qty_facilities) << " open facilities" << endl;
 		}
 	}
 

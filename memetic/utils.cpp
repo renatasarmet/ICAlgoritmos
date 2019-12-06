@@ -64,6 +64,19 @@ void mergeSortID(double *vector, int *vectorID, int startPosition, int endPositi
 }
 
 
+// Verifica quantas instalacoes estao abertas
+int qty_open_facilities(int * open_facilities, int qty_facilities){
+	int qty = 0;
+	for(int i=0; i< qty_facilities; i++){
+		if(open_facilities[i]){
+			qty += 1;
+		}
+	}
+	return qty;
+}
+
+
+
 // Conecta os clientes à instalacao aberta mais proxima. Parametro por referencia.
 void connect_nearest(solutionType * node, int qty_clients, int ** sorted_cijID, double ** assignment_cost){
 	int cont;
@@ -155,8 +168,18 @@ void set_initial_sol_RANDOM(solutionType * node, int qty_facilities, int qty_cli
 		node->open_facilities[i] = randNum;
 	}
 
+	if(DEBUG >= DISPLAY_MOVES){
+		cout << "RANDOM before connecting clients: ";
+		cout << qty_open_facilities(node->open_facilities, qty_facilities) << " open facilities" << endl;	
+	}
+
 	// Conectando cada cliente com a instalacao aberta mais proxima e fechando as instalacoes que nao foram conectadas a ninguem. Custo final também é atualizado
 	connect_and_update_facilities(node, qty_facilities, qty_clients, sorted_cijID, costF, assignment_cost);
+
+	if(DEBUG >= DISPLAY_MOVES){
+		cout << "RANDOM after connecting clients: ";
+		cout << qty_open_facilities(node->open_facilities, qty_facilities) << " open facilities" << endl;	
+	}
 }
 
 
