@@ -133,7 +133,9 @@ solutionType memetic(char * solutionName, int qty_facilities, int qty_clients, d
 
 	// Inicializar as soluções iniciais - os 13 nós apenas 1 pocket
 	set_initial_sol_G(&nodes[1][0], qty_facilities, qty_clients, costF, costA); // solucao com greedy
-	call_local_search(&nodes[0][0], solutionName, qty_facilities, qty_clients, costF, costA, nodes[1][0]); // solucao com local search com solucao inicial do greedy
+	// call_local_search(&nodes[0][0], solutionName, qty_facilities, qty_clients, costF, costA, nodes[1][0]); // solucao com local search com solucao inicial do greedy
+	call_late_acceptance(&nodes[0][0], solutionName, qty_facilities, qty_clients, costF, costA, nodes[1][0]); // solucao com late acceptance com solucao inicial do greedy
+
 
 	if(DEBUG >= DISPLAY_MOVES){
 		cout << "LS_G: ";
@@ -156,7 +158,8 @@ solutionType memetic(char * solutionName, int qty_facilities, int qty_clients, d
 		}
 
 		// Roda LS completo para todas as solucoes geradas com random
-		call_local_search(&nodes[i][0], solutionName, qty_facilities, qty_clients, costF, costA, nodes[i][0]); 
+		// call_local_search(&nodes[i][0], solutionName, qty_facilities, qty_clients, costF, costA, nodes[i][0]); 
+		call_late_acceptance(&nodes[i][0], solutionName, qty_facilities, qty_clients, costF, costA, nodes[i][0]); 
 
 		if(DEBUG >= DISPLAY_DETAILS){
 			cout << "LS_R -> node[" << i << "][0]:" << nodes[i][0].finalTotalCost << endl << endl;
