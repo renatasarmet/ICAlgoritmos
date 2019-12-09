@@ -152,23 +152,23 @@ solutionType lateAcceptance(char * solutionName, int qty_facilities, int qty_cli
 	// Declaracao de variavel auxiliar para formacao do arquivo .log
 	char completeLogDetailName[300] = "";
 
-	// Arquivo para salvar o log da solucao
-	ofstream solLog;
-	strcat(completeLogSolName,solutionName);
-	strcat(completeLogSolName,".log");
-	solLog.open(completeLogSolName, std::ofstream::out | std::ofstream::trunc);
+	// // Arquivo para salvar o log da solucao
+	// ofstream solLog;
+	// strcat(completeLogSolName,solutionName);
+	// strcat(completeLogSolName,".log");
+	// solLog.open(completeLogSolName, std::ofstream::out | std::ofstream::trunc);
 
-	// Arquivo para salvar o log detail da solucao
-	ofstream logDetail;
-	strcat(completeLogDetailName,solutionName);
-	strcat(completeLogDetailName,".log_detail");
-	logDetail.open(completeLogDetailName, std::ofstream::out | std::ofstream::trunc);
+	// // Arquivo para salvar o log detail da solucao
+	// ofstream logDetail;
+	// strcat(completeLogDetailName,solutionName);
+	// strcat(completeLogDetailName,".log_detail");
+	// logDetail.open(completeLogDetailName, std::ofstream::out | std::ofstream::trunc);
 
-	//Salvando o cabecalho
-	solLog << "time spent so far, current solution cost, current qty moves" << endl;
+	// //Salvando o cabecalho
+	// solLog << "time spent so far, current solution cost, current qty moves" << endl;
 
-	//Salvando o cabecalho
-	logDetail << "time spent so far, current solution cost, current qty moves" << endl;
+	// //Salvando o cabecalho
+	// logDetail << "time spent so far, current solution cost, current qty moves" << endl;
 
 	// Criação de nós de instalações e atribuição de seus labels
 	ListBpGraph::BlueNode * facilities;
@@ -404,11 +404,11 @@ solutionType lateAcceptance(char * solutionName, int qty_facilities, int qty_cli
 	solution.timeSpent =  (time_so_far.tv_sec - start.tv_sec);
 	solution.timeSpent += (time_so_far.tv_nsec - start.tv_nsec) / 1000000000.0; // Necessario para obter uma precisao maior 
 
-	// Acrescentando no solLog.txt o tempo e o custo inicial
-	solLog << solution.timeSpent << "," << solution.finalTotalCost << "," << qty_moves << endl;
+	// // Acrescentando no solLog.txt o tempo e o custo inicial
+	// solLog << solution.timeSpent << "," << solution.finalTotalCost << "," << qty_moves << endl;
 
-	// Acrescentando no logDetail.txt o tempo e o custo inicial
-	logDetail << solution.timeSpent << "," << cur_cost << "," << qty_moves << endl;
+	// // Acrescentando no logDetail.txt o tempo e o custo inicial
+	// logDetail << solution.timeSpent << "," << cur_cost << "," << qty_moves << endl;
 
 	// INICIANDO A CONTAGEM DE TEMPO DA FUNCAO
 	clock_gettime(CLOCK_REALTIME, &start);
@@ -566,8 +566,8 @@ solutionType lateAcceptance(char * solutionName, int qty_facilities, int qty_cli
 					cout << "Total time spent so far: " << solution.timeSpent << " seconds" << endl;
 				}
 
-				// Acrescentando no logDetail.txt o tempo gasto nessa iteracao e o custo da solucao
-				logDetail << solution.timeSpent << "," << cur_cost << "," << qty_moves << endl;
+				// // Acrescentando no logDetail.txt o tempo gasto nessa iteracao e o custo da solucao
+				// logDetail << solution.timeSpent << "," << cur_cost << "," << qty_moves << endl;
 
 				// Atualizando a melhor solucao encontrada ate agr
 				if(cur_cost < solution.finalTotalCost){
@@ -577,8 +577,8 @@ solutionType lateAcceptance(char * solutionName, int qty_facilities, int qty_cli
 					solution.finalTotalCost = cur_cost;
 					k_last_best = qty_moves;
 					
-					// Acrescentando no solLog.txt o tempo gasto nessa iteracao e o custo da solucao
-					solLog << solution.timeSpent << "," << solution.finalTotalCost << "," << qty_moves << endl;
+					// // Acrescentando no solLog.txt o tempo gasto nessa iteracao e o custo da solucao
+					// solLog << solution.timeSpent << "," << solution.finalTotalCost << "," << qty_moves << endl;
 				}
 				else{
 					if(DEBUG >= DISPLAY_ACTIONS){
@@ -996,14 +996,14 @@ solutionType lateAcceptance(char * solutionName, int qty_facilities, int qty_cli
 		cout << "Final Total Function Time: " << solution.timeSpent << " seconds" << endl;
 	}
 
-	// Acrescentando no solLog.txt o tempo gasto final da funcao e o custo final da solucao
-	solLog << solution.timeSpent << "," << solution.finalTotalCost << "," << qty_moves << endl;
+	// // Acrescentando no solLog.txt o tempo gasto final da funcao e o custo final da solucao
+	// solLog << solution.timeSpent << "," << solution.finalTotalCost << "," << qty_moves << endl;
 
-	// Acrescentando no logDetail.txt o tempo gasto nessa iteracao e o custo da solucao
-	logDetail << solution.timeSpent << "," << cur_cost << "," << qty_moves << endl;
+	// // Acrescentando no logDetail.txt o tempo gasto nessa iteracao e o custo da solucao
+	// logDetail << solution.timeSpent << "," << cur_cost << "," << qty_moves << endl;
 
-	solLog.close();
-	logDetail.close();
+	// solLog.close();
+	// logDetail.close();
 
 	free(fa);
 	free(flag);
