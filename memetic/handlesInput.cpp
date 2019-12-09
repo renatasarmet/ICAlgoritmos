@@ -191,10 +191,7 @@ int main(int argc, char *argv[]){
 	solutionTXT << fixed << setprecision(5) << solution.finalTotalCost << " ";
 	
 	// Colocando no solutionTXT o tempo gasto 
-	solutionTXT << solution.timeSpent << " ";
-
-	// // Colocando no solutionTXT se o otimo local foi encontrado
-	// solutionTXT << solution.local_optimum;
+	solutionTXT << solution.timeSpent;
 
 	// Colocando no solutionsTXT as instalacoes finais conectadas
 	for(int i=0; i < qty_clients; i++){

@@ -6,7 +6,7 @@
 #define INDEX_CURRENT 5 // ocupa o sexto pocket de cada nó
 #define QTY_CHILDREN 3 // quantos nós filhos cada nó pai tem
 
-#define MUTATION_RATE 0.05 // 5% * qty_facilities
+#define MUTATION_RATE 0.1 // 10% //0.05 // 5% * qty_facilities
 #define MAX_GEN_NO_IMPROVEMENT 15 // quantidade de geracoes sem melhora
 
 #define DISPLAY_BASIC 1 // corresponde a exibicao da quantidade de movimentos
@@ -46,4 +46,10 @@ void print_individual(int * open_facilities, int qty_facilities);
 
 void mutation(solutionType * child, int qty_facilities, int QTY_INST_MUTATION);
 
-void crossover_mutation(solutionType * child, solutionType mother, solutionType father, int qty_facilities, int QTY_INST_MUTATION, int qty_clients, int ** sorted_cijID, double * costF, double ** assignment_cost);
+void uniform_crossover(solutionType * child, solutionType mother, solutionType father, int qty_facilities);
+
+void one_point_crossover(solutionType * child, solutionType mother, solutionType father, int qty_facilities);
+
+void crossover_mutation(solutionType * child, solutionType mother, solutionType father, int qty_facilities, int QTY_INST_MUTATION, int qty_clients, int ** sorted_cijID, double * costF, double ** assignment_cost, int type_crossover);
+
+void print_count_open_facilities(solutionType ** nodes, int pocket, int qty_facilities, int used_pockets);

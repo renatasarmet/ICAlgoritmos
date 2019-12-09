@@ -166,6 +166,9 @@ solutionType memetic(char * solutionName, int qty_facilities, int qty_clients, d
 		}
 	}
 
+	// Imprimindo a quantidade de vezes que cada inst estava aberta nessas solucoes iniciais
+	print_count_open_facilities(nodes, 0, qty_facilities, used_pockets);
+
 	// Aumentando a contagem de pockets utilizados
 	used_pockets += 1;
 
@@ -227,7 +230,7 @@ solutionType memetic(char * solutionName, int qty_facilities, int qty_clients, d
 					cout << "Pockets: mother " << pocket_mother << " child " << pocket_child << endl;
 				}
 
-				crossover_mutation(&nodes[index_child][INDEX_CURRENT], nodes[id_parent][pocket_mother], nodes[index_child][pocket_child], qty_facilities, QTY_INST_MUTATION, qty_clients, sorted_cijID, costF, assignment_cost);
+				crossover_mutation(&nodes[index_child][INDEX_CURRENT], nodes[id_parent][pocket_mother], nodes[index_child][pocket_child], qty_facilities, QTY_INST_MUTATION, qty_clients, sorted_cijID, costF, assignment_cost, 2);
 
 				// LA em cada filho gerado
 				call_late_acceptance(&nodes[index_child][INDEX_CURRENT], solutionName, qty_facilities, qty_clients, costF, costA, nodes[index_child][INDEX_CURRENT]);
@@ -321,18 +324,32 @@ solutionType memetic(char * solutionName, int qty_facilities, int qty_clients, d
 		qty_generations += 1;
 	}	
 
+	// Vendo a diversidade da populacao final
+	cout << qty_open_facilities(nodes[0][0].open_facilities, qty_facilities) << " open facilities" << endl;
+
+	for(int i=1;i<QTY_NODES_TREE;i++){
+		for(int j=0;j<used_pockets;j++){
+			cout << qty_open_facilities(nodes[i][j].open_facilities, qty_facilities) << " ";
+		}
+		cout << " open facilities" << endl;
+	}
+		
+	// Imprimindo a quantidade de vezes que cada inst estava aberta nessas solucoes iniciais
+	print_count_open_facilities(nodes, -1, qty_facilities, used_pockets);
+
+
+
 	// FINALIZANDO A CONTAGEM DE TEMPO DA FUNCAO
 	clock_gettime(CLOCK_REALTIME, &finish);
 
 
 	// Calculando o tempo gasto da funcao
-	double timeSpent =  (finish.tv_sec - start.tv_sec);
-	timeSpent += (finish.tv_nsec - start.tv_nsec) / 1000000000.0; // Necessario para obter uma precisao maior 
+	nodes[0][0].timeSpent =  (finish.tv_sec - start.tv_sec);
+	nodes[0][0].timeSpent += (finish.tv_nsec - start.tv_nsec) / 1000000000.0; // Necessario para obter uma precisao maior 
 
 	if(DEBUG >= DISPLAY_TIME){
-		cout << "Final Total Function Time: " << timeSpent << " seconds" << endl;
+		cout << "Final Total Function Time: " << nodes[0][0].timeSpent << " seconds" << endl;
 	}
-
 
 	free(assignment_cost);
 	free(sorted_cijID);

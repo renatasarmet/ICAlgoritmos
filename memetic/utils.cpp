@@ -322,20 +322,9 @@ void mutation(solutionType * child, int qty_facilities, int QTY_INST_MUTATION){
 }
 
 
-
-// Recebe node child por referencia. Modificacoes feitas no node aqui refletem diretamente la.
-void crossover_mutation(solutionType * child, solutionType mother, solutionType father, int qty_facilities, int QTY_INST_MUTATION, int qty_clients, int ** sorted_cijID, double * costF, double ** assignment_cost){
+// crossover uniforme: copia para o filho o que é igual e sorteia o que for diferente
+void uniform_crossover(solutionType * child, solutionType mother, solutionType father, int qty_facilities){
 	int randNum;
-
-	if(DEBUG >= DISPLAY_ACTIONS){
-		cout << "CROSSOVER" << endl;
-		cout << "Mother: ";
-		print_individual(mother.open_facilities, qty_facilities);
-		cout << "Father: ";
-		print_individual(father.open_facilities, qty_facilities);
-	}
-
-	// crossover uniforme: copia para o filho o que é igual e sorteia o que for diferente
 	for(int i=0; i<qty_facilities; i++){
 		if(father.open_facilities[i] == mother.open_facilities[i]){
 			child->open_facilities[i] = mother.open_facilities[i];
@@ -355,8 +344,61 @@ void crossover_mutation(solutionType * child, solutionType mother, solutionType 
 	}
 
 	if(DEBUG >= DISPLAY_ACTIONS){
-		cout << "Child after crossover: ";
+		cout << "Child after uniform crossover: ";
 		print_individual(child->open_facilities, qty_facilities);
+	}
+}
+
+
+// one point crossover: sorteia um numero (de 0 a qty_facilities -1) e copia para o filho da mae o que está na esquerda desse numero e do pai o resto
+void one_point_crossover(solutionType * child, solutionType mother, solutionType father, int qty_facilities){
+	int randNum;
+	randNum = rand() % qty_facilities; // Generate a random number between 0 and qty_facilities - 1
+
+	for(int i=0; i<randNum; i++){
+		child->open_facilities[i] = mother.open_facilities[i];
+
+		if(DEBUG >= DISPLAY_DETAILS){
+			cout << "Facility " << i << " copy its mother: " << child->open_facilities[i] << endl;
+		}
+	}
+	for(int i=randNum; i<qty_facilities; i++){
+		child->open_facilities[i] = father.open_facilities[i];
+
+		if(DEBUG >= DISPLAY_DETAILS){
+			cout << "Facility " << i << " copy its father: " << child->open_facilities[i] << endl;
+		}
+	}
+
+	if(DEBUG >= DISPLAY_ACTIONS){
+		cout << "Child after one point crossover: ";
+		print_individual(child->open_facilities, qty_facilities);
+	}
+}
+
+
+// Recebe node child por referencia. Modificacoes feitas no node aqui refletem diretamente la.
+// type_crossover: 1 para uniforme crossover, 2 para one point crossover. 0 para sortear qual sera
+void crossover_mutation(solutionType * child, solutionType mother, solutionType father, int qty_facilities, int QTY_INST_MUTATION, int qty_clients, int ** sorted_cijID, double * costF, double ** assignment_cost, int type_crossover){
+
+	if(DEBUG >= DISPLAY_ACTIONS){
+		cout << "CROSSOVER" << endl;
+		cout << "Mother: ";
+		print_individual(mother.open_facilities, qty_facilities);
+		cout << "Father: ";
+		print_individual(father.open_facilities, qty_facilities);
+	}
+
+	// Se for 0, indica que é para sortear qual o tipo de crossover devo fazer
+	if(type_crossover == 0){
+		type_crossover = (rand() % 2) + 1; // Generate a random number between 1 and 2
+	}
+
+	if(type_crossover == 1){ // Chama o crossover
+		uniform_crossover(child, mother, father, qty_facilities);
+	}
+	else{ // Chama o one point crossover
+		one_point_crossover(child, mother, father, qty_facilities);
 	}
 
 	// mutation 
@@ -373,7 +415,65 @@ void crossover_mutation(solutionType * child, solutionType mother, solutionType 
 		cout << "Child after connecting clients: ";
 		print_individual(child->open_facilities, qty_facilities);
 	}
+}
 
+
+// Imprime um vetor com do tamanho de intalacoes. Cada posicao é um inteiro indicando em quantas solucoes essa instalacao estava aberta. pocket indica em qual pocket quer olhar de todos os nodes
+void print_count_open_facilities(solutionType ** nodes, int pocket, int qty_facilities, int used_pockets){
+	int qty_fac_open_all = 0;
+	int qty_solutions = QTY_NODES_TREE;
+	int * count_open_facilities = (int*) malloc((qty_facilities) * sizeof(int));
+
+  	if(!count_open_facilities){
+        cout << "Memory Allocation Failed";
+        exit(1);
+    }
+
+    // Zerando todas as posicoes
+    for(int i=0; i<qty_facilities; i++){
+    	count_open_facilities[i] = 0;
+    }
+
+    // Contando a raiz
+	for(int j=0;j<qty_facilities;j++){
+		count_open_facilities[j] += nodes[0][0].open_facilities[j];
+	}
+
+    // indica que é para todos os pockets
+    if(pocket < 0){
+    	qty_solutions = used_pockets * (QTY_NODES_TREE - 1) + 1;
+		// Contando para cada nó
+		for(int i = 1; i< QTY_NODES_TREE; i++){
+			for(int k = 0; k < used_pockets; k++){
+				for(int j=0;j<qty_facilities;j++){
+					count_open_facilities[j] += nodes[i][k].open_facilities[j];
+				}
+			}
+		}
+    }
+    else{
+    	// Contando para cada nó
+		for(int i = 1; i< QTY_NODES_TREE; i++){
+			for(int j=0;j<qty_facilities;j++){
+				count_open_facilities[j] += nodes[i][pocket].open_facilities[j];
+			}
+		}
+    }
+
+    
+
+	// Imprimindo o resultado
+	cout << endl << "Number of sulutions each facility was open" << endl;
+    for(int i=0; i<qty_facilities; i++){
+    	cout << count_open_facilities[i] << " ";
+    	if(count_open_facilities[i] == qty_solutions){
+    		qty_fac_open_all += 1;
+    	}
+    }
+    cout << endl << "Qty fac open in all (" << qty_solutions << ") solutions: " << qty_fac_open_all << endl;
+    cout << endl;
+
+	free(count_open_facilities);
 }
 
 
