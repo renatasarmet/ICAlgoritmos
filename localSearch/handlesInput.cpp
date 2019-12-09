@@ -202,9 +202,11 @@ int main(int argc, char *argv[]){
 	// cout << "Discard time: " << auxCRead << endl;
 
 
-	// indica as instalacoes iniciais atribuidas a cada cliente
+	// indica as instalacoes iniciais atribuidas a cada cliente e de inst abertas
 	solution.assigned_facilities = (int*) malloc((qty_clients) * sizeof(int));
-	if(!solution.assigned_facilities){
+	solution.open_facilities = (int*) malloc((qty_facilities) * sizeof(int));
+
+	if((!solution.assigned_facilities)||(!solution.open_facilities)){
 		cout << "Memory Allocation Failed";
 		exit(1);
 	}

@@ -5,7 +5,7 @@
 
 using namespace std;
 
-#define DEBUG 0 // OPCOES DE DEBUG: 1 - MOSTRAR A QTD DE MOVIMENTOS, 2 PARA EXIBIR OS MOVIMENTOS REALIZADOS, 3 PARA EXIBIR ACOES, 4 PARA EXIBIR DETALHES DAS ACOES, 5 PARA EXIBIR TEMPO, 6 PARA EXIBIR AS MUDANÇAS NO GRAFO
+#define DEBUG 2 // OPCOES DE DEBUG: 1 - MOSTRAR A QTD DE MOVIMENTOS, 2 PARA EXIBIR OS MOVIMENTOS REALIZADOS, 3 PARA EXIBIR ACOES, 4 PARA EXIBIR DETALHES DAS ACOES, 5 PARA EXIBIR TEMPO, 6 PARA EXIBIR AS MUDANÇAS NO GRAFO
 
 
 // Retornar o valor da solucao
@@ -168,8 +168,10 @@ solutionType memetic(char * solutionName, int qty_facilities, int qty_clients, d
 		}
 	}
 
-	// Imprimindo a quantidade de vezes que cada inst estava aberta nessas solucoes iniciais
-	print_count_open_facilities(nodes, 0, qty_facilities, used_pockets);
+	if(DEBUG >= DISPLAY_MOVES){
+		// Imprimindo a quantidade de vezes que cada inst estava aberta nessas solucoes iniciais
+		print_count_open_facilities(nodes, 0, qty_facilities, used_pockets);
+	}
 
 	// Aumentando a contagem de pockets utilizados
 	used_pockets += 1;
@@ -327,17 +329,20 @@ solutionType memetic(char * solutionName, int qty_facilities, int qty_clients, d
 	}	
 
 	// Vendo a diversidade da populacao final
-	cout << qty_open_facilities(nodes[0][0].open_facilities, qty_facilities) << " open facilities" << endl;
 
-	for(int i=1;i<QTY_NODES_TREE;i++){
-		for(int j=0;j<used_pockets;j++){
-			cout << qty_open_facilities(nodes[i][j].open_facilities, qty_facilities) << " ";
+	if(DEBUG >= DISPLAY_MOVES){
+		cout << qty_open_facilities(nodes[0][0].open_facilities, qty_facilities) << " open facilities" << endl;
+
+		for(int i=1;i<QTY_NODES_TREE;i++){
+			for(int j=0;j<used_pockets;j++){
+				cout << qty_open_facilities(nodes[i][j].open_facilities, qty_facilities) << " ";
+			}
+			cout << " open facilities" << endl;
 		}
-		cout << " open facilities" << endl;
-	}
 		
-	// Imprimindo a quantidade de vezes que cada inst estava aberta nessas solucoes iniciais
-	print_count_open_facilities(nodes, -1, qty_facilities, used_pockets);
+		// Imprimindo a quantidade de vezes que cada inst estava aberta nessas solucoes iniciais
+		print_count_open_facilities(nodes, -1, qty_facilities, used_pockets);
+	}
 
 
 	// FINALIZANDO A CONTAGEM DE TEMPO DA FUNCAO

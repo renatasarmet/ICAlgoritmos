@@ -24,6 +24,18 @@ using namespace std;
 
 #define TIME_COUNTER_STEP 5 // 5 segundos para testar as inst ga250a //30 // 30 segundos. Isso indicara que vai salvar a melhor solucao encontrada a cada minuto
 
+// // Função para embaralhar o vetor com indices das facilities
+// void shuffle(int *vet, int vetSize){
+// 	int r, temp;
+// 	for(int i=0; i<vetSize; i++){
+// 		r = rand() % vetSize;
+// 		temp = vet[i];
+// 		vet[i] = vet[r];
+// 		vet[r] = temp;
+// 	}
+// }
+
+
 // Retornar o valor da solucao
 solutionType localSearch(char * solutionName, int qty_facilities, int qty_clients, double * costF, double * costA, solutionType solution, int ls_type){
 
@@ -252,6 +264,11 @@ solutionType localSearch(char * solutionName, int qty_facilities, int qty_client
 
 	// Variavel auxiliar para ajudar quando houver substituicao de informacoes na troca
 	bool closed_nearest = false; 
+
+
+	// Decidindo a ordem que as instalacoes 
+	//PROBLEMA: NAO ADIANTA PQ EU PERCORRO PELO GRAFO, NAO PELO VETOR... VAI TER QUE MUDAR ISSO MESMO
+
 
 	// INICIANDO A CONTAGEM DE TEMPO DA FUNCAO
 	clock_gettime(CLOCK_REALTIME, &start);
