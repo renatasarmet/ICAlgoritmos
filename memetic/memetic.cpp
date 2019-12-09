@@ -5,7 +5,7 @@
 
 using namespace std;
 
-#define DEBUG 2 // OPCOES DE DEBUG: 1 - MOSTRAR A QTD DE MOVIMENTOS, 2 PARA EXIBIR OS MOVIMENTOS REALIZADOS, 3 PARA EXIBIR ACOES, 4 PARA EXIBIR DETALHES DAS ACOES, 5 PARA EXIBIR TEMPO, 6 PARA EXIBIR AS MUDANÇAS NO GRAFO
+#define DEBUG 0 // OPCOES DE DEBUG: 1 - MOSTRAR A QTD DE MOVIMENTOS, 2 PARA EXIBIR OS MOVIMENTOS REALIZADOS, 3 PARA EXIBIR ACOES, 4 PARA EXIBIR DETALHES DAS ACOES, 5 PARA EXIBIR TEMPO, 6 PARA EXIBIR AS MUDANÇAS NO GRAFO
 
 
 // Retornar o valor da solucao
@@ -23,6 +23,8 @@ solutionType memetic(char * solutionName, int qty_facilities, int qty_clients, d
 
 	// INICIANDO A CONTAGEM DE TEMPO DA FUNCAO
 	clock_gettime(CLOCK_REALTIME, &start);
+
+	solutionType solution;
 
 	// FUTURO: SALVAR LOG E LOG_DETAILS
 
@@ -338,22 +340,45 @@ solutionType memetic(char * solutionName, int qty_facilities, int qty_clients, d
 	print_count_open_facilities(nodes, -1, qty_facilities, used_pockets);
 
 
-
 	// FINALIZANDO A CONTAGEM DE TEMPO DA FUNCAO
 	clock_gettime(CLOCK_REALTIME, &finish);
 
 
+	// Atualizando valor de solution
+	solution = nodes[0][0];
+
+
 	// Calculando o tempo gasto da funcao
-	nodes[0][0].timeSpent =  (finish.tv_sec - start.tv_sec);
-	nodes[0][0].timeSpent += (finish.tv_nsec - start.tv_nsec) / 1000000000.0; // Necessario para obter uma precisao maior 
+	solution.timeSpent =  (finish.tv_sec - start.tv_sec);
+	solution.timeSpent += (finish.tv_nsec - start.tv_nsec) / 1000000000.0; // Necessario para obter uma precisao maior 
 
 	if(DEBUG >= DISPLAY_TIME){
-		cout << "Final Total Function Time: " << nodes[0][0].timeSpent << " seconds" << endl;
+		cout << "Final Total Function Time: " << solution.timeSpent << " seconds" << endl;
 	}
 
+	/* DESALOCAÇÃO DE MEMÓRIA */
+
+	// desalocando todo o vetor de nodes
+	for(int i = 0; i < QTY_NODES_TREE; i++) {
+		// for(int j=0;j< QTY_POCKETS_NODE+1; j++){
+		// 	free(nodes[i][j].open_facilities);
+		// 	free(nodes[i][j].assigned_facilities);
+		// }
+		free(nodes[i]);
+	}
+	free(nodes);
+
+	// desalocando vetor de assignment_cost e sorted_cijID
+	for(int i = 0; i < qty_clients; i++) {
+		free(assignment_cost[i]);
+		free(sorted_cijID[i]);
+	}
 	free(assignment_cost);
 	free(sorted_cijID);
-	free(best_pocket_node);
 
-	return(nodes[0][0]);
+	// Desalocando vetores best e worst pocket node
+	free(best_pocket_node);
+	free(worst_pocket_node);
+
+	return(solution);
 }
