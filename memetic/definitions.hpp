@@ -7,7 +7,9 @@
 #define QTY_CHILDREN 3 // quantos nós filhos cada nó pai tem
 
 #define MUTATION_RATE 0.1 // 10% //0.05 // 5% * qty_facilities
-#define MAX_GEN_NO_IMPROVEMENT 10//15 // quantidade de geracoes sem melhora
+#define PROB_LA_RATE 50 // 50%
+#define MAX_GEN_NO_IMPROVEMENT 15 // quantidade de geracoes sem melhora
+#define TYPE_UPDATE_POP 2 // 1 para best, 2 para worst
 
 #define DISPLAY_BASIC 1 // corresponde a exibicao da quantidade de movimentos
 #define DISPLAY_MOVES 2 // corresponde a todos os cout quando um movimento é realizado de fato
@@ -34,9 +36,13 @@ void call_local_search(solutionType * node, char * solutionName, int qty_facilit
 
 void call_late_acceptance(solutionType * node, char * solutionName, int qty_facilities, int qty_clients, double * costF, double * costA, solutionType initial_sol);
 
-void update_sub_pop(solutionType ** nodes, int * best_pocket_node, int * worst_pocket_node, int used_pockets, int id_parent);
+void call_tabu_search(solutionType * node, char * solutionName, int qty_facilities, int qty_clients, double * costF, double * costA, solutionType initial_sol);
 
-void update_population(solutionType ** nodes, int * best_pocket_node, int * worst_pocket_node, int used_pockets, int QTY_SUBS);
+void update_sub_pop_best(solutionType ** nodes, int * best_pocket_node, int * worst_pocket_node, int used_pockets, int id_parent, char * solutionName, int qty_facilities, int qty_clients, double * costF, double * costA);
+
+void update_sub_pop_worst(solutionType ** nodes, int * best_pocket_node, int * worst_pocket_node, int used_pockets, int id_parent);
+
+void update_population(solutionType ** nodes, int * best_pocket_node, int * worst_pocket_node, int used_pockets, int QTY_SUBS, char * solutionName, int qty_facilities, int qty_clients, double * costF, double * costA);
 
 void print_tree_best(solutionType ** nodes, int * best_pocket_node);
 

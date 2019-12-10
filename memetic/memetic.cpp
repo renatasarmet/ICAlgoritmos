@@ -127,14 +127,17 @@ solutionType memetic(char * solutionName, int qty_facilities, int qty_clients, d
 	// marca o melhor custo até agora (finalTotalCost do node [0][0])
 	double bestTotalCost = 0;
 
+	// indica a probabilidade de realizar o LA
+	int prob_la;
+
 	if(DEBUG >= DISPLAY_MOVES){
 		cout << "Initializing population" << endl;
 	}
 
 	// Inicializar as soluções iniciais - os 13 nós apenas 1 pocket
 	set_initial_sol_G(&nodes[1][0], qty_facilities, qty_clients, costF, costA); // solucao com greedy
-	// call_local_search(&nodes[0][0], solutionName, qty_facilities, qty_clients, costF, costA, nodes[1][0]); // solucao com local search com solucao inicial do greedy
-	call_late_acceptance(&nodes[0][0], solutionName, qty_facilities, qty_clients, costF, costA, nodes[1][0]); // solucao com late acceptance com solucao inicial do greedy
+	call_local_search(&nodes[0][0], solutionName, qty_facilities, qty_clients, costF, costA, nodes[1][0]); // solucao com local search com solucao inicial do greedy
+	// call_late_acceptance(&nodes[0][0], solutionName, qty_facilities, qty_clients, costF, costA, nodes[1][0]); // solucao com late acceptance com solucao inicial do greedy
 
 
 	if(DEBUG >= DISPLAY_MOVES){
@@ -166,7 +169,7 @@ solutionType memetic(char * solutionName, int qty_facilities, int qty_clients, d
 		}
 
 		if(DEBUG >= DISPLAY_MOVES){
-			cout << "RANDOM after LS: ";
+			cout << "RANDOM after LA: ";
 			cout << qty_open_facilities(nodes[i][0].open_facilities, qty_facilities) << " open facilities" << endl;
 		}
 	}
@@ -187,7 +190,7 @@ solutionType memetic(char * solutionName, int qty_facilities, int qty_clients, d
 	// A partir daqui entrará no loop de restart
 
 	// Levando as melhores solucoes para cima -> Update Population
-	update_population(nodes, best_pocket_node, worst_pocket_node, used_pockets, QTY_SUBS);
+	update_population(nodes, best_pocket_node, worst_pocket_node, used_pockets, QTY_SUBS, solutionName, qty_facilities, qty_clients, costF, costA);
 	
 	if(DEBUG >= DISPLAY_MOVES){
 		cout << endl << "Tree after updating population:";
@@ -239,14 +242,23 @@ solutionType memetic(char * solutionName, int qty_facilities, int qty_clients, d
 
 				crossover_mutation(&nodes[index_child][INDEX_CURRENT], nodes[id_parent][pocket_mother], nodes[index_child][pocket_child], qty_facilities, QTY_INST_MUTATION, qty_clients, sorted_cijID, costF, assignment_cost, 2);
 
-				// LA em cada filho gerado
-				call_late_acceptance(&nodes[index_child][INDEX_CURRENT], solutionName, qty_facilities, qty_clients, costF, costA, nodes[index_child][INDEX_CURRENT]);
+				// // Vai decidir se vai chamar o LA dessa vez ou não
+				// prob_la = rand() % 100; // Generate a random number between 0 and 99
 
-				if(DEBUG >= DISPLAY_ACTIONS){
-					// cout << "Child " << 1 < " after late acceptance: ";			
-					cout << "Child after late acceptance: ";
-					print_individual(nodes[index_child][INDEX_CURRENT].open_facilities, qty_facilities);
-				}
+				// if(prob_la < PROB_LA_RATE){	 // se o numero foi menor que o prob_la_rate, entao chama
+					// LA em cada filho gerado
+					call_late_acceptance(&nodes[index_child][INDEX_CURRENT], solutionName, qty_facilities, qty_clients, costF, costA, nodes[index_child][INDEX_CURRENT]);
+
+					if(DEBUG >= DISPLAY_ACTIONS){
+						cout << "Child after late acceptance: ";
+						print_individual(nodes[index_child][INDEX_CURRENT].open_facilities, qty_facilities);
+					}
+				// }
+				// else{
+				// 	if(DEBUG >= DISPLAY_ACTIONS){		
+				// 		cout << "We won't call LA this time. Random number: " << prob_la << " >= " << PROB_LA_RATE << endl;
+				// 	}
+				// }
 			}
 		} 
 
@@ -303,7 +315,7 @@ solutionType memetic(char * solutionName, int qty_facilities, int qty_clients, d
 
 		
 		// Levando as melhores solucoes para cima -> Update Population
-		update_population(nodes, best_pocket_node, worst_pocket_node, used_pockets, QTY_SUBS);
+		update_population(nodes, best_pocket_node, worst_pocket_node, used_pockets, QTY_SUBS, solutionName, qty_facilities, qty_clients, costF, costA);
 		
 		if(DEBUG >= DISPLAY_MOVES){
 			cout << endl << "AFTER UPDATING POPULATION";

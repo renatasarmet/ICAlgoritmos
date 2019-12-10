@@ -5,10 +5,11 @@
 #include "../greedy/definitions.hpp"
 #include "../localSearch/definitions.hpp"
 #include "../lateAcceptance/definitions.hpp"
+#include "../tabuSearch/definitions.hpp"
 
 using namespace std;
 
-#define DEBUG 0 // OPCOES DE DEBUG: 1 - MOSTRAR A QTD DE MOVIMENTOS, 2 PARA EXIBIR OS MOVIMENTOS REALIZADOS, 3 PARA EXIBIR ACOES, 4 PARA EXIBIR DETALHES DAS ACOES, 5 PARA EXIBIR TEMPO, 6 PARA EXIBIR AS MUDANÇAS NO GRAFO
+#define DEBUG 2 // OPCOES DE DEBUG: 1 - MOSTRAR A QTD DE MOVIMENTOS, 2 PARA EXIBIR OS MOVIMENTOS REALIZADOS, 3 PARA EXIBIR ACOES, 4 PARA EXIBIR DETALHES DAS ACOES, 5 PARA EXIBIR TEMPO, 6 PARA EXIBIR AS MUDANÇAS NO GRAFO
 
 void mergeSortID(double *vector, int *vectorID, int startPosition, int endPosition) {
 
@@ -194,9 +195,15 @@ void call_late_acceptance(solutionType * node, char * solutionName, int qty_faci
 	*node = lateAcceptance(solutionName, qty_facilities, qty_clients, costF, costA, initial_sol, true, 2.5, 0.02, 10); // best_fit = true, a1 = 2.5, limit_idle = 0.02, lh = 10
 }
 
+// Recebe node por referencia. Modificacoes feitas no node aqui refletem diretamente la
+void call_tabu_search(solutionType * node, char * solutionName, int qty_facilities, int qty_clients, double * costF, double * costA, solutionType initial_sol){
+	int lc1 = 0.01 * qty_facilities;
+	int lc2 = 0.05 * qty_facilities;
+	*node = tabuSearch(solutionName, qty_facilities, qty_clients, costF, costA, initial_sol, true, 0.5, lc1, lc2, lc1, lc2, 0);  // best_fit = true, a1 = 0.5, (lc1 = lo1 = 0.01 * qty_facilities), (lc2 = lo2 = 0.05 * qty_facilities), seed = 0
+}
 
 // Recebe nodes por referencia. Modificacoes feitas no node aqui refletem diretamente la
-void update_sub_pop(solutionType ** nodes, int * best_pocket_node, int * worst_pocket_node, int used_pockets, int id_parent){
+void update_sub_pop_best(solutionType ** nodes, int * best_pocket_node, int * worst_pocket_node, int used_pockets, int id_parent, char * solutionName, int qty_facilities, int qty_clients, double * costF, double * costA){
 	int index_child;
 	solutionType aux;
 	for(int i=0; i< QTY_CHILDREN; i++){ // para todos os filhos
@@ -226,19 +233,79 @@ void update_sub_pop(solutionType ** nodes, int * best_pocket_node, int * worst_p
 					}
 				}
 			}
+
+			// // Se o que inverteu, o pai era a raiz (nodes[0][0]), então roda o tabu_search nele
+			// if(id_parent == 0){
+			// 	if(DEBUG >= DISPLAY_MOVES){
+			// 		cout << "Calling TS for nodes[0][0]" << endl;
+			// 	}
+			// 	call_tabu_search(&nodes[0][0], solutionName, qty_facilities, qty_clients, costF, costA, nodes[0][0]);
+
+			// 	if(DEBUG >= DISPLAY_ACTIONS){
+			// 		cout << "Nodes[0][0] after tabu search: ";
+			// 		print_individual(nodes[0][0].open_facilities, qty_facilities);
+			// 	}
+			// }
 		}
 	}
 }
 
 
 // Recebe nodes por referencia. Modificacoes feitas no node aqui refletem diretamente la
-void update_population(solutionType ** nodes, int * best_pocket_node, int * worst_pocket_node, int used_pockets, int QTY_SUBS){
-	// Compara best do filho com o best do pai
+void update_sub_pop_worst(solutionType ** nodes, int * best_pocket_node, int * worst_pocket_node, int used_pockets, int id_parent){
+	int index_child;
+	solutionType aux;
+	for(int i=0; i< QTY_CHILDREN; i++){ // para todos os filhos
+		index_child = id_parent * 3 + i + 1; // encontra o indice correto do filho
 
-	// Para cada pai, chama para atualizar essa sub populacao
-	for(int i = QTY_SUBS-1; i>=0; i--){
-		update_sub_pop(nodes, best_pocket_node, worst_pocket_node, used_pockets, i);
+		if(nodes[index_child][best_pocket_node[index_child]].finalTotalCost < nodes[id_parent][worst_pocket_node[id_parent]].finalTotalCost){ // Se o best do filho for menor que o worst do pai
+			if(DEBUG >= DISPLAY_MOVES){
+				cout << "Swapping child [" << index_child << "][" << best_pocket_node[index_child] << "](" << nodes[index_child][best_pocket_node[index_child]].finalTotalCost << ") with parent [" << id_parent << "][" << worst_pocket_node[id_parent] << "](" << nodes[id_parent][worst_pocket_node[id_parent]].finalTotalCost << ")" << endl;
+			}
+
+			// Inverte
+			aux = nodes[id_parent][worst_pocket_node[id_parent]];
+			nodes[id_parent][worst_pocket_node[id_parent]] = nodes[index_child][best_pocket_node[index_child]];
+			nodes[index_child][best_pocket_node[index_child]] = aux;
+
+			// Update indice de best_pocket do filho
+			for(int j=0; j < used_pockets; j++){ // percorre por todos os pockets utilizados
+				if(nodes[index_child][j].finalTotalCost < nodes[index_child][best_pocket_node[index_child]].finalTotalCost){ // se encontrou um melhor, atualiza 
+					best_pocket_node[index_child] = j;
+				}
+			}
+			// Update indice de best_pocket do pai. Só precisa comparar esse novo que veio com o best
+			if(nodes[id_parent][worst_pocket_node[id_parent]].finalTotalCost < nodes[id_parent][best_pocket_node[id_parent]].finalTotalCost){ // se esse novo é melhor que o best, atualiza o best
+				best_pocket_node[id_parent] = worst_pocket_node[id_parent];
+			}
+			// Update indice de worst do pai
+			for(int j=0; j < used_pockets; j++){ // percorre por todos os pockets utilizados
+				if(nodes[id_parent][j].finalTotalCost > nodes[id_parent][worst_pocket_node[id_parent]].finalTotalCost){ // se encontrou um pior, atualiza 
+					worst_pocket_node[id_parent] = j;
+				}
+			}
+		}
 	}
+}
+
+
+// Recebe nodes por referencia. Modificacoes feitas no node aqui refletem diretamente la
+void update_population(solutionType ** nodes, int * best_pocket_node, int * worst_pocket_node, int used_pockets, int QTY_SUBS, char * solutionName, int qty_facilities, int qty_clients, double * costF, double * costA){
+	
+	if(TYPE_UPDATE_POP == 1){ // Compara best do filho com o best do pai
+		// Para cada pai, chama para atualizar essa sub populacao
+		for(int i = QTY_SUBS-1; i>=0; i--){
+			update_sub_pop_best(nodes, best_pocket_node, worst_pocket_node, used_pockets, i, solutionName, qty_facilities, qty_clients, costF, costA);
+		}
+	}
+	else{ // compara o best do filho com o worst do pai
+		// Para cada pai, chama para atualizar essa sub populacao
+		for(int i = QTY_SUBS-1; i>=0; i--){
+			update_sub_pop_worst(nodes, best_pocket_node, worst_pocket_node, used_pockets, i);
+		}
+	}
+	
+
 }
 
 
