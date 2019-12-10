@@ -3,13 +3,15 @@
 
 #define QTY_NODES_TREE 13
 #define QTY_POCKETS_NODE 5 
-#define INDEX_CURRENT 5 // ocupa o sexto pocket de cada nó
+#define INDEX_CURRENT QTY_POCKETS_NODE // ocupa o sexto pocket de cada nó
 #define QTY_CHILDREN 3 // quantos nós filhos cada nó pai tem
 
 #define MUTATION_RATE 0.1 // 10% //0.05 // 5% * qty_facilities
 #define PROB_LA_RATE 50 // 50%
-#define MAX_GEN_NO_IMPROVEMENT 15 // quantidade de geracoes sem melhora
+#define MAX_GEN_NO_IMPROVEMENT 5 // quantidade de geracoes sem melhora, para atualizar o root
+#define MAX_CHANGES_ROOT 3 // indica a quantidade de vezes que pode atualizar o root sem melhorar a best salva
 #define TYPE_UPDATE_POP 2 // 1 para best, 2 para worst
+#define INITIAL_COMPLETE_POCKET true // inidica se inicial vai povoar todos os pockets ou só o 0
 
 #define DISPLAY_BASIC 1 // corresponde a exibicao da quantidade de movimentos
 #define DISPLAY_MOVES 2 // corresponde a todos os cout quando um movimento é realizado de fato
@@ -38,11 +40,11 @@ void call_late_acceptance(solutionType * node, char * solutionName, int qty_faci
 
 void call_tabu_search(solutionType * node, char * solutionName, int qty_facilities, int qty_clients, double * costF, double * costA, solutionType initial_sol);
 
-void update_sub_pop_best(solutionType ** nodes, int * best_pocket_node, int * worst_pocket_node, int used_pockets, int id_parent, char * solutionName, int qty_facilities, int qty_clients, double * costF, double * costA);
+void update_sub_pop_best(solutionType ** nodes, int * best_pocket_node, int * worst_pocket_node, int used_pockets, int id_parent);
 
 void update_sub_pop_worst(solutionType ** nodes, int * best_pocket_node, int * worst_pocket_node, int used_pockets, int id_parent);
 
-void update_population(solutionType ** nodes, int * best_pocket_node, int * worst_pocket_node, int used_pockets, int QTY_SUBS, char * solutionName, int qty_facilities, int qty_clients, double * costF, double * costA);
+void update_population(solutionType ** nodes, int * best_pocket_node, int * worst_pocket_node, int used_pockets, int QTY_SUBS);
 
 void print_tree_best(solutionType ** nodes, int * best_pocket_node);
 
@@ -59,3 +61,8 @@ void one_point_crossover(solutionType * child, solutionType mother, solutionType
 void crossover_mutation(solutionType * child, solutionType mother, solutionType father, int qty_facilities, int QTY_INST_MUTATION, int qty_clients, int ** sorted_cijID, double * costF, double ** assignment_cost, int type_crossover);
 
 void print_count_open_facilities(solutionType ** nodes, int pocket, int qty_facilities, int used_pockets);
+
+void update_pop_change_root(solutionType ** nodes, int * best_pocket_node, int * worst_pocket_node, int used_pockets, int id_parent);
+
+void change_root(solutionType ** nodes, solutionType * solution, int * best_pocket_node, int * worst_pocket_node, int used_pockets, int * qty_changes_root, char * solutionName, int qty_facilities, int qty_clients, double * costF, double * costA, double ** assignment_cost, int ** sorted_cijID);
+

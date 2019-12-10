@@ -5,6 +5,9 @@
 
 using namespace std;
 
+// verificar para parar antes ou depois... pq começou a achar uma solucao boa para ga500a-1, mas parou logo depois. (COLOCAR IF quando acha nova raiz, se for melhor que a best encontrada so far, entao continua o loop ((zera o qty_changes_root)))
+
+
 #define DEBUG 2 // OPCOES DE DEBUG: 1 - MOSTRAR A QTD DE MOVIMENTOS, 2 PARA EXIBIR OS MOVIMENTOS REALIZADOS, 3 PARA EXIBIR ACOES, 4 PARA EXIBIR DETALHES DAS ACOES, 5 PARA EXIBIR TEMPO, 6 PARA EXIBIR AS MUDANÇAS NO GRAFO
 
 
@@ -18,7 +21,9 @@ solutionType memetic(char * solutionName, int qty_facilities, int qty_clients, d
 	srand(0);
 
 	// Declaracao variaveis que indicam o tempo da funcao
-	struct timespec start, finish;
+	struct timespec start, finish, start_part, finish_part;
+
+	double timeSpent;
 
 
 	// INICIANDO A CONTAGEM DE TEMPO DA FUNCAO
@@ -124,21 +129,45 @@ solutionType memetic(char * solutionName, int qty_facilities, int qty_clients, d
 	// indica a quantidade de gerações sem melhora
 	int qty_gen_no_improv = 0;
 
-	// marca o melhor custo até agora (finalTotalCost do node [0][0])
-	double bestTotalCost = 0;
+	// indica a quantidade vezes que mudou o root seguida
+	int qty_changes_root = 0;
 
 	// indica a probabilidade de realizar o LA
 	int prob_la;
+
+	// indica o melhor custo encontrado com aquele root (se atualizou o root, o valor nao fica com o antigo)
+	double tempBestTotalCost;
 
 	if(DEBUG >= DISPLAY_MOVES){
 		cout << "Initializing population" << endl;
 	}
 
-	// Inicializar as soluções iniciais - os 13 nós apenas 1 pocket
+	// Iniciando os nós 0 e 1, pocket 0
+
+	clock_gettime(CLOCK_REALTIME, &start_part);
+
 	set_initial_sol_G(&nodes[1][0], qty_facilities, qty_clients, costF, costA); // solucao com greedy
+
+	clock_gettime(CLOCK_REALTIME, &finish_part);
+
+	// Calculando o tempo gasto até agora
+	timeSpent =  (finish_part.tv_sec - start_part.tv_sec);
+	timeSpent += (finish_part.tv_nsec - start_part.tv_nsec) / 1000000000.0; // Necessario para obter uma precisao maior 
+
+	cout << "Time generate greedy: " << timeSpent << " seconds" << endl;
+
+	clock_gettime(CLOCK_REALTIME, &start_part);
+
 	call_local_search(&nodes[0][0], solutionName, qty_facilities, qty_clients, costF, costA, nodes[1][0]); // solucao com local search com solucao inicial do greedy
 	// call_late_acceptance(&nodes[0][0], solutionName, qty_facilities, qty_clients, costF, costA, nodes[1][0]); // solucao com late acceptance com solucao inicial do greedy
 
+	clock_gettime(CLOCK_REALTIME, &finish_part);
+
+	// Calculando o tempo gasto até agora
+	timeSpent =  (finish_part.tv_sec - start_part.tv_sec);
+	timeSpent += (finish_part.tv_nsec - start_part.tv_nsec) / 1000000000.0; // Necessario para obter uma precisao maior 
+
+	cout << "Time LS greedy: " << timeSpent << " seconds" << endl;
 
 	if(DEBUG >= DISPLAY_MOVES){
 		cout << "LS_G: ";
@@ -147,40 +176,121 @@ solutionType memetic(char * solutionName, int qty_facilities, int qty_clients, d
 		cout << qty_open_facilities(nodes[1][0].open_facilities, qty_facilities) << " open facilities" << endl;
 	}
 
-
 	if(DEBUG >= DISPLAY_DETAILS){
 		cout << "LS_G - node[0][0]: " << nodes[0][0].finalTotalCost << endl;
 		cout << "Greedy - node[1][0]: " << nodes[1][0].finalTotalCost << endl << endl;
 	}
 
-	for(int i=2;i<QTY_NODES_TREE;i++){
-		set_initial_sol_RANDOM(&nodes[i][0], qty_facilities, qty_clients, costF, assignment_cost, sorted_cijID); // 11 solucoes aleatorias com sementes de 0 a 10
-		
-		if(DEBUG >= DISPLAY_DETAILS){
-			cout << "Random - node[" << i << "][0]:" << nodes[i][0].finalTotalCost << endl;
+	if(!INITIAL_COMPLETE_POCKET){ // Inicializar as soluções iniciais - os 13 nós apenas 1 pocket
+
+		for(int i=2;i<QTY_NODES_TREE;i++){
+			set_initial_sol_RANDOM(&nodes[i][0], qty_facilities, qty_clients, costF, assignment_cost, sorted_cijID); // 11 solucoes aleatorias 
+			
+			if(DEBUG >= DISPLAY_DETAILS){
+				cout << "Random - node[" << i << "][0]:" << nodes[i][0].finalTotalCost << endl;
+			}
+
+			// Roda LA ou LS completo para todas as solucoes geradas com random
+			// call_local_search(&nodes[i][0], solutionName, qty_facilities, qty_clients, costF, costA, nodes[i][0]); 
+			call_late_acceptance(&nodes[i][0], solutionName, qty_facilities, qty_clients, costF, costA, nodes[i][0]); 
+
+			if(DEBUG >= DISPLAY_DETAILS){
+				cout << "LS_R -> node[" << i << "][0]:" << nodes[i][0].finalTotalCost << endl << endl;
+			}
+
+			if(DEBUG >= DISPLAY_MOVES){
+				cout << "RANDOM after LA: ";
+				cout << qty_open_facilities(nodes[i][0].open_facilities, qty_facilities) << " open facilities" << endl;
+			}
 		}
 
-		// Roda LS completo para todas as solucoes geradas com random
-		// call_local_search(&nodes[i][0], solutionName, qty_facilities, qty_clients, costF, costA, nodes[i][0]); 
-		call_late_acceptance(&nodes[i][0], solutionName, qty_facilities, qty_clients, costF, costA, nodes[i][0]); 
-
-		if(DEBUG >= DISPLAY_DETAILS){
-			cout << "LS_R -> node[" << i << "][0]:" << nodes[i][0].finalTotalCost << endl << endl;
-		}
-
-		if(DEBUG >= DISPLAY_MOVES){
-			cout << "RANDOM after LA: ";
-			cout << qty_open_facilities(nodes[i][0].open_facilities, qty_facilities) << " open facilities" << endl;
-		}
+		// Aumentando a contagem de pockets utilizados
+		used_pockets = 1;
 	}
+	else { // Inicial todos os pockets de todos os nós, com solução aleatória
+
+		// Preenchendo os outros 4 pockets do nó 1
+		for(int j=1;j<QTY_POCKETS_NODE;j++){ // para os 4 pockets restantes do nó 1
+
+			clock_gettime(CLOCK_REALTIME, &start_part);
+
+			set_initial_sol_RANDOM(&nodes[1][j], qty_facilities, qty_clients, costF, assignment_cost, sorted_cijID); 
+
+			clock_gettime(CLOCK_REALTIME, &finish_part);
+
+			// Calculando o tempo gasto até agora
+			timeSpent =  (finish_part.tv_sec - start_part.tv_sec);
+			timeSpent += (finish_part.tv_nsec - start_part.tv_nsec) / 1000000000.0; // Necessario para obter uma precisao maior 
+
+			cout << "Time Random: " << timeSpent << " seconds" << endl;
+			
+			if(DEBUG >= DISPLAY_DETAILS){
+				cout << "Random - node[1][" << j << "]:" << nodes[1][j].finalTotalCost << endl;
+			}
+
+			clock_gettime(CLOCK_REALTIME, &start_part);
+
+			// Roda LA completo para todas as solucoes geradas com random
+			call_late_acceptance(&nodes[1][j], solutionName, qty_facilities, qty_clients, costF, costA, nodes[1][j]); 
+
+			clock_gettime(CLOCK_REALTIME, &finish_part);
+
+			// Calculando o tempo gasto até agora
+			timeSpent =  (finish_part.tv_sec - start_part.tv_sec);
+			timeSpent += (finish_part.tv_nsec - start_part.tv_nsec) / 1000000000.0; // Necessario para obter uma precisao maior 
+
+			cout << "Time LA random: " << timeSpent << " seconds" << endl;
+
+			if(DEBUG >= DISPLAY_DETAILS){
+				cout << "LS_R -> node[1][" << j << "]:" <<nodes[1][j].finalTotalCost << endl << endl;
+			}
+
+			if(DEBUG >= DISPLAY_MOVES){
+				cout << "RANDOM after LA: ";
+				cout << qty_open_facilities(nodes[1][j].open_facilities, qty_facilities) << " open facilities" << endl;
+			}
+		}
+
+		// Preenchendo os 5 pockets do restante dos nós (de 2 a 12)
+		for(int i=2;i<QTY_NODES_TREE;i++){ // para todos os nós a partir de 2
+
+			if(DEBUG >= DISPLAY_MOVES){
+				cout << "Node " << i << endl;
+			}
+
+			for(int j=0;j<QTY_POCKETS_NODE;j++){ // para todos os pockets
+
+				set_initial_sol_RANDOM(&nodes[i][j], qty_facilities, qty_clients, costF, assignment_cost, sorted_cijID); 
+				
+				if(DEBUG >= DISPLAY_DETAILS){
+					cout << "Random - node[" << i << "][" << j << "]:" << nodes[i][j].finalTotalCost << endl;
+				}
+
+				// Roda LA completo para todas as solucoes geradas com random
+				call_late_acceptance(&nodes[i][j], solutionName, qty_facilities, qty_clients, costF, costA, nodes[i][j]); 
+
+				if(DEBUG >= DISPLAY_DETAILS){
+					cout << "LS_R -> node[" << i << "][" << j << "]:" <<nodes[i][j].finalTotalCost << endl << endl;
+				}
+
+				if(DEBUG >= DISPLAY_MOVES){
+					cout << "RANDOM after LA: ";
+					cout << qty_open_facilities(nodes[i][j].open_facilities, qty_facilities) << " open facilities" << endl;
+				}
+			}
+		}
+
+		// Aumentando a contagem de pockets utilizados
+		used_pockets = QTY_POCKETS_NODE;
+	}
+	
+
 
 	if(DEBUG >= DISPLAY_MOVES){
 		// Imprimindo a quantidade de vezes que cada inst estava aberta nessas solucoes iniciais
-		print_count_open_facilities(nodes, 0, qty_facilities, used_pockets);
+		print_count_open_facilities(nodes, -1, qty_facilities, used_pockets);
 	}
 
-	// Aumentando a contagem de pockets utilizados
-	used_pockets += 1;
 
 	if(DEBUG >= DISPLAY_MOVES){
 		cout << endl << "Initial tree:";
@@ -190,7 +300,7 @@ solutionType memetic(char * solutionName, int qty_facilities, int qty_clients, d
 	// A partir daqui entrará no loop de restart
 
 	// Levando as melhores solucoes para cima -> Update Population
-	update_population(nodes, best_pocket_node, worst_pocket_node, used_pockets, QTY_SUBS, solutionName, qty_facilities, qty_clients, costF, costA);
+	update_population(nodes, best_pocket_node, worst_pocket_node, used_pockets, QTY_SUBS);
 	
 	if(DEBUG >= DISPLAY_MOVES){
 		cout << endl << "Tree after updating population:";
@@ -202,13 +312,25 @@ solutionType memetic(char * solutionName, int qty_facilities, int qty_clients, d
 	}
 
 	// Iniciando o melhor custo encontrado ate agora
-	bestTotalCost = nodes[0][0].finalTotalCost;
+	solution = nodes[0][0];
+
+	// Atualiza o best para o valor desse root
+	tempBestTotalCost = nodes[0][0].finalTotalCost;
 
 	// A partir daqui estará em um loop até um número de iterações sem melhora for atingido
-	while(qty_gen_no_improv < MAX_GEN_NO_IMPROVEMENT){
+	while(qty_changes_root < MAX_CHANGES_ROOT){
 
 		if(DEBUG >= DISPLAY_MOVES){
 			cout << endl << "------------------------------ NEXT GENERATION " << qty_generations << " ------------------------------" << endl << endl;
+		}
+
+		// Se atingiu MAX_GEN_NO_IMPROVEMENT geracoes sem melhora, armazena a root em solution se ela for melhor que a que está lá e sobe a próxima para a root
+		if(qty_gen_no_improv > MAX_GEN_NO_IMPROVEMENT){
+			qty_gen_no_improv = 0; // zera o contador
+			change_root(nodes, &solution, best_pocket_node, worst_pocket_node, used_pockets, &qty_changes_root, solutionName, qty_facilities, qty_clients, costF, costA, assignment_cost, sorted_cijID);
+		
+			// Atualiza o best para o valor desse root
+			tempBestTotalCost = nodes[0][0].finalTotalCost;
 		}
 
 		// crossover para cada par mãe e filho, seguido da mutacao de cada child gerado e reatribuicao de todos os clientes e por fim late acceptance em todos os filhos gerados
@@ -315,7 +437,7 @@ solutionType memetic(char * solutionName, int qty_facilities, int qty_clients, d
 
 		
 		// Levando as melhores solucoes para cima -> Update Population
-		update_population(nodes, best_pocket_node, worst_pocket_node, used_pockets, QTY_SUBS, solutionName, qty_facilities, qty_clients, costF, costA);
+		update_population(nodes, best_pocket_node, worst_pocket_node, used_pockets, QTY_SUBS);
 		
 		if(DEBUG >= DISPLAY_MOVES){
 			cout << endl << "AFTER UPDATING POPULATION";
@@ -327,15 +449,15 @@ solutionType memetic(char * solutionName, int qty_facilities, int qty_clients, d
 		}
 
 		// Verificando se houve melhora
-		if(nodes[0][0].finalTotalCost < bestTotalCost){ // se houve melhora, atualiza o bestTotal Cost e zera o qty_gen_no_improv
-			bestTotalCost = nodes[0][0].finalTotalCost;
+		if(nodes[0][0].finalTotalCost < tempBestTotalCost){ // se houve melhora, atualiza o tempBestTotalCost e zera o qty_gen_no_improv
+			tempBestTotalCost = nodes[0][0].finalTotalCost;
 			qty_gen_no_improv = 0;
 
 			if(DEBUG >= DISPLAY_MOVES){
-				cout << "Updating the best cost found so far!!" << endl;
+				cout << "Updating the best cost in this tree!!" << endl;
 			}
 		}
-		else{ // se nao houve melhora, aumenta o contador qty_gen_no_improv
+		else{ // se nao houve melhora, aumenta o contador qty_gen_no_improv 
 			qty_gen_no_improv += 1;
 		}
 
@@ -365,8 +487,9 @@ solutionType memetic(char * solutionName, int qty_facilities, int qty_clients, d
 
 
 	// Atualizando valor de solution
-	solution = nodes[0][0];
-
+	if(nodes[0][0].finalTotalCost < solution.finalTotalCost){
+		solution = nodes[0][0];
+	}
 
 	// Calculando o tempo gasto da funcao
 	solution.timeSpent =  (finish.tv_sec - start.tv_sec);

@@ -203,7 +203,7 @@ void call_tabu_search(solutionType * node, char * solutionName, int qty_faciliti
 }
 
 // Recebe nodes por referencia. Modificacoes feitas no node aqui refletem diretamente la
-void update_sub_pop_best(solutionType ** nodes, int * best_pocket_node, int * worst_pocket_node, int used_pockets, int id_parent, char * solutionName, int qty_facilities, int qty_clients, double * costF, double * costA){
+void update_sub_pop_best(solutionType ** nodes, int * best_pocket_node, int * worst_pocket_node, int used_pockets, int id_parent){
 	int index_child;
 	solutionType aux;
 	for(int i=0; i< QTY_CHILDREN; i++){ // para todos os filhos
@@ -290,12 +290,12 @@ void update_sub_pop_worst(solutionType ** nodes, int * best_pocket_node, int * w
 
 
 // Recebe nodes por referencia. Modificacoes feitas no node aqui refletem diretamente la
-void update_population(solutionType ** nodes, int * best_pocket_node, int * worst_pocket_node, int used_pockets, int QTY_SUBS, char * solutionName, int qty_facilities, int qty_clients, double * costF, double * costA){
+void update_population(solutionType ** nodes, int * best_pocket_node, int * worst_pocket_node, int used_pockets, int QTY_SUBS){
 	
 	if(TYPE_UPDATE_POP == 1){ // Compara best do filho com o best do pai
 		// Para cada pai, chama para atualizar essa sub populacao
 		for(int i = QTY_SUBS-1; i>=0; i--){
-			update_sub_pop_best(nodes, best_pocket_node, worst_pocket_node, used_pockets, i, solutionName, qty_facilities, qty_clients, costF, costA);
+			update_sub_pop_best(nodes, best_pocket_node, worst_pocket_node, used_pockets, i);
 		}
 	}
 	else{ // compara o best do filho com o worst do pai
@@ -304,8 +304,6 @@ void update_population(solutionType ** nodes, int * best_pocket_node, int * wors
 			update_sub_pop_worst(nodes, best_pocket_node, worst_pocket_node, used_pockets, i);
 		}
 	}
-	
-
 }
 
 
@@ -542,6 +540,102 @@ void print_count_open_facilities(solutionType ** nodes, int pocket, int qty_faci
 
 	free(count_open_facilities);
 }
+
+
+// Recebe nodes por referencia. Modificacoes feitas no node aqui refletem diretamente la
+void update_pop_change_root(solutionType ** nodes, int * best_pocket_node, int * worst_pocket_node, int used_pockets, int id_parent){
+	int index_child;
+	solutionType aux;
+
+	// Verifico se ele é melhor do que a raiz atual
+	if(nodes[id_parent][best_pocket_node[id_parent]].finalTotalCost < nodes[0][0].finalTotalCost){ // se for, substitui
+		if(DEBUG >= DISPLAY_MOVES){
+			cout << "Swapping (" << nodes[id_parent][best_pocket_node[id_parent]].finalTotalCost << ") with the root (" << nodes[0][0].finalTotalCost << ")" << endl;
+		}
+
+		// Inverte
+		aux = nodes[id_parent][best_pocket_node[id_parent]];
+		nodes[id_parent][best_pocket_node[id_parent]] = nodes[0][0];
+		nodes[0][0] = aux;
+	}
+	else{ // se aconteceu o caso anterior, eu sei que o resto já está ordenado, pois só voltou pro mesmo lugar. Senao, entao tenho que ordenar essa subarvore
+
+
+		// Atualiza o worst_pocket do pai primeiro. só esse novo que entrou pode ser pior do que o que ja era
+		if(nodes[id_parent][best_pocket_node[id_parent]].finalTotalCost > nodes[id_parent][worst_pocket_node[id_parent]].finalTotalCost){ // se encontrou um pior, atualiza 
+			worst_pocket_node[id_parent] = best_pocket_node[id_parent];
+		}
+
+		// Atualiza o best_pocket do pai 
+		for(int j=0; j < used_pockets; j++){ // percorre por todos os pockets utilizados
+			if(nodes[id_parent][j].finalTotalCost < nodes[id_parent][best_pocket_node[id_parent]].finalTotalCost){ // se encontrou um melhor, atualiza 
+				best_pocket_node[id_parent] = j;
+			}
+		}
+
+		if(TYPE_UPDATE_POP == 1){ // Compara best do filho com o best do pai
+			update_sub_pop_best(nodes, best_pocket_node, worst_pocket_node, used_pockets, id_parent);
+		}
+		else{ // compara o best do filho com o worst do pai
+			update_sub_pop_worst(nodes, best_pocket_node, worst_pocket_node, used_pockets, id_parent);
+		}
+	}
+}
+
+
+// Recebe por referencia, entao as alteracoes sao salvas. Armazena a root em solution se ela for melhor que a que está lá e sobe a próxima para a root, atualizando o resto da populacao
+
+void change_root(solutionType ** nodes, solutionType * solution, int * best_pocket_node, int * worst_pocket_node, int used_pockets, int * qty_changes_root, char * solutionName, int qty_facilities, int qty_clients, double * costF,  double * costA, double ** assignment_cost, int ** sorted_cijID){
+
+	if(DEBUG >= DISPLAY_MOVES){
+		cout << "----------------------------------- Changing root " << endl;
+	}
+
+	// Salva a raiz, caso ela seja melhor do que a melhor salva até agora
+	if(nodes[0][0].finalTotalCost < solution->finalTotalCost){
+		*solution = nodes[0][0]; // atualiza a melhor encontrada até agora
+		*qty_changes_root = 0; // zera o contador
+
+		if(DEBUG >= DISPLAY_MOVES){
+			cout << "Updating best solution found so far: " << solution->finalTotalCost << endl;
+		}
+	}
+	else{
+		*qty_changes_root += 1; // aumenta o contador
+	}
+
+	// Escolhe qual filho vai substituir a raiz
+	int child_root = 1; // Inicia com o primeiro filho 
+
+	for(int i=2;i<QTY_CHILDREN+1;i++){ // verifica se algum outro filho é melhor
+		if(nodes[i][best_pocket_node[i]].finalTotalCost < nodes[child_root][best_pocket_node[child_root]].finalTotalCost){ // se for melhor, substitui
+			child_root = i;
+		}
+	}
+
+	// Substitui a raiz com o melhor filho escolhido
+	nodes[0][0] = nodes[child_root][best_pocket_node[child_root]];
+
+	// Atualiza o espaço que vagou no melhor filho escolhido com uma solucao vinda do random + LA
+	set_initial_sol_RANDOM(&nodes[child_root][best_pocket_node[child_root]], qty_facilities, qty_clients, costF, assignment_cost, sorted_cijID); 
+			
+	if(DEBUG >= DISPLAY_DETAILS){
+		cout << "Random child " << child_root << ":" << nodes[child_root][best_pocket_node[child_root]].finalTotalCost << endl;
+	}
+
+	// Roda LA ou LS completo para todas as solucoes geradas com random
+	// call_local_search(&nodes[i][0], solutionName, qty_facilities, qty_clients, costF, costA, nodes[i][0]); 
+	call_late_acceptance(&nodes[child_root][best_pocket_node[child_root]], solutionName, qty_facilities, qty_clients, costF, costA, nodes[child_root][best_pocket_node[child_root]]); 
+
+	if(DEBUG >= DISPLAY_DETAILS){
+		cout << "LS_R:" << nodes[child_root][best_pocket_node[child_root]].finalTotalCost << endl << endl;
+	}
+
+	// Update população, levando esse novo gerado para o seu devido lugar
+	update_pop_change_root(nodes, best_pocket_node, worst_pocket_node, used_pockets, child_root);
+
+}
+
 
 
 
