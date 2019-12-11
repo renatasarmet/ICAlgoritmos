@@ -5,8 +5,6 @@
 
 using namespace std;
 
-// verificar para parar antes ou depois... pq começou a achar uma solucao boa para ga500a-1, mas parou logo depois. (COLOCAR IF quando acha nova raiz, se for melhor que a best encontrada so far, entao continua o loop ((zera o qty_changes_root)))
-
 
 #define DEBUG 2 // OPCOES DE DEBUG: 1 - MOSTRAR A QTD DE MOVIMENTOS, 2 PARA EXIBIR OS MOVIMENTOS REALIZADOS, 3 PARA EXIBIR ACOES, 4 PARA EXIBIR DETALHES DAS ACOES, 5 PARA EXIBIR TEMPO, 6 PARA EXIBIR AS MUDANÇAS NO GRAFO
 
@@ -159,7 +157,7 @@ solutionType memetic(char * solutionName, int qty_facilities, int qty_clients, d
 	clock_gettime(CLOCK_REALTIME, &start_part);
 
 	call_local_search(&nodes[0][0], solutionName, qty_facilities, qty_clients, costF, costA, nodes[1][0]); // solucao com local search com solucao inicial do greedy
-	// call_late_acceptance(&nodes[0][0], solutionName, qty_facilities, qty_clients, costF, costA, nodes[1][0]); // solucao com late acceptance com solucao inicial do greedy
+	// call_late_acceptance(&nodes[0][0], solutionName, qty_facilities, qty_clients, costF, costA, nodes[1][0], false); // solucao com late acceptance com solucao inicial do greedy
 
 	clock_gettime(CLOCK_REALTIME, &finish_part);
 
@@ -192,7 +190,7 @@ solutionType memetic(char * solutionName, int qty_facilities, int qty_clients, d
 
 			// Roda LA ou LS completo para todas as solucoes geradas com random
 			// call_local_search(&nodes[i][0], solutionName, qty_facilities, qty_clients, costF, costA, nodes[i][0]); 
-			call_late_acceptance(&nodes[i][0], solutionName, qty_facilities, qty_clients, costF, costA, nodes[i][0]); 
+			call_late_acceptance(&nodes[i][0], solutionName, qty_facilities, qty_clients, costF, costA, nodes[i][0], false); 
 
 			if(DEBUG >= DISPLAY_DETAILS){
 				cout << "LS_R -> node[" << i << "][0]:" << nodes[i][0].finalTotalCost << endl << endl;
@@ -231,7 +229,7 @@ solutionType memetic(char * solutionName, int qty_facilities, int qty_clients, d
 			clock_gettime(CLOCK_REALTIME, &start_part);
 
 			// Roda LA completo para todas as solucoes geradas com random
-			call_late_acceptance(&nodes[1][j], solutionName, qty_facilities, qty_clients, costF, costA, nodes[1][j]); 
+			call_late_acceptance(&nodes[1][j], solutionName, qty_facilities, qty_clients, costF, costA, nodes[1][j], false); 
 
 			clock_gettime(CLOCK_REALTIME, &finish_part);
 
@@ -267,7 +265,7 @@ solutionType memetic(char * solutionName, int qty_facilities, int qty_clients, d
 				}
 
 				// Roda LA completo para todas as solucoes geradas com random
-				call_late_acceptance(&nodes[i][j], solutionName, qty_facilities, qty_clients, costF, costA, nodes[i][j]); 
+				call_late_acceptance(&nodes[i][j], solutionName, qty_facilities, qty_clients, costF, costA, nodes[i][j], false); 
 
 				if(DEBUG >= DISPLAY_DETAILS){
 					cout << "LS_R -> node[" << i << "][" << j << "]:" <<nodes[i][j].finalTotalCost << endl << endl;
@@ -369,7 +367,7 @@ solutionType memetic(char * solutionName, int qty_facilities, int qty_clients, d
 
 				// if(prob_la < PROB_LA_RATE){	 // se o numero foi menor que o prob_la_rate, entao chama
 					// LA em cada filho gerado
-					call_late_acceptance(&nodes[index_child][INDEX_CURRENT], solutionName, qty_facilities, qty_clients, costF, costA, nodes[index_child][INDEX_CURRENT]);
+					call_late_acceptance(&nodes[index_child][INDEX_CURRENT], solutionName, qty_facilities, qty_clients, costF, costA, nodes[index_child][INDEX_CURRENT], false);
 
 					if(DEBUG >= DISPLAY_ACTIONS){
 						cout << "Child after late acceptance: ";
@@ -393,8 +391,33 @@ solutionType memetic(char * solutionName, int qty_facilities, int qty_clients, d
 			}
 		}
 
+
+		// Primeiro verificar se o filho for igual a alguem do pocket, vai tentar fazer umas mutações nele // PROBLEMA: e se mesmo assim ficou igual? Por enquanto ele é colocado de qualquer forma
+		for(int i = 1; i < QTY_NODES_TREE; i++){ // para todos os nós, exceto a raiz
+
+			if(!is_different_from_pockets(nodes[i][INDEX_CURRENT], nodes[i], qty_facilities, used_pockets)){
+
+				mutation(&nodes[i][INDEX_CURRENT], qty_facilities, QTY_INST_MUTATION); // sofre mutação
+
+				// Conectando cada cliente com a instalacao aberta mais proxima e fechando as instalacoes que nao foram conectadas a ninguem. Custo final também é atualizado
+				connect_and_update_facilities(&nodes[i][INDEX_CURRENT], qty_facilities, qty_clients, sorted_cijID, costF, assignment_cost);
+
+				// Roda o late_acceptance simples, como local search
+				call_late_acceptance(&nodes[i][INDEX_CURRENT], solutionName, qty_facilities, qty_clients, costF, costA, nodes[i][INDEX_CURRENT], true);
+		
+				if(DEBUG >= DISPLAY_MOVES){
+					cout << "It was equal to pockets! Node (" << i << ") Final cost after mutation an LS: " << nodes[i][INDEX_CURRENT].finalTotalCost << endl;
+
+					if(DEBUG >= DISPLAY_ACTIONS){
+						cout << "It was equal pockets. Child after simple local search: ";
+						print_individual(nodes[i][INDEX_CURRENT].open_facilities, qty_facilities);
+					}
+				}
+			}
+		}
+
 		// Verificar se os currents entrarao no refSet ou nao e ja atualizar best_pocket_node e worst_pocket_node
-		if(used_pockets < QTY_POCKETS_NODE){ // se ainda tiver pocket vazio, entra
+		if(used_pockets < QTY_POCKETS_NODE){ // se ainda tiver pocket vazio, entra 
 			for(int i = 1; i < QTY_NODES_TREE; i++){ // para todos os nós, exceto a raiz
 				nodes[i][used_pockets] = nodes[i][INDEX_CURRENT];
 
@@ -407,6 +430,7 @@ solutionType memetic(char * solutionName, int qty_facilities, int qty_clients, d
 		}
 		else{ // senao, se todos os pockets estiverem ocupados, verifica se o current é melhor que o pior
 			for(int i = 1; i < QTY_NODES_TREE; i++){ // para todos os nós, exceto a raiz
+
 				if(nodes[i][INDEX_CURRENT].finalTotalCost < nodes[i][worst_pocket_node[i]].finalTotalCost){ // se o current for melhor que o pior, atualiza
 					nodes[i][worst_pocket_node[i]] = nodes[i][INDEX_CURRENT];
 
@@ -455,6 +479,13 @@ solutionType memetic(char * solutionName, int qty_facilities, int qty_clients, d
 
 			if(DEBUG >= DISPLAY_MOVES){
 				cout << "Updating the best cost in this tree!!" << endl;
+			}
+			if(nodes[0][0].finalTotalCost < solution.finalTotalCost){ // se houve melhora na melhor solução encontrada até agora
+				qty_changes_root = 0; // zera a quantidade de mudanças para garantir que vai continuar a busca, pois sabe que logo vai alterar a raiz e zerar de qualquer forma
+
+				if(DEBUG >= DISPLAY_MOVES){
+					cout << "Also it is the best cost found so far!!" << endl;
+				}
 			}
 		}
 		else{ // se nao houve melhora, aumenta o contador qty_gen_no_improv 

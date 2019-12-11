@@ -9,7 +9,7 @@
 #define MUTATION_RATE 0.1 // 10% //0.05 // 5% * qty_facilities
 #define PROB_LA_RATE 50 // 50%
 #define MAX_GEN_NO_IMPROVEMENT 5 // quantidade de geracoes sem melhora, para atualizar o root
-#define MAX_CHANGES_ROOT 3 // indica a quantidade de vezes que pode atualizar o root sem melhorar a best salva
+#define MAX_CHANGES_ROOT 2 // indica a quantidade de vezes seguidas que pode atualizar o root sem melhorar a best salva
 #define TYPE_UPDATE_POP 2 // 1 para best, 2 para worst
 #define INITIAL_COMPLETE_POCKET true // inidica se inicial vai povoar todos os pockets ou só o 0
 
@@ -36,7 +36,7 @@ void set_initial_sol_RANDOM(solutionType * node, int qty_facilities, int qty_cli
 
 void call_local_search(solutionType * node, char * solutionName, int qty_facilities, int qty_clients, double * costF, double * costA, solutionType initial_sol);
 
-void call_late_acceptance(solutionType * node, char * solutionName, int qty_facilities, int qty_clients, double * costF, double * costA, solutionType initial_sol);
+void call_late_acceptance(solutionType * node, char * solutionName, int qty_facilities, int qty_clients, double * costF, double * costA, solutionType initial_sol, bool simple_ls);
 
 void call_tabu_search(solutionType * node, char * solutionName, int qty_facilities, int qty_clients, double * costF, double * costA, solutionType initial_sol);
 
@@ -65,4 +65,12 @@ void print_count_open_facilities(solutionType ** nodes, int pocket, int qty_faci
 void update_pop_change_root(solutionType ** nodes, int * best_pocket_node, int * worst_pocket_node, int used_pockets, int id_parent);
 
 void change_root(solutionType ** nodes, solutionType * solution, int * best_pocket_node, int * worst_pocket_node, int used_pockets, int * qty_changes_root, char * solutionName, int qty_facilities, int qty_clients, double * costF, double * costA, double ** assignment_cost, int ** sorted_cijID);
+
+int qty_diversity(int * n1_open_facilities, int * n2_open_facilities, int qty_facilities);
+
+bool are_different(solutionType n1, solutionType n2, int qty_facilities);
+
+bool is_different_from_pockets(solutionType child, solutionType * node, int qty_facilities, int used_pockets);
+
+
 

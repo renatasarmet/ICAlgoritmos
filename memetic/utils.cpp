@@ -191,8 +191,11 @@ void call_local_search(solutionType * node, char * solutionName, int qty_facilit
 
 
 // Recebe node por referencia. Modificacoes feitas no node aqui refletem diretamente la
-void call_late_acceptance(solutionType * node, char * solutionName, int qty_facilities, int qty_clients, double * costF, double * costA, solutionType initial_sol){
-	*node = lateAcceptance(solutionName, qty_facilities, qty_clients, costF, costA, initial_sol, true, 2.5, 0.02, 10); // best_fit = true, a1 = 2.5, limit_idle = 0.02, lh = 10
+void call_late_acceptance(solutionType * node, char * solutionName, int qty_facilities, int qty_clients, double * costF, double * costA, solutionType initial_sol, bool simple_ls){
+	int lh = 10;
+	if(simple_ls) // roda o LS_N1 simples
+		lh = 1;
+	*node = lateAcceptance(solutionName, qty_facilities, qty_clients, costF, costA, initial_sol, true, 2.5, 0.02, lh); // best_fit = true, a1 = 2.5, limit_idle = 0.02, lh = 10 or 1
 }
 
 // Recebe node por referencia. Modificacoes feitas no node aqui refletem diretamente la
@@ -625,7 +628,7 @@ void change_root(solutionType ** nodes, solutionType * solution, int * best_pock
 
 	// Roda LA ou LS completo para todas as solucoes geradas com random
 	// call_local_search(&nodes[i][0], solutionName, qty_facilities, qty_clients, costF, costA, nodes[i][0]); 
-	call_late_acceptance(&nodes[child_root][best_pocket_node[child_root]], solutionName, qty_facilities, qty_clients, costF, costA, nodes[child_root][best_pocket_node[child_root]]); 
+	call_late_acceptance(&nodes[child_root][best_pocket_node[child_root]], solutionName, qty_facilities, qty_clients, costF, costA, nodes[child_root][best_pocket_node[child_root]], false); 
 
 	if(DEBUG >= DISPLAY_DETAILS){
 		cout << "LS_R:" << nodes[child_root][best_pocket_node[child_root]].finalTotalCost << endl << endl;
@@ -637,5 +640,51 @@ void change_root(solutionType ** nodes, solutionType * solution, int * best_pock
 }
 
 
+// Indica quantas instalacoes possuem valores diferentes, dado dois individuos
+int qty_diversity(int * n1_open_facilities, int * n2_open_facilities, int qty_facilities){
+	int qty = 0;
+	for(int i=0; i< qty_facilities; i++){
+		if(n1_open_facilities[i] != n2_open_facilities[i]){
+			qty += 1;
+
+			if(DEBUG >= DISPLAY_ACTIONS){
+				cout << "** Dif fac: " << i << "**" << endl;
+			}
+		}
+	}
+
+	if(DEBUG >= DISPLAY_ACTIONS){
+		print_individual(n1_open_facilities, qty_facilities);
+		print_individual(n2_open_facilities, qty_facilities);
+	}
+	return qty;
+}
 
 
+// Indica se dois individuos são diferentes
+bool are_different(solutionType n1, solutionType n2, int qty_facilities){
+	if(n1.finalTotalCost != n2.finalTotalCost){
+		return true;
+	}
+	else if(qty_diversity(n1.open_facilities, n2.open_facilities, qty_facilities) > 0){
+		if(DEBUG >= DISPLAY_MOVES){
+			cout << "***** It has the same cost (" << n1.finalTotalCost << "), but the config is different *****" << endl;
+		}
+		return true;
+	}
+	if(DEBUG >= DISPLAY_MOVES){
+		cout << "***** IT IS EQUAL! It has the same cost (" << n1.finalTotalCost << ") and config! *****" << endl;
+	}
+	return false;
+}
+
+
+// Indica se o novo individuo é diferente de todos os outros do mesmo pocket
+bool is_different_from_pockets(solutionType child, solutionType * node, int qty_facilities, int used_pockets){
+	for(int i=0; i < used_pockets; i++){
+		if(!are_different(child, node[i], qty_facilities)){ // se encontrou algum pocket que é igual, entao retorna falso
+			return false;
+		}
+	}
+	return true;
+}
