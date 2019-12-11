@@ -163,10 +163,16 @@ void set_initial_sol_RANDOM(solutionType * node, int qty_facilities, int qty_cli
 
 	int randNum;
 
-	// Verificando quais instalacoes estarão abertas: 50% de chance de cada uma
+	// Verificando quais instalacoes estarão abertas: 20% de chance de cada uma
 	for(int i=0; i<qty_facilities; i++){
-		randNum = rand() % 2; // Generate a random number between 0 and 1
-		node->open_facilities[i] = randNum;
+		randNum = rand() % 100; // Generate a random number between 0 and 99
+
+		if(randNum < OPEN_RANDOM_RATE){ // se ficou entre os 20%, abre essa instalacao
+			node->open_facilities[i] = 1;
+		} 
+		else{ //senao, deixa essa inst fechada
+			node->open_facilities[i] = 0;
+		}
 	}
 
 	if(DEBUG >= DISPLAY_MOVES){
@@ -445,9 +451,34 @@ void one_point_crossover(solutionType * child, solutionType mother, solutionType
 }
 
 
+// crossover união: copia para o filho todas as instalacoes abertas da mae e do pai, o resto fica fechado
+void union_crossover(solutionType * child, solutionType mother, solutionType father, int qty_facilities){
+	for(int i=0; i<qty_facilities; i++){
+		if(father.open_facilities[i] || mother.open_facilities[i]){ // se no pai ou na mae está aberta, entao abre no filho
+			child->open_facilities[i] = 1;
+
+			if(DEBUG >= DISPLAY_DETAILS){
+				cout << "Facility " << i << ": " << child->open_facilities[i] << endl;
+			}
+		}
+		else{ // senao, entao deixa fechada
+			child->open_facilities[i] = 0;
+
+			if(DEBUG >= DISPLAY_DETAILS){
+				cout << "Facility " << i << ": " << child->open_facilities[i] << endl;
+			}
+		}
+	}
+
+	if(DEBUG >= DISPLAY_ACTIONS){
+		cout << "Child after union crossover: ";
+		print_individual(child->open_facilities, qty_facilities);
+	}
+}
+
+
 // Recebe node child por referencia. Modificacoes feitas no node aqui refletem diretamente la.
-// type_crossover: 1 para uniforme crossover, 2 para one point crossover. 0 para sortear qual sera
-void crossover_mutation(solutionType * child, solutionType mother, solutionType father, int qty_facilities, int QTY_INST_MUTATION, int qty_clients, int ** sorted_cijID, double * costF, double ** assignment_cost, int type_crossover){
+void crossover_mutation(solutionType * child, solutionType mother, solutionType father, int qty_facilities, int QTY_INST_MUTATION, int qty_clients, int ** sorted_cijID, double * costF, double ** assignment_cost){
 
 	if(DEBUG >= DISPLAY_ACTIONS){
 		cout << "CROSSOVER" << endl;
@@ -458,15 +489,18 @@ void crossover_mutation(solutionType * child, solutionType mother, solutionType 
 	}
 
 	// Se for 0, indica que é para sortear qual o tipo de crossover devo fazer
-	if(type_crossover == 0){
-		type_crossover = (rand() % 2) + 1; // Generate a random number between 1 and 2
+	if(CROSSOVER_TYPE == 0){
+		type_crossover = (rand() % 3) + 1; // Generate a random number between 1 and 3
 	}
 
-	if(type_crossover == 1){ // Chama o crossover
+	if(CROSSOVER_TYPE == 1){ // Chama o uniform crossover
 		uniform_crossover(child, mother, father, qty_facilities);
 	}
-	else{ // Chama o one point crossover
+	else if(CROSSOVER_TYPE == 2){ // Chama o one point crossover
 		one_point_crossover(child, mother, father, qty_facilities);
+	}
+	else { // Chama o union crossover{ 
+		union_crossover(child, mother, father, qty_facilities);
 	}
 
 	// mutation 

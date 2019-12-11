@@ -6,7 +6,9 @@
 #define INDEX_CURRENT QTY_POCKETS_NODE // ocupa o sexto pocket de cada nó
 #define QTY_CHILDREN 3 // quantos nós filhos cada nó pai tem
 
-#define MUTATION_RATE 0.1 // 10% //0.05 // 5% * qty_facilities
+#define OPEN_RANDOM_RATE 10 // 20% // probabilidade de abrir uma instalacao na geração de solucoes random
+#define MUTATION_RATE 0.01 // 1% 0.1// 10% //0.05 // 5% * qty_facilities
+#define CROSSOVER_TYPE 3 // 1 para uniform, 2 para one-point, 3 para union, 0 para aleatorio cada vez
 #define PROB_LA_RATE 50 // 50%
 #define MAX_GEN_NO_IMPROVEMENT 5 // quantidade de geracoes sem melhora, para atualizar o root
 #define MAX_CHANGES_ROOT 2 // indica a quantidade de vezes seguidas que pode atualizar o root sem melhorar a best salva
@@ -58,7 +60,7 @@ void uniform_crossover(solutionType * child, solutionType mother, solutionType f
 
 void one_point_crossover(solutionType * child, solutionType mother, solutionType father, int qty_facilities);
 
-void crossover_mutation(solutionType * child, solutionType mother, solutionType father, int qty_facilities, int QTY_INST_MUTATION, int qty_clients, int ** sorted_cijID, double * costF, double ** assignment_cost, int type_crossover);
+void crossover_mutation(solutionType * child, solutionType mother, solutionType father, int qty_facilities, int QTY_INST_MUTATION, int qty_clients, int ** sorted_cijID, double * costF, double ** assignment_cost);
 
 void print_count_open_facilities(solutionType ** nodes, int pocket, int qty_facilities, int used_pockets);
 

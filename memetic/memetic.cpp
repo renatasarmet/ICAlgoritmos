@@ -360,25 +360,33 @@ solutionType memetic(char * solutionName, int qty_facilities, int qty_clients, d
 					cout << "Pockets: mother " << pocket_mother << " child " << pocket_child << endl;
 				}
 
-				crossover_mutation(&nodes[index_child][INDEX_CURRENT], nodes[id_parent][pocket_mother], nodes[index_child][pocket_child], qty_facilities, QTY_INST_MUTATION, qty_clients, sorted_cijID, costF, assignment_cost, 2);
+				crossover_mutation(&nodes[index_child][INDEX_CURRENT], nodes[id_parent][pocket_mother], nodes[index_child][pocket_child], qty_facilities, QTY_INST_MUTATION, qty_clients, sorted_cijID, costF, assignment_cost);
 
-				// // Vai decidir se vai chamar o LA dessa vez ou não
-				// prob_la = rand() % 100; // Generate a random number between 0 and 99
+				// Se for do tipo uniform ou one-point crossover, entao chama o Late Acceptance
+				if((CROSSOVER_TYPE == 1) ||(CROSSOVER_TYPE == 2)){
+					// // Vai decidir se vai chamar o LA dessa vez ou não
+					// prob_la = rand() % 100; // Generate a random number between 0 and 99
 
-				// if(prob_la < PROB_LA_RATE){	 // se o numero foi menor que o prob_la_rate, entao chama
-					// LA em cada filho gerado
-					call_late_acceptance(&nodes[index_child][INDEX_CURRENT], solutionName, qty_facilities, qty_clients, costF, costA, nodes[index_child][INDEX_CURRENT], false);
+					// if(prob_la < PROB_LA_RATE){	 // se o numero foi menor que o prob_la_rate, entao chama
+						// LA em cada filho gerado
+						call_late_acceptance(&nodes[index_child][INDEX_CURRENT], solutionName, qty_facilities, qty_clients, costF, costA, nodes[index_child][INDEX_CURRENT], false);
 
-					if(DEBUG >= DISPLAY_ACTIONS){
-						cout << "Child after late acceptance: ";
-						print_individual(nodes[index_child][INDEX_CURRENT].open_facilities, qty_facilities);
-					}
-				// }
-				// else{
-				// 	if(DEBUG >= DISPLAY_ACTIONS){		
-				// 		cout << "We won't call LA this time. Random number: " << prob_la << " >= " << PROB_LA_RATE << endl;
-				// 	}
-				// }
+						if(DEBUG >= DISPLAY_ACTIONS){
+							cout << "Child after late acceptance: ";
+							print_individual(nodes[index_child][INDEX_CURRENT].open_facilities, qty_facilities);
+						}
+					// }
+					// else{
+					// 	if(DEBUG >= DISPLAY_ACTIONS){		
+					// 		cout << "We won't call LA this time. Random number: " << prob_la << " >= " << PROB_LA_RATE << endl;
+					// 	}
+					// }
+				}
+				// Senão, se for do tipo union, chama o LS_N0
+				else if(CROSSOVER_TYPE == 3){
+					call_local_search_close_fac();
+				}
+				
 			}
 		} 
 
