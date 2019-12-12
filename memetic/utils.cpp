@@ -6,6 +6,7 @@
 #include "../localSearch/definitions.hpp"
 #include "../lateAcceptance/definitions.hpp"
 #include "../tabuSearch/definitions.hpp"
+#include "../localSearchCloseFac/definitions.hpp"
 
 using namespace std;
 
@@ -211,6 +212,13 @@ void call_tabu_search(solutionType * node, char * solutionName, int qty_faciliti
 	*node = tabuSearch(solutionName, qty_facilities, qty_clients, costF, costA, initial_sol, true, 0.5, lc1, lc2, lc1, lc2, 0);  // best_fit = true, a1 = 0.5, (lc1 = lo1 = 0.01 * qty_facilities), (lc2 = lo2 = 0.05 * qty_facilities), seed = 0
 }
 
+
+// Recebe node por referencia. Modificacoes feitas no node aqui refletem diretamente la
+void call_local_search_close_fac(solutionType * node, char * solutionName, int qty_facilities, int qty_clients, double * costF, double ** assignment_cost, solutionType initial_sol){
+	*node = LSCloseFac(solutionName, qty_facilities, qty_clients, costF, assignment_cost, initial_sol); 
+}
+
+
 // Recebe nodes por referencia. Modificacoes feitas no node aqui refletem diretamente la
 void update_sub_pop_best(solutionType ** nodes, int * best_pocket_node, int * worst_pocket_node, int used_pockets, int id_parent){
 	int index_child;
@@ -261,7 +269,7 @@ void update_sub_pop_best(solutionType ** nodes, int * best_pocket_node, int * wo
 
 
 // Recebe nodes por referencia. Modificacoes feitas no node aqui refletem diretamente la
-void update_sub_pop_worst(solutionType ** nodes, int * best_pocket_node, int * worst_pocket_node, int used_pockets, int id_parent){
+void update_sub_pop_worst(solutionType ** nodes, int * best_pocket_node, int * worst_pocket_node, int used_pockets, int id_parent, char * solutionName, int qty_facilities, int qty_clients, double * costF, double * costA){
 	int index_child;
 	solutionType aux;
 	for(int i=0; i< QTY_CHILDREN; i++){ // para todos os filhos
@@ -293,13 +301,26 @@ void update_sub_pop_worst(solutionType ** nodes, int * best_pocket_node, int * w
 					worst_pocket_node[id_parent] = j;
 				}
 			}
+
+			// Se o que inverteu, o pai era a raiz (nodes[0][0]), então roda o tabu_search nele
+			if(id_parent == 0){
+				if(DEBUG >= DISPLAY_MOVES){
+					cout << "Calling TS for nodes[0][0]" << endl;
+				}
+				call_tabu_search(&nodes[0][0], solutionName, qty_facilities, qty_clients, costF, costA, nodes[0][0]);
+
+				if(DEBUG >= DISPLAY_ACTIONS){
+					cout << "Nodes[0][0] after tabu search: ";
+					print_individual(nodes[0][0].open_facilities, qty_facilities);
+				}
+			}
 		}
 	}
 }
 
 
 // Recebe nodes por referencia. Modificacoes feitas no node aqui refletem diretamente la
-void update_population(solutionType ** nodes, int * best_pocket_node, int * worst_pocket_node, int used_pockets, int QTY_SUBS){
+void update_population(solutionType ** nodes, int * best_pocket_node, int * worst_pocket_node, int used_pockets, int QTY_SUBS, char * solutionName, int qty_facilities, int qty_clients, double * costF, double * costA){
 	
 	if(TYPE_UPDATE_POP == 1){ // Compara best do filho com o best do pai
 		// Para cada pai, chama para atualizar essa sub populacao
@@ -310,7 +331,7 @@ void update_population(solutionType ** nodes, int * best_pocket_node, int * wors
 	else{ // compara o best do filho com o worst do pai
 		// Para cada pai, chama para atualizar essa sub populacao
 		for(int i = QTY_SUBS-1; i>=0; i--){
-			update_sub_pop_worst(nodes, best_pocket_node, worst_pocket_node, used_pockets, i);
+			update_sub_pop_worst(nodes, best_pocket_node, worst_pocket_node, used_pockets, i, solutionName, qty_facilities, qty_clients, costF, costA);
 		}
 	}
 }
@@ -479,6 +500,7 @@ void union_crossover(solutionType * child, solutionType mother, solutionType fat
 
 // Recebe node child por referencia. Modificacoes feitas no node aqui refletem diretamente la.
 void crossover_mutation(solutionType * child, solutionType mother, solutionType father, int qty_facilities, int QTY_INST_MUTATION, int qty_clients, int ** sorted_cijID, double * costF, double ** assignment_cost){
+	int type_crossover = 0;
 
 	if(DEBUG >= DISPLAY_ACTIONS){
 		cout << "CROSSOVER" << endl;
@@ -493,10 +515,10 @@ void crossover_mutation(solutionType * child, solutionType mother, solutionType 
 		type_crossover = (rand() % 3) + 1; // Generate a random number between 1 and 3
 	}
 
-	if(CROSSOVER_TYPE == 1){ // Chama o uniform crossover
+	if((CROSSOVER_TYPE == 1)||(type_crossover == 1)){ // Chama o uniform crossover
 		uniform_crossover(child, mother, father, qty_facilities);
 	}
-	else if(CROSSOVER_TYPE == 2){ // Chama o one point crossover
+	else if((CROSSOVER_TYPE == 2)||(type_crossover == 2)){ // Chama o one point crossover
 		one_point_crossover(child, mother, father, qty_facilities);
 	}
 	else { // Chama o union crossover{ 
@@ -580,7 +602,7 @@ void print_count_open_facilities(solutionType ** nodes, int pocket, int qty_faci
 
 
 // Recebe nodes por referencia. Modificacoes feitas no node aqui refletem diretamente la
-void update_pop_change_root(solutionType ** nodes, int * best_pocket_node, int * worst_pocket_node, int used_pockets, int id_parent){
+void update_pop_change_root(solutionType ** nodes, int * best_pocket_node, int * worst_pocket_node, int used_pockets, int id_parent, char * solutionName, int qty_facilities, int qty_clients, double * costF, double * costA){
 	int index_child;
 	solutionType aux;
 
@@ -614,7 +636,7 @@ void update_pop_change_root(solutionType ** nodes, int * best_pocket_node, int *
 			update_sub_pop_best(nodes, best_pocket_node, worst_pocket_node, used_pockets, id_parent);
 		}
 		else{ // compara o best do filho com o worst do pai
-			update_sub_pop_worst(nodes, best_pocket_node, worst_pocket_node, used_pockets, id_parent);
+			update_sub_pop_worst(nodes, best_pocket_node, worst_pocket_node, used_pockets, id_parent, solutionName, qty_facilities, qty_clients, costF, costA);
 		}
 	}
 }
@@ -669,7 +691,7 @@ void change_root(solutionType ** nodes, solutionType * solution, int * best_pock
 	}
 
 	// Update população, levando esse novo gerado para o seu devido lugar
-	update_pop_change_root(nodes, best_pocket_node, worst_pocket_node, used_pockets, child_root);
+	update_pop_change_root(nodes, best_pocket_node, worst_pocket_node, used_pockets, child_root, solutionName, qty_facilities, qty_clients, costF, costA);
 
 }
 

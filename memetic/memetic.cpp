@@ -188,18 +188,18 @@ solutionType memetic(char * solutionName, int qty_facilities, int qty_clients, d
 				cout << "Random - node[" << i << "][0]:" << nodes[i][0].finalTotalCost << endl;
 			}
 
-			// Roda LA ou LS completo para todas as solucoes geradas com random
-			// call_local_search(&nodes[i][0], solutionName, qty_facilities, qty_clients, costF, costA, nodes[i][0]); 
-			call_late_acceptance(&nodes[i][0], solutionName, qty_facilities, qty_clients, costF, costA, nodes[i][0], false); 
+			// // Roda LA ou LS completo para todas as solucoes geradas com random
+			// // call_local_search(&nodes[i][0], solutionName, qty_facilities, qty_clients, costF, costA, nodes[i][0]); 
+			// call_late_acceptance(&nodes[i][0], solutionName, qty_facilities, qty_clients, costF, costA, nodes[i][0], false); 
 
-			if(DEBUG >= DISPLAY_DETAILS){
-				cout << "LS_R -> node[" << i << "][0]:" << nodes[i][0].finalTotalCost << endl << endl;
-			}
+			// if(DEBUG >= DISPLAY_DETAILS){
+			// 	cout << "LS_R -> node[" << i << "][0]:" << nodes[i][0].finalTotalCost << endl << endl;
+			// }
 
-			if(DEBUG >= DISPLAY_MOVES){
-				cout << "RANDOM after LA: ";
-				cout << qty_open_facilities(nodes[i][0].open_facilities, qty_facilities) << " open facilities" << endl;
-			}
+			// if(DEBUG >= DISPLAY_MOVES){
+			// 	cout << "RANDOM after LA: ";
+			// 	cout << qty_open_facilities(nodes[i][0].open_facilities, qty_facilities) << " open facilities" << endl;
+			// }
 		}
 
 		// Aumentando a contagem de pockets utilizados
@@ -226,27 +226,27 @@ solutionType memetic(char * solutionName, int qty_facilities, int qty_clients, d
 				cout << "Random - node[1][" << j << "]:" << nodes[1][j].finalTotalCost << endl;
 			}
 
-			clock_gettime(CLOCK_REALTIME, &start_part);
+			// clock_gettime(CLOCK_REALTIME, &start_part);
 
-			// Roda LA completo para todas as solucoes geradas com random
-			call_late_acceptance(&nodes[1][j], solutionName, qty_facilities, qty_clients, costF, costA, nodes[1][j], false); 
+			// // Roda LA completo para todas as solucoes geradas com random
+			// call_late_acceptance(&nodes[1][j], solutionName, qty_facilities, qty_clients, costF, costA, nodes[1][j], false); 
 
-			clock_gettime(CLOCK_REALTIME, &finish_part);
+			// clock_gettime(CLOCK_REALTIME, &finish_part);
 
-			// Calculando o tempo gasto até agora
-			timeSpent =  (finish_part.tv_sec - start_part.tv_sec);
-			timeSpent += (finish_part.tv_nsec - start_part.tv_nsec) / 1000000000.0; // Necessario para obter uma precisao maior 
+			// // Calculando o tempo gasto até agora
+			// timeSpent =  (finish_part.tv_sec - start_part.tv_sec);
+			// timeSpent += (finish_part.tv_nsec - start_part.tv_nsec) / 1000000000.0; // Necessario para obter uma precisao maior 
 
-			cout << "Time LA random: " << timeSpent << " seconds" << endl;
+			// cout << "Time LA random: " << timeSpent << " seconds" << endl;
 
-			if(DEBUG >= DISPLAY_DETAILS){
-				cout << "LS_R -> node[1][" << j << "]:" <<nodes[1][j].finalTotalCost << endl << endl;
-			}
+			// if(DEBUG >= DISPLAY_DETAILS){
+			// 	cout << "LS_R -> node[1][" << j << "]:" <<nodes[1][j].finalTotalCost << endl << endl;
+			// }
 
-			if(DEBUG >= DISPLAY_MOVES){
-				cout << "RANDOM after LA: ";
-				cout << qty_open_facilities(nodes[1][j].open_facilities, qty_facilities) << " open facilities" << endl;
-			}
+			// if(DEBUG >= DISPLAY_MOVES){
+			// 	cout << "RANDOM after LA: ";
+			// 	cout << qty_open_facilities(nodes[1][j].open_facilities, qty_facilities) << " open facilities" << endl;
+			// }
 		}
 
 		// Preenchendo os 5 pockets do restante dos nós (de 2 a 12)
@@ -264,17 +264,17 @@ solutionType memetic(char * solutionName, int qty_facilities, int qty_clients, d
 					cout << "Random - node[" << i << "][" << j << "]:" << nodes[i][j].finalTotalCost << endl;
 				}
 
-				// Roda LA completo para todas as solucoes geradas com random
-				call_late_acceptance(&nodes[i][j], solutionName, qty_facilities, qty_clients, costF, costA, nodes[i][j], false); 
+				// // Roda LA completo para todas as solucoes geradas com random
+				// call_late_acceptance(&nodes[i][j], solutionName, qty_facilities, qty_clients, costF, costA, nodes[i][j], false); 
 
-				if(DEBUG >= DISPLAY_DETAILS){
-					cout << "LS_R -> node[" << i << "][" << j << "]:" <<nodes[i][j].finalTotalCost << endl << endl;
-				}
+				// if(DEBUG >= DISPLAY_DETAILS){
+				// 	cout << "LS_R -> node[" << i << "][" << j << "]:" <<nodes[i][j].finalTotalCost << endl << endl;
+				// }
 
-				if(DEBUG >= DISPLAY_MOVES){
-					cout << "RANDOM after LA: ";
-					cout << qty_open_facilities(nodes[i][j].open_facilities, qty_facilities) << " open facilities" << endl;
-				}
+				// if(DEBUG >= DISPLAY_MOVES){
+				// 	cout << "RANDOM after LA: ";
+				// 	cout << qty_open_facilities(nodes[i][j].open_facilities, qty_facilities) << " open facilities" << endl;
+				// }
 			}
 		}
 
@@ -298,7 +298,7 @@ solutionType memetic(char * solutionName, int qty_facilities, int qty_clients, d
 	// A partir daqui entrará no loop de restart
 
 	// Levando as melhores solucoes para cima -> Update Population
-	update_population(nodes, best_pocket_node, worst_pocket_node, used_pockets, QTY_SUBS);
+	update_population(nodes, best_pocket_node, worst_pocket_node, used_pockets, QTY_SUBS, solutionName, qty_facilities, qty_clients, costF, costA);
 	
 	if(DEBUG >= DISPLAY_MOVES){
 		cout << endl << "Tree after updating population:";
@@ -384,7 +384,19 @@ solutionType memetic(char * solutionName, int qty_facilities, int qty_clients, d
 				}
 				// Senão, se for do tipo union, chama o LS_N0
 				else if(CROSSOVER_TYPE == 3){
-					call_local_search_close_fac();
+					call_local_search_close_fac(&nodes[index_child][INDEX_CURRENT], solutionName, qty_facilities, qty_clients, costF, assignment_cost, nodes[index_child][INDEX_CURRENT]);
+
+					if(DEBUG >= DISPLAY_ACTIONS){
+						cout << "Child after local search close fac: ";
+						print_individual(nodes[index_child][INDEX_CURRENT].open_facilities, qty_facilities);
+					}
+
+					// call_tabu_search(&nodes[index_child][INDEX_CURRENT], solutionName, qty_facilities, qty_clients, costF, costA, nodes[index_child][INDEX_CURRENT]);
+
+					// if(DEBUG >= DISPLAY_ACTIONS){
+					// 	cout << "Child after tabu search: ";
+					// 	print_individual(nodes[index_child][INDEX_CURRENT].open_facilities, qty_facilities);
+					// }
 				}
 				
 			}
@@ -400,29 +412,32 @@ solutionType memetic(char * solutionName, int qty_facilities, int qty_clients, d
 		}
 
 
-		// Primeiro verificar se o filho for igual a alguem do pocket, vai tentar fazer umas mutações nele // PROBLEMA: e se mesmo assim ficou igual? Por enquanto ele é colocado de qualquer forma
-		for(int i = 1; i < QTY_NODES_TREE; i++){ // para todos os nós, exceto a raiz
+		if(CHECK_DIVERSITY){
+			// Primeiro verificar se o filho for igual a alguem do pocket, vai tentar fazer umas mutações nele // PROBLEMA: e se mesmo assim ficou igual? Por enquanto ele é colocado de qualquer forma
+			for(int i = 1; i < QTY_NODES_TREE; i++){ // para todos os nós, exceto a raiz
 
-			if(!is_different_from_pockets(nodes[i][INDEX_CURRENT], nodes[i], qty_facilities, used_pockets)){
+				if(!is_different_from_pockets(nodes[i][INDEX_CURRENT], nodes[i], qty_facilities, used_pockets)){
 
-				mutation(&nodes[i][INDEX_CURRENT], qty_facilities, QTY_INST_MUTATION); // sofre mutação
+					mutation(&nodes[i][INDEX_CURRENT], qty_facilities, QTY_INST_MUTATION); // sofre mutação
 
-				// Conectando cada cliente com a instalacao aberta mais proxima e fechando as instalacoes que nao foram conectadas a ninguem. Custo final também é atualizado
-				connect_and_update_facilities(&nodes[i][INDEX_CURRENT], qty_facilities, qty_clients, sorted_cijID, costF, assignment_cost);
+					// Conectando cada cliente com a instalacao aberta mais proxima e fechando as instalacoes que nao foram conectadas a ninguem. Custo final também é atualizado
+					connect_and_update_facilities(&nodes[i][INDEX_CURRENT], qty_facilities, qty_clients, sorted_cijID, costF, assignment_cost);
 
-				// Roda o late_acceptance simples, como local search
-				call_late_acceptance(&nodes[i][INDEX_CURRENT], solutionName, qty_facilities, qty_clients, costF, costA, nodes[i][INDEX_CURRENT], true);
-		
-				if(DEBUG >= DISPLAY_MOVES){
-					cout << "It was equal to pockets! Node (" << i << ") Final cost after mutation an LS: " << nodes[i][INDEX_CURRENT].finalTotalCost << endl;
+					// Roda o late_acceptance simples, como local search
+					call_late_acceptance(&nodes[i][INDEX_CURRENT], solutionName, qty_facilities, qty_clients, costF, costA, nodes[i][INDEX_CURRENT], true);
+			
+					if(DEBUG >= DISPLAY_MOVES){
+						cout << "It was equal to pockets! Node (" << i << ") Final cost after mutation an LS: " << nodes[i][INDEX_CURRENT].finalTotalCost << endl;
 
-					if(DEBUG >= DISPLAY_ACTIONS){
-						cout << "It was equal pockets. Child after simple local search: ";
-						print_individual(nodes[i][INDEX_CURRENT].open_facilities, qty_facilities);
+						if(DEBUG >= DISPLAY_ACTIONS){
+							cout << "It was equal pockets. Child after simple local search: ";
+							print_individual(nodes[i][INDEX_CURRENT].open_facilities, qty_facilities);
+						}
 					}
 				}
 			}
 		}
+		
 
 		// Verificar se os currents entrarao no refSet ou nao e ja atualizar best_pocket_node e worst_pocket_node
 		if(used_pockets < QTY_POCKETS_NODE){ // se ainda tiver pocket vazio, entra 
@@ -469,7 +484,7 @@ solutionType memetic(char * solutionName, int qty_facilities, int qty_clients, d
 
 		
 		// Levando as melhores solucoes para cima -> Update Population
-		update_population(nodes, best_pocket_node, worst_pocket_node, used_pockets, QTY_SUBS);
+		update_population(nodes, best_pocket_node, worst_pocket_node, used_pockets, QTY_SUBS, solutionName, qty_facilities, qty_clients, costF, costA);
 		
 		if(DEBUG >= DISPLAY_MOVES){
 			cout << endl << "AFTER UPDATING POPULATION";
