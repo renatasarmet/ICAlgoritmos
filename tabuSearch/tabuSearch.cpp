@@ -538,6 +538,7 @@ solutionType tabuSearch(char * solutionName, int qty_facilities, int qty_clients
 
 				// Abrindo a inst se estiver fechada e fechando se estiver aberta
 				open[facilities[fac_best_extra_cost]] = !open[facilities[fac_best_extra_cost]];
+				solution.open_facilities[fac_best_extra_cost] = !solution.open_facilities[fac_best_extra_cost];
 
 				if(open[facilities[fac_best_extra_cost]]){ // se a instalação estiver aberta agora
 					n1 += 1;

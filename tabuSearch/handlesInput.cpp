@@ -211,11 +211,13 @@ int main(int argc, char *argv[]){
 
 	// indica as instalacoes iniciais atribuidas a cada cliente
 	solution.assigned_facilities = (int*) malloc((qty_clients) * sizeof(int));
-	if(!solution.assigned_facilities){
+	solution.open_facilities = (int*) malloc((qty_facilities) * sizeof(int));
+
+	if((!solution.assigned_facilities)||(!solution.open_facilities)){
 		cout << "Memory Allocation Failed";
 		exit(1);
 	}
-
+	
 
 	// Lendo do arquivo as instalacoes iniciais atribuidas a cada cliente e salvando no vetor solution.assigned_facilities
 	for(int i=0;i<qty_clients;i++){

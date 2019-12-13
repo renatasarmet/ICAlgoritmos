@@ -163,17 +163,26 @@ void set_initial_sol_G(solutionType * node, int qty_facilities, int qty_clients,
 void set_initial_sol_RANDOM(solutionType * node, int qty_facilities, int qty_clients, double * costF, double ** assignment_cost, int ** sorted_cijID){ // type: 0 para greedy, 1 para LS_G, 2 para aleatorio
 
 	int randNum;
+	int qtd_open = 0;
 
-	// Verificando quais instalacoes estarão abertas: 20% de chance de cada uma
+	// Verificando quais instalacoes estarão abertas: OPEN_RANDOM_RATE% de chance de cada uma
 	for(int i=0; i<qty_facilities; i++){
 		randNum = rand() % 100; // Generate a random number between 0 and 99
 
-		if(randNum < OPEN_RANDOM_RATE){ // se ficou entre os 20%, abre essa instalacao
+		if(randNum < OPEN_RANDOM_RATE){ // se ficou entre os OPEN_RANDOM_RATE%, abre essa instalacao
 			node->open_facilities[i] = 1;
+			qtd_open += 1;
 		} 
 		else{ //senao, deixa essa inst fechada
 			node->open_facilities[i] = 0;
 		}
+	}
+
+	// Se nao abriu nenhuma, abre pelo menos uma qualquer aleatoria
+	if(qtd_open == 0){
+		randNum = rand() % qty_facilities; // Generate a random number between 0 and qty_facilities
+
+		node->open_facilities[randNum] = 1;
 	}
 
 	if(DEBUG >= DISPLAY_MOVES){
@@ -223,6 +232,7 @@ void call_local_search_close_fac(solutionType * node, char * solutionName, int q
 // Recebe nodes por referencia. Modificacoes feitas no node aqui refletem diretamente la
 void update_sub_pop(solutionType ** nodes, int id_parent, char * solutionName, int qty_facilities, int qty_clients, double * costF, double * costA){
 	int index_child;
+	int randNum;
 	solutionType aux;
 	for(int i=0; i< QTY_CHILDREN; i++){ // para todos os filhos
 		index_child = id_parent * 3 + i + 1; // encontra o indice correto do filho
@@ -246,14 +256,23 @@ void update_sub_pop(solutionType ** nodes, int id_parent, char * solutionName, i
 
 			// Se o que inverteu, o pai era a raiz (nodes[0][0]), então roda o tabu_search nele
 			if(id_parent == 0){
+
+				// randNum = rand() % QTY_NODES_TREE; // Generate a random number between 0 and QTY_NODES_TREE
+				randNum = 0;
+
 				if(DEBUG >= DISPLAY_MOVES){
-					cout << "Calling TS for nodes[0][" << INDEX_POCKET << "]" << endl;
+					cout << "Calling TS for nodes[" << randNum << "][" << INDEX_POCKET << "] (" << nodes[randNum][INDEX_POCKET].finalTotalCost <<")" << endl;
 				}
-				call_tabu_search(&nodes[0][INDEX_POCKET], solutionName, qty_facilities, qty_clients, costF, costA, nodes[0][INDEX_POCKET]);
+
+				call_tabu_search(&nodes[randNum][INDEX_POCKET], solutionName, qty_facilities, qty_clients, costF, costA, nodes[randNum][INDEX_POCKET]);
+
+				if(DEBUG >= DISPLAY_MOVES){
+					cout << "New value for nodes[" << randNum << "][" << INDEX_POCKET << "] = " << nodes[randNum][INDEX_POCKET].finalTotalCost << endl;
+				}
 
 				if(DEBUG >= DISPLAY_ACTIONS){
-					cout << "Nodes[0][" << INDEX_POCKET << "] after tabu search: ";
-					print_individual(nodes[0][INDEX_POCKET].open_facilities, qty_facilities);
+					cout << "Nodes[" << randNum << "][" << INDEX_POCKET << "] after tabu search: ";
+					print_individual(nodes[randNum][INDEX_POCKET].open_facilities, qty_facilities);
 				}
 			}
 		}
@@ -308,12 +327,53 @@ void print_tree_best(solutionType ** nodes){
 	cout << endl << endl;
 }
 
+void print_tree_complete(solutionType ** nodes){
+	int index_child;
+
+   	cout.precision(0);
+
+	cout << endl << "TREE COMPLETE"<< endl;
+	// Imprimindo a raiz
+	cout << "									" << nodes[0][INDEX_POCKET].finalTotalCost << "("<< nodes[0][INDEX_CURRENT].finalTotalCost << ")" << endl;
+
+	// Imprimindo os nós intermediários (1,2,3)
+	for(int i=0;i<QTY_CHILDREN;i++){  
+		index_child = i + 1; // encontra o indice correto do filho
+		cout << "		" << nodes[index_child][INDEX_POCKET].finalTotalCost << "("<< nodes[index_child][INDEX_CURRENT].finalTotalCost << ")" << "				";
+	}
+	cout << endl;
+
+	// Imprimindo as folhas
+	for(int id_parent=1;id_parent<=QTY_CHILDREN;id_parent++){  
+		for(int i=0;i<QTY_CHILDREN;i++){  
+			index_child = id_parent * 3 + i + 1; // encontra o indice correto do filho
+			cout << nodes[index_child][INDEX_POCKET].finalTotalCost << "("<< nodes[index_child][INDEX_CURRENT].finalTotalCost << ")" << "	";
+		}
+		cout << "	";
+	}
+	cout << endl << endl;
+
+   	cout.precision(5);
+}
+
 
 void print_individual(int * open_facilities, int qty_facilities){
 	cout << endl;
 
 	for(int i=0;i<qty_facilities;i++){  
 		cout << open_facilities[i] << " ";
+	}
+	cout << endl << endl;
+}
+
+
+void print_open_facilities(int * open_facilities, int qty_facilities){
+	cout << endl << "Open facilities: ";
+
+	for(int i=0;i<qty_facilities;i++){  
+		if(open_facilities[i]){
+			cout << i << " ";
+		}
 	}
 	cout << endl << endl;
 }
@@ -472,7 +532,7 @@ void crossover_mutation(solutionType * child, solutionType mother, solutionType 
 
 
 // Recebe node child por referencia. Modificacoes feitas no node aqui refletem diretamente la.
-void recombine(solutionType * child, solutionType mother, solutionType father, int qty_facilities, int QTY_INST_MUTATION, int qty_clients, int ** sorted_cijID, double * costF, double * costA, double ** assignment_cost, char * solutionName){
+void recombine(solutionType * child, solutionType mother, solutionType father, int qty_facilities, int QTY_INST_MUTATION, int qty_clients, int ** sorted_cijID, double * costF, double * costA, double ** assignment_cost, char * solutionName, int * map, double * new_costF, double * new_costA, int * temp_open_facilities){
 	
 	crossover_mutation(child, mother, father, qty_facilities, QTY_INST_MUTATION, qty_clients, sorted_cijID, costF, assignment_cost);
 
@@ -498,12 +558,12 @@ void recombine(solutionType * child, solutionType mother, solutionType father, i
 	}
 	// Senão, se for do tipo union, chama o LS_N0
 	else if(CROSSOVER_TYPE == 3){
-		call_local_search_close_fac(child, solutionName, qty_facilities, qty_clients, costF, assignment_cost, *child);
+		// call_local_search_close_fac(child, solutionName, qty_facilities, qty_clients, costF, assignment_cost, *child);
 
-		if(DEBUG >= DISPLAY_ACTIONS){
-			cout << "Child after local search close fac: ";
-			print_individual(child->open_facilities, qty_facilities);
-		}
+		// if(DEBUG >= DISPLAY_ACTIONS){
+		// 	cout << "Child after local search close fac: ";
+		// 	print_individual(child->open_facilities, qty_facilities);
+		// }
 
 		// call_tabu_search(child, solutionName, qty_facilities, qty_clients, costF, costA, *child);
 
@@ -511,6 +571,14 @@ void recombine(solutionType * child, solutionType mother, solutionType father, i
 		// 	cout << "Child after tabu search: ";
 		// 	print_individual(child->open_facilities, qty_facilities);
 		// }
+
+		map_and_call_TS(child, qty_facilities, qty_clients, costF, assignment_cost, map, new_costF, new_costA, solutionName, temp_open_facilities);
+
+		if(DEBUG >= DISPLAY_ACTIONS){
+			cout << "Child after map and tabu search: ";
+			print_individual(child->open_facilities, qty_facilities);
+		}
+
 	}
 
 }
@@ -689,10 +757,441 @@ bool are_different(solutionType n1, solutionType n2, int qty_facilities){
 }
 
 
-// // Indica se o novo individuo é diferente de todos os outros do mesmo pocket
-// bool is_different_from_pockets(solutionType * node, int qty_facilities){
-// 	if(!are_different(node[INDEX_CURRENT], node[INDEX_POCKET], qty_facilities)){ // se o pocket e current sao iguais, entao retorna falso
-// 		return false;
-// 	}
-// 	return true;
-// }
+void swap_pocket_current(solutionType * node){
+	solutionType aux;
+
+	// Inverte
+	aux = node[INDEX_POCKET];
+	node[INDEX_POCKET] = node[INDEX_CURRENT];
+	node[INDEX_CURRENT] = aux;
+}
+
+
+// se o current for menor que o pocket, retorna negativo
+// se for igual, fica 0
+// se o current for maior, retorna positivo
+double compare_pocket_current(solutionType * node){
+	return node[INDEX_CURRENT].finalTotalCost - node[INDEX_POCKET].finalTotalCost; 
+}
+
+
+void update_refset(solutionType ** nodes, int qty_facilities, int qty_clients, double * costF, double ** assignment_cost, int ** sorted_cijID){
+	double aux_comparison;
+	bool ok = false;
+	// Verificar se os currents entrarao no refSet ou nao
+	// verifica se o current é melhor que pocket e se nao tem nada igual
+
+
+	/* 
+	Para a RAIZ 
+	*/
+	while(!ok){
+		ok = true;
+		aux_comparison = compare_pocket_current(nodes[0]);
+
+		// Se o current for menor que o pocket, atualiza invertendo e pronto
+		if(aux_comparison < 0){
+			swap_pocket_current(nodes[0]);
+		}
+		// Senao, se for diferentes, o current é menor que o pocket entao está ok
+		// Senao se forem iguais, se só o custo for igual, ta ok mantem como está
+		// Senão se realmente forem iguais
+		else if(!are_different(nodes[0][INDEX_CURRENT], nodes[0][INDEX_POCKET], qty_facilities)){
+			// Gera uma solução aleatória e repete o processo
+			set_initial_sol_RANDOM(&nodes[0][INDEX_CURRENT], qty_facilities, qty_clients, costF, assignment_cost, sorted_cijID); 
+			
+			if(DEBUG >= DISPLAY_DETAILS){
+				cout << "Random - node[" << 0 << "][" << INDEX_CURRENT << "]:" << nodes[0][INDEX_CURRENT].finalTotalCost << endl;
+			}
+
+			ok = false;
+		}
+	}
+
+
+	/*
+	para todos pais intermediarios (1,2,3)
+	*/
+
+	for(int i = 1; i < QTY_CHILDREN+1; i++){ 
+		ok = false;
+
+		while(!ok){
+			ok = true;
+
+			// Compara com seu próprio pocket
+			aux_comparison = compare_pocket_current(nodes[i]);
+
+			// Se o custo for igual
+			if(aux_comparison == 0){
+				// Se só o custo for igual mas a solução for diferente, ta ok, pode deixar assim mesmo.. verificar com os outros pais intermediarios
+				// Se realmente forem iguais
+				if(!are_different(nodes[i][INDEX_CURRENT], nodes[i][INDEX_POCKET], qty_facilities)){
+					// Gera uma solução aleatória e repete o processo
+					set_initial_sol_RANDOM(&nodes[i][INDEX_CURRENT], qty_facilities, qty_clients, costF, assignment_cost, sorted_cijID); 
+			
+					if(DEBUG >= DISPLAY_DETAILS){
+						cout << "Random - node[" << i << "][" << INDEX_CURRENT << "]:" << nodes[i][INDEX_CURRENT].finalTotalCost << endl;
+					}
+
+					ok = false;
+				}
+			}
+
+			// Se ja nao achou um problema, continuar procurando
+			if(ok){
+				// Compara com os outros pais intermediarios anteriores
+				for(int j=i-1; j>0;j--){
+
+					// Compara com o pocket e current 
+					// se for menor que o pocket, ta ok
+					// se for maior que o pocket, compara com o current
+					if(nodes[i][INDEX_CURRENT].finalTotalCost > nodes[j][INDEX_POCKET].finalTotalCost){
+						// se for igual ao current, gera aleatoria
+						if(!are_different(nodes[i][INDEX_CURRENT], nodes[j][INDEX_CURRENT], qty_facilities)){
+							// Gera uma solução aleatória e repete o processo
+							set_initial_sol_RANDOM(&nodes[i][INDEX_CURRENT], qty_facilities, qty_clients, costF, assignment_cost, sorted_cijID); 
+			
+							if(DEBUG >= DISPLAY_DETAILS){
+								cout << "Random - node[" << i << "][" << INDEX_CURRENT << "]:" << nodes[i][INDEX_CURRENT].finalTotalCost << endl;
+							}
+
+							ok = false;
+							break;
+						}
+					}
+					// se for igual o pocket, ver se é igual mesmo, e gerar aletaroia
+					else if(!are_different(nodes[i][INDEX_CURRENT], nodes[j][INDEX_POCKET], qty_facilities)){
+						// Gera uma solução aleatória e repete o processo
+						set_initial_sol_RANDOM(&nodes[i][INDEX_CURRENT], qty_facilities, qty_clients, costF, assignment_cost, sorted_cijID); 
+			
+						if(DEBUG >= DISPLAY_DETAILS){
+							cout << "Random - node[" << i << "][" << INDEX_CURRENT << "]:" << nodes[i][INDEX_CURRENT].finalTotalCost << endl;
+						}
+
+						ok = false;
+						break;
+					}
+				}
+			}
+
+			// Se ja nao achou um problema, continuar procurando
+			if(ok){
+ 				if(aux_comparison < 0){
+					// Verifica se é melhor que o pocket da raiz
+					if(nodes[i][INDEX_CURRENT].finalTotalCost < nodes[0][INDEX_POCKET].finalTotalCost){
+						// Se sim, atualiza pocket <-> current
+						swap_pocket_current(nodes[i]);
+					}
+					// se for maior
+					else if(nodes[i][INDEX_CURRENT].finalTotalCost > nodes[0][INDEX_POCKET].finalTotalCost){
+						// se for igual ao current, gera aleatoria
+						if(!are_different(nodes[i][INDEX_CURRENT], nodes[0][INDEX_CURRENT], qty_facilities)){
+							// Gera uma solução aleatória e repete o processo
+							set_initial_sol_RANDOM(&nodes[i][INDEX_CURRENT], qty_facilities, qty_clients, costF, assignment_cost, sorted_cijID); 
+			
+							if(DEBUG >= DISPLAY_DETAILS){
+								cout << "Random - node[" << i << "][" << INDEX_CURRENT << "]:" << nodes[i][INDEX_CURRENT].finalTotalCost << endl;
+							}
+
+							ok = false;
+						}
+						// se for diferente, atualiza
+						else {
+							// atualiza pocket <-> current
+							swap_pocket_current(nodes[i]);
+						}
+					}
+					// se for igual mesmo ao pocket da raiz
+					else if(!are_different(nodes[i][INDEX_CURRENT], nodes[0][INDEX_POCKET], qty_facilities)){
+						// Gera uma solução aleatória e repete o processo
+						set_initial_sol_RANDOM(&nodes[i][INDEX_CURRENT], qty_facilities, qty_clients, costF, assignment_cost, sorted_cijID); 
+			
+						if(DEBUG >= DISPLAY_DETAILS){
+							cout << "Random - node[" << i << "][" << INDEX_CURRENT << "]:" << nodes[i][INDEX_CURRENT].finalTotalCost << endl;
+						}
+
+						ok = false;
+					}
+				}
+				// se for pior ou igual, só precisa confirmar que ele não é igual ao current da raiz
+				else {
+					// se for igual ao current, gera aleatoria
+					if(!are_different(nodes[i][INDEX_CURRENT], nodes[0][INDEX_CURRENT], qty_facilities)){
+						// Gera uma solução aleatória e repete o processo
+						set_initial_sol_RANDOM(&nodes[i][INDEX_CURRENT], qty_facilities, qty_clients, costF, assignment_cost, sorted_cijID); 
+			
+						if(DEBUG >= DISPLAY_DETAILS){
+							cout << "Random - node[" << i << "][" << INDEX_CURRENT << "]:" << nodes[i][INDEX_CURRENT].finalTotalCost << endl;
+						}
+
+						ok = false;
+					}
+				}
+			}
+		}
+	}
+
+
+	/*
+	para todos os filhos folhas (4,5,6,7,8,9,10,11,12)
+	*/
+
+	for(int i = QTY_CHILDREN + 1; i < QTY_NODES_TREE; i++){ 
+		ok = false;
+
+		while(!ok){
+			ok = true;
+
+			// Compara com seu próprio pocket
+			aux_comparison = compare_pocket_current(nodes[i]);
+
+			// Se o custo for igual
+			if(aux_comparison == 0){
+				// Se só o custo for igual mas a solução for diferente, ta ok, pode deixar assim mesmo.. verificar com os outros filhos folhas anteriores
+				// Se realmente forem iguais
+				if(!are_different(nodes[i][INDEX_CURRENT], nodes[i][INDEX_POCKET], qty_facilities)){
+					// Gera uma solução aleatória e repete o processo
+					set_initial_sol_RANDOM(&nodes[i][INDEX_CURRENT], qty_facilities, qty_clients, costF, assignment_cost, sorted_cijID); 
+			
+					if(DEBUG >= DISPLAY_DETAILS){
+						cout << "Random - node[" << i << "][" << INDEX_CURRENT << "]:" << nodes[i][INDEX_CURRENT].finalTotalCost << endl;
+					}
+
+					ok = false;
+				}
+			}
+
+			// Se ja nao achou um problema, continuar procurando
+			if(ok){
+
+				// Compara com os outros filhos folha anteriores
+				for(int j=i-1; j>QTY_CHILDREN;j--){
+
+					// Compara com o pocket e current 
+					// se for menor que o pocket, ta ok
+					// se for maior que o pocket, compara com o current
+					if(nodes[i][INDEX_CURRENT].finalTotalCost > nodes[j][INDEX_POCKET].finalTotalCost){
+						// se for igual ao current, gera aleatoria
+						if(!are_different(nodes[i][INDEX_CURRENT], nodes[j][INDEX_CURRENT], qty_facilities)){
+							// Gera uma solução aleatória e repete o processo
+							set_initial_sol_RANDOM(&nodes[i][INDEX_CURRENT], qty_facilities, qty_clients, costF, assignment_cost, sorted_cijID); 
+			
+							if(DEBUG >= DISPLAY_DETAILS){
+								cout << "Random - node[" << i << "][" << INDEX_CURRENT << "]:" << nodes[i][INDEX_CURRENT].finalTotalCost << endl;
+							}
+
+							ok = false;
+							break;
+						}
+					}
+					// se for igual o pocket, ver se é igual mesmo, e gerar aletaroia
+					else if(!are_different(nodes[i][INDEX_CURRENT], nodes[j][INDEX_POCKET], qty_facilities)){
+						// Gera uma solução aleatória e repete o processo
+						set_initial_sol_RANDOM(&nodes[i][INDEX_CURRENT], qty_facilities, qty_clients, costF, assignment_cost, sorted_cijID); 
+			
+						if(DEBUG >= DISPLAY_DETAILS){
+							cout << "Random - node[" << i << "][" << INDEX_CURRENT << "]:" << nodes[i][INDEX_CURRENT].finalTotalCost << endl;
+						}
+
+						ok = false;
+						break;
+					}
+				}
+			}
+
+			// Se ja nao achou um problema, continuar procurando
+			if(ok){
+				// Verificar igualdade com pocket e current do pai e dos tios
+				for(int j=1; j<QTY_CHILDREN+1; j++){
+					// Compara com o pocket desse nó
+					// se for menor, ta ok, depois já vou ver o da raiz mesmo
+					// se for maior
+					if(nodes[i][INDEX_CURRENT].finalTotalCost > nodes[j][INDEX_POCKET].finalTotalCost){
+						// compara com o current desse nó
+						if(!are_different(nodes[i][INDEX_CURRENT], nodes[j][INDEX_CURRENT], qty_facilities)){
+							// Gera uma solução aleatória e repete o processo
+							set_initial_sol_RANDOM(&nodes[i][INDEX_CURRENT], qty_facilities, qty_clients, costF, assignment_cost, sorted_cijID); 
+			
+							if(DEBUG >= DISPLAY_DETAILS){
+								cout << "Random - node[" << i << "][" << INDEX_CURRENT << "]:" << nodes[i][INDEX_CURRENT].finalTotalCost << endl;
+							}
+
+							ok = false;
+							break;
+						}
+					}
+					// se nao, compara se sao iguais
+					if(!are_different(nodes[i][INDEX_CURRENT], nodes[j][INDEX_POCKET], qty_facilities)){
+						// Gera uma solução aleatória e repete o processo
+						set_initial_sol_RANDOM(&nodes[i][INDEX_CURRENT], qty_facilities, qty_clients, costF, assignment_cost, sorted_cijID); 
+			
+						if(DEBUG >= DISPLAY_DETAILS){
+							cout << "Random - node[" << i << "][" << INDEX_CURRENT << "]:" << nodes[i][INDEX_CURRENT].finalTotalCost << endl;
+						}
+
+						ok = false;
+						break;
+					}
+				}
+			}
+
+			// Se ja nao achou um problema, continuar procurando
+			if(ok){
+				// se ele for melhor que o pocket atual
+				if(aux_comparison < 0){
+					// Verifica se é melhor que o pocket da raiz
+					if(nodes[i][INDEX_CURRENT].finalTotalCost < nodes[0][INDEX_POCKET].finalTotalCost){
+						// Se sim, atualiza pocket <-> current
+						swap_pocket_current(nodes[i]);
+					}
+					// se for maior
+					else if(nodes[i][INDEX_CURRENT].finalTotalCost > nodes[0][INDEX_POCKET].finalTotalCost){
+						// se for igual ao current, gera aleatoria
+						if(!are_different(nodes[i][INDEX_CURRENT], nodes[0][INDEX_CURRENT], qty_facilities)){
+							// Gera uma solução aleatória e repete o processo
+							set_initial_sol_RANDOM(&nodes[i][INDEX_CURRENT], qty_facilities, qty_clients, costF, assignment_cost, sorted_cijID); 
+			
+							if(DEBUG >= DISPLAY_DETAILS){
+								cout << "Random - node[" << i << "][" << INDEX_CURRENT << "]:" << nodes[i][INDEX_CURRENT].finalTotalCost << endl;
+							}
+
+							ok = false;
+						}
+						// se forem diferentes, atualiza
+						else{
+							// atualiza pocket <-> current
+							swap_pocket_current(nodes[i]);
+						}
+					}
+					// se for igual mesmo ao pocket da raiz
+					else if(!are_different(nodes[i][INDEX_CURRENT], nodes[0][INDEX_POCKET], qty_facilities)){
+						// Gera uma solução aleatória e repete o processo
+						set_initial_sol_RANDOM(&nodes[i][INDEX_CURRENT], qty_facilities, qty_clients, costF, assignment_cost, sorted_cijID); 
+			
+						if(DEBUG >= DISPLAY_DETAILS){
+							cout << "Random - node[" << i << "][" << INDEX_CURRENT << "]:" << nodes[i][INDEX_CURRENT].finalTotalCost << endl;
+						}
+
+						ok = false;
+					}
+				}
+				// se for pior ou igual, só precisa confirmar que ele não é igual ao current da raiz
+				else {
+					// se for igual ao current, gera aleatoria
+					if(!are_different(nodes[i][INDEX_CURRENT], nodes[0][INDEX_CURRENT], qty_facilities)){
+						// Gera uma solução aleatória e repete o processo
+						set_initial_sol_RANDOM(&nodes[i][INDEX_CURRENT], qty_facilities, qty_clients, costF, assignment_cost, sorted_cijID); 
+			
+						if(DEBUG >= DISPLAY_DETAILS){
+							cout << "Random - node[" << i << "][" << INDEX_CURRENT << "]:" << nodes[i][INDEX_CURRENT].finalTotalCost << endl;
+						}
+
+						ok = false;
+					}
+				}
+			}
+		}
+	}
+}
+
+
+// Mapeando para chamar o TS ou o G com menos instalacoes que o total
+// map[i] indica o valor que realmente corresponde
+// retorna cont
+int mapping(solutionType * solution, int qty_facilities, int qty_clients, double * costF, double ** assignment_cost, int * map, double * new_costF, double * new_costA){
+	int cont = 0, cont2 = 0;
+	bool update_assigned = false;
+	// Mapear costF e open_facilities, salvando o map
+	for(int i=0; i< qty_facilities; i++){
+		// se a instalacao está aberta, ela vai entrar nesse conjunto para chamar
+		if(solution->open_facilities[i]){
+			map[cont] = i; // indica que na verdade essa inst será correspondente à i
+			new_costF[cont] = costF[i];
+			solution->open_facilities[cont] = true;
+			cont += 1;
+		}
+	}
+	// marcar as que nao foram mapeadas, como fechadas
+	for(int i=cont;i<qty_facilities;i++){
+		// map[i] = -1;
+		solution->open_facilities[i] = false;
+	}
+
+	// Mapear costA e assigned_facilities
+	for(int j=0;j < qty_clients; j++){
+		update_assigned = false;
+		for(int i=0;i<cont;i++){	
+			new_costA[cont2] = assignment_cost[j][map[i]];
+			cont2 += 1;
+			if(!update_assigned){
+				if(solution->assigned_facilities[j] == map[i]){
+					solution->assigned_facilities[j] = i;
+					update_assigned = true;
+				}
+			}
+		}
+	}
+
+	if(DEBUG >= DISPLAY_DETAILS){
+		for(int i=0; i< cont; i++){
+			cout << "Map[" << i << "] = " << map[i] << endl;
+		}
+	}
+
+	return cont;
+}
+
+
+
+// Desmapeando, depois que retornou do TS ou G com menos instalacoes
+// map[i] indica o valor que realmente corresponde
+void unmapping(solutionType * solution, int cont_facilities, int qty_facilities, int qty_clients, int * map, int * temp_open_facilities){
+	// salva todos os valores em temp_open_facilities
+	for(int i=0;i<cont_facilities;i++){
+		temp_open_facilities[i] = solution->open_facilities[i];
+	}
+	// zera todas as instalacoes de solution->open_facilities
+	for(int i=0; i<qty_facilities; i++){
+		solution->open_facilities[i] = false;
+	}
+	// Coloca de volta as instalacoes aberta em solution->open_facilities
+	for(int i = 0; i <cont_facilities; i++){
+		if(DEBUG >= DISPLAY_DETAILS){
+			cout << "Unmap " << i << " = " << map[i] << endl;
+		}
+		solution->open_facilities[map[i]] = temp_open_facilities[i];
+	}
+	// Atualizando as atribuicoes dos clientes
+	for(int j=0; j<qty_clients; j++){
+		solution->assigned_facilities[j] = map[solution->assigned_facilities[j]];
+	}
+}
+
+
+void map_and_call_TS(solutionType * solution, int qty_facilities, int qty_clients, double * costF, double ** assignment_cost, int * map, double * new_costF, double * new_costA, char * solutionName, int * temp_open_facilities){
+	if(DEBUG >= DISPLAY_MOVES){
+		cout << "Initial TS_MAP solution = " << solution->finalTotalCost << endl; 
+		if(DEBUG >= DISPLAY_DETAILS){
+			print_open_facilities(solution->open_facilities, qty_facilities);
+		}
+	}
+
+	int cont_facilities = mapping(solution, qty_facilities, qty_clients, costF, assignment_cost, map, new_costF, new_costA);
+
+	if(DEBUG >= DISPLAY_MOVES){
+		cout << "Calling TS mapping with " << cont_facilities << " open facilities" << endl;
+	}
+
+	call_tabu_search(solution, solutionName, cont_facilities, qty_clients, new_costF, new_costA, *solution);
+
+	unmapping(solution, cont_facilities, qty_facilities, qty_clients, map, temp_open_facilities);
+
+	if(DEBUG >= DISPLAY_MOVES){
+		cout << "Final TS_MAP solution = " << solution->finalTotalCost << endl; 
+		if(DEBUG >= DISPLAY_DETAILS){
+			print_open_facilities(solution->open_facilities, qty_facilities);
+		}
+	}
+}
+
