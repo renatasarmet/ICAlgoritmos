@@ -230,10 +230,9 @@ void call_local_search_close_fac(solutionType * node, char * solutionName, int q
 
 
 // Recebe nodes por referencia. Modificacoes feitas no node aqui refletem diretamente la
-void update_sub_pop(solutionType ** nodes, int id_parent, char * solutionName, int qty_facilities, int qty_clients, double * costF, double * costA){
+void update_sub_pop(solutionType ** nodes, int id_parent, char * solutionName, int qty_facilities, int qty_clients, double * costF, double * costA, solutionType aux){
 	int index_child;
 	int randNum;
-	solutionType aux;
 	for(int i=0; i< QTY_CHILDREN; i++){ // para todos os filhos
 		index_child = id_parent * 3 + i + 1; // encontra o indice correto do filho
 		if(nodes[index_child][INDEX_POCKET].finalTotalCost < nodes[id_parent][INDEX_POCKET].finalTotalCost){ // Se o best do filho for menor que o best do pai (pocket com pocket)
@@ -242,16 +241,17 @@ void update_sub_pop(solutionType ** nodes, int id_parent, char * solutionName, i
 			}
 
 			// Inverte
-			aux = nodes[id_parent][INDEX_POCKET];
-			nodes[id_parent][INDEX_POCKET] = nodes[index_child][INDEX_POCKET];
-			nodes[index_child][INDEX_POCKET] = aux;
+			copy_struct(&nodes[id_parent][INDEX_POCKET], &aux, qty_facilities, qty_clients);
+			copy_struct(&nodes[index_child][INDEX_POCKET], &nodes[id_parent][INDEX_POCKET], qty_facilities, qty_clients);
+			copy_struct(&aux, &nodes[index_child][INDEX_POCKET], qty_facilities, qty_clients);
+
 
 			// Update indice de pocket/current do filho (pocket sempre deve ser melhor que o current)
 			if(nodes[index_child][INDEX_CURRENT].finalTotalCost < nodes[index_child][INDEX_POCKET].finalTotalCost){ // se agora o current é melhor que o pocket, atualiza
 				// Inverte
-				aux = nodes[index_child][INDEX_POCKET];
-				nodes[index_child][INDEX_POCKET] = nodes[index_child][INDEX_CURRENT];
-				nodes[index_child][INDEX_CURRENT] = aux;
+				copy_struct(&nodes[index_child][INDEX_POCKET], &aux, qty_facilities, qty_clients);
+				copy_struct(&nodes[index_child][INDEX_CURRENT], &nodes[index_child][INDEX_POCKET], qty_facilities, qty_clients);
+				copy_struct(&aux, &nodes[index_child][INDEX_CURRENT], qty_facilities, qty_clients);
 			}
 
 			// Se o que inverteu, o pai era a raiz (nodes[0][0]), então roda o tabu_search nele
@@ -281,12 +281,12 @@ void update_sub_pop(solutionType ** nodes, int id_parent, char * solutionName, i
 
 
 // Recebe nodes por referencia. Modificacoes feitas no node aqui refletem diretamente la
-void update_population(solutionType ** nodes, int QTY_SUBS, char * solutionName, int qty_facilities, int qty_clients, double * costF, double * costA){
+void update_population(solutionType ** nodes, int QTY_SUBS, char * solutionName, int qty_facilities, int qty_clients, double * costF, double * costA, solutionType aux){
 	
 	// compara o pocket do filho com o pocket do pai (best com best)
 	// Para cada pai, chama para atualizar essa sub populacao
 	for(int i = QTY_SUBS-1; i>=0; i--){
-		update_sub_pop(nodes, i, solutionName, qty_facilities, qty_clients, costF, costA);
+		update_sub_pop(nodes, i, solutionName, qty_facilities, qty_clients, costF, costA, aux);
 	}
 }
 
@@ -578,9 +578,7 @@ void recombine(solutionType * child, solutionType mother, solutionType father, i
 			cout << "Child after map and tabu search: ";
 			print_individual(child->open_facilities, qty_facilities);
 		}
-
 	}
-
 }
 
 
@@ -626,9 +624,8 @@ void print_count_open_facilities(solutionType ** nodes, int qty_facilities){
 
 
 // Recebe nodes por referencia. Modificacoes feitas no node aqui refletem diretamente la
-void update_pop_change_root(solutionType ** nodes, int id_parent, char * solutionName, int qty_facilities, int qty_clients, double * costF, double * costA){
+void update_pop_change_root(solutionType ** nodes, int id_parent, char * solutionName, int qty_facilities, int qty_clients, double * costF, double * costA, solutionType aux){
 	int index_child;
-	solutionType aux;
 
 	// Verifico se ele é melhor do que a raiz atual
 	if(nodes[id_parent][INDEX_POCKET].finalTotalCost < nodes[0][INDEX_POCKET].finalTotalCost){ // se for, substitui
@@ -637,29 +634,28 @@ void update_pop_change_root(solutionType ** nodes, int id_parent, char * solutio
 		}
 
 		// Inverte
-		aux = nodes[id_parent][INDEX_POCKET];
-		nodes[id_parent][INDEX_POCKET] = nodes[0][INDEX_POCKET];
-		nodes[0][INDEX_POCKET] = aux;
+		copy_struct(&nodes[id_parent][INDEX_POCKET], &aux, qty_facilities, qty_clients);
+		copy_struct(&nodes[0][INDEX_POCKET], &nodes[id_parent][INDEX_POCKET], qty_facilities, qty_clients);
+		copy_struct(&aux, &nodes[0][INDEX_POCKET], qty_facilities, qty_clients);
 	}
 	else{ // se aconteceu o caso anterior, eu sei que o resto já está ordenado, pois só voltou pro mesmo lugar (ou veio um melhor ainda). Senao, entao tenho que ordenar essa subarvore
 
 		// Atualiza o POCKET e CURRENT do pai primeiro. só esse novo que entrou pode ser pior do que o que ja era
 		if(nodes[id_parent][INDEX_POCKET].finalTotalCost > nodes[id_parent][INDEX_CURRENT].finalTotalCost){ // se esse que chegou é pior que o current, atualiza 
 			// Inverte
-			aux = nodes[id_parent][INDEX_POCKET];
-			nodes[id_parent][INDEX_POCKET] = nodes[id_parent][INDEX_CURRENT];
-			nodes[id_parent][INDEX_CURRENT] = aux;
+			copy_struct(&nodes[id_parent][INDEX_POCKET], &aux, qty_facilities, qty_clients);
+			copy_struct(&nodes[id_parent][INDEX_CURRENT], &nodes[id_parent][INDEX_POCKET], qty_facilities, qty_clients);
+			copy_struct(&aux, &nodes[id_parent][INDEX_CURRENT], qty_facilities, qty_clients);
 		}
 
-		update_sub_pop(nodes, id_parent, solutionName, qty_facilities, qty_clients, costF, costA);
+		update_sub_pop(nodes, id_parent, solutionName, qty_facilities, qty_clients, costF, costA, aux);
 	}
 }
 
 
 // Recebe por referencia, entao as alteracoes sao salvas. Armazena a root em solution se ela for melhor que a que está lá e sobe a próxima para a root, atualizando o resto da populacao
 
-void change_root(solutionType ** nodes, solutionType * solution, int * qty_changes_root, char * solutionName, int qty_facilities, int qty_clients, double * costF,  double * costA, double ** assignment_cost, int ** sorted_cijID){
-	solutionType aux;
+void change_root(solutionType ** nodes, solutionType * solution, int * qty_changes_root, char * solutionName, int qty_facilities, int qty_clients, double * costF,  double * costA, double ** assignment_cost, int ** sorted_cijID, solutionType aux){
 
 	if(DEBUG >= DISPLAY_MOVES){
 		cout << "----------------------------------- Changing root " << endl;
@@ -667,7 +663,8 @@ void change_root(solutionType ** nodes, solutionType * solution, int * qty_chang
 
 	// Salva a raiz, caso ela seja melhor do que a melhor salva até agora
 	if(nodes[0][INDEX_POCKET].finalTotalCost < solution->finalTotalCost){
-		*solution = nodes[0][INDEX_POCKET]; // atualiza a melhor encontrada até agora
+		copy_struct(&nodes[0][INDEX_POCKET], solution, qty_facilities, qty_clients); // atualiza a melhor encontrada até agora
+
 		*qty_changes_root = 0; // zera o contador
 
 		if(DEBUG >= DISPLAY_MOVES){
@@ -688,13 +685,13 @@ void change_root(solutionType ** nodes, solutionType * solution, int * qty_chang
 	}
 
 	// Substitui a raiz com o melhor filho escolhido
-	nodes[0][INDEX_POCKET] = nodes[child_root][INDEX_POCKET];
+	copy_struct(&nodes[child_root][INDEX_POCKET], &nodes[0][INDEX_POCKET], qty_facilities, qty_clients);
 
 	// Verifica se o pocket da raiz continua melhor que o current, senao inverte
 	if(nodes[0][INDEX_POCKET].finalTotalCost > nodes[0][INDEX_CURRENT].finalTotalCost){ // se o pocket for pior que o current, inverte
-		aux = nodes[0][INDEX_POCKET];
-		nodes[0][INDEX_POCKET] = nodes[0][INDEX_CURRENT];
-		nodes[0][INDEX_CURRENT] = aux;
+		copy_struct(&nodes[0][INDEX_POCKET], &aux, qty_facilities, qty_clients);
+		copy_struct(&nodes[0][INDEX_CURRENT], &nodes[0][INDEX_POCKET], qty_facilities, qty_clients);
+		copy_struct(&aux, &nodes[0][INDEX_CURRENT], qty_facilities, qty_clients);
 	}
 
 	// Atualiza o espaço que vagou no melhor filho escolhido com uma solucao vinda do random + LA
@@ -703,6 +700,7 @@ void change_root(solutionType ** nodes, solutionType * solution, int * qty_chang
 	if(DEBUG >= DISPLAY_DETAILS){
 		cout << "Random child " << child_root << ":" << nodes[child_root][INDEX_POCKET].finalTotalCost << endl;
 	}
+
 
 	// Roda LA ou LS completo para a solucao gerada com random
 	// call_local_search(&nodes[i][INDEX_POCKET], solutionName, qty_facilities, qty_clients, costF, costA, nodes[i][INDEX_POCKET]); 
@@ -713,8 +711,7 @@ void change_root(solutionType ** nodes, solutionType * solution, int * qty_chang
 	}
 
 	// Update população, levando esse novo gerado para o seu devido lugar
-	update_pop_change_root(nodes, child_root, solutionName, qty_facilities, qty_clients, costF, costA);
-
+	update_pop_change_root(nodes, child_root, solutionName, qty_facilities, qty_clients, costF, costA, aux);
 }
 
 
@@ -748,6 +745,7 @@ bool are_different(solutionType n1, solutionType n2, int qty_facilities){
 		if(DEBUG >= DISPLAY_MOVES){
 			cout << "***** It has the same cost (" << n1.finalTotalCost << "), but the config is different *****" << endl;
 		}
+
 		return true;
 	}
 	if(DEBUG >= DISPLAY_MOVES){
@@ -757,13 +755,11 @@ bool are_different(solutionType n1, solutionType n2, int qty_facilities){
 }
 
 
-void swap_pocket_current(solutionType * node){
-	solutionType aux;
-
+void swap_pocket_current(solutionType * node, int qty_facilities, int qty_clients, solutionType aux){
 	// Inverte
-	aux = node[INDEX_POCKET];
-	node[INDEX_POCKET] = node[INDEX_CURRENT];
-	node[INDEX_CURRENT] = aux;
+	copy_struct(&node[INDEX_POCKET], &aux, qty_facilities, qty_clients);
+	copy_struct(&node[INDEX_CURRENT], &node[INDEX_POCKET], qty_facilities, qty_clients);
+	copy_struct(&aux, &node[INDEX_CURRENT], qty_facilities, qty_clients);
 }
 
 
@@ -775,7 +771,7 @@ double compare_pocket_current(solutionType * node){
 }
 
 
-void update_refset(solutionType ** nodes, int qty_facilities, int qty_clients, double * costF, double ** assignment_cost, int ** sorted_cijID){
+void update_refset(solutionType ** nodes, int qty_facilities, int qty_clients, double * costF, double ** assignment_cost, int ** sorted_cijID, solutionType aux){
 	double aux_comparison;
 	bool ok = false;
 	// Verificar se os currents entrarao no refSet ou nao
@@ -791,7 +787,7 @@ void update_refset(solutionType ** nodes, int qty_facilities, int qty_clients, d
 
 		// Se o current for menor que o pocket, atualiza invertendo e pronto
 		if(aux_comparison < 0){
-			swap_pocket_current(nodes[0]);
+			swap_pocket_current(nodes[0], qty_facilities, qty_clients, aux);
 		}
 		// Senao, se for diferentes, o current é menor que o pocket entao está ok
 		// Senao se forem iguais, se só o custo for igual, ta ok mantem como está
@@ -880,8 +876,9 @@ void update_refset(solutionType ** nodes, int qty_facilities, int qty_clients, d
  				if(aux_comparison < 0){
 					// Verifica se é melhor que o pocket da raiz
 					if(nodes[i][INDEX_CURRENT].finalTotalCost < nodes[0][INDEX_POCKET].finalTotalCost){
+
 						// Se sim, atualiza pocket <-> current
-						swap_pocket_current(nodes[i]);
+						swap_pocket_current(nodes[i], qty_facilities, qty_clients, aux);
 					}
 					// se for maior
 					else if(nodes[i][INDEX_CURRENT].finalTotalCost > nodes[0][INDEX_POCKET].finalTotalCost){
@@ -899,7 +896,7 @@ void update_refset(solutionType ** nodes, int qty_facilities, int qty_clients, d
 						// se for diferente, atualiza
 						else {
 							// atualiza pocket <-> current
-							swap_pocket_current(nodes[i]);
+							swap_pocket_current(nodes[i], qty_facilities, qty_clients, aux);
 						}
 					}
 					// se for igual mesmo ao pocket da raiz
@@ -931,7 +928,6 @@ void update_refset(solutionType ** nodes, int qty_facilities, int qty_clients, d
 			}
 		}
 	}
-
 
 	/*
 	para todos os filhos folhas (4,5,6,7,8,9,10,11,12)
@@ -1043,7 +1039,7 @@ void update_refset(solutionType ** nodes, int qty_facilities, int qty_clients, d
 					// Verifica se é melhor que o pocket da raiz
 					if(nodes[i][INDEX_CURRENT].finalTotalCost < nodes[0][INDEX_POCKET].finalTotalCost){
 						// Se sim, atualiza pocket <-> current
-						swap_pocket_current(nodes[i]);
+						swap_pocket_current(nodes[i], qty_facilities, qty_clients, aux);
 					}
 					// se for maior
 					else if(nodes[i][INDEX_CURRENT].finalTotalCost > nodes[0][INDEX_POCKET].finalTotalCost){
@@ -1061,7 +1057,7 @@ void update_refset(solutionType ** nodes, int qty_facilities, int qty_clients, d
 						// se forem diferentes, atualiza
 						else{
 							// atualiza pocket <-> current
-							swap_pocket_current(nodes[i]);
+							swap_pocket_current(nodes[i], qty_facilities, qty_clients, aux);
 						}
 					}
 					// se for igual mesmo ao pocket da raiz
@@ -1195,3 +1191,67 @@ void map_and_call_TS(solutionType * solution, int qty_facilities, int qty_client
 	}
 }
 
+
+void test_wrong_answer(solutionType solution, int qty_clients, int qty_facilities, double * costF, double ** assignment_cost){
+
+	cout << "TEST WRONG ANSWER: " << solution.finalTotalCost << endl;
+
+	for(int i=0;i < qty_clients;i++){
+		if(solution.open_facilities[solution.assigned_facilities[i]]){
+			cout << "ok" << endl;
+		}
+		else{
+			cout << "******************************************************** WRONG!!!!!!!!!!!!! " << endl;
+		}
+	}
+
+	bool found = false;
+
+	for(int i=0;i<qty_facilities;i++){
+		found = false;
+		for(int j=0;j<qty_clients;j++){
+			if(solution.assigned_facilities[j] == i){
+				found = true;
+				break;
+			}
+		}
+		if(found)
+			cout << "ACHEI ESSA: " << i << endl;
+		if(((found) && (!solution.open_facilities[i])) || ((!found) && (solution.open_facilities[i]))){
+			cout << "COMPLETE TEST ******************************************************** WRONG!!!!!!!!!!!!! " << endl;
+		}
+	}
+
+	cout << "TESTING IF THE SOLUTION IS CORRECT" << endl;
+	double coost = 0;
+
+	for(int i=0;i<qty_facilities;i++){
+		if(solution.open_facilities[i]){
+			coost += costF[i];
+		}
+	}
+
+	for(int j=0;j<qty_clients;j++){		// percorre as instalacoes
+		coost += assignment_cost[j][solution.assigned_facilities[j]]; 
+	}
+
+	cout << "SOL VALUE IN FACT: " << coost << endl;
+
+	if(solution.finalTotalCost != coost){
+		cout << "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA" << endl;
+	}
+}
+
+
+// Copia s1 para s2
+void copy_struct(solutionType * s1, solutionType * s2, int qty_facilities, int qty_clients){
+	s2->finalTotalCost = s1->finalTotalCost;
+	// s2->timeSpent = s1->timeSpent;
+	// s2->local_optimum = s1->local_optimum;
+	for(int i=0;i<qty_facilities;i++){
+		s2->open_facilities[i] = s1->open_facilities[i];
+	}
+	for(int j=0;j<qty_clients;j++){
+		s2->assigned_facilities[j] = s1->assigned_facilities[j];
+	}
+}

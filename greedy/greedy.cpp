@@ -144,8 +144,11 @@ solutionType greedy(int qty_clients, int qty_facilities, double * costF, double 
 	/* Fim declaracoes para calculo de tempo */
 
 	// indica as instalacoes finais atribuidas a cada cliente
+	solution.open_facilities = (int*) malloc((qty_facilities) * sizeof(int));
+
 	solution.assigned_facilities = (int*) malloc((qty_clients) * sizeof(int));
-    if(!solution.assigned_facilities){
+
+    if((!solution.assigned_facilities)||(!solution.open_facilities)){
         cout << "Memory Allocation Failed";
         exit(1);
     }
@@ -244,6 +247,7 @@ solutionType greedy(int qty_clients, int qty_facilities, double * costF, double 
 		facilities[i] = g.addBlueNode();
 		f[facilities[i]] = costF[i]; // pegando valor vindo por parametro
 		open[facilities[i]] = false; // indica que a instalação não está aberta inicialmente
+		solution.open_facilities[i] = false;
 		name[facilities[i]] = i; // nomeia de acordo com a numeracao
 
 		// Salvando o valor do maior Fi da entrada
@@ -388,6 +392,9 @@ solutionType greedy(int qty_clients, int qty_facilities, double * costF, double 
 		// cout << "Let's open fac: " << id_chosen_fac << " and assign to " << best_size_chosen << " clients with cost: " << best_cost_chosen << endl;
 		solution.finalTotalCost += f[facilities[id_chosen_fac]]; // Somando os custos de abertura das instalacoes escolhidas para abrir
 
+		// abrindo inst
+		solution.open_facilities[id_chosen_fac] = true;
+
 		// fi <- 0
 		f[facilities[id_chosen_fac]] = 0;
 
@@ -442,6 +449,7 @@ solutionType greedy(int qty_clients, int qty_facilities, double * costF, double 
 
 		counter += 1;
 	}
+
 
 	// FINALIZANDO A CONTAGEM DE TEMPO DA FUNCAO
 	clock_gettime(CLOCK_REALTIME, &finish);

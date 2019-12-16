@@ -966,6 +966,20 @@ solutionType lateAcceptance(char * solutionName, int qty_facilities, int qty_cli
 		}
 	}
 
+	
+	// FAZER ESSA PARTE MELHOR
+
+	// Ajustando o vetor de instalacoes abertas de acordo com a solucao final
+	for(int i=0;i<qty_facilities;i++){
+		// Primeiro coloca todos como false
+		solution.open_facilities[i] = false;
+	}
+	// Agora abre as que tem gente atribuida
+	for(int i=0;i < qty_clients;i++){
+		solution.open_facilities[solution.assigned_facilities[i]] = true;
+	}
+
+
 	// FINALIZANDO A CONTAGEM DE TEMPO DA FUNCAO
 	clock_gettime(CLOCK_REALTIME, &finish);
 

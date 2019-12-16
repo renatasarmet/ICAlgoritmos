@@ -44,9 +44,9 @@ void call_tabu_search(solutionType * node, char * solutionName, int qty_faciliti
 
 void call_local_search_close_fac(solutionType * node, char * solutionName, int qty_facilities, int qty_clients, double * costF, double ** assignment_cost, solutionType initial_sol);
 
-void update_sub_pop(solutionType ** nodes, int id_parent, char * solutionName, int qty_facilities, int qty_clients, double * costF, double * costA);
+void update_sub_pop(solutionType ** nodes, int id_parent, char * solutionName, int qty_facilities, int qty_clients, double * costF, double * costA, solutionType aux);
 
-void update_population(solutionType ** nodes, int QTY_SUBS, char * solutionName, int qty_facilities, int qty_clients, double * costF, double * costA);
+void update_population(solutionType ** nodes, int QTY_SUBS, char * solutionName, int qty_facilities, int qty_clients, double * costF, double * costA, solutionType aux);
 
 void print_tree_best(solutionType ** nodes);
 
@@ -70,23 +70,27 @@ void recombine(solutionType * child, solutionType mother, solutionType father, i
 
 void print_count_open_facilities(solutionType ** nodes, int qty_facilities);
 
-void update_pop_change_root(solutionType ** nodes, int id_parent, char * solutionName, int qty_facilities, int qty_clients, double * costF, double * costA);
+void update_pop_change_root(solutionType ** nodes, int id_parent, char * solutionName, int qty_facilities, int qty_clients, double * costF, double * costA, solutionType aux);
 
-void change_root(solutionType ** nodes, solutionType * solution, int * qty_changes_root, char * solutionName, int qty_facilities, int qty_clients, double * costF, double * costA, double ** assignment_cost, int ** sorted_cijID);
+void change_root(solutionType ** nodes, solutionType * solution, int * qty_changes_root, char * solutionName, int qty_facilities, int qty_clients, double * costF, double * costA, double ** assignment_cost, int ** sorted_cijID, solutionType aux);
 
 int qty_diversity(int * n1_open_facilities, int * n2_open_facilities, int qty_facilities);
 
 bool are_different(solutionType n1, solutionType n2, int qty_facilities);
 
-void swap_pocket_current(solutionType * node);
+void swap_pocket_current(solutionType * node, int qty_facilities, int qty_clients, solutionType aux);
 
 double compare_pocket_current(solutionType * node);
 
-void update_refset(solutionType ** nodes, int qty_facilities, int qty_clients, double * costF, double ** assignment_cost, int ** sorted_cijID);
+void update_refset(solutionType ** nodes, int qty_facilities, int qty_clients, double * costF, double ** assignment_cost, int ** sorted_cijID, solutionType aux);
 
 int mapping(solutionType * solution, int qty_facilities, int qty_clients, double * costF, double ** assignment_cost, int * map, double * new_costF, double * new_costA);
 
 void unmapping(solutionType * solution, int cont_facilities, int qty_facilities, int qty_clients, int * map, int * temp_open_facilities);
 
 void map_and_call_TS(solutionType * solution, int qty_facilities, int qty_clients, double * costF, double ** assignment_cost, int * map, double * new_costF, double * new_costA, char * solutionName, int * temp_open_facilities);
+
+void test_wrong_answer(solutionType solution, int qty_clients, int qty_facilities, double * costF, double ** assignment_cost);
+
+void copy_struct(solutionType * s1, solutionType * s2, int qty_facilities, int qty_clients);
 

@@ -27,7 +27,21 @@ solutionType memetic(char * solutionName, int qty_facilities, int qty_clients, d
 	// INICIANDO A CONTAGEM DE TEMPO DA FUNCAO
 	clock_gettime(CLOCK_REALTIME, &start);
 
-	solutionType solution;
+	solutionType solution, aux;
+
+	// indica as instalacoes abertas atualmente em cada solucao
+	solution.open_facilities = (int*) malloc((qty_facilities) * sizeof(int));
+	aux.open_facilities = (int*) malloc((qty_facilities) * sizeof(int));
+
+    // indicara as instalacoes atribuidas a cada cliente na resposta
+    solution.assigned_facilities = (int*) malloc((qty_clients) * sizeof(int));
+    aux.assigned_facilities = (int*) malloc((qty_clients) * sizeof(int));
+
+    if((!solution.open_facilities)||(!solution.assigned_facilities)||(!aux.open_facilities)||(!aux.assigned_facilities)){
+        cout << "Memory Allocation Failed";
+        exit(1);
+    }
+
 
 	// FUTURO: SALVAR LOG E LOG_DETAILS
 
@@ -131,9 +145,6 @@ solutionType memetic(char * solutionName, int qty_facilities, int qty_clients, d
 	// Auxiliares para identificação dos filhos no crossover
 	int s1, s2, s3;
 
-	// Auxiliar para inversao
-	solutionType aux;
-
 	// indica o melhor custo encontrado com aquele root (se atualizou o root, o valor nao fica com o antigo)
 	double tempBestTotalCost;
 
@@ -161,12 +172,16 @@ solutionType memetic(char * solutionName, int qty_facilities, int qty_clients, d
 
 	clock_gettime(CLOCK_REALTIME, &start_part);
 
-	call_local_search(&nodes[0][INDEX_POCKET], solutionName, qty_facilities, qty_clients, costF, costA, nodes[1][INDEX_POCKET]); // solucao com local search com solucao inicial do greedy
+	// colocando a solucao do greedy no LS_G
+	copy_struct(&nodes[1][INDEX_POCKET], &nodes[0][INDEX_POCKET], qty_facilities, qty_clients);
+
+	call_local_search(&nodes[0][INDEX_POCKET], solutionName, qty_facilities, qty_clients, costF, costA, nodes[0][INDEX_POCKET]); // solucao com local search com solucao inicial do greedy
 	// set_initial_sol_RANDOM(&nodes[0][INDEX_POCKET], qty_facilities, qty_clients, costF, assignment_cost, sorted_cijID); // preenche o current
 
 	// call_late_acceptance(&nodes[0][INDEX_POCKET], solutionName, qty_facilities, qty_clients, costF, costA, nodes[1][INDEX_POCKET], false); // solucao com late acceptance com solucao inicial do greedy
 
 	clock_gettime(CLOCK_REALTIME, &finish_part);
+
 
 	// Calculando o tempo gasto até agora
 	timeSpent =  (finish_part.tv_sec - start_part.tv_sec);
@@ -278,7 +293,7 @@ solutionType memetic(char * solutionName, int qty_facilities, int qty_clients, d
 	// A partir daqui entrará no loop de restart
 
 	// Levando as melhores solucoes para cima -> Update Population
-	update_population(nodes, QTY_SUBS, solutionName, qty_facilities, qty_clients, costF, costA);
+	update_population(nodes, QTY_SUBS, solutionName, qty_facilities, qty_clients, costF, costA, aux);
 	
 
 	if(DEBUG >= DISPLAY_MOVES){
@@ -291,7 +306,9 @@ solutionType memetic(char * solutionName, int qty_facilities, int qty_clients, d
 	}
 
 	// Iniciando o melhor custo encontrado ate agora
-	solution = nodes[0][INDEX_POCKET];
+	// solution = nodes[0][INDEX_POCKET];
+	copy_struct(&nodes[0][INDEX_POCKET], &solution, qty_facilities, qty_clients);
+
 
 	// Atualiza o best para o valor desse root
 	tempBestTotalCost = nodes[0][INDEX_POCKET].finalTotalCost;
@@ -303,15 +320,15 @@ solutionType memetic(char * solutionName, int qty_facilities, int qty_clients, d
 			cout << endl << "------------------------------ NEXT GENERATION " << qty_generations << " ------------------------------" << endl << endl;
 		}
 
+
 		// Se atingiu MAX_GEN_NO_IMPROVEMENT geracoes sem melhora, armazena a root em solution se ela for melhor que a que está lá e sobe a próxima para a root
 		if(qty_gen_no_improv > MAX_GEN_NO_IMPROVEMENT){
 			qty_gen_no_improv = 0; // zera o contador
-			change_root(nodes, &solution, &qty_changes_root, solutionName, qty_facilities, qty_clients, costF, costA, assignment_cost, sorted_cijID);
+			change_root(nodes, &solution, &qty_changes_root, solutionName, qty_facilities, qty_clients, costF, costA, assignment_cost, sorted_cijID, aux);
 		
 			// Atualiza o best para o valor desse root
 			tempBestTotalCost = nodes[0][INDEX_POCKET].finalTotalCost;
 		}
-
 
 		// crossover 
 		// Combinacoes entre cada mãe e filhos,
@@ -335,7 +352,6 @@ solutionType memetic(char * solutionName, int qty_facilities, int qty_clients, d
 
 			recombine(&nodes[id_parent][INDEX_CURRENT], nodes[id_parent][INDEX_POCKET], nodes[s1][INDEX_CURRENT], qty_facilities, QTY_INST_MUTATION, qty_clients, sorted_cijID, costF, costA, assignment_cost, solutionName, map, new_costF, new_costA, temp_open_facilities);
 
-
 			// current[s3] = Recombine(pocket[s3], current[id_parent])
 
 			if(DEBUG >= DISPLAY_ACTIONS){
@@ -344,15 +360,14 @@ solutionType memetic(char * solutionName, int qty_facilities, int qty_clients, d
 
 			recombine(&nodes[s3][INDEX_CURRENT], nodes[s3][INDEX_POCKET], nodes[id_parent][INDEX_CURRENT], qty_facilities, QTY_INST_MUTATION, qty_clients, sorted_cijID, costF, costA, assignment_cost, solutionName, map, new_costF, new_costA, temp_open_facilities);
 
-
 			// current[s1] = Recombine(pocket[s1], current[s2])
 
 			if(DEBUG >= DISPLAY_ACTIONS){
 				cout << "current[" << s1 << "] = Recombine(pocket[" << s1 << "], current[" << s2 << "]) " << endl;
 			}
 
-			recombine(&nodes[s1][INDEX_CURRENT], nodes[s1][INDEX_POCKET], nodes[s2][INDEX_CURRENT], qty_facilities, QTY_INST_MUTATION, qty_clients, sorted_cijID, costF, costA, assignment_cost, solutionName, map, new_costF, new_costA, temp_open_facilities);
 
+			recombine(&nodes[s1][INDEX_CURRENT], nodes[s1][INDEX_POCKET], nodes[s2][INDEX_CURRENT], qty_facilities, QTY_INST_MUTATION, qty_clients, sorted_cijID, costF, costA, assignment_cost, solutionName, map, new_costF, new_costA, temp_open_facilities);
 
 			// current[s2] = Recombine(pocket[s2], current[s3])
 
@@ -361,7 +376,6 @@ solutionType memetic(char * solutionName, int qty_facilities, int qty_clients, d
 			}
 
 			recombine(&nodes[s2][INDEX_CURRENT], nodes[s2][INDEX_POCKET], nodes[s3][INDEX_CURRENT], qty_facilities, QTY_INST_MUTATION, qty_clients, sorted_cijID, costF, costA, assignment_cost, solutionName, map, new_costF, new_costA, temp_open_facilities);
-
 		} 
 
 
@@ -373,24 +387,9 @@ solutionType memetic(char * solutionName, int qty_facilities, int qty_clients, d
 				print_tree_complete(nodes);
 			}
 		}
-		
-
-		// // Verificar se os currents entrarao no refSet ou nao
-		// // verifica se o current é melhor que pocket
-		// for(int i = 0; i < QTY_NODES_TREE; i++){ // para todos os nós
-
-		// 	if(nodes[i][INDEX_CURRENT].finalTotalCost < nodes[i][INDEX_POCKET].finalTotalCost){ // se o current for melhor que o pocket, atualiza
-		// 		// Inverte
-		// 		aux = nodes[i][INDEX_POCKET];
-		// 		nodes[i][INDEX_POCKET] = nodes[i][INDEX_CURRENT];
-		// 		nodes[i][INDEX_CURRENT] = aux;
-		// 	}
-		// }
-
 
 		// Verificar se os currents entrarao no refSet ou nao, checando diversidade
-		update_refset(nodes, qty_facilities, qty_clients, costF, assignment_cost, sorted_cijID);
-
+		update_refset(nodes, qty_facilities, qty_clients, costF, assignment_cost, sorted_cijID, aux);
 
 
 		if(DEBUG >= DISPLAY_MOVES){
@@ -402,10 +401,9 @@ solutionType memetic(char * solutionName, int qty_facilities, int qty_clients, d
 			}
 		}
 
-		
 		// Levando as melhores solucoes para cima -> Update Population
-		update_population(nodes, QTY_SUBS, solutionName, qty_facilities, qty_clients, costF, costA);
-		
+		update_population(nodes, QTY_SUBS, solutionName, qty_facilities, qty_clients, costF, costA, aux);
+
 		if(DEBUG >= DISPLAY_MOVES){
 			cout << endl << "AFTER UPDATING POPULATION";
 			print_tree_complete(nodes);
@@ -421,7 +419,7 @@ solutionType memetic(char * solutionName, int qty_facilities, int qty_clients, d
 			qty_gen_no_improv = 0;
 
 			if(DEBUG >= DISPLAY_MOVES){
-				cout << "Updating the best cost in this tree!!" << endl;
+				cout << "Updating the best cost in this tree (" << tempBestTotalCost << ")!!" << endl;
 			}
 			if(nodes[0][INDEX_POCKET].finalTotalCost < solution.finalTotalCost){ // se houve melhora na melhor solução encontrada até agora
 				qty_changes_root = 0; // zera a quantidade de mudanças para garantir que vai continuar a busca, pois sabe que logo vai alterar a raiz e zerar de qualquer forma
@@ -460,7 +458,7 @@ solutionType memetic(char * solutionName, int qty_facilities, int qty_clients, d
 
 	// Atualizando valor de solution
 	if(nodes[0][INDEX_POCKET].finalTotalCost < solution.finalTotalCost){
-		solution = nodes[0][INDEX_POCKET];
+		copy_struct(&nodes[0][INDEX_POCKET], &solution, qty_facilities, qty_clients);
 	}
 
 	if(DEBUG >= DISPLAY_MOVES){
@@ -468,7 +466,7 @@ solutionType memetic(char * solutionName, int qty_facilities, int qty_clients, d
 	}
 
 	// Calculando o tempo gasto da funcao
-	solution.timeSpent =  (finish.tv_sec - start.tv_sec);
+	solution.timeSpent = (finish.tv_sec - start.tv_sec);
 	solution.timeSpent += (finish.tv_nsec - start.tv_nsec) / 1000000000.0; // Necessario para obter uma precisao maior 
 
 	if(DEBUG >= DISPLAY_TIME){
@@ -492,6 +490,8 @@ solutionType memetic(char * solutionName, int qty_facilities, int qty_clients, d
 		free(assignment_cost[i]);
 		free(sorted_cijID[i]);
 	}
+	free(aux.open_facilities);
+	free(aux.assigned_facilities);
 	free(assignment_cost);
 	free(sorted_cijID);
 	free(new_costA);
