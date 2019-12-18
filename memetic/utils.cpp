@@ -1,6 +1,7 @@
 #include <iostream>
 #include <ctime>
 #include <fstream>
+#include <cfloat>
 #include "definitions.hpp"
 #include "../greedy/definitions.hpp"
 #include "../localSearch/definitions.hpp"
@@ -121,9 +122,9 @@ void connect_and_update_facilities(solutionType * node, int qty_facilities, int 
 			if(!used){ // se nao tem ninguem conectado nela, vamos fecha-la
 				node->open_facilities[i] = false;
 
-				if(DEBUG >= DISPLAY_DETAILS){
+				// if(DEBUG >= DISPLAY_DETAILS){
 					cout << "Closing facility " << i << " because no clients were assigned to it"<< endl;
-				}
+				// }
 			}
 			else{ // Se essa instalacao esta sendo usada, vai continuar aberta e devemos somar o custo
 				node->finalTotalCost += costF[i];
@@ -140,22 +141,22 @@ void set_initial_sol_G(solutionType * node, int qty_facilities, int qty_clients,
 
 	*node = greedy(qty_clients, qty_facilities, costF, costA);
 
-	// Alocando memoria para as instalacoes abertas
-	node->open_facilities = (int*) malloc((qty_facilities) * sizeof(int));
-	if(!node->open_facilities){
-		cout << "Memory Allocation Failed open_facilities";
-		exit(1);
-	}
+	// // Alocando memoria para as instalacoes abertas
+	// node->open_facilities = (int*) malloc((qty_facilities) * sizeof(int));
+	// if(!node->open_facilities){
+	// 	cout << "Memory Allocation Failed open_facilities";
+	// 	exit(1);
+	// }
 
-	// Inicializando todas as inst fechadas
-	for(int i=0; i<qty_facilities; i++){
-		node->open_facilities[i] = false;
-	}
+	// // Inicializando todas as inst fechadas
+	// for(int i=0; i<qty_facilities; i++){
+	// 	node->open_facilities[i] = false;
+	// }
 
-	// Atualizando as instalacoes abertas
-	for(int i=0;i<qty_clients;i++){
-		node->open_facilities[node->assigned_facilities[i]] = true;
-	}
+	// // Atualizando as instalacoes abertas
+	// for(int i=0;i<qty_clients;i++){
+	// 	node->open_facilities[node->assigned_facilities[i]] = true;
+	// }
 }
 
 
@@ -197,6 +198,83 @@ void set_initial_sol_RANDOM(solutionType * node, int qty_facilities, int qty_cli
 		cout << "RANDOM after connecting clients: ";
 		cout << qty_open_facilities(node->open_facilities, qty_facilities) << " open facilities" << endl;	
 	}
+}
+
+
+// Recebe node por referencia. Modificacoes feitas no node aqui refletem diretamente la
+void set_initial_sol_SHUFFLED(solutionType * node, int qty_facilities, int * shuffled_facilities, int * qty_shuf_made, int SLICE_SHUF, int MAX_QTY_SHUF_MADE, int qty_clients, double * costF, double ** assignment_cost, int ** sorted_cijID){
+
+	// Primeiramente verifica se precisa embaralhar de novo
+	check_shuffed(shuffled_facilities, qty_facilities, qty_shuf_made, MAX_QTY_SHUF_MADE);
+
+	// Abrindo SLICE_SHUF facilities, iniciando na posicao (qty_shuf_made * SLICE_SHUF)
+	int start = *qty_shuf_made * SLICE_SHUF;
+	int end = start + SLICE_SHUF; // nao inclui o valor end (intervalo aberto)
+
+	if(DEBUG >= DISPLAY_MOVES){
+		cout << "START = " << start << "  END = " << end << endl;
+	}
+
+	// Todas as primeiras instalacoes estarao fechadas
+	for(int i=0;i<start;i++){
+		node->open_facilities[shuffled_facilities[i]] = 0;
+	}
+	// Esse intervalo de instalacoes estará abertp
+	for(int i=start; i<end; i++){
+		node->open_facilities[shuffled_facilities[i]] = 1;
+	}
+	// Todas as últimas instalacoes estarao fechadas
+	for(int i=end;i<qty_facilities;i++){
+		node->open_facilities[shuffled_facilities[i]] = 0;
+	}
+
+	// Incrementa o contador de individuos feitos com essa embaralhada
+	*qty_shuf_made += 1;
+
+
+	if(DEBUG >= DISPLAY_MOVES){
+		cout << "SHUFFLED before connecting clients: ";
+		cout << qty_open_facilities(node->open_facilities, qty_facilities) << " open facilities" << endl;	
+	}
+
+	// Conectando cada cliente com a instalacao aberta mais proxima e fechando as instalacoes que nao foram conectadas a ninguem. Custo final também é atualizado
+	connect_and_update_facilities(node, qty_facilities, qty_clients, sorted_cijID, costF, assignment_cost);
+
+	if(DEBUG >= DISPLAY_MOVES){
+		cout << "SHUFFLED after connecting clients: ";
+		cout << qty_open_facilities(node->open_facilities, qty_facilities) << " open facilities" << endl;	
+	}
+}
+
+
+// Usado para o greedy adaptado, quando qty_facilities é menor que a real quantidade de instalacoes
+// Recebe node por referencia. Modificacoes feitas no node aqui refletem diretamente la
+void call_greedy(solutionType * node, int qty_facilities, int qty_clients, double * costF, double * costA){
+	solutionType temp;
+
+	// indica as instalacoes finais atribuidas a cada cliente
+	temp.open_facilities = (int*) malloc((qty_facilities) * sizeof(int));
+
+	temp.assigned_facilities = (int*) malloc((qty_clients) * sizeof(int));
+
+    if((!temp.assigned_facilities)||(!temp.open_facilities)){
+        cout << "Memory Allocation Failed";
+        exit(1);
+    }
+
+    temp = greedy(qty_clients, qty_facilities, costF, costA);
+
+	node->finalTotalCost = temp.finalTotalCost;
+	// node->timeSpent = temp->timeSpent;
+	// node->local_optimum = temp->local_optimum;
+	for(int i=0;i<qty_facilities;i++){
+		node->open_facilities[i] = temp.open_facilities[i];
+	}
+	for(int j=0;j<qty_clients;j++){
+		node->assigned_facilities[j] = temp.assigned_facilities[j];
+	}
+
+	print_open_facilities(node->open_facilities, qty_facilities);
 }
 
 
@@ -487,8 +565,138 @@ void union_crossover(solutionType * child, solutionType mother, solutionType fat
 }
 
 
+// crossover união: copia para o filho todas as instalacoes abertas da mae e do pai, o resto fica fechado
+void groups_crossover(solutionType * child, solutionType mother, solutionType father, int qty_facilities, int qty_clients, int ** cli_cli, double * costF, double ** assignment_cost){
+
+	bool found_group;
+	int qty_groups = 0;
+	int i, j, k;
+	double min_cost = DBL_MAX;
+	int chosen_fac = -1;
+	double cur_cost = 0;
+
+	// Preenchendo o vetor cli_cli para identificar os grupos
+	for(i=0;i<qty_clients;i++){
+
+		found_group = false;
+
+		// Matriz simetrica, antes de i=j, preencher igual [j][i] .. se achar um grupo, parar para copiar essa info
+		for(j=0;j<i;j++){
+			cli_cli[i][j] = cli_cli[j][i];
+
+			// se achou um que seja do mesmo grupo, vamos copiar o restante da linha pra ele
+			if(cli_cli[i][j] >= 1){
+				found_group = true;
+				break;
+			}
+		}
+
+		if(found_group){
+			for(k=j+1;k<qty_clients;k++){
+				cli_cli[i][k] = cli_cli[j][k];
+			}
+		}
+		else{ // se nao achou nenhum grupo, ele é novo, entao verificar com o futuro
+			qty_groups += 1;
+
+			// ver os com os proximos
+			for(j=i;j<qty_clients;j++){
+				// Se ele estiver conectado à mesma instalacao em ambos os casos
+				if((mother.assigned_facilities[i] == mother.assigned_facilities[j]) && (father.assigned_facilities[i] == father.assigned_facilities[j])){
+					// Se for exatamente a mesma instalacao
+					if(mother.assigned_facilities[i] == father.assigned_facilities[i]){
+						cli_cli[i][j] = 2;
+					}
+					// Senão
+					else{
+						cli_cli[i][j] = 1;
+					}
+				}
+				// Senao estiver juntos sempre
+				else{
+					cli_cli[i][j] = 0;
+				}
+			}
+		}
+	}
+
+	// cout << "ACHEI " << qty_groups << " GRUPOS" << endl;
+
+
+	// Começa todas as instalacoes fechadas
+	for(int i=0; i<qty_facilities; i++){
+		child->open_facilities[i] = 0;
+	}
+
+
+	// Para cada grupo, ver pra qual instalacao vai "atribuir", para decidir quais inst abrir
+	// se for 2 (a msm fac exata em pai e mae), entao atribui a ela mesmo
+	// se for 1, entao percorre todas as facilities e ve qual seria a melhor pra atribuir esse grupo
+	for(i=0;i<qty_clients;i++){
+		// LINHA i = 0 vai indicar -1 se aquele cliente já foi utilizado
+		if(cli_cli[0][i] >= 0){ // se for menor que 0 siginifica q ele ja foi atribuido antes em outro grupo
+
+			if(cli_cli[i][i] == 2){ // esse grupo está na mesma instalacao
+				// escolhe essa instalacao mesmo
+				chosen_fac = mother.assigned_facilities[i];
+
+
+				// cout << "CASO SIMPLES (2)" << endl;
+			} 
+			else{ // esse grupo nao tem bem definido qual instalacao vai se atribuido. Portanto devemos percorrer todas e ver qual minimiza o custo de atribuir esses clientes + custo de abrir aquela inst
+				// inicialmente nenhuma inst escolhida
+				min_cost = DBL_MAX;
+				chosen_fac = -1;
+				for(k=0;k<qty_facilities;k++){ // Para todas as instalacoes
+					cur_cost = costF[0];
+
+					for(j=i;j<qty_clients;j++){ // Para todos os clientes que podem ser desse grupo
+						if(cli_cli[i][j] > 0){ // se ele estiver nesse grupo mesmo
+							cur_cost += assignment_cost[j][k];
+						}
+					}
+
+					// Se achei uma instalacao melhor pra atribuir, atualiza
+					if(cur_cost < min_cost){
+						min_cost = cur_cost;
+						chosen_fac = k;
+					}
+				}
+
+				// cout << "CASO DE ESCOLHA (1) : fac na mae: " << mother.open_facilities[chosen_fac] << " e no pai: " << father.open_facilities[chosen_fac] << endl;
+
+			}
+
+			// abre a instalacao escolhida
+			child->open_facilities[chosen_fac] = 1;
+
+			// "atribui" o grupo todo a essa instalacao mesmo, coloca -1 em [0][j] para falar que ele saiu daqui
+			for(j=i;j<qty_clients;j++){
+				if(cli_cli[i][j] > 0){ // se ele estiver no mesmo grupo
+					cli_cli[0][j] = -1; // indica que saiu da busca
+				}
+			}
+
+			// if(DEBUG >= DISPLAY_DETAILS){
+				// cout << "Facility " << chosen_fac << ": " << child->open_facilities[chosen_fac] << endl;
+			// }
+		}
+	}
+
+	if(DEBUG >= DISPLAY_ACTIONS){
+		cout << "Child after groups crossover: ";
+		print_individual(child->open_facilities, qty_facilities);
+	}
+
+	// if(DEBUG >= DISPLAY_MOVES){
+	// 	cout << "Child after groups crossover: ";
+	// 	print_open_facilities(child->open_facilities, qty_facilities);
+	// }
+}
+
+
 // Recebe node child por referencia. Modificacoes feitas no node aqui refletem diretamente la.
-void crossover_mutation(solutionType * child, solutionType mother, solutionType father, int qty_facilities, int QTY_INST_MUTATION, int qty_clients, int ** sorted_cijID, double * costF, double ** assignment_cost){
+void crossover_mutation(solutionType * child, solutionType mother, solutionType father, int qty_facilities, int QTY_INST_MUTATION, int qty_clients, int ** sorted_cijID, double * costF, double ** assignment_cost, int ** cli_cli){
 	int type_crossover = 0;
 
 	if(DEBUG >= DISPLAY_ACTIONS){
@@ -510,12 +718,17 @@ void crossover_mutation(solutionType * child, solutionType mother, solutionType 
 	else if((CROSSOVER_TYPE == 2)||(type_crossover == 2)){ // Chama o one point crossover
 		one_point_crossover(child, mother, father, qty_facilities);
 	}
-	else { // Chama o union crossover{ 
+	else if((CROSSOVER_TYPE == 3)||(type_crossover == 3)){ // Chama o union crossover{ 
 		union_crossover(child, mother, father, qty_facilities);
+	}
+	else { //  Chama o groups crossover
+		groups_crossover(child, mother, father, qty_facilities, qty_clients, cli_cli, costF, assignment_cost);
 	}
 
 	// mutation 
-	mutation(child, qty_facilities, QTY_INST_MUTATION);
+	if(!((CROSSOVER_TYPE == 4)||(type_crossover == 4))){
+		mutation(child, qty_facilities, QTY_INST_MUTATION);
+	}
 
 	if(DEBUG >= DISPLAY_ACTIONS){
 		cout << "ASSIGNING CLIENTS" << endl;
@@ -528,13 +741,18 @@ void crossover_mutation(solutionType * child, solutionType mother, solutionType 
 		cout << "Child after connecting clients: ";
 		print_individual(child->open_facilities, qty_facilities);
 	}
+
+	// if(DEBUG >= DISPLAY_MOVES){
+	// 	cout << "Child after connecting clients: ";
+	// 	print_open_facilities(child->open_facilities, qty_facilities);
+	// }
 }
 
 
 // Recebe node child por referencia. Modificacoes feitas no node aqui refletem diretamente la.
-void recombine(solutionType * child, solutionType mother, solutionType father, int qty_facilities, int QTY_INST_MUTATION, int qty_clients, int ** sorted_cijID, double * costF, double * costA, double ** assignment_cost, char * solutionName, int * map, double * new_costF, double * new_costA, int * temp_open_facilities){
+void recombine(solutionType * child, solutionType mother, solutionType father, int qty_facilities, int QTY_INST_MUTATION, int qty_clients, int ** sorted_cijID, double * costF, double * costA, double ** assignment_cost, char * solutionName, int * map, double * new_costF, double * new_costA, int * temp_open_facilities, int ** cli_cli){
 	
-	crossover_mutation(child, mother, father, qty_facilities, QTY_INST_MUTATION, qty_clients, sorted_cijID, costF, assignment_cost);
+	crossover_mutation(child, mother, father, qty_facilities, QTY_INST_MUTATION, qty_clients, sorted_cijID, costF, assignment_cost, cli_cli);
 
 	// Se for do tipo uniform ou one-point crossover, entao chama o Late Acceptance
 	if((CROSSOVER_TYPE == 1) ||(CROSSOVER_TYPE == 2)){
@@ -556,8 +774,8 @@ void recombine(solutionType * child, solutionType mother, solutionType father, i
 		// 	}
 		// }
 	}
-	// Senão, se for do tipo union, chama o LS_N0
-	else if(CROSSOVER_TYPE == 3){
+	// Senão, se for do tipo union ou groups
+	else if((CROSSOVER_TYPE == 3)||(CROSSOVER_TYPE == 4)){
 		// call_local_search_close_fac(child, solutionName, qty_facilities, qty_clients, costF, assignment_cost, *child);
 
 		// if(DEBUG >= DISPLAY_ACTIONS){
@@ -573,6 +791,11 @@ void recombine(solutionType * child, solutionType mother, solutionType father, i
 		// }
 
 		map_and_call_TS(child, qty_facilities, qty_clients, costF, assignment_cost, map, new_costF, new_costA, solutionName, temp_open_facilities);
+
+
+		if(DEBUG >= DISPLAY_MOVES){
+			print_open_facilities(child->open_facilities, qty_facilities);
+		}
 
 		if(DEBUG >= DISPLAY_ACTIONS){
 			cout << "Child after map and tabu search: ";
@@ -771,7 +994,7 @@ double compare_pocket_current(solutionType * node){
 }
 
 
-void update_refset(solutionType ** nodes, int qty_facilities, int qty_clients, double * costF, double ** assignment_cost, int ** sorted_cijID, solutionType aux){
+void update_refset(solutionType ** nodes, int qty_facilities, int qty_clients, double * costF, double ** assignment_cost, int ** sorted_cijID, solutionType aux, int * map, double * new_costF, double * new_costA, int * temp_open_facilities){
 	double aux_comparison;
 	bool ok = false;
 	// Verificar se os currents entrarao no refSet ou nao
@@ -795,6 +1018,7 @@ void update_refset(solutionType ** nodes, int qty_facilities, int qty_clients, d
 		else if(!are_different(nodes[0][INDEX_CURRENT], nodes[0][INDEX_POCKET], qty_facilities)){
 			// Gera uma solução aleatória e repete o processo
 			set_initial_sol_RANDOM(&nodes[0][INDEX_CURRENT], qty_facilities, qty_clients, costF, assignment_cost, sorted_cijID); 
+			map_and_call_G(&nodes[0][INDEX_CURRENT], qty_facilities, qty_clients, costF, assignment_cost, map, new_costF, new_costA, temp_open_facilities);
 			
 			if(DEBUG >= DISPLAY_DETAILS){
 				cout << "Random - node[" << 0 << "][" << INDEX_CURRENT << "]:" << nodes[0][INDEX_CURRENT].finalTotalCost << endl;
@@ -825,7 +1049,8 @@ void update_refset(solutionType ** nodes, int qty_facilities, int qty_clients, d
 				if(!are_different(nodes[i][INDEX_CURRENT], nodes[i][INDEX_POCKET], qty_facilities)){
 					// Gera uma solução aleatória e repete o processo
 					set_initial_sol_RANDOM(&nodes[i][INDEX_CURRENT], qty_facilities, qty_clients, costF, assignment_cost, sorted_cijID); 
-			
+					map_and_call_G(&nodes[i][INDEX_CURRENT], qty_facilities, qty_clients, costF, assignment_cost, map, new_costF, new_costA, temp_open_facilities);
+
 					if(DEBUG >= DISPLAY_DETAILS){
 						cout << "Random - node[" << i << "][" << INDEX_CURRENT << "]:" << nodes[i][INDEX_CURRENT].finalTotalCost << endl;
 					}
@@ -847,7 +1072,8 @@ void update_refset(solutionType ** nodes, int qty_facilities, int qty_clients, d
 						if(!are_different(nodes[i][INDEX_CURRENT], nodes[j][INDEX_CURRENT], qty_facilities)){
 							// Gera uma solução aleatória e repete o processo
 							set_initial_sol_RANDOM(&nodes[i][INDEX_CURRENT], qty_facilities, qty_clients, costF, assignment_cost, sorted_cijID); 
-			
+							map_and_call_G(&nodes[i][INDEX_CURRENT], qty_facilities, qty_clients, costF, assignment_cost, map, new_costF, new_costA, temp_open_facilities);
+
 							if(DEBUG >= DISPLAY_DETAILS){
 								cout << "Random - node[" << i << "][" << INDEX_CURRENT << "]:" << nodes[i][INDEX_CURRENT].finalTotalCost << endl;
 							}
@@ -860,6 +1086,7 @@ void update_refset(solutionType ** nodes, int qty_facilities, int qty_clients, d
 					else if(!are_different(nodes[i][INDEX_CURRENT], nodes[j][INDEX_POCKET], qty_facilities)){
 						// Gera uma solução aleatória e repete o processo
 						set_initial_sol_RANDOM(&nodes[i][INDEX_CURRENT], qty_facilities, qty_clients, costF, assignment_cost, sorted_cijID); 
+						map_and_call_G(&nodes[i][INDEX_CURRENT], qty_facilities, qty_clients, costF, assignment_cost, map, new_costF, new_costA, temp_open_facilities);
 			
 						if(DEBUG >= DISPLAY_DETAILS){
 							cout << "Random - node[" << i << "][" << INDEX_CURRENT << "]:" << nodes[i][INDEX_CURRENT].finalTotalCost << endl;
@@ -885,7 +1112,8 @@ void update_refset(solutionType ** nodes, int qty_facilities, int qty_clients, d
 						// se for igual ao current, gera aleatoria
 						if(!are_different(nodes[i][INDEX_CURRENT], nodes[0][INDEX_CURRENT], qty_facilities)){
 							// Gera uma solução aleatória e repete o processo
-							set_initial_sol_RANDOM(&nodes[i][INDEX_CURRENT], qty_facilities, qty_clients, costF, assignment_cost, sorted_cijID); 
+							set_initial_sol_RANDOM(&nodes[i][INDEX_CURRENT], qty_facilities, qty_clients, costF, assignment_cost, sorted_cijID);
+							map_and_call_G(&nodes[i][INDEX_CURRENT], qty_facilities, qty_clients, costF, assignment_cost, map, new_costF, new_costA, temp_open_facilities); 
 			
 							if(DEBUG >= DISPLAY_DETAILS){
 								cout << "Random - node[" << i << "][" << INDEX_CURRENT << "]:" << nodes[i][INDEX_CURRENT].finalTotalCost << endl;
@@ -903,6 +1131,7 @@ void update_refset(solutionType ** nodes, int qty_facilities, int qty_clients, d
 					else if(!are_different(nodes[i][INDEX_CURRENT], nodes[0][INDEX_POCKET], qty_facilities)){
 						// Gera uma solução aleatória e repete o processo
 						set_initial_sol_RANDOM(&nodes[i][INDEX_CURRENT], qty_facilities, qty_clients, costF, assignment_cost, sorted_cijID); 
+						map_and_call_G(&nodes[i][INDEX_CURRENT], qty_facilities, qty_clients, costF, assignment_cost, map, new_costF, new_costA, temp_open_facilities);
 			
 						if(DEBUG >= DISPLAY_DETAILS){
 							cout << "Random - node[" << i << "][" << INDEX_CURRENT << "]:" << nodes[i][INDEX_CURRENT].finalTotalCost << endl;
@@ -916,7 +1145,8 @@ void update_refset(solutionType ** nodes, int qty_facilities, int qty_clients, d
 					// se for igual ao current, gera aleatoria
 					if(!are_different(nodes[i][INDEX_CURRENT], nodes[0][INDEX_CURRENT], qty_facilities)){
 						// Gera uma solução aleatória e repete o processo
-						set_initial_sol_RANDOM(&nodes[i][INDEX_CURRENT], qty_facilities, qty_clients, costF, assignment_cost, sorted_cijID); 
+						set_initial_sol_RANDOM(&nodes[i][INDEX_CURRENT], qty_facilities, qty_clients, costF, assignment_cost, sorted_cijID);
+						map_and_call_G(&nodes[i][INDEX_CURRENT], qty_facilities, qty_clients, costF, assignment_cost, map, new_costF, new_costA, temp_open_facilities); 
 			
 						if(DEBUG >= DISPLAY_DETAILS){
 							cout << "Random - node[" << i << "][" << INDEX_CURRENT << "]:" << nodes[i][INDEX_CURRENT].finalTotalCost << endl;
@@ -949,6 +1179,7 @@ void update_refset(solutionType ** nodes, int qty_facilities, int qty_clients, d
 				if(!are_different(nodes[i][INDEX_CURRENT], nodes[i][INDEX_POCKET], qty_facilities)){
 					// Gera uma solução aleatória e repete o processo
 					set_initial_sol_RANDOM(&nodes[i][INDEX_CURRENT], qty_facilities, qty_clients, costF, assignment_cost, sorted_cijID); 
+					map_and_call_G(&nodes[i][INDEX_CURRENT], qty_facilities, qty_clients, costF, assignment_cost, map, new_costF, new_costA, temp_open_facilities);
 			
 					if(DEBUG >= DISPLAY_DETAILS){
 						cout << "Random - node[" << i << "][" << INDEX_CURRENT << "]:" << nodes[i][INDEX_CURRENT].finalTotalCost << endl;
@@ -972,6 +1203,7 @@ void update_refset(solutionType ** nodes, int qty_facilities, int qty_clients, d
 						if(!are_different(nodes[i][INDEX_CURRENT], nodes[j][INDEX_CURRENT], qty_facilities)){
 							// Gera uma solução aleatória e repete o processo
 							set_initial_sol_RANDOM(&nodes[i][INDEX_CURRENT], qty_facilities, qty_clients, costF, assignment_cost, sorted_cijID); 
+							map_and_call_G(&nodes[i][INDEX_CURRENT], qty_facilities, qty_clients, costF, assignment_cost, map, new_costF, new_costA, temp_open_facilities);
 			
 							if(DEBUG >= DISPLAY_DETAILS){
 								cout << "Random - node[" << i << "][" << INDEX_CURRENT << "]:" << nodes[i][INDEX_CURRENT].finalTotalCost << endl;
@@ -984,7 +1216,8 @@ void update_refset(solutionType ** nodes, int qty_facilities, int qty_clients, d
 					// se for igual o pocket, ver se é igual mesmo, e gerar aletaroia
 					else if(!are_different(nodes[i][INDEX_CURRENT], nodes[j][INDEX_POCKET], qty_facilities)){
 						// Gera uma solução aleatória e repete o processo
-						set_initial_sol_RANDOM(&nodes[i][INDEX_CURRENT], qty_facilities, qty_clients, costF, assignment_cost, sorted_cijID); 
+						set_initial_sol_RANDOM(&nodes[i][INDEX_CURRENT], qty_facilities, qty_clients, costF, assignment_cost, sorted_cijID);
+						map_and_call_G(&nodes[i][INDEX_CURRENT], qty_facilities, qty_clients, costF, assignment_cost, map, new_costF, new_costA, temp_open_facilities); 
 			
 						if(DEBUG >= DISPLAY_DETAILS){
 							cout << "Random - node[" << i << "][" << INDEX_CURRENT << "]:" << nodes[i][INDEX_CURRENT].finalTotalCost << endl;
@@ -1008,6 +1241,7 @@ void update_refset(solutionType ** nodes, int qty_facilities, int qty_clients, d
 						if(!are_different(nodes[i][INDEX_CURRENT], nodes[j][INDEX_CURRENT], qty_facilities)){
 							// Gera uma solução aleatória e repete o processo
 							set_initial_sol_RANDOM(&nodes[i][INDEX_CURRENT], qty_facilities, qty_clients, costF, assignment_cost, sorted_cijID); 
+							map_and_call_G(&nodes[i][INDEX_CURRENT], qty_facilities, qty_clients, costF, assignment_cost, map, new_costF, new_costA, temp_open_facilities);
 			
 							if(DEBUG >= DISPLAY_DETAILS){
 								cout << "Random - node[" << i << "][" << INDEX_CURRENT << "]:" << nodes[i][INDEX_CURRENT].finalTotalCost << endl;
@@ -1020,7 +1254,8 @@ void update_refset(solutionType ** nodes, int qty_facilities, int qty_clients, d
 					// se nao, compara se sao iguais
 					if(!are_different(nodes[i][INDEX_CURRENT], nodes[j][INDEX_POCKET], qty_facilities)){
 						// Gera uma solução aleatória e repete o processo
-						set_initial_sol_RANDOM(&nodes[i][INDEX_CURRENT], qty_facilities, qty_clients, costF, assignment_cost, sorted_cijID); 
+						set_initial_sol_RANDOM(&nodes[i][INDEX_CURRENT], qty_facilities, qty_clients, costF, assignment_cost, sorted_cijID);
+						map_and_call_G(&nodes[i][INDEX_CURRENT], qty_facilities, qty_clients, costF, assignment_cost, map, new_costF, new_costA, temp_open_facilities); 
 			
 						if(DEBUG >= DISPLAY_DETAILS){
 							cout << "Random - node[" << i << "][" << INDEX_CURRENT << "]:" << nodes[i][INDEX_CURRENT].finalTotalCost << endl;
@@ -1046,7 +1281,8 @@ void update_refset(solutionType ** nodes, int qty_facilities, int qty_clients, d
 						// se for igual ao current, gera aleatoria
 						if(!are_different(nodes[i][INDEX_CURRENT], nodes[0][INDEX_CURRENT], qty_facilities)){
 							// Gera uma solução aleatória e repete o processo
-							set_initial_sol_RANDOM(&nodes[i][INDEX_CURRENT], qty_facilities, qty_clients, costF, assignment_cost, sorted_cijID); 
+							set_initial_sol_RANDOM(&nodes[i][INDEX_CURRENT], qty_facilities, qty_clients, costF, assignment_cost, sorted_cijID);
+							map_and_call_G(&nodes[i][INDEX_CURRENT], qty_facilities, qty_clients, costF, assignment_cost, map, new_costF, new_costA, temp_open_facilities); 
 			
 							if(DEBUG >= DISPLAY_DETAILS){
 								cout << "Random - node[" << i << "][" << INDEX_CURRENT << "]:" << nodes[i][INDEX_CURRENT].finalTotalCost << endl;
@@ -1064,6 +1300,7 @@ void update_refset(solutionType ** nodes, int qty_facilities, int qty_clients, d
 					else if(!are_different(nodes[i][INDEX_CURRENT], nodes[0][INDEX_POCKET], qty_facilities)){
 						// Gera uma solução aleatória e repete o processo
 						set_initial_sol_RANDOM(&nodes[i][INDEX_CURRENT], qty_facilities, qty_clients, costF, assignment_cost, sorted_cijID); 
+						map_and_call_G(&nodes[i][INDEX_CURRENT], qty_facilities, qty_clients, costF, assignment_cost, map, new_costF, new_costA, temp_open_facilities);
 			
 						if(DEBUG >= DISPLAY_DETAILS){
 							cout << "Random - node[" << i << "][" << INDEX_CURRENT << "]:" << nodes[i][INDEX_CURRENT].finalTotalCost << endl;
@@ -1078,6 +1315,7 @@ void update_refset(solutionType ** nodes, int qty_facilities, int qty_clients, d
 					if(!are_different(nodes[i][INDEX_CURRENT], nodes[0][INDEX_CURRENT], qty_facilities)){
 						// Gera uma solução aleatória e repete o processo
 						set_initial_sol_RANDOM(&nodes[i][INDEX_CURRENT], qty_facilities, qty_clients, costF, assignment_cost, sorted_cijID); 
+						map_and_call_G(&nodes[i][INDEX_CURRENT], qty_facilities, qty_clients, costF, assignment_cost, map, new_costF, new_costA, temp_open_facilities);
 			
 						if(DEBUG >= DISPLAY_DETAILS){
 							cout << "Random - node[" << i << "][" << INDEX_CURRENT << "]:" << nodes[i][INDEX_CURRENT].finalTotalCost << endl;
@@ -1192,6 +1430,35 @@ void map_and_call_TS(solutionType * solution, int qty_facilities, int qty_client
 }
 
 
+
+void map_and_call_G(solutionType * solution, int qty_facilities, int qty_clients, double * costF, double ** assignment_cost, int * map, double * new_costF, double * new_costA, int * temp_open_facilities){
+
+	if(DEBUG >= DISPLAY_MOVES){
+		cout << "Initial G_MAP solution = " << solution->finalTotalCost << endl; 
+		if(DEBUG >= DISPLAY_DETAILS){
+			print_open_facilities(solution->open_facilities, qty_facilities);
+		}
+	}
+
+	int cont_facilities = mapping(solution, qty_facilities, qty_clients, costF, assignment_cost, map, new_costF, new_costA);
+
+	if(DEBUG >= DISPLAY_MOVES){
+		cout << "Calling G mapping with " << cont_facilities << " open facilities" << endl;
+	}
+
+	call_greedy(solution, cont_facilities, qty_clients, new_costF, new_costA);
+
+	unmapping(solution, cont_facilities, qty_facilities, qty_clients, map, temp_open_facilities);
+
+	if(DEBUG >= DISPLAY_MOVES){
+		cout << "Final G_MAP solution = " << solution->finalTotalCost << endl; 
+		if(DEBUG >= DISPLAY_DETAILS){
+			print_open_facilities(solution->open_facilities, qty_facilities);
+		}
+	}
+}
+
+
 void test_wrong_answer(solutionType solution, int qty_clients, int qty_facilities, double * costF, double ** assignment_cost){
 
 	cout << "TEST WRONG ANSWER: " << solution.finalTotalCost << endl;
@@ -1253,5 +1520,67 @@ void copy_struct(solutionType * s1, solutionType * s2, int qty_facilities, int q
 	}
 	for(int j=0;j<qty_clients;j++){
 		s2->assigned_facilities[j] = s1->assigned_facilities[j];
+	}
+}
+
+
+// Cria um vetor completo com os numeros de facilities ou clientes embaralhados (sem repeticao e sem faltar)
+void create_shuffled_vector(int *vet, int vetSize){
+	// Popula o vetor em ordem
+	for(int i=0;i<vetSize;i++){
+		vet[i] = i;
+	}	
+
+	if(DEBUG >= DISPLAY_MOVES){
+		cout << "Creating and populating vector " << endl;
+
+		if(DEBUG >= DISPLAY_ACTIONS){
+			for(int j=0;j<vetSize;j++){
+				cout << vet[j] << " ";
+			}
+			cout << endl;
+		}
+	}
+
+	// embaralha
+	shuffle(vet, vetSize);
+
+}
+
+
+// Função para embaralhar o vetor com indices das facilities
+void shuffle(int *vet, int vetSize){
+	int r, temp;
+	for(int i=0; i<vetSize; i++){
+		r = rand() % vetSize;
+		temp = vet[i];
+		vet[i] = vet[r];
+		vet[r] = temp;
+	}
+
+	if(DEBUG >= DISPLAY_MOVES){
+		cout << "Shuffle vector " << endl;
+
+		if(DEBUG >= DISPLAY_ACTIONS){
+			for(int j=0;j<vetSize;j++){
+				cout << vet[j] << " ";
+			}
+			cout << endl;
+		}
+	}
+}
+
+
+// Verifica se ja usou tudo o que podia, se sim, embaralha de novo
+void check_shuffed(int *vet, int vetSize, int * qty_shuf_made, int MAX_QTY_SHUF_MADE){
+	// Invalidez, ainda nao foi criado o vetor
+	if(*qty_shuf_made < 0){
+		create_shuffled_vector(vet, vetSize);
+		*qty_shuf_made = 0;
+	}
+	// se ja usou tudo o que podia, embaralha de novo
+	else if(*qty_shuf_made >= MAX_QTY_SHUF_MADE){
+		shuffle(vet, vetSize);
+		*qty_shuf_made = 0;
 	}
 }

@@ -466,9 +466,18 @@ solutionType greedy(int qty_clients, int qty_facilities, double * costF, double 
 		cout << "Final Total Function Time: " << solution.timeSpent << " seconds" << endl;
 	}
 
+
 	free(clients);
 	free(facilities);
 	free(edges);
+	free(delete_clients);
+	// desalocando vetor de sorted_cijID
+	for(int i = 0; i < qty_facilities; i++) {
+		free(sorted_cij[i]);
+		free(sorted_cijID[i]);
+	}
+	free(sorted_cijID);
+	free(sorted_cij);
 
 	return(solution);
 }

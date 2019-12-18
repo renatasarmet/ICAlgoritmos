@@ -10,10 +10,11 @@
 #define LA_INITIAL_POP false // indica se quer fazer LA na pop inicial gerada pelo random
 #define OPEN_RANDOM_RATE 10 //1.5 // 10% // probabilidade de abrir uma instalacao na geração de solucoes random
 #define MUTATION_RATE 0.01 // 1% 0.1// 10% //0.05 // 5% * qty_facilities
-#define CROSSOVER_TYPE 3 // 1 para uniform, 2 para one-point, 3 para union, 0 para aleatorio cada vez
+#define CROSSOVER_TYPE 4 // 1 para uniform, 2 para one-point, 3 para union, 4 para groups 0 para aleatorio cada vez
 #define PROB_LA_RATE 50 // 50%
 #define MAX_GEN_NO_IMPROVEMENT 5 // quantidade de geracoes sem melhora, para atualizar o root
 #define MAX_CHANGES_ROOT 2 // indica a quantidade de vezes seguidas que pode atualizar o root sem melhorar a best salva
+#define SHUFFLED_FACILITIES true // indica se vai gerar as solucoes iniciais garantindo que todas as instalacoes estarao presentes nas solucoes
 
 #define DISPLAY_BASIC 1 // corresponde a exibicao da quantidade de movimentos
 #define DISPLAY_MOVES 2 // corresponde a todos os cout quando um movimento é realizado de fato
@@ -35,6 +36,8 @@ void connect_and_update_facilities(solutionType * node, int qty_facilities, int 
 void set_initial_sol_G(solutionType * node, int qty_facilities, int qty_clients, double * costF, double * costA);
 
 void set_initial_sol_RANDOM(solutionType * node, int qty_facilities, int qty_clients, double * costF, double ** assignment_cost, int ** sorted_cijID);
+
+void call_greedy(solutionType * node, int qty_facilities, int qty_clients, double * costF, double * costA);
 
 void call_local_search(solutionType * node, char * solutionName, int qty_facilities, int qty_clients, double * costF, double * costA, solutionType initial_sol);
 
@@ -64,9 +67,13 @@ void uniform_crossover(solutionType * child, solutionType mother, solutionType f
 
 void one_point_crossover(solutionType * child, solutionType mother, solutionType father, int qty_facilities);
 
-void crossover_mutation(solutionType * child, solutionType mother, solutionType father, int qty_facilities, int QTY_INST_MUTATION, int qty_clients, int ** sorted_cijID, double * costF, double ** assignment_cost);
+void union_crossover(solutionType * child, solutionType mother, solutionType father, int qty_facilities);
 
-void recombine(solutionType * child, solutionType mother, solutionType father, int qty_facilities, int QTY_INST_MUTATION, int qty_clients, int ** sorted_cijID, double * costF, double * costA, double ** assignment_cost, char * solutionName, int * map, double * new_costF, double * new_costA, int * temp_open_facilities);
+void groups_crossover(solutionType * child, solutionType mother, solutionType father, int qty_facilities, int qty_clients, int ** cli_cli, double * costF, double ** assignment_cost);
+
+void crossover_mutation(solutionType * child, solutionType mother, solutionType father, int qty_facilities, int QTY_INST_MUTATION, int qty_clients, int ** sorted_cijID, double * costF, double ** assignment_cost, int ** cli_cli);
+
+void recombine(solutionType * child, solutionType mother, solutionType father, int qty_facilities, int QTY_INST_MUTATION, int qty_clients, int ** sorted_cijID, double * costF, double * costA, double ** assignment_cost, char * solutionName, int * map, double * new_costF, double * new_costA, int * temp_open_facilities, int ** cli_cli);
 
 void print_count_open_facilities(solutionType ** nodes, int qty_facilities);
 
@@ -82,7 +89,7 @@ void swap_pocket_current(solutionType * node, int qty_facilities, int qty_client
 
 double compare_pocket_current(solutionType * node);
 
-void update_refset(solutionType ** nodes, int qty_facilities, int qty_clients, double * costF, double ** assignment_cost, int ** sorted_cijID, solutionType aux);
+void update_refset(solutionType ** nodes, int qty_facilities, int qty_clients, double * costF, double ** assignment_cost, int ** sorted_cijID, solutionType aux, int * map, double * new_costF, double * new_costA, int * temp_open_facilities);
 
 int mapping(solutionType * solution, int qty_facilities, int qty_clients, double * costF, double ** assignment_cost, int * map, double * new_costF, double * new_costA);
 
@@ -90,7 +97,16 @@ void unmapping(solutionType * solution, int cont_facilities, int qty_facilities,
 
 void map_and_call_TS(solutionType * solution, int qty_facilities, int qty_clients, double * costF, double ** assignment_cost, int * map, double * new_costF, double * new_costA, char * solutionName, int * temp_open_facilities);
 
+void map_and_call_G(solutionType * solution, int qty_facilities, int qty_clients, double * costF, double ** assignment_cost, int * map, double * new_costF, double * new_costA, int * temp_open_facilities);
+
 void test_wrong_answer(solutionType solution, int qty_clients, int qty_facilities, double * costF, double ** assignment_cost);
 
 void copy_struct(solutionType * s1, solutionType * s2, int qty_facilities, int qty_clients);
 
+void create_shuffled_vector(int *vet, int vetSize);
+
+void shuffle(int *vet, int vetSize);
+
+void check_shuffed(int *vet, int vetSize, int * qty_shuf_made, int MAX_QTY_SHUF_MADE);
+
+void set_initial_sol_SHUFFLED(solutionType * node, int qty_facilities, int * shuffled_facilities, int * qty_shuf_made, int SLICE_SHUF, int MAX_QTY_SHUF_MADE, int qty_clients, double * costF, double ** assignment_cost, int ** sorted_cijID);

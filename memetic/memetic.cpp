@@ -43,7 +43,32 @@ solutionType memetic(char * solutionName, int qty_facilities, int qty_clients, d
     }
 
 
+    // Indicara a ordem pra preencher os 
+	int * shuffled_facilities = (int*) malloc((qty_facilities) * sizeof(int));
+ 	if(!shuffled_facilities){
+        cout << "Memory Allocation Failed";
+        exit(1);
+    }
+
+    int qty_shuf_made = -1; // quantos individuos ja foram feitos com esse vetor embaralhado // inicia indicando invalidez, para criar o vetor
+    int SLICE_SHUF = (OPEN_RANDOM_RATE * qty_facilities)/100; // quantas solucoes abrir em cada individuo
+    int MAX_QTY_SHUF_MADE = qty_facilities / SLICE_SHUF; // maximo de individuos possiveis de se formar com 1 embaralhada
+
+
 	// FUTURO: SALVAR LOG E LOG_DETAILS
+
+	// cli_cli - matriz cliente x cliente, indica se estao conectados à mesma instalacao nos dois pais
+	int **cli_cli = (int**) malloc((qty_clients) * sizeof(int*));
+
+	for(int i = 0; i < qty_clients; i++) {
+		cli_cli[i] = (int *)malloc(qty_clients * sizeof(int));
+	}
+
+    if(!cli_cli){
+        cout << "Memory Allocation Failed";
+        exit(1);
+    }
+
 
 
 	// Declaracao dos nós da arvore. Cada nó é um agente, que possui 1 pocket e 1 current
@@ -152,7 +177,9 @@ solutionType memetic(char * solutionName, int qty_facilities, int qty_clients, d
 		cout << "Initializing population" << endl;
 	}
 
-	// VERIFICAR COMO VOU FAZER A GERACAO DA POPULACAO INICIAL
+	/*
+	Geração da população inicial
+	*/
 
 	// Iniciando os nós 0 e 1, pocket 0
 
@@ -160,7 +187,6 @@ solutionType memetic(char * solutionName, int qty_facilities, int qty_clients, d
 
 	set_initial_sol_G(&nodes[1][INDEX_POCKET], qty_facilities, qty_clients, costF, costA); // solucao com greedy
 	// set_initial_sol_RANDOM(&nodes[1][INDEX_POCKET], qty_facilities, qty_clients, costF, assignment_cost, sorted_cijID); // preenche o current
-
 
 	clock_gettime(CLOCK_REALTIME, &finish_part);
 
@@ -179,7 +205,6 @@ solutionType memetic(char * solutionName, int qty_facilities, int qty_clients, d
 	// set_initial_sol_RANDOM(&nodes[0][INDEX_POCKET], qty_facilities, qty_clients, costF, assignment_cost, sorted_cijID); // preenche o current
 
 	// call_late_acceptance(&nodes[0][INDEX_POCKET], solutionName, qty_facilities, qty_clients, costF, costA, nodes[1][INDEX_POCKET], false); // solucao com late acceptance com solucao inicial do greedy
-
 	clock_gettime(CLOCK_REALTIME, &finish_part);
 
 
@@ -202,13 +227,21 @@ solutionType memetic(char * solutionName, int qty_facilities, int qty_clients, d
 	}
 
 	// Inicial todos os pockets de todos os nós, com solução aleatória
+	// Obs: Se SHUFFLED_FACILITIES estiver marcado como True, haverá um vetor shuffled_facilities que vai ter a ordem das instalacoes para colocar nos individuos. Se nao, vai ser aleatorio mesmo
 
 	// Preenchendo os currents dos nós 0 e 1
 	for(int j=0;j<2;j++){ // para os nós 0 e 1
 
 		clock_gettime(CLOCK_REALTIME, &start_part);
 
-		set_initial_sol_RANDOM(&nodes[j][INDEX_CURRENT], qty_facilities, qty_clients, costF, assignment_cost, sorted_cijID); // preenche o current
+		if(SHUFFLED_FACILITIES){
+			set_initial_sol_SHUFFLED(&nodes[j][INDEX_CURRENT], qty_facilities, shuffled_facilities, &qty_shuf_made, SLICE_SHUF, MAX_QTY_SHUF_MADE, qty_clients, costF, assignment_cost, sorted_cijID);
+		}
+		else{
+			set_initial_sol_RANDOM(&nodes[j][INDEX_CURRENT], qty_facilities, qty_clients, costF, assignment_cost, sorted_cijID); // preenche o current
+		}
+
+		map_and_call_G(&nodes[j][INDEX_CURRENT], qty_facilities, qty_clients, costF, assignment_cost, map, new_costF, new_costA, temp_open_facilities);
 
 		clock_gettime(CLOCK_REALTIME, &finish_part);
 
@@ -256,7 +289,14 @@ solutionType memetic(char * solutionName, int qty_facilities, int qty_clients, d
 
 		for(int j=0;j<QTY_SOLUTIONS_NODE;j++){ // para o pocket e current
 
-			set_initial_sol_RANDOM(&nodes[i][j], qty_facilities, qty_clients, costF, assignment_cost, sorted_cijID); 
+			if(SHUFFLED_FACILITIES){
+				set_initial_sol_SHUFFLED(&nodes[i][j], qty_facilities, shuffled_facilities, &qty_shuf_made, SLICE_SHUF, MAX_QTY_SHUF_MADE, qty_clients, costF, assignment_cost, sorted_cijID);
+			}
+			else{
+				set_initial_sol_RANDOM(&nodes[i][j], qty_facilities, qty_clients, costF, assignment_cost, sorted_cijID); 
+			}
+
+			map_and_call_G(&nodes[i][j], qty_facilities, qty_clients, costF, assignment_cost, map, new_costF, new_costA, temp_open_facilities);
 			
 			if(DEBUG >= DISPLAY_DETAILS){
 				cout << "Random - node[" << i << "][" << j << "]:" << nodes[i][j].finalTotalCost << endl;
@@ -350,7 +390,7 @@ solutionType memetic(char * solutionName, int qty_facilities, int qty_clients, d
 				cout << "current[" << id_parent << "] = Recombine(pocket[" << id_parent << "], current[" << s1 << "]) " << endl;
 			}
 
-			recombine(&nodes[id_parent][INDEX_CURRENT], nodes[id_parent][INDEX_POCKET], nodes[s1][INDEX_CURRENT], qty_facilities, QTY_INST_MUTATION, qty_clients, sorted_cijID, costF, costA, assignment_cost, solutionName, map, new_costF, new_costA, temp_open_facilities);
+			recombine(&nodes[id_parent][INDEX_CURRENT], nodes[id_parent][INDEX_POCKET], nodes[s1][INDEX_CURRENT], qty_facilities, QTY_INST_MUTATION, qty_clients, sorted_cijID, costF, costA, assignment_cost, solutionName, map, new_costF, new_costA, temp_open_facilities, cli_cli);
 
 			// current[s3] = Recombine(pocket[s3], current[id_parent])
 
@@ -358,7 +398,7 @@ solutionType memetic(char * solutionName, int qty_facilities, int qty_clients, d
 				cout << "current[" << s3 << "] = Recombine(pocket[" << s3 << "], current[" << id_parent << "]) " << endl;
 			}
 
-			recombine(&nodes[s3][INDEX_CURRENT], nodes[s3][INDEX_POCKET], nodes[id_parent][INDEX_CURRENT], qty_facilities, QTY_INST_MUTATION, qty_clients, sorted_cijID, costF, costA, assignment_cost, solutionName, map, new_costF, new_costA, temp_open_facilities);
+			recombine(&nodes[s3][INDEX_CURRENT], nodes[s3][INDEX_POCKET], nodes[id_parent][INDEX_CURRENT], qty_facilities, QTY_INST_MUTATION, qty_clients, sorted_cijID, costF, costA, assignment_cost, solutionName, map, new_costF, new_costA, temp_open_facilities, cli_cli);
 
 			// current[s1] = Recombine(pocket[s1], current[s2])
 
@@ -367,7 +407,7 @@ solutionType memetic(char * solutionName, int qty_facilities, int qty_clients, d
 			}
 
 
-			recombine(&nodes[s1][INDEX_CURRENT], nodes[s1][INDEX_POCKET], nodes[s2][INDEX_CURRENT], qty_facilities, QTY_INST_MUTATION, qty_clients, sorted_cijID, costF, costA, assignment_cost, solutionName, map, new_costF, new_costA, temp_open_facilities);
+			recombine(&nodes[s1][INDEX_CURRENT], nodes[s1][INDEX_POCKET], nodes[s2][INDEX_CURRENT], qty_facilities, QTY_INST_MUTATION, qty_clients, sorted_cijID, costF, costA, assignment_cost, solutionName, map, new_costF, new_costA, temp_open_facilities, cli_cli);
 
 			// current[s2] = Recombine(pocket[s2], current[s3])
 
@@ -375,7 +415,7 @@ solutionType memetic(char * solutionName, int qty_facilities, int qty_clients, d
 				cout << "current[" << s2 << "] = Recombine(pocket[" << s2 << "], current[" << s3 << "]) " << endl;
 			}
 
-			recombine(&nodes[s2][INDEX_CURRENT], nodes[s2][INDEX_POCKET], nodes[s3][INDEX_CURRENT], qty_facilities, QTY_INST_MUTATION, qty_clients, sorted_cijID, costF, costA, assignment_cost, solutionName, map, new_costF, new_costA, temp_open_facilities);
+			recombine(&nodes[s2][INDEX_CURRENT], nodes[s2][INDEX_POCKET], nodes[s3][INDEX_CURRENT], qty_facilities, QTY_INST_MUTATION, qty_clients, sorted_cijID, costF, costA, assignment_cost, solutionName, map, new_costF, new_costA, temp_open_facilities, cli_cli);
 		} 
 
 
@@ -389,7 +429,7 @@ solutionType memetic(char * solutionName, int qty_facilities, int qty_clients, d
 		}
 
 		// Verificar se os currents entrarao no refSet ou nao, checando diversidade
-		update_refset(nodes, qty_facilities, qty_clients, costF, assignment_cost, sorted_cijID, aux);
+		update_refset(nodes, qty_facilities, qty_clients, costF, assignment_cost, sorted_cijID, aux, map, new_costF, new_costA, temp_open_facilities);
 
 
 		if(DEBUG >= DISPLAY_MOVES){

@@ -103,26 +103,42 @@ if __name__ == '__main__':
 	for i in range(size):
 		list_cli.append(i)
 
+	lonely_clients = [] #indica os clientes que nao estao em nenhum grupo
+		
 	print()
 	print("Groups:")
+	# groups_counter = 0
 	# exibindo os grupos
 	for i in range(size): #para cada cliente
 		used = False
 		same_fac = False
+		lonely = True
 		for j in range(size): #para cada outro cliente
 			if j in list_cli:
 				if cli_cli[i][j] >= 1:
 					print(j, end=" ")
 					list_cli.remove(j)
 					used = True
+					lonely = False
 					if cli_cli[i][j] == 2:
 						same_fac = True
 					elif same_fac:
-						print("*****ERROR")
+						print("**###################***ERROR")
+			else:
+				lonely = False
 		if same_fac:
 			print(" ***** always facility -> ",nearest_fac[0][i], " ******** ")
 		elif used:
 			print()
+		if lonely:
+			lonely_clients.append(i)
+
+	print()
+	print("Lonely clients:")
+	for i in lonely_clients:
+		print(i, end=" ")
+
+	# print("Clients in groups = ", counter)
 
 
 
