@@ -1,0 +1,40 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/Users/renatasarmet/Documents/CLionProjects/Instance.cpp
+Instance.h
+/Users/renatasarmet/Documents/CLionProjects/Instance.h
+fstream
+-
+
+/Users/renatasarmet/Documents/CLionProjects/Instance.h
+iostream
+-
+
+/Users/renatasarmet/Documents/CLionProjects/Solution.h
+iostream
+-
+Instance.h
+/Users/renatasarmet/Documents/CLionProjects/Instance.h
+
+/Users/renatasarmet/Documents/CLionProjects/greedy/Greedy.cpp
+Greedy.h
+/Users/renatasarmet/Documents/CLionProjects/greedy/Greedy.h
+algorithm
+-
+iostream
+-
+ctime
+-
+
+/Users/renatasarmet/Documents/CLionProjects/greedy/Greedy.h
+../Instance.h
+/Users/renatasarmet/Documents/CLionProjects/Instance.h
+../Solution.h
+/Users/renatasarmet/Documents/CLionProjects/Solution.h
+

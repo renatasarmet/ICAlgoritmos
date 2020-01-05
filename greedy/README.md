@@ -13,6 +13,9 @@ Após isso, digite no terminal:
 
 g++ handlesInput.cpp greedy.cpp -o g -Ofast
 
+quando estiver usando classe:
+(g++ handlesInput.cpp greedy.cpp ../Solution.cpp ../Instance.cpp -o g -Ofast)
+
 
 Considere que input_type significa 1 para o tipo ORLIB e 2 para o tipo SIMPLE FORMAT.
 

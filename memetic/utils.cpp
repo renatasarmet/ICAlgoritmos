@@ -219,7 +219,7 @@ void set_initial_sol_SHUFFLED(solutionType * node, int qty_facilities, int * shu
 	for(int i=0;i<start;i++){
 		node->open_facilities[shuffled_facilities[i]] = 0;
 	}
-	// Esse intervalo de instalacoes estará abertp
+	// Esse intervalo de instalacoes estará aberto
 	for(int i=start; i<end; i++){
 		node->open_facilities[shuffled_facilities[i]] = 1;
 	}
@@ -565,7 +565,7 @@ void union_crossover(solutionType * child, solutionType mother, solutionType fat
 }
 
 
-// crossover união: copia para o filho todas as instalacoes abertas da mae e do pai, o resto fica fechado
+// crossover grupos: identifica quais clientes estao conectados tanto no pai e na mae na mesma instalacao e mantem esse grupos pós-crossover.
 void groups_crossover(solutionType * child, solutionType mother, solutionType father, int qty_facilities, int qty_clients, int ** cli_cli, double * costF, double ** assignment_cost){
 
 	bool found_group;
@@ -718,7 +718,7 @@ void crossover_mutation(solutionType * child, solutionType mother, solutionType 
 	else if((CROSSOVER_TYPE == 2)||(type_crossover == 2)){ // Chama o one point crossover
 		one_point_crossover(child, mother, father, qty_facilities);
 	}
-	else if((CROSSOVER_TYPE == 3)||(type_crossover == 3)){ // Chama o union crossover{ 
+	else if((CROSSOVER_TYPE == 3)||(type_crossover == 3)){ // Chama o union crossover
 		union_crossover(child, mother, father, qty_facilities);
 	}
 	else { //  Chama o groups crossover
