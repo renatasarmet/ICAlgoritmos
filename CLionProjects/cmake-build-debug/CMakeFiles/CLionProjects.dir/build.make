@@ -70,18 +70,18 @@ CMakeFiles/CLionProjects.dir/main.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/CLionProjects.dir/main.cpp.s"
 	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/renatasarmet/Documents/CLionProjects/main.cpp -o CMakeFiles/CLionProjects.dir/main.cpp.s
 
-CMakeFiles/CLionProjects.dir/Instance.cpp.o: CMakeFiles/CLionProjects.dir/flags.make
-CMakeFiles/CLionProjects.dir/Instance.cpp.o: ../Instance.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/renatasarmet/Documents/CLionProjects/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object CMakeFiles/CLionProjects.dir/Instance.cpp.o"
-	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/CLionProjects.dir/Instance.cpp.o -c /Users/renatasarmet/Documents/CLionProjects/Instance.cpp
+CMakeFiles/CLionProjects.dir/global/Instance.cpp.o: CMakeFiles/CLionProjects.dir/flags.make
+CMakeFiles/CLionProjects.dir/global/Instance.cpp.o: ../global/Instance.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/renatasarmet/Documents/CLionProjects/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object CMakeFiles/CLionProjects.dir/global/Instance.cpp.o"
+	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/CLionProjects.dir/global/Instance.cpp.o -c /Users/renatasarmet/Documents/CLionProjects/global/Instance.cpp
 
-CMakeFiles/CLionProjects.dir/Instance.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/CLionProjects.dir/Instance.cpp.i"
-	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/renatasarmet/Documents/CLionProjects/Instance.cpp > CMakeFiles/CLionProjects.dir/Instance.cpp.i
+CMakeFiles/CLionProjects.dir/global/Instance.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/CLionProjects.dir/global/Instance.cpp.i"
+	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/renatasarmet/Documents/CLionProjects/global/Instance.cpp > CMakeFiles/CLionProjects.dir/global/Instance.cpp.i
 
-CMakeFiles/CLionProjects.dir/Instance.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/CLionProjects.dir/Instance.cpp.s"
-	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/renatasarmet/Documents/CLionProjects/Instance.cpp -o CMakeFiles/CLionProjects.dir/Instance.cpp.s
+CMakeFiles/CLionProjects.dir/global/Instance.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/CLionProjects.dir/global/Instance.cpp.s"
+	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/renatasarmet/Documents/CLionProjects/global/Instance.cpp -o CMakeFiles/CLionProjects.dir/global/Instance.cpp.s
 
 CMakeFiles/CLionProjects.dir/greedy/handlesInput.cpp.o: CMakeFiles/CLionProjects.dir/flags.make
 CMakeFiles/CLionProjects.dir/greedy/handlesInput.cpp.o: ../greedy/handlesInput.cpp
@@ -109,38 +109,68 @@ CMakeFiles/CLionProjects.dir/greedy/Greedy.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/CLionProjects.dir/greedy/Greedy.cpp.s"
 	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/renatasarmet/Documents/CLionProjects/greedy/Greedy.cpp -o CMakeFiles/CLionProjects.dir/greedy/Greedy.cpp.s
 
-CMakeFiles/CLionProjects.dir/Solution.cpp.o: CMakeFiles/CLionProjects.dir/flags.make
-CMakeFiles/CLionProjects.dir/Solution.cpp.o: ../Solution.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/renatasarmet/Documents/CLionProjects/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Building CXX object CMakeFiles/CLionProjects.dir/Solution.cpp.o"
-	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/CLionProjects.dir/Solution.cpp.o -c /Users/renatasarmet/Documents/CLionProjects/Solution.cpp
+CMakeFiles/CLionProjects.dir/global/Solution.cpp.o: CMakeFiles/CLionProjects.dir/flags.make
+CMakeFiles/CLionProjects.dir/global/Solution.cpp.o: ../global/Solution.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/renatasarmet/Documents/CLionProjects/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Building CXX object CMakeFiles/CLionProjects.dir/global/Solution.cpp.o"
+	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/CLionProjects.dir/global/Solution.cpp.o -c /Users/renatasarmet/Documents/CLionProjects/global/Solution.cpp
 
-CMakeFiles/CLionProjects.dir/Solution.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/CLionProjects.dir/Solution.cpp.i"
-	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/renatasarmet/Documents/CLionProjects/Solution.cpp > CMakeFiles/CLionProjects.dir/Solution.cpp.i
+CMakeFiles/CLionProjects.dir/global/Solution.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/CLionProjects.dir/global/Solution.cpp.i"
+	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/renatasarmet/Documents/CLionProjects/global/Solution.cpp > CMakeFiles/CLionProjects.dir/global/Solution.cpp.i
 
-CMakeFiles/CLionProjects.dir/Solution.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/CLionProjects.dir/Solution.cpp.s"
-	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/renatasarmet/Documents/CLionProjects/Solution.cpp -o CMakeFiles/CLionProjects.dir/Solution.cpp.s
+CMakeFiles/CLionProjects.dir/global/Solution.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/CLionProjects.dir/global/Solution.cpp.s"
+	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/renatasarmet/Documents/CLionProjects/global/Solution.cpp -o CMakeFiles/CLionProjects.dir/global/Solution.cpp.s
+
+CMakeFiles/CLionProjects.dir/tabuSearch/handlesInput.cpp.o: CMakeFiles/CLionProjects.dir/flags.make
+CMakeFiles/CLionProjects.dir/tabuSearch/handlesInput.cpp.o: ../tabuSearch/handlesInput.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/renatasarmet/Documents/CLionProjects/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Building CXX object CMakeFiles/CLionProjects.dir/tabuSearch/handlesInput.cpp.o"
+	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/CLionProjects.dir/tabuSearch/handlesInput.cpp.o -c /Users/renatasarmet/Documents/CLionProjects/tabuSearch/handlesInput.cpp
+
+CMakeFiles/CLionProjects.dir/tabuSearch/handlesInput.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/CLionProjects.dir/tabuSearch/handlesInput.cpp.i"
+	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/renatasarmet/Documents/CLionProjects/tabuSearch/handlesInput.cpp > CMakeFiles/CLionProjects.dir/tabuSearch/handlesInput.cpp.i
+
+CMakeFiles/CLionProjects.dir/tabuSearch/handlesInput.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/CLionProjects.dir/tabuSearch/handlesInput.cpp.s"
+	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/renatasarmet/Documents/CLionProjects/tabuSearch/handlesInput.cpp -o CMakeFiles/CLionProjects.dir/tabuSearch/handlesInput.cpp.s
+
+CMakeFiles/CLionProjects.dir/tabuSearch/TabuSearch.cpp.o: CMakeFiles/CLionProjects.dir/flags.make
+CMakeFiles/CLionProjects.dir/tabuSearch/TabuSearch.cpp.o: ../tabuSearch/TabuSearch.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/renatasarmet/Documents/CLionProjects/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_7) "Building CXX object CMakeFiles/CLionProjects.dir/tabuSearch/TabuSearch.cpp.o"
+	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/CLionProjects.dir/tabuSearch/TabuSearch.cpp.o -c /Users/renatasarmet/Documents/CLionProjects/tabuSearch/TabuSearch.cpp
+
+CMakeFiles/CLionProjects.dir/tabuSearch/TabuSearch.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/CLionProjects.dir/tabuSearch/TabuSearch.cpp.i"
+	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/renatasarmet/Documents/CLionProjects/tabuSearch/TabuSearch.cpp > CMakeFiles/CLionProjects.dir/tabuSearch/TabuSearch.cpp.i
+
+CMakeFiles/CLionProjects.dir/tabuSearch/TabuSearch.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/CLionProjects.dir/tabuSearch/TabuSearch.cpp.s"
+	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/renatasarmet/Documents/CLionProjects/tabuSearch/TabuSearch.cpp -o CMakeFiles/CLionProjects.dir/tabuSearch/TabuSearch.cpp.s
 
 # Object files for target CLionProjects
 CLionProjects_OBJECTS = \
 "CMakeFiles/CLionProjects.dir/main.cpp.o" \
-"CMakeFiles/CLionProjects.dir/Instance.cpp.o" \
+"CMakeFiles/CLionProjects.dir/global/Instance.cpp.o" \
 "CMakeFiles/CLionProjects.dir/greedy/handlesInput.cpp.o" \
 "CMakeFiles/CLionProjects.dir/greedy/Greedy.cpp.o" \
-"CMakeFiles/CLionProjects.dir/Solution.cpp.o"
+"CMakeFiles/CLionProjects.dir/global/Solution.cpp.o" \
+"CMakeFiles/CLionProjects.dir/tabuSearch/handlesInput.cpp.o" \
+"CMakeFiles/CLionProjects.dir/tabuSearch/TabuSearch.cpp.o"
 
 # External object files for target CLionProjects
 CLionProjects_EXTERNAL_OBJECTS =
 
 CLionProjects: CMakeFiles/CLionProjects.dir/main.cpp.o
-CLionProjects: CMakeFiles/CLionProjects.dir/Instance.cpp.o
+CLionProjects: CMakeFiles/CLionProjects.dir/global/Instance.cpp.o
 CLionProjects: CMakeFiles/CLionProjects.dir/greedy/handlesInput.cpp.o
 CLionProjects: CMakeFiles/CLionProjects.dir/greedy/Greedy.cpp.o
-CLionProjects: CMakeFiles/CLionProjects.dir/Solution.cpp.o
+CLionProjects: CMakeFiles/CLionProjects.dir/global/Solution.cpp.o
+CLionProjects: CMakeFiles/CLionProjects.dir/tabuSearch/handlesInput.cpp.o
+CLionProjects: CMakeFiles/CLionProjects.dir/tabuSearch/TabuSearch.cpp.o
 CLionProjects: CMakeFiles/CLionProjects.dir/build.make
 CLionProjects: CMakeFiles/CLionProjects.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/Users/renatasarmet/Documents/CLionProjects/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Linking CXX executable CLionProjects"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/Users/renatasarmet/Documents/CLionProjects/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_8) "Linking CXX executable CLionProjects"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/CLionProjects.dir/link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.

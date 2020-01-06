@@ -13,6 +13,9 @@ Após isso, digite no terminal:
 
 g++ handlesInput.cpp tabuSearch.cpp -o ts -Ofast
 
+quando estiver usando classe:
+(g++ handlesInput.cpp tabuSearch.cpp ../global/Solution.cpp ../global/Instance.cpp -o ts -Ofast)
+
 
 Considere que input_type significa 1 para o tipo ORLIB e 2 para o tipo SIMPLE FORMAT. 
 Considere também best_fit significa 1 para a tecnica de escolher o melhor e 0 para escolher o primeiro, a1 que relaciona com a condicao de parada, lc1 e lc2 intervalo de manter fechado, lo1 e lo2 intervalo de manter aberto [TODOS ESSES SAO OPCIONAIS, MAS SE QUISER PASSAR QLQ UM DOS OPCIONAIS, TEM Q DIGITAR TODOS ESSES ANTERIORES]

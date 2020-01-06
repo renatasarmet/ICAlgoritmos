@@ -1,32 +1,27 @@
 #include <iostream>
-#include <cstdlib>
 #include <fstream>
 #include <iomanip>
 
-#include "../Instance.h"
-#include "../Solution.h"
+#include "../global/Instance.h"
+#include "../global/Solution.h"
 #include "Greedy.h"
 
 #define DISPLAY_BASIC 1 // corresponde a exibicao do custo final da solucao
-#define DISPLAY_SIZE 2 // corresponde a exibicao do tempo total gasto e do tamanho da entrada (quantidade de clientes e de instalacoes)
-#define DISPLAY_ACTIONS 3 // corresponde a todos os cout quando uma informacao eh salva
 
-#define DEBUG 1 // OPCOES DE DEBUG: 0 PARA NAO EXIBIR NADA, 1 PARA EXIBIR CUSTO FINAL, 2 PARA EXIBIR TEMPO E QTD CLI E INST, 3 PARA EXIBIR AS INFORMACOES SENDO SALVAS
+#define DEBUG 1 // OPCOES DE DEBUG: 0 PARA NAO EXIBIR NADA, 1 PARA EXIBIR CUSTO FINAL
+
 using namespace std;
 
 int main(int argc, char *argv[]){
-//    if(argc < 4){
-//        cout << "Error in the parameters. You must enter 3 parameters" << endl;
-//        return 0;
-//    }
-//
-//    Instance instance(argv[1], argv[2]);
-//
-//    string inputType = argv[3];
 
-    Instance instance("../baseDeTestes/facilityTestCases/tests/cap71.txt", "solutions/cap71.txt.sol");
+    if(argc < 4){
+        cout << "Error in the parameters. You must enter 3 parameters" << endl;
+        return 0;
+    }
 
-    string inputType = "1";
+    Instance instance(argv[1], argv[2]);
+
+    string input_type = argv[3];
 
     // Arquivo para salvar a solucao
     ofstream solutionTXT;
@@ -35,7 +30,7 @@ int main(int argc, char *argv[]){
     cout.precision(5);
 
     // Lendo o arquivo de entrada
-    instance.readFileInstance(inputType);
+    instance.readFileInstance(input_type);
 
     Solution solution(instance);
 
@@ -61,6 +56,9 @@ int main(int argc, char *argv[]){
     for(int i=0; i < instance.getQtyClients(); i++){
         solutionTXT << " " << solution.getAssignedFacilityJ(i);
     }
+
+    // Fechando o arquivo
+    solutionTXT.close();
 
     return 0;
 }

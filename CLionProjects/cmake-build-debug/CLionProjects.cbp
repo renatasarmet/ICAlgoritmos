@@ -80,16 +80,16 @@
 				</MakeCommands>
 			</Target>
 		</Build>
-		<Unit filename="/Users/renatasarmet/Documents/CLionProjects/Instance.cpp">
+		<Unit filename="/Users/renatasarmet/Documents/CLionProjects/global/Instance.cpp">
 			<Option target="CLionProjects"/>
 		</Unit>
-		<Unit filename="/Users/renatasarmet/Documents/CLionProjects/Instance.h">
+		<Unit filename="/Users/renatasarmet/Documents/CLionProjects/global/Instance.h">
 			<Option target="CLionProjects"/>
 		</Unit>
-		<Unit filename="/Users/renatasarmet/Documents/CLionProjects/Solution.cpp">
+		<Unit filename="/Users/renatasarmet/Documents/CLionProjects/global/Solution.cpp">
 			<Option target="CLionProjects"/>
 		</Unit>
-		<Unit filename="/Users/renatasarmet/Documents/CLionProjects/Solution.h">
+		<Unit filename="/Users/renatasarmet/Documents/CLionProjects/global/Solution.h">
 			<Option target="CLionProjects"/>
 		</Unit>
 		<Unit filename="/Users/renatasarmet/Documents/CLionProjects/greedy/Greedy.cpp">
@@ -102,6 +102,15 @@
 			<Option target="CLionProjects"/>
 		</Unit>
 		<Unit filename="/Users/renatasarmet/Documents/CLionProjects/main.cpp">
+			<Option target="CLionProjects"/>
+		</Unit>
+		<Unit filename="/Users/renatasarmet/Documents/CLionProjects/tabuSearch/TabuSearch.cpp">
+			<Option target="CLionProjects"/>
+		</Unit>
+		<Unit filename="/Users/renatasarmet/Documents/CLionProjects/tabuSearch/TabuSearch.h">
+			<Option target="CLionProjects"/>
+		</Unit>
+		<Unit filename="/Users/renatasarmet/Documents/CLionProjects/tabuSearch/handlesInput.cpp">
 			<Option target="CLionProjects"/>
 		</Unit>
 		<Unit filename="/Users/renatasarmet/Documents/CLionProjects/CMakeLists.txt">

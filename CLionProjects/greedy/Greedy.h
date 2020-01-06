@@ -1,13 +1,9 @@
-//
-// Created by Renata Sarmet Smiderle Mendes on 5/1/20.
-//
-
 #ifndef CLIONPROJECTS_GREEDY_H
 #define CLIONPROJECTS_GREEDY_H
 
 
-#include "../Instance.h"
-#include "../Solution.h"
+#include "../global/Instance.h"
+#include "../global/Solution.h"
 
 class Greedy {
 private:
@@ -18,27 +14,23 @@ private:
     int qty_non_active_cli_g;
     double **sorted_cij;
     int **sorted_cijID;
-    double biggestCij;
-    double biggestFi;
+    double biggest_cij;
+    double biggest_fi;
 
     // RedNode
-    int * nearest_open_fac;
     double * c_minX;
     bool * active;
 public:
     virtual ~Greedy();
 
-public:
     void initialize(Solution * solution);
 
     void run(Solution * solution);
 
-    static void mergeSort(double *vector, int *vectorID, int startPosition, int endPosition);
+    static void mergeSort(double *vector, int *vector_ID, int start_position, int end_position);
 
-    void deletingNonActiveClients(double *vector, int *vectorID, int vector_size, int *clients_delete,
-                                  int qty_cli_delete);
+    void deletingNonActiveClients(int index_fac, int qty_cli_delete);
 
-    void bestSubset(int &best_size, double &best_cost, double *vector, double fi, double gain, int start_index,
-                    int vector_size, double biggest_cij);
+    void bestSubset(int &best_size, double &best_cost, int index_fac, double fi, double gain, int start_index);
 };
 #endif //CLIONPROJECTS_GREEDY_H

@@ -123,59 +123,59 @@ CLionProjects/fast:
 	$(MAKE) -f CMakeFiles/CLionProjects.dir/build.make CMakeFiles/CLionProjects.dir/build
 .PHONY : CLionProjects/fast
 
-Instance.o: Instance.cpp.o
+global/Instance.o: global/Instance.cpp.o
 
-.PHONY : Instance.o
-
-# target to build an object file
-Instance.cpp.o:
-	$(MAKE) -f CMakeFiles/CLionProjects.dir/build.make CMakeFiles/CLionProjects.dir/Instance.cpp.o
-.PHONY : Instance.cpp.o
-
-Instance.i: Instance.cpp.i
-
-.PHONY : Instance.i
-
-# target to preprocess a source file
-Instance.cpp.i:
-	$(MAKE) -f CMakeFiles/CLionProjects.dir/build.make CMakeFiles/CLionProjects.dir/Instance.cpp.i
-.PHONY : Instance.cpp.i
-
-Instance.s: Instance.cpp.s
-
-.PHONY : Instance.s
-
-# target to generate assembly for a file
-Instance.cpp.s:
-	$(MAKE) -f CMakeFiles/CLionProjects.dir/build.make CMakeFiles/CLionProjects.dir/Instance.cpp.s
-.PHONY : Instance.cpp.s
-
-Solution.o: Solution.cpp.o
-
-.PHONY : Solution.o
+.PHONY : global/Instance.o
 
 # target to build an object file
-Solution.cpp.o:
-	$(MAKE) -f CMakeFiles/CLionProjects.dir/build.make CMakeFiles/CLionProjects.dir/Solution.cpp.o
-.PHONY : Solution.cpp.o
+global/Instance.cpp.o:
+	$(MAKE) -f CMakeFiles/CLionProjects.dir/build.make CMakeFiles/CLionProjects.dir/global/Instance.cpp.o
+.PHONY : global/Instance.cpp.o
 
-Solution.i: Solution.cpp.i
+global/Instance.i: global/Instance.cpp.i
 
-.PHONY : Solution.i
+.PHONY : global/Instance.i
 
 # target to preprocess a source file
-Solution.cpp.i:
-	$(MAKE) -f CMakeFiles/CLionProjects.dir/build.make CMakeFiles/CLionProjects.dir/Solution.cpp.i
-.PHONY : Solution.cpp.i
+global/Instance.cpp.i:
+	$(MAKE) -f CMakeFiles/CLionProjects.dir/build.make CMakeFiles/CLionProjects.dir/global/Instance.cpp.i
+.PHONY : global/Instance.cpp.i
 
-Solution.s: Solution.cpp.s
+global/Instance.s: global/Instance.cpp.s
 
-.PHONY : Solution.s
+.PHONY : global/Instance.s
 
 # target to generate assembly for a file
-Solution.cpp.s:
-	$(MAKE) -f CMakeFiles/CLionProjects.dir/build.make CMakeFiles/CLionProjects.dir/Solution.cpp.s
-.PHONY : Solution.cpp.s
+global/Instance.cpp.s:
+	$(MAKE) -f CMakeFiles/CLionProjects.dir/build.make CMakeFiles/CLionProjects.dir/global/Instance.cpp.s
+.PHONY : global/Instance.cpp.s
+
+global/Solution.o: global/Solution.cpp.o
+
+.PHONY : global/Solution.o
+
+# target to build an object file
+global/Solution.cpp.o:
+	$(MAKE) -f CMakeFiles/CLionProjects.dir/build.make CMakeFiles/CLionProjects.dir/global/Solution.cpp.o
+.PHONY : global/Solution.cpp.o
+
+global/Solution.i: global/Solution.cpp.i
+
+.PHONY : global/Solution.i
+
+# target to preprocess a source file
+global/Solution.cpp.i:
+	$(MAKE) -f CMakeFiles/CLionProjects.dir/build.make CMakeFiles/CLionProjects.dir/global/Solution.cpp.i
+.PHONY : global/Solution.cpp.i
+
+global/Solution.s: global/Solution.cpp.s
+
+.PHONY : global/Solution.s
+
+# target to generate assembly for a file
+global/Solution.cpp.s:
+	$(MAKE) -f CMakeFiles/CLionProjects.dir/build.make CMakeFiles/CLionProjects.dir/global/Solution.cpp.s
+.PHONY : global/Solution.cpp.s
 
 greedy/Greedy.o: greedy/Greedy.cpp.o
 
@@ -258,6 +258,60 @@ main.cpp.s:
 	$(MAKE) -f CMakeFiles/CLionProjects.dir/build.make CMakeFiles/CLionProjects.dir/main.cpp.s
 .PHONY : main.cpp.s
 
+tabuSearch/TabuSearch.o: tabuSearch/TabuSearch.cpp.o
+
+.PHONY : tabuSearch/TabuSearch.o
+
+# target to build an object file
+tabuSearch/TabuSearch.cpp.o:
+	$(MAKE) -f CMakeFiles/CLionProjects.dir/build.make CMakeFiles/CLionProjects.dir/tabuSearch/TabuSearch.cpp.o
+.PHONY : tabuSearch/TabuSearch.cpp.o
+
+tabuSearch/TabuSearch.i: tabuSearch/TabuSearch.cpp.i
+
+.PHONY : tabuSearch/TabuSearch.i
+
+# target to preprocess a source file
+tabuSearch/TabuSearch.cpp.i:
+	$(MAKE) -f CMakeFiles/CLionProjects.dir/build.make CMakeFiles/CLionProjects.dir/tabuSearch/TabuSearch.cpp.i
+.PHONY : tabuSearch/TabuSearch.cpp.i
+
+tabuSearch/TabuSearch.s: tabuSearch/TabuSearch.cpp.s
+
+.PHONY : tabuSearch/TabuSearch.s
+
+# target to generate assembly for a file
+tabuSearch/TabuSearch.cpp.s:
+	$(MAKE) -f CMakeFiles/CLionProjects.dir/build.make CMakeFiles/CLionProjects.dir/tabuSearch/TabuSearch.cpp.s
+.PHONY : tabuSearch/TabuSearch.cpp.s
+
+tabuSearch/handlesInput.o: tabuSearch/handlesInput.cpp.o
+
+.PHONY : tabuSearch/handlesInput.o
+
+# target to build an object file
+tabuSearch/handlesInput.cpp.o:
+	$(MAKE) -f CMakeFiles/CLionProjects.dir/build.make CMakeFiles/CLionProjects.dir/tabuSearch/handlesInput.cpp.o
+.PHONY : tabuSearch/handlesInput.cpp.o
+
+tabuSearch/handlesInput.i: tabuSearch/handlesInput.cpp.i
+
+.PHONY : tabuSearch/handlesInput.i
+
+# target to preprocess a source file
+tabuSearch/handlesInput.cpp.i:
+	$(MAKE) -f CMakeFiles/CLionProjects.dir/build.make CMakeFiles/CLionProjects.dir/tabuSearch/handlesInput.cpp.i
+.PHONY : tabuSearch/handlesInput.cpp.i
+
+tabuSearch/handlesInput.s: tabuSearch/handlesInput.cpp.s
+
+.PHONY : tabuSearch/handlesInput.s
+
+# target to generate assembly for a file
+tabuSearch/handlesInput.cpp.s:
+	$(MAKE) -f CMakeFiles/CLionProjects.dir/build.make CMakeFiles/CLionProjects.dir/tabuSearch/handlesInput.cpp.s
+.PHONY : tabuSearch/handlesInput.cpp.s
+
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -267,12 +321,12 @@ help:
 	@echo "... rebuild_cache"
 	@echo "... edit_cache"
 	@echo "... CLionProjects"
-	@echo "... Instance.o"
-	@echo "... Instance.i"
-	@echo "... Instance.s"
-	@echo "... Solution.o"
-	@echo "... Solution.i"
-	@echo "... Solution.s"
+	@echo "... global/Instance.o"
+	@echo "... global/Instance.i"
+	@echo "... global/Instance.s"
+	@echo "... global/Solution.o"
+	@echo "... global/Solution.i"
+	@echo "... global/Solution.s"
 	@echo "... greedy/Greedy.o"
 	@echo "... greedy/Greedy.i"
 	@echo "... greedy/Greedy.s"
@@ -282,6 +336,12 @@ help:
 	@echo "... main.o"
 	@echo "... main.i"
 	@echo "... main.s"
+	@echo "... tabuSearch/TabuSearch.o"
+	@echo "... tabuSearch/TabuSearch.i"
+	@echo "... tabuSearch/TabuSearch.s"
+	@echo "... tabuSearch/handlesInput.o"
+	@echo "... tabuSearch/handlesInput.i"
+	@echo "... tabuSearch/handlesInput.s"
 .PHONY : help
 
 

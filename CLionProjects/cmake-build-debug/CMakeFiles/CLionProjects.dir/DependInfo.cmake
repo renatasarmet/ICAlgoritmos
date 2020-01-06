@@ -4,11 +4,13 @@ set(CMAKE_DEPENDS_LANGUAGES
   )
 # The set of files for implicit dependencies of each language:
 set(CMAKE_DEPENDS_CHECK_CXX
-  "/Users/renatasarmet/Documents/CLionProjects/Instance.cpp" "/Users/renatasarmet/Documents/CLionProjects/cmake-build-debug/CMakeFiles/CLionProjects.dir/Instance.cpp.o"
-  "/Users/renatasarmet/Documents/CLionProjects/Solution.cpp" "/Users/renatasarmet/Documents/CLionProjects/cmake-build-debug/CMakeFiles/CLionProjects.dir/Solution.cpp.o"
+  "/Users/renatasarmet/Documents/CLionProjects/global/Instance.cpp" "/Users/renatasarmet/Documents/CLionProjects/cmake-build-debug/CMakeFiles/CLionProjects.dir/global/Instance.cpp.o"
+  "/Users/renatasarmet/Documents/CLionProjects/global/Solution.cpp" "/Users/renatasarmet/Documents/CLionProjects/cmake-build-debug/CMakeFiles/CLionProjects.dir/global/Solution.cpp.o"
   "/Users/renatasarmet/Documents/CLionProjects/greedy/Greedy.cpp" "/Users/renatasarmet/Documents/CLionProjects/cmake-build-debug/CMakeFiles/CLionProjects.dir/greedy/Greedy.cpp.o"
   "/Users/renatasarmet/Documents/CLionProjects/greedy/handlesInput.cpp" "/Users/renatasarmet/Documents/CLionProjects/cmake-build-debug/CMakeFiles/CLionProjects.dir/greedy/handlesInput.cpp.o"
   "/Users/renatasarmet/Documents/CLionProjects/main.cpp" "/Users/renatasarmet/Documents/CLionProjects/cmake-build-debug/CMakeFiles/CLionProjects.dir/main.cpp.o"
+  "/Users/renatasarmet/Documents/CLionProjects/tabuSearch/TabuSearch.cpp" "/Users/renatasarmet/Documents/CLionProjects/cmake-build-debug/CMakeFiles/CLionProjects.dir/tabuSearch/TabuSearch.cpp.o"
+  "/Users/renatasarmet/Documents/CLionProjects/tabuSearch/handlesInput.cpp" "/Users/renatasarmet/Documents/CLionProjects/cmake-build-debug/CMakeFiles/CLionProjects.dir/tabuSearch/handlesInput.cpp.o"
   )
 set(CMAKE_CXX_COMPILER_ID "AppleClang")
 
