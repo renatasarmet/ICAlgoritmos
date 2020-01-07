@@ -28,6 +28,16 @@ CMakeFiles/CLionProjects.dir/localSearch/handlesInput.cpp.o: ../global/Solution.
 CMakeFiles/CLionProjects.dir/localSearch/handlesInput.cpp.o: ../localSearch/LocalSearch.h
 CMakeFiles/CLionProjects.dir/localSearch/handlesInput.cpp.o: ../localSearch/handlesInput.cpp
 
+CMakeFiles/CLionProjects.dir/localSearchCloseFac/LSCloseFac.cpp.o: ../global/Instance.h
+CMakeFiles/CLionProjects.dir/localSearchCloseFac/LSCloseFac.cpp.o: ../global/Solution.h
+CMakeFiles/CLionProjects.dir/localSearchCloseFac/LSCloseFac.cpp.o: ../localSearchCloseFac/LSCloseFac.cpp
+CMakeFiles/CLionProjects.dir/localSearchCloseFac/LSCloseFac.cpp.o: ../localSearchCloseFac/LSCloseFac.h
+
+CMakeFiles/CLionProjects.dir/localSearchCloseFac/handlesInput.cpp.o: ../global/Instance.h
+CMakeFiles/CLionProjects.dir/localSearchCloseFac/handlesInput.cpp.o: ../global/Solution.h
+CMakeFiles/CLionProjects.dir/localSearchCloseFac/handlesInput.cpp.o: ../localSearchCloseFac/LSCloseFac.h
+CMakeFiles/CLionProjects.dir/localSearchCloseFac/handlesInput.cpp.o: ../localSearchCloseFac/handlesInput.cpp
+
 CMakeFiles/CLionProjects.dir/main.cpp.o: ../main.cpp
 
 CMakeFiles/CLionProjects.dir/tabuSearch/TabuSearch.cpp.o: ../global/Instance.h

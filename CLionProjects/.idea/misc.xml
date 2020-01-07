@@ -6,6 +6,7 @@
       <file path="$PROJECT_DIR$/global" />
       <file path="$PROJECT_DIR$/greedy" />
       <file path="$PROJECT_DIR$/localSearch" />
+      <file path="$PROJECT_DIR$/localSearchCloseFac" />
       <file path="$PROJECT_DIR$/tabuSearch" />
     </sourceRoots>
   </component>

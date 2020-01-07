@@ -1,7 +1,3 @@
-//
-// Created by Renata Sarmet Smiderle Mendes on 7/1/20.
-//
-
 #ifndef CLIONPROJECTS_LOCALSEARCH_H
 #define CLIONPROJECTS_LOCALSEARCH_H
 
@@ -10,8 +6,6 @@
 
 
 class LocalSearch {
-
-
 private:
     int qty_facilities;
     int qty_clients;
@@ -36,7 +30,7 @@ private:
     int * nearest_open_fac; // nearest_open_fac - será correnpondente ao ID da instalacao i tal que min_{i \in X} cij, sendo X as inst abertas
     int * nearest2_open_fac;// nearest2_open_fac - será correnpondente ao ID da segunda instalacao i tal que min_{i \in X} cij, sendo X as inst abertas exceto a nearest_open_fac (segunda instalacao aberta mais proxima)
     int * temp_nearest_fac; // temp_nearest_fac - será correnpondente ao ID da instalacao i mais proxima que sera conectada (temporario)
-    int * temp2_nearest_fac; // temp2_nearest_fac - será correnpondente ao ID da segunda instalacao i mais proxima que sera conectada (temporario)
+    int * temp2_nearest_fac; // temp_nearest2_fac - será correnpondente ao ID da segunda instalacao i mais proxima que sera conectada (temporario)
 
 public:
     virtual ~LocalSearch();

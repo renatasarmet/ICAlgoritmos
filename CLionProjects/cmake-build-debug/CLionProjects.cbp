@@ -110,6 +110,15 @@
 		<Unit filename="/Users/renatasarmet/Documents/CLionProjects/localSearch/handlesInput.cpp">
 			<Option target="CLionProjects"/>
 		</Unit>
+		<Unit filename="/Users/renatasarmet/Documents/CLionProjects/localSearchCloseFac/LSCloseFac.cpp">
+			<Option target="CLionProjects"/>
+		</Unit>
+		<Unit filename="/Users/renatasarmet/Documents/CLionProjects/localSearchCloseFac/LSCloseFac.h">
+			<Option target="CLionProjects"/>
+		</Unit>
+		<Unit filename="/Users/renatasarmet/Documents/CLionProjects/localSearchCloseFac/handlesInput.cpp">
+			<Option target="CLionProjects"/>
+		</Unit>
 		<Unit filename="/Users/renatasarmet/Documents/CLionProjects/main.cpp">
 			<Option target="CLionProjects"/>
 		</Unit>

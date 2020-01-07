@@ -14,6 +14,10 @@ Após isso, digite no terminal:
 g++ handlesInput.cpp LSCloseFac.cpp -o lscf -Ofast
 
 
+quando estiver usando classe:
+(g++ handlesInput.cpp LSCloseFac.cpp ../global/Solution.cpp ../global/Instance.cpp -o lscf -Ofast)
+
+
 Considere que input_type significa 1 para o tipo ORLIB e 2 para o tipo SIMPLE FORMAT.
 obs: APENAS caso a solução inicial venha do RR, deve-se digitar tambem como parametro a quantidade de testes que foram feitos (qty_tests)
 
