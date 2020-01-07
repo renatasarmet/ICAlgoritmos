@@ -13,6 +13,9 @@ Após isso, digite no terminal:
 
 g++ handlesInput.cpp localSearch.cpp -o lsr -Ofast
 
+quando estiver usando classe:
+(g++ handlesInput.cpp localSearch.cpp ../global/Solution.cpp ../global/Instance.cpp -o lsr -Ofast)
+
 
 Considere que input_type significa 1 para o tipo ORLIB e 2 para o tipo SIMPLE FORMAT. Considere também que ls_type indica 1 para LS completo, 2 para LS apenas com vizinhanca N1 (abrir ou fechar) e 3 para LS apenas com vizinhanca N2 (troca).
 obs: APENAS caso a solução inicial venha do RR, deve-se digitar tambem como parametro a quantidade de testes que foram feitos (qty_tests)

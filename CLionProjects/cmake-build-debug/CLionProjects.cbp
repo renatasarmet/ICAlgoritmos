@@ -101,6 +101,15 @@
 		<Unit filename="/Users/renatasarmet/Documents/CLionProjects/greedy/handlesInput.cpp">
 			<Option target="CLionProjects"/>
 		</Unit>
+		<Unit filename="/Users/renatasarmet/Documents/CLionProjects/localSearch/LocalSearch.cpp">
+			<Option target="CLionProjects"/>
+		</Unit>
+		<Unit filename="/Users/renatasarmet/Documents/CLionProjects/localSearch/LocalSearch.h">
+			<Option target="CLionProjects"/>
+		</Unit>
+		<Unit filename="/Users/renatasarmet/Documents/CLionProjects/localSearch/handlesInput.cpp">
+			<Option target="CLionProjects"/>
+		</Unit>
 		<Unit filename="/Users/renatasarmet/Documents/CLionProjects/main.cpp">
 			<Option target="CLionProjects"/>
 		</Unit>

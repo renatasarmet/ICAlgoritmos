@@ -231,6 +231,60 @@ greedy/handlesInput.cpp.s:
 	$(MAKE) -f CMakeFiles/CLionProjects.dir/build.make CMakeFiles/CLionProjects.dir/greedy/handlesInput.cpp.s
 .PHONY : greedy/handlesInput.cpp.s
 
+localSearch/LocalSearch.o: localSearch/LocalSearch.cpp.o
+
+.PHONY : localSearch/LocalSearch.o
+
+# target to build an object file
+localSearch/LocalSearch.cpp.o:
+	$(MAKE) -f CMakeFiles/CLionProjects.dir/build.make CMakeFiles/CLionProjects.dir/localSearch/LocalSearch.cpp.o
+.PHONY : localSearch/LocalSearch.cpp.o
+
+localSearch/LocalSearch.i: localSearch/LocalSearch.cpp.i
+
+.PHONY : localSearch/LocalSearch.i
+
+# target to preprocess a source file
+localSearch/LocalSearch.cpp.i:
+	$(MAKE) -f CMakeFiles/CLionProjects.dir/build.make CMakeFiles/CLionProjects.dir/localSearch/LocalSearch.cpp.i
+.PHONY : localSearch/LocalSearch.cpp.i
+
+localSearch/LocalSearch.s: localSearch/LocalSearch.cpp.s
+
+.PHONY : localSearch/LocalSearch.s
+
+# target to generate assembly for a file
+localSearch/LocalSearch.cpp.s:
+	$(MAKE) -f CMakeFiles/CLionProjects.dir/build.make CMakeFiles/CLionProjects.dir/localSearch/LocalSearch.cpp.s
+.PHONY : localSearch/LocalSearch.cpp.s
+
+localSearch/handlesInput.o: localSearch/handlesInput.cpp.o
+
+.PHONY : localSearch/handlesInput.o
+
+# target to build an object file
+localSearch/handlesInput.cpp.o:
+	$(MAKE) -f CMakeFiles/CLionProjects.dir/build.make CMakeFiles/CLionProjects.dir/localSearch/handlesInput.cpp.o
+.PHONY : localSearch/handlesInput.cpp.o
+
+localSearch/handlesInput.i: localSearch/handlesInput.cpp.i
+
+.PHONY : localSearch/handlesInput.i
+
+# target to preprocess a source file
+localSearch/handlesInput.cpp.i:
+	$(MAKE) -f CMakeFiles/CLionProjects.dir/build.make CMakeFiles/CLionProjects.dir/localSearch/handlesInput.cpp.i
+.PHONY : localSearch/handlesInput.cpp.i
+
+localSearch/handlesInput.s: localSearch/handlesInput.cpp.s
+
+.PHONY : localSearch/handlesInput.s
+
+# target to generate assembly for a file
+localSearch/handlesInput.cpp.s:
+	$(MAKE) -f CMakeFiles/CLionProjects.dir/build.make CMakeFiles/CLionProjects.dir/localSearch/handlesInput.cpp.s
+.PHONY : localSearch/handlesInput.cpp.s
+
 main.o: main.cpp.o
 
 .PHONY : main.o
@@ -333,6 +387,12 @@ help:
 	@echo "... greedy/handlesInput.o"
 	@echo "... greedy/handlesInput.i"
 	@echo "... greedy/handlesInput.s"
+	@echo "... localSearch/LocalSearch.o"
+	@echo "... localSearch/LocalSearch.i"
+	@echo "... localSearch/LocalSearch.s"
+	@echo "... localSearch/handlesInput.o"
+	@echo "... localSearch/handlesInput.i"
+	@echo "... localSearch/handlesInput.s"
 	@echo "... main.o"
 	@echo "... main.i"
 	@echo "... main.s"

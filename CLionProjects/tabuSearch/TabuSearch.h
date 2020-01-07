@@ -11,10 +11,6 @@
 
 class TabuSearch {
 private:
-public:
-    virtual ~TabuSearch();
-
-private:
     int qty_facilities;
     int qty_clients;
     double biggest_cij;
@@ -68,6 +64,8 @@ private:
 
 
 public:
+    virtual ~TabuSearch();
+
     void initialize(Solution * solution, bool _best_fit, double _a1, int _lc1, int _lc2, int _lo1, int _lo2, int seed);
 
     void run(Solution * solution);

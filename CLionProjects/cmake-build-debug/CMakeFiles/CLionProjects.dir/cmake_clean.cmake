@@ -5,6 +5,8 @@ file(REMOVE_RECURSE
   "CMakeFiles/CLionProjects.dir/global/Solution.cpp.o"
   "CMakeFiles/CLionProjects.dir/greedy/Greedy.cpp.o"
   "CMakeFiles/CLionProjects.dir/greedy/handlesInput.cpp.o"
+  "CMakeFiles/CLionProjects.dir/localSearch/LocalSearch.cpp.o"
+  "CMakeFiles/CLionProjects.dir/localSearch/handlesInput.cpp.o"
   "CMakeFiles/CLionProjects.dir/main.cpp.o"
   "CMakeFiles/CLionProjects.dir/tabuSearch/TabuSearch.cpp.o"
   "CMakeFiles/CLionProjects.dir/tabuSearch/handlesInput.cpp.o"

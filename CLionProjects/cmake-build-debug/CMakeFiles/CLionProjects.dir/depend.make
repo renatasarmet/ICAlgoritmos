@@ -18,6 +18,16 @@ CMakeFiles/CLionProjects.dir/greedy/handlesInput.cpp.o: ../global/Solution.h
 CMakeFiles/CLionProjects.dir/greedy/handlesInput.cpp.o: ../greedy/Greedy.h
 CMakeFiles/CLionProjects.dir/greedy/handlesInput.cpp.o: ../greedy/handlesInput.cpp
 
+CMakeFiles/CLionProjects.dir/localSearch/LocalSearch.cpp.o: ../global/Instance.h
+CMakeFiles/CLionProjects.dir/localSearch/LocalSearch.cpp.o: ../global/Solution.h
+CMakeFiles/CLionProjects.dir/localSearch/LocalSearch.cpp.o: ../localSearch/LocalSearch.cpp
+CMakeFiles/CLionProjects.dir/localSearch/LocalSearch.cpp.o: ../localSearch/LocalSearch.h
+
+CMakeFiles/CLionProjects.dir/localSearch/handlesInput.cpp.o: ../global/Instance.h
+CMakeFiles/CLionProjects.dir/localSearch/handlesInput.cpp.o: ../global/Solution.h
+CMakeFiles/CLionProjects.dir/localSearch/handlesInput.cpp.o: ../localSearch/LocalSearch.h
+CMakeFiles/CLionProjects.dir/localSearch/handlesInput.cpp.o: ../localSearch/handlesInput.cpp
+
 CMakeFiles/CLionProjects.dir/main.cpp.o: ../main.cpp
 
 CMakeFiles/CLionProjects.dir/tabuSearch/TabuSearch.cpp.o: ../global/Instance.h

@@ -18,7 +18,7 @@ using namespace std;
 #define DISPLAY_TIME 4 // corresponde aos calculos de tempo 
 #define DISPLAY_GRAPH 5 // corresponde a descricao dos clientes, instalacoes e arcos
 
-#define DEBUG 0 // OPCOES DE DEBUG: 1 - MOSTRAR A QTD DE MOVIMENTOS, 2 PARA EXIBIR OS MOVIMENTOS REALIZADOS, 3 PARA EXIBIR ACOES, 4 PARA EXIBIR TEMPO, 5 PARA EXIBIR AS MUDANÇAS NO GRAFO
+#define DEBUG 2 // OPCOES DE DEBUG: 1 - MOSTRAR A QTD DE MOVIMENTOS, 2 PARA EXIBIR OS MOVIMENTOS REALIZADOS, 3 PARA EXIBIR ACOES, 4 PARA EXIBIR TEMPO, 5 PARA EXIBIR AS MUDANÇAS NO GRAFO
 
 #define TIME_LIMIT 900 //15 minutos
 
@@ -710,6 +710,9 @@ solutionType localSearch(char * solutionName, int qty_facilities, int qty_client
 												// Percorre para atualizar a segunda mais proxima
 												c2_minX[n_cli] = biggestCij + 1; // limitante superior tranquilo
 
+
+												// ERRO AQUI:: DEVERIA SER ITR2
+
 												for (itr = open_facilities.begin(); itr != open_facilities.end(); ++itr) { // percorrer todas as inst abertas
 													aux_cij = assignment_cost[findEdge(g, n_cli, facilities[*itr])];
 													if((aux_cij < c2_minX[n_cli]) && (*itr != nearest_open_fac[n_cli]) && (*itr != name[n])){ // se for melhor que o salvo ate agr, mas nao melhor que o melhor de todos nem da que vai fechar
@@ -897,6 +900,11 @@ solutionType localSearch(char * solutionName, int qty_facilities, int qty_client
 
 											// Percorre para atualizar a segunda mais proxima
 											c2_minX[n_cli] = biggestCij + 1; // limitante superior tranquilo
+
+
+											// ERRO AQUI:: DEVERIA SER ITR2
+
+
 
 											for (itr = open_facilities.begin(); itr != open_facilities.end(); ++itr) { // percorrer todas as inst abertas
 												aux_cij = assignment_cost[findEdge(g, n_cli, facilities[*itr])];
