@@ -13,6 +13,9 @@ Após isso, digite no terminal:
 
 g++ handlesInput.cpp lateAcceptance.cpp -o la -Ofast
 
+quando estiver usando classe:
+(g++ handlesInput.cpp lateAcceptance.cpp ../global/Solution.cpp ../global/Instance.cpp -o la -Ofast)
+
 
 Considere que input_type significa 1 para o tipo ORLIB e 2 para o tipo SIMPLE FORMAT.
 Considere também best_fit significa 1 para a tecnica de escolher o melhor e 0 para escolher o primeiro, a1 que relaciona com a condicao de parada, lh com o numero de iteracoes anteriores que irei olhar e limit_idle com condicao de parada respectiva a proporcao de iteracoes sem melhora [TODOS ESSES SAO OPCIONAIS, MAS SE QUISER PASSAR QLQ UM DOS OPCIONAIS, TEM Q DIGITAR TODOS ESSES ANTERIORES]

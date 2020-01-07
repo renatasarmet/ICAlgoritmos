@@ -20,7 +20,7 @@ using namespace std;
 #define DISPLAY_TIME 5 // corresponde aos calculos de tempo 
 #define DISPLAY_GRAPH 6 // corresponde a descricao dos clientes, instalacoes e arcos
 
-#define DEBUG 0 // OPCOES DE DEBUG: 1 - MOSTRAR A QTD DE MOVIMENTOS, 2 PARA EXIBIR OS MOVIMENTOS REALIZADOS, 3 PARA EXIBIR ACOES, 4 PARA EXIBIR DETALHES DAS ACOES, 5 PARA EXIBIR TEMPO, 6 PARA EXIBIR AS MUDANÇAS NO GRAFO
+#define DEBUG 1 // OPCOES DE DEBUG: 1 - MOSTRAR A QTD DE MOVIMENTOS, 2 PARA EXIBIR OS MOVIMENTOS REALIZADOS, 3 PARA EXIBIR ACOES, 4 PARA EXIBIR DETALHES DAS ACOES, 5 PARA EXIBIR TEMPO, 6 PARA EXIBIR AS MUDANÇAS NO GRAFO
 
 // Retornar o valor da solucao
 solutionType lateAcceptance(char * solutionName, int qty_facilities, int qty_clients, double * costF, double * costA, solutionType solution, bool best_fit, double a1, double limit_idle, int lh){
@@ -207,7 +207,7 @@ solutionType lateAcceptance(char * solutionName, int qty_facilities, int qty_cli
 	}
 
 
-	// Iniciando o conjunto de instalacoes abertas e fechadas e o vetor flag
+	// Iniciando o conjunto de instalacoes abertas e o vetor flag
 	for(int i=0;i<qty_facilities;i++){
 		if(open[facilities[i]]){
 			open_facilities.insert(i);
@@ -276,18 +276,6 @@ solutionType lateAcceptance(char * solutionName, int qty_facilities, int qty_cli
 	if(DEBUG >= DISPLAY_DETAILS){
 		cout << "biggestCij from input : " << biggestCij << endl;
 	}
-
-	// Variavel que indica se foi feito uma troca, se sim, devemos dar um break no for para voltar pro while
-	bool swap_done = false;
-
-	// Variavel que indica o custo extra de abrir ou fechar uma certa instalacao
-	double extra_cost2;
-
-	// Variavel utilizada para calcular o custo completo extra do movimento de troca
-	double complete_extra_cost2;
-
-	// Variavel auxiliar para ajudar quando houver substituicao de informacoes na troca
-	bool closed_nearest = false; 
 
 
 	if (DEBUG >= DISPLAY_GRAPH){
@@ -396,19 +384,6 @@ solutionType lateAcceptance(char * solutionName, int qty_facilities, int qty_cli
 
 	// cout << "CUSTO INICIAL REAL: " << coost << endl;
 
-
-	// CHECANDO A CONTAGEM DE TEMPO GASTO ATÉ AGORA
-	clock_gettime(CLOCK_REALTIME, &time_so_far);
-
-	// Calculando o tempo gasto até agora
-	solution.timeSpent =  (time_so_far.tv_sec - start.tv_sec);
-	solution.timeSpent += (time_so_far.tv_nsec - start.tv_nsec) / 1000000000.0; // Necessario para obter uma precisao maior 
-
-	// // Acrescentando no solLog.txt o tempo e o custo inicial
-	// solLog << solution.timeSpent << "," << solution.finalTotalCost << "," << qty_moves << endl;
-
-	// // Acrescentando no logDetail.txt o tempo e o custo inicial
-	// logDetail << solution.timeSpent << "," << cur_cost << "," << qty_moves << endl;
 
 	// INICIANDO A CONTAGEM DE TEMPO DA FUNCAO
 	clock_gettime(CLOCK_REALTIME, &start);

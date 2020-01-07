@@ -18,9 +18,14 @@ CMakeFiles/CLionProjects.dir/greedy/handlesInput.cpp.o: ../global/Solution.h
 CMakeFiles/CLionProjects.dir/greedy/handlesInput.cpp.o: ../greedy/Greedy.h
 CMakeFiles/CLionProjects.dir/greedy/handlesInput.cpp.o: ../greedy/handlesInput.cpp
 
+CMakeFiles/CLionProjects.dir/lateAcceptance/LateAcceptance.cpp.o: ../global/Instance.h
+CMakeFiles/CLionProjects.dir/lateAcceptance/LateAcceptance.cpp.o: ../global/Solution.h
 CMakeFiles/CLionProjects.dir/lateAcceptance/LateAcceptance.cpp.o: ../lateAcceptance/LateAcceptance.cpp
 CMakeFiles/CLionProjects.dir/lateAcceptance/LateAcceptance.cpp.o: ../lateAcceptance/LateAcceptance.h
 
+CMakeFiles/CLionProjects.dir/lateAcceptance/handlesInput.cpp.o: ../global/Instance.h
+CMakeFiles/CLionProjects.dir/lateAcceptance/handlesInput.cpp.o: ../global/Solution.h
+CMakeFiles/CLionProjects.dir/lateAcceptance/handlesInput.cpp.o: ../lateAcceptance/LateAcceptance.h
 CMakeFiles/CLionProjects.dir/lateAcceptance/handlesInput.cpp.o: ../lateAcceptance/handlesInput.cpp
 
 CMakeFiles/CLionProjects.dir/lateAcceptanceTabuSearch/LATabuSearch.cpp.o: ../global/Instance.h
