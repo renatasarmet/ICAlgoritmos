@@ -1,4 +1,4 @@
-#include "TabuSearch.h"
+#include "LATabuSearch.h"
 
 #include <algorithm>
 #include <iostream>
@@ -17,10 +17,9 @@
 #define DEBUG 0 // OPCOES DE DEBUG: 1 - MOSTRAR A QTD DE MOVIMENTOS, 2 PARA EXIBIR OS MOVIMENTOS REALIZADOS, 3 PARA EXIBIR ACOES, 4 PARA EXIBIR DETALHES DAS ACOES, 5 PARA EXIBIR TEMPO
 
 
-using namespace std;
-
 // Alocando memoria e inicializando valores
-void TabuSearch::initialize(Solution *solution, bool _best_fit, double _a1, int _lc1, int _lc2, int _lo1, int _lo2, int seed) {
+void LATabuSearch::initialize(Solution *solution, double _a1, int _lc1, int _lc2, int _lo1, int _lo2, int seed,
+                              double _limit_idle, int _lh) {
     // Semente do numero aleatorio
     srand(seed);
 
@@ -33,11 +32,25 @@ void TabuSearch::initialize(Solution *solution, bool _best_fit, double _a1, int 
     // Variavel que marca quantas movimentacoes foram feitas de fato
     qty_moves = 0;
 
+    // Variavel que marca quantas movimentacoes foram feitas de fato
+    qty_moves_done = 0;
+
+    a1 = _a1;
+    lc1 = _lc1;
+    lc2 = _lc2;
+    lo1 = _lo1;
+    lo2 = _lo2;
+    lh = _lh;
+    limit_idle = _limit_idle;
+
     // Vetor da short term memory que representa o numero do movimento
     t = new int[qty_facilities];
 
     // Vetor que vai indicar se a instalacao está flagged
     flag = new bool[qty_facilities];
+
+    // Vetor fitness array que representa as solucoes anteriores, que vou usar para comparacao (tamanho lh)
+    fa = new double[lh];
 
     // Serao utilizados para acessar o vetor extra_cost, funciona como modulo 2
     cur_index_extra = 0;
@@ -67,12 +80,6 @@ void TabuSearch::initialize(Solution *solution, bool _best_fit, double _a1, int 
     temp_c_minX = new double[qty_clients];
     temp_c2_minX = new double[qty_clients];
 
-    best_fit = _best_fit;
-    a1 = _a1;
-    lc1 = _lc1;
-    lc2 = _lc2;
-    lo1 = _lo1;
-    lo2 = _lo2;
 
     for(int i=0;i<qty_clients;i++){
         temp_nearest_fac[i] = -1; // indica que nao há nenhuma inst temporaria ainda
@@ -136,9 +143,6 @@ void TabuSearch::initialize(Solution *solution, bool _best_fit, double _a1, int 
         cout << "biggest_cij from input : " << biggest_cij << endl;
     }
 
-    swap_done = false;
-    closed_nearest = false;
-
     cur_cost = solution->getFinalTotalCost();
     k_last_best = qty_moves;
     lets_move = false;
@@ -150,12 +154,18 @@ void TabuSearch::initialize(Solution *solution, bool _best_fit, double _a1, int 
     nearest3_open_fac = -1;
     aux_cij3 = -1;
 
+    idle_itr = 0;
+
+    // Iniciando o vetor fa
+    for(int i=0;i<lh;++i){
+        fa[i] = solution->getFinalTotalCost();
+    }
+
     run(solution);
 }
 
 // Retornar o valor da solucao por referencia
-void TabuSearch::run(Solution *solution) {
-
+void LATabuSearch::run(Solution *solution) {
     cout << fixed;
     cout.precision(5);
 
@@ -166,13 +176,11 @@ void TabuSearch::run(Solution *solution) {
     int aux_l;
 
     if(DEBUG >= DISPLAY_BASIC){
-        if(best_fit)
-            cout << "BEST FIT - ";
-        else
-            cout << "FIRST FIT - ";
-        cout << "A1 criterion: " << int(a1 * qty_facilities) << " iterations without improvement" << endl;
+        cout << "BEST FIT - ";
+        cout << "Lh: " << lh << endl;
+        cout << "A1 criterion: " << int(a1 * qty_facilities) << " iterations without improvement best" << endl;
+        cout << "Idle criterion: " << limit_idle << " * iterations without improvement current" << endl;
     }
-
 
 
     // // Declaracao de variavel auxiliar para formacao do arquivo .log
@@ -210,7 +218,7 @@ void TabuSearch::run(Solution *solution) {
     for(int j=0;j<qty_facilities;++j){ // percorre as instalacoes
         if(solution->getOpenFacilityJ(j)){ // se a instalacao está aberta, vamos ver a mudanca se fechar
             extra_cost[0][j] = -solution->getCostFJ(j);
-             for(int i=0;i<qty_clients;++i){ // percorre os clientes
+            for(int i=0;i<qty_clients;++i){ // percorre os clientes
                 if(nearest_open_fac[i] == j){ // se essa inst for a mais proxima desse cli
                     extra_cost[0][j] += c2_minX[i] - solution->getCostAIJ(i,j);
                 }
@@ -242,36 +250,15 @@ void TabuSearch::run(Solution *solution) {
         STEP 1
         */
 
-        // Tecnica best fit
-        if(best_fit){
-            // Select a facility that has de minimum extra_cost and is not flagged (and extra_cost is not DBL_MAX ---> invalid)
-            best_extra_cost = DBL_MAX; // limitante superior, maior double possivel
-            fac_best_extra_cost = -1; // indica invalidez
-            for(int i=0;i<qty_facilities;i++){
-                if(!((solution->getOpenFacilityJ(i))&&(n1 == 1))){ // se ela nao for a unica instalacao aberta
-                    if((extra_cost[cur_index_extra][i] < best_extra_cost) && ( !flag[i] )){ // se essa for menor do que a ja encontrada ate agr e nao estiver marcada, atualiza
-                        best_extra_cost = extra_cost[cur_index_extra][i];
-                        fac_best_extra_cost = i;
-                    }
-                }
-            }
-        }
-            // Tecnica first fit que melhora, senao o best menos ruim
-        else{
-            // Select a facility that has a negative extra_cost and is not flagged or the minimum one positive
-            best_extra_cost = DBL_MAX; // limitante superior, maior double possivel
-            fac_best_extra_cost = -1; // indica invalidez
-            for(int i=0;i<qty_facilities;i++){
-                if(!((solution->getOpenFacilityJ(i)) && (n1 == 1)) && ( !flag[i] )){ // se ela nao for a unica instalacao aberta e nao estiver flagged
-                    if((extra_cost[cur_index_extra][i] < 0)){ // se ela melhorar a solucao final
-                        best_extra_cost = extra_cost[cur_index_extra][i];
-                        fac_best_extra_cost = i;
-                        break; // sai com essa
-                    }
-                    else if((extra_cost[cur_index_extra][i] < best_extra_cost)){ // se essa for menor do que a ja encontrada ate agr, atualiza
-                        best_extra_cost = extra_cost[cur_index_extra][i];
-                        fac_best_extra_cost = i;
-                    }
+        // Select a facility that has de minimum extra_cost and is not flagged (and extra_cost is not DBL_MAX ---> invalid)
+        best_extra_cost = DBL_MAX; // limitante superior, maior double possivel
+        fac_best_extra_cost = -1; // indica invalidez
+        for(int i=0;i<qty_facilities;i++) {
+            if (!((solution->getOpenFacilityJ(i)) && (n1 == 1))) { // se ela nao for a unica instalacao aberta
+                if ((extra_cost[cur_index_extra][i] < best_extra_cost) &&
+                    (!flag[i])) { // se essa for menor do que a ja encontrada ate agr e nao estiver marcada, atualiza
+                    best_extra_cost = extra_cost[cur_index_extra][i];
+                    fac_best_extra_cost = i;
                 }
             }
         }
@@ -294,6 +281,22 @@ void TabuSearch::run(Solution *solution) {
                 else{ // se a instalacao está fechada
                     cout << "We want to open it" << endl;
                 }
+            }
+
+            // Check if the new cost is better than the old one
+            if(best_extra_cost >= 0){
+                idle_itr += 1;
+            }
+            else{
+                idle_itr = 0;
+            }
+
+            // Calculating the virtual beggining
+            v = qty_moves % lh;
+
+            if(DEBUG >= DISPLAY_ACTIONS){
+                cout << "V = " << v << endl;
+                cout << "F[v]: " << fa[v] << "  old: " << cur_cost << "  new: " << cur_cost + best_extra_cost << endl;
             }
 
             // Check the tabu status of the selected move
@@ -336,12 +339,34 @@ void TabuSearch::run(Solution *solution) {
                     cout << "It is not tabu" << endl;
                 }
 
-                /*
-                go to STEP 3
-                */
-                lets_move = true;
+                // se melhora a solucao atual ou a do fitness array
+                if(((cur_cost + best_extra_cost) < fa[v]) || (best_extra_cost <= 0)){
+                    /*
+                    go to STEP 3
+                    */
+                    lets_move = true;
+                    if(DEBUG >= DISPLAY_ACTIONS){
+                        cout << "It's better than the current cost or the f[v]!" << endl;
+                    }
+                }
+                else{
+                    // Mark facility as flagged
+                    flag[fac_best_extra_cost] = true;
+
+                    /*
+                    go back to STEP 1 -->> while
+                    */
+                    lets_move = false; // garantindo que o valor será falso
+                    keep_searching = true; // garantindo que o valor será verdadeiro
+
+                    if(DEBUG >= DISPLAY_ACTIONS){
+                        cout << "It's NOT better than the current and the f[v]." << endl;
+                    }
+                }
             }
 
+            // Aumentando a contagem de movimentos
+            qty_moves += 1;
 
             /*
             STEP 3
@@ -377,13 +402,13 @@ void TabuSearch::run(Solution *solution) {
                 cur_cost += best_extra_cost;
 
                 // Atualizando a lista tabu
-                t[fac_best_extra_cost] = qty_moves + aux_l;
+                t[fac_best_extra_cost] = (qty_moves - 1) + aux_l;
 
                 // Aumentando a contagem de movimentos
-                qty_moves += 1;
+                qty_moves_done += 1;
 
                 // Atualizando os indices para acessar o vetor extra_cost
-                cur_index_extra = qty_moves % 2;
+                cur_index_extra = qty_moves_done % 2;
                 old_index_extra = !cur_index_extra;
 
                 // CHECANDO A CONTAGEM DE TEMPO GASTO ATÉ AGORA
@@ -581,7 +606,7 @@ void TabuSearch::run(Solution *solution) {
                     }
                     for(int j2=0;j2 < qty_facilities; ++j2){ 	// percorre as instalacoes
 
-                            if(j2!=fac_best_extra_cost){ // se nao for exatamente a inst que eu estou abrindo
+                        if(j2!=fac_best_extra_cost){ // se nao for exatamente a inst que eu estou abrindo
 
                             // Open facilities after another facility closed
                             if(solution->getOpenFacilityJ(j2)){ // se a instalacao 2 está aberta
@@ -601,7 +626,7 @@ void TabuSearch::run(Solution *solution) {
                                         // Se for Tj1 ou Tj2
                                         // Tj1 = {i | di1 = j' ^ di2 = j} 		// Tj2 = {i | di1 = j ^ di2 = j'}
                                         if(((nearest_open_fac[i2] == fac_best_extra_cost) && (nearest2_open_fac[i2] == j2))
-                                            || ((nearest_open_fac[i2] == j2) && (nearest2_open_fac[i2] == fac_best_extra_cost))) { // se estou fechando a mais proxima e n2 é a segunda mais proxima (Tj1)
+                                           || ((nearest_open_fac[i2] == j2) && (nearest2_open_fac[i2] == fac_best_extra_cost))) { // se estou fechando a mais proxima e n2 é a segunda mais proxima (Tj1)
                                             /*
                                             Defining nearest3_open_fac e c3_minX
                                             */
@@ -740,13 +765,13 @@ void TabuSearch::run(Solution *solution) {
                 */
 
                 for(int i=0;i < qty_clients; ++i){ // percorre os clientes
-                     if(temp_nearest_fac[i]!= -1){ // se houve alguma mudanca com esse cliente
-                          nearest_open_fac[i] = temp_nearest_fac[i];
-                          c_minX[i] = temp_c_minX[i];
-                          nearest2_open_fac[i] = temp_nearest2_fac[i];
-                          c2_minX[i] = temp_c2_minX[i];
+                    if(temp_nearest_fac[i]!= -1){ // se houve alguma mudanca com esse cliente
+                        nearest_open_fac[i] = temp_nearest_fac[i];
+                        c_minX[i] = temp_c_minX[i];
+                        nearest2_open_fac[i] = temp_nearest2_fac[i];
+                        c2_minX[i] = temp_c2_minX[i];
 
-                          temp_nearest_fac[i] = -1; // resetando
+                        temp_nearest_fac[i] = -1; // resetando
                     }
 
                     // Se a solucao final foi atualizada nessa iteracao
@@ -755,7 +780,19 @@ void TabuSearch::run(Solution *solution) {
                         solution->setAssignedFacilityJ(i, nearest_open_fac[i]); // salvando alteracoes sobre a inst mais proxima na solucao final
                     }
                 }
+            }
 
+            // Se ainda nao atingiu a condicao de parada respectivo ao idle itr
+            if(idle_itr <= qty_moves * limit_idle){
+                /*
+                go back to STEP 1 -->> while
+                */
+                keep_searching = true; // garantindo que o valor será verdadeiro
+            }
+            else{
+                if(DEBUG >= DISPLAY_MOVES){
+                    cout << "Stop criterion idle: " << idle_itr << " > " <<  qty_moves * limit_idle << endl;
+                }
 
                 // Se ainda nao atingiu a condicao de parada respectivo ao a1
                 if(qty_moves - k_last_best <= a1 * qty_facilities){
@@ -764,16 +801,20 @@ void TabuSearch::run(Solution *solution) {
                     */
                     keep_searching = true; // garantindo que o valor será verdadeiro
                 }
-
                 else{
                     if(DEBUG >= DISPLAY_BASIC){
-                        cout << "Stop criterion a1" << endl;
+                        cout << "Stop criterion a1 and idle itr" << endl;
                     }
                     /*
                     STOP
                     */
                     keep_searching = false;
                 }
+            }
+
+            // Updating the fitness array
+            if(cur_cost < fa[v]){
+                fa[v] = cur_cost;
             }
         }
     }
@@ -829,15 +870,15 @@ void TabuSearch::run(Solution *solution) {
     // logDetail.close();
 }
 
-TabuSearch::~TabuSearch() {
+LATabuSearch::~LATabuSearch() {
     delete [] t;
     delete [] flag;
+    delete [] fa;
 
     for (int i = 0; i < 2; ++i) {
         delete[] extra_cost[i];
     }
     delete [] extra_cost;
-
 
     delete [] c_minX;
     delete []  c2_minX;

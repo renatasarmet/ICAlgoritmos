@@ -223,7 +223,7 @@ solutionType latabu(char * solutionName, int qty_facilities, int qty_clients, do
 	}
 
 
-	// Iniciando o conjunto de instalacoes abertas e fechadas, alem dos vetores t e flag
+	// Iniciando o conjunto de instalacoes abertas, alem dos vetores t e flag
 	for(int i=0;i<qty_facilities;i++){
 		if(open[facilities[i]]){
 			open_facilities.insert(i);
@@ -296,19 +296,6 @@ solutionType latabu(char * solutionName, int qty_facilities, int qty_clients, do
 	if(DEBUG >= DISPLAY_DETAILS){
 		cout << "biggestCij from input : " << biggestCij << endl;
 	}
-
-	// Variavel que indica se foi feito uma troca, se sim, devemos dar um break no for para voltar pro while
-	bool swap_done = false;
-
-	// Variavel que indica o custo extra de abrir ou fechar uma certa instalacao
-	double extra_cost2;
-
-	// Variavel utilizada para calcular o custo completo extra do movimento de troca
-	double complete_extra_cost2;
-
-	// Variavel auxiliar para ajudar quando houver substituicao de informacoes na troca
-	bool closed_nearest = false; 
-
 
 	if (DEBUG >= DISPLAY_GRAPH){
 		// Percorrendo por todos os nós A - clientes
@@ -416,18 +403,6 @@ solutionType latabu(char * solutionName, int qty_facilities, int qty_clients, do
 
 	// cout << "CUSTO INICIAL REAL: " << coost << endl;
 
-	// CHECANDO A CONTAGEM DE TEMPO GASTO ATÉ AGORA
-	clock_gettime(CLOCK_REALTIME, &time_so_far);
-
-	// Calculando o tempo gasto até agora
-	solution.timeSpent =  (time_so_far.tv_sec - start.tv_sec);
-	solution.timeSpent += (time_so_far.tv_nsec - start.tv_nsec) / 1000000000.0; // Necessario para obter uma precisao maior 
-
-	// Acrescentando no solLog.txt o tempo e o custo inicial
-	solLog << solution.timeSpent << "," << solution.finalTotalCost << "," << qty_moves << endl;
-
-	// Acrescentando no logDetail.txt o tempo e o custo inicial
-	logDetail << solution.timeSpent << "," << cur_cost << "," << qty_moves << endl;
 
 	// INICIANDO A CONTAGEM DE TEMPO DA FUNCAO
 	clock_gettime(CLOCK_REALTIME, &start);
@@ -1066,6 +1041,7 @@ solutionType latabu(char * solutionName, int qty_facilities, int qty_clients, do
 
 	free(t);
 	free(flag);
+	free(fa);
 	free(extra_cost);
 	
 	free(clients);

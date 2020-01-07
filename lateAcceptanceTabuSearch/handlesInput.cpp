@@ -16,7 +16,7 @@ using namespace std;
 
 int main(int argc, char *argv[]){
 
-	if(argc < 12){
+	if(argc < 11){
 		cout << "Error in the parameters. You must enter 10 parameters" << endl;
 		return 0;
 	}

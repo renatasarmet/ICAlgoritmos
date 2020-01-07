@@ -101,6 +101,24 @@
 		<Unit filename="/Users/renatasarmet/Documents/CLionProjects/greedy/handlesInput.cpp">
 			<Option target="CLionProjects"/>
 		</Unit>
+		<Unit filename="/Users/renatasarmet/Documents/CLionProjects/lateAcceptance/LateAcceptance.cpp">
+			<Option target="CLionProjects"/>
+		</Unit>
+		<Unit filename="/Users/renatasarmet/Documents/CLionProjects/lateAcceptance/LateAcceptance.h">
+			<Option target="CLionProjects"/>
+		</Unit>
+		<Unit filename="/Users/renatasarmet/Documents/CLionProjects/lateAcceptance/handlesInput.cpp">
+			<Option target="CLionProjects"/>
+		</Unit>
+		<Unit filename="/Users/renatasarmet/Documents/CLionProjects/lateAcceptanceTabuSearch/LATabuSearch.cpp">
+			<Option target="CLionProjects"/>
+		</Unit>
+		<Unit filename="/Users/renatasarmet/Documents/CLionProjects/lateAcceptanceTabuSearch/LATabuSearch.h">
+			<Option target="CLionProjects"/>
+		</Unit>
+		<Unit filename="/Users/renatasarmet/Documents/CLionProjects/lateAcceptanceTabuSearch/handlesInput.cpp">
+			<Option target="CLionProjects"/>
+		</Unit>
 		<Unit filename="/Users/renatasarmet/Documents/CLionProjects/localSearch/LocalSearch.cpp">
 			<Option target="CLionProjects"/>
 		</Unit>

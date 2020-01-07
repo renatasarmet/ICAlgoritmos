@@ -146,11 +146,11 @@ solutionType lateAcceptance(char * solutionName, int qty_facilities, int qty_cli
 	// Represents the amount of open facilities
 	int n1 = 0;
 
-	// Declaracao de variavel auxiliar para formacao do arquivo .log
-	char completeLogSolName[250] = "";
+	// // Declaracao de variavel auxiliar para formacao do arquivo .log
+	// char completeLogSolName[250] = "";
 
-	// Declaracao de variavel auxiliar para formacao do arquivo .log
-	char completeLogDetailName[300] = "";
+	// // Declaracao de variavel auxiliar para formacao do arquivo .log
+	// char completeLogDetailName[300] = "";
 
 	// // Arquivo para salvar o log da solucao
 	// ofstream solLog;

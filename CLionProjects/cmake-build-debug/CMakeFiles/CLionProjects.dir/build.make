@@ -200,6 +200,58 @@ CMakeFiles/CLionProjects.dir/localSearchCloseFac/LSCloseFac.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/CLionProjects.dir/localSearchCloseFac/LSCloseFac.cpp.s"
 	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/renatasarmet/Documents/CLionProjects/localSearchCloseFac/LSCloseFac.cpp -o CMakeFiles/CLionProjects.dir/localSearchCloseFac/LSCloseFac.cpp.s
 
+CMakeFiles/CLionProjects.dir/lateAcceptance/handlesInput.cpp.o: CMakeFiles/CLionProjects.dir/flags.make
+CMakeFiles/CLionProjects.dir/lateAcceptance/handlesInput.cpp.o: ../lateAcceptance/handlesInput.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/renatasarmet/Documents/CLionProjects/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_12) "Building CXX object CMakeFiles/CLionProjects.dir/lateAcceptance/handlesInput.cpp.o"
+	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/CLionProjects.dir/lateAcceptance/handlesInput.cpp.o -c /Users/renatasarmet/Documents/CLionProjects/lateAcceptance/handlesInput.cpp
+
+CMakeFiles/CLionProjects.dir/lateAcceptance/handlesInput.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/CLionProjects.dir/lateAcceptance/handlesInput.cpp.i"
+	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/renatasarmet/Documents/CLionProjects/lateAcceptance/handlesInput.cpp > CMakeFiles/CLionProjects.dir/lateAcceptance/handlesInput.cpp.i
+
+CMakeFiles/CLionProjects.dir/lateAcceptance/handlesInput.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/CLionProjects.dir/lateAcceptance/handlesInput.cpp.s"
+	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/renatasarmet/Documents/CLionProjects/lateAcceptance/handlesInput.cpp -o CMakeFiles/CLionProjects.dir/lateAcceptance/handlesInput.cpp.s
+
+CMakeFiles/CLionProjects.dir/lateAcceptance/LateAcceptance.cpp.o: CMakeFiles/CLionProjects.dir/flags.make
+CMakeFiles/CLionProjects.dir/lateAcceptance/LateAcceptance.cpp.o: ../lateAcceptance/LateAcceptance.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/renatasarmet/Documents/CLionProjects/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_13) "Building CXX object CMakeFiles/CLionProjects.dir/lateAcceptance/LateAcceptance.cpp.o"
+	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/CLionProjects.dir/lateAcceptance/LateAcceptance.cpp.o -c /Users/renatasarmet/Documents/CLionProjects/lateAcceptance/LateAcceptance.cpp
+
+CMakeFiles/CLionProjects.dir/lateAcceptance/LateAcceptance.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/CLionProjects.dir/lateAcceptance/LateAcceptance.cpp.i"
+	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/renatasarmet/Documents/CLionProjects/lateAcceptance/LateAcceptance.cpp > CMakeFiles/CLionProjects.dir/lateAcceptance/LateAcceptance.cpp.i
+
+CMakeFiles/CLionProjects.dir/lateAcceptance/LateAcceptance.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/CLionProjects.dir/lateAcceptance/LateAcceptance.cpp.s"
+	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/renatasarmet/Documents/CLionProjects/lateAcceptance/LateAcceptance.cpp -o CMakeFiles/CLionProjects.dir/lateAcceptance/LateAcceptance.cpp.s
+
+CMakeFiles/CLionProjects.dir/lateAcceptanceTabuSearch/handlesInput.cpp.o: CMakeFiles/CLionProjects.dir/flags.make
+CMakeFiles/CLionProjects.dir/lateAcceptanceTabuSearch/handlesInput.cpp.o: ../lateAcceptanceTabuSearch/handlesInput.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/renatasarmet/Documents/CLionProjects/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_14) "Building CXX object CMakeFiles/CLionProjects.dir/lateAcceptanceTabuSearch/handlesInput.cpp.o"
+	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/CLionProjects.dir/lateAcceptanceTabuSearch/handlesInput.cpp.o -c /Users/renatasarmet/Documents/CLionProjects/lateAcceptanceTabuSearch/handlesInput.cpp
+
+CMakeFiles/CLionProjects.dir/lateAcceptanceTabuSearch/handlesInput.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/CLionProjects.dir/lateAcceptanceTabuSearch/handlesInput.cpp.i"
+	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/renatasarmet/Documents/CLionProjects/lateAcceptanceTabuSearch/handlesInput.cpp > CMakeFiles/CLionProjects.dir/lateAcceptanceTabuSearch/handlesInput.cpp.i
+
+CMakeFiles/CLionProjects.dir/lateAcceptanceTabuSearch/handlesInput.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/CLionProjects.dir/lateAcceptanceTabuSearch/handlesInput.cpp.s"
+	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/renatasarmet/Documents/CLionProjects/lateAcceptanceTabuSearch/handlesInput.cpp -o CMakeFiles/CLionProjects.dir/lateAcceptanceTabuSearch/handlesInput.cpp.s
+
+CMakeFiles/CLionProjects.dir/lateAcceptanceTabuSearch/LATabuSearch.cpp.o: CMakeFiles/CLionProjects.dir/flags.make
+CMakeFiles/CLionProjects.dir/lateAcceptanceTabuSearch/LATabuSearch.cpp.o: ../lateAcceptanceTabuSearch/LATabuSearch.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/renatasarmet/Documents/CLionProjects/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_15) "Building CXX object CMakeFiles/CLionProjects.dir/lateAcceptanceTabuSearch/LATabuSearch.cpp.o"
+	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/CLionProjects.dir/lateAcceptanceTabuSearch/LATabuSearch.cpp.o -c /Users/renatasarmet/Documents/CLionProjects/lateAcceptanceTabuSearch/LATabuSearch.cpp
+
+CMakeFiles/CLionProjects.dir/lateAcceptanceTabuSearch/LATabuSearch.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/CLionProjects.dir/lateAcceptanceTabuSearch/LATabuSearch.cpp.i"
+	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/renatasarmet/Documents/CLionProjects/lateAcceptanceTabuSearch/LATabuSearch.cpp > CMakeFiles/CLionProjects.dir/lateAcceptanceTabuSearch/LATabuSearch.cpp.i
+
+CMakeFiles/CLionProjects.dir/lateAcceptanceTabuSearch/LATabuSearch.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/CLionProjects.dir/lateAcceptanceTabuSearch/LATabuSearch.cpp.s"
+	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/renatasarmet/Documents/CLionProjects/lateAcceptanceTabuSearch/LATabuSearch.cpp -o CMakeFiles/CLionProjects.dir/lateAcceptanceTabuSearch/LATabuSearch.cpp.s
+
 # Object files for target CLionProjects
 CLionProjects_OBJECTS = \
 "CMakeFiles/CLionProjects.dir/main.cpp.o" \
@@ -212,7 +264,11 @@ CLionProjects_OBJECTS = \
 "CMakeFiles/CLionProjects.dir/localSearch/handlesInput.cpp.o" \
 "CMakeFiles/CLionProjects.dir/localSearch/LocalSearch.cpp.o" \
 "CMakeFiles/CLionProjects.dir/localSearchCloseFac/handlesInput.cpp.o" \
-"CMakeFiles/CLionProjects.dir/localSearchCloseFac/LSCloseFac.cpp.o"
+"CMakeFiles/CLionProjects.dir/localSearchCloseFac/LSCloseFac.cpp.o" \
+"CMakeFiles/CLionProjects.dir/lateAcceptance/handlesInput.cpp.o" \
+"CMakeFiles/CLionProjects.dir/lateAcceptance/LateAcceptance.cpp.o" \
+"CMakeFiles/CLionProjects.dir/lateAcceptanceTabuSearch/handlesInput.cpp.o" \
+"CMakeFiles/CLionProjects.dir/lateAcceptanceTabuSearch/LATabuSearch.cpp.o"
 
 # External object files for target CLionProjects
 CLionProjects_EXTERNAL_OBJECTS =
@@ -228,9 +284,13 @@ CLionProjects: CMakeFiles/CLionProjects.dir/localSearch/handlesInput.cpp.o
 CLionProjects: CMakeFiles/CLionProjects.dir/localSearch/LocalSearch.cpp.o
 CLionProjects: CMakeFiles/CLionProjects.dir/localSearchCloseFac/handlesInput.cpp.o
 CLionProjects: CMakeFiles/CLionProjects.dir/localSearchCloseFac/LSCloseFac.cpp.o
+CLionProjects: CMakeFiles/CLionProjects.dir/lateAcceptance/handlesInput.cpp.o
+CLionProjects: CMakeFiles/CLionProjects.dir/lateAcceptance/LateAcceptance.cpp.o
+CLionProjects: CMakeFiles/CLionProjects.dir/lateAcceptanceTabuSearch/handlesInput.cpp.o
+CLionProjects: CMakeFiles/CLionProjects.dir/lateAcceptanceTabuSearch/LATabuSearch.cpp.o
 CLionProjects: CMakeFiles/CLionProjects.dir/build.make
 CLionProjects: CMakeFiles/CLionProjects.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/Users/renatasarmet/Documents/CLionProjects/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_12) "Linking CXX executable CLionProjects"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/Users/renatasarmet/Documents/CLionProjects/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_16) "Linking CXX executable CLionProjects"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/CLionProjects.dir/link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.
