@@ -27,10 +27,10 @@ public:
 
     void run(Solution * solution);
 
-    static void mergeSort(double *vector, int *vector_ID, int start_position, int end_position);
+    static void mergeSort(double *vector, int *vectorID, int startPosition, int endPosition);
 
-    void deletingNonActiveClients(int index_fac, int qty_cli_delete);
+    void deletingNonActiveClients(int indexFac, int qtyCliDelete);
 
-    void bestSubset(int &best_size, double &best_cost, int index_fac, double fi, double gain, int start_index);
+    void bestSubset(int &bestSize, double &bestCost, int indexFac, double fi, double gain, int startIndex);
 };
 #endif //CLIONPROJECTS_GREEDY_H

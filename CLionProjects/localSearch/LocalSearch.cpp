@@ -38,7 +38,7 @@ using namespace std;
 
 
 // Alocando memoria e inicializando valores
-void LocalSearch::initialize(Solution *solution, int ls_type) {
+void LocalSearch::initialize(Solution *solution, int lsType) {
 
     qty_facilities = solution->getQtyFacilities();
     qty_clients = solution->getQtyClients();
@@ -119,12 +119,12 @@ void LocalSearch::initialize(Solution *solution, int ls_type) {
     swap_done = false;
     closed_nearest = false;
 
-    run(solution, ls_type);
+    run(solution, lsType);
 }
 
 
 // Retornar o valor da solucao por referencia
-void LocalSearch::run(Solution *solution, int ls_type) {
+void LocalSearch::run(Solution *solution, int lsType) {
 
     cout << fixed;
     cout.precision(5);
@@ -230,7 +230,7 @@ void LocalSearch::run(Solution *solution, int ls_type) {
         // Encaixando a operação de troca, será um for logo depois desse primeiro for, que só ira entrar caso finalize o primeiro for com solution.local_optimum = true, pois indica que nada melhorou por ali
         solution->setLocalOptimum(true);
 
-        if((ls_type==1)||(ls_type==2)){
+        if((lsType == 1) || (lsType == 2)){
             // VIZINHANCA 1: ABRIR OU FECHAR UMA INSTALACAO
             for(int j=qty_facilities-1;j>=0;--j){		// percorre as instalacoes
 
@@ -438,7 +438,7 @@ void LocalSearch::run(Solution *solution, int ls_type) {
             }
         }
 
-        if((ls_type==1)||(ls_type==3)){
+        if((lsType == 1) || (lsType == 3)){
             // VIZINHANCA 2: CASO DE TROCA
             if(solution->isLocalOptimum()){ // Entra aqui se nao houve nenhuma melhora na tentativa de add ou delete
 

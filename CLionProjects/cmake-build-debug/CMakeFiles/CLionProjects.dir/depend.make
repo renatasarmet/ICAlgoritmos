@@ -7,99 +7,62 @@ CMakeFiles/CLionProjects.dir/global/Instance.cpp.o: ../global/Instance.h
 CMakeFiles/CLionProjects.dir/global/Solution.cpp.o: ../global/Instance.h
 CMakeFiles/CLionProjects.dir/global/Solution.cpp.o: ../global/Solution.cpp
 CMakeFiles/CLionProjects.dir/global/Solution.cpp.o: ../global/Solution.h
-CMakeFiles/CLionProjects.dir/global/Solution.cpp.o: ../lateAcceptance/LateAcceptance.h
-CMakeFiles/CLionProjects.dir/global/Solution.cpp.o: ../localSearch/LocalSearch.h
-CMakeFiles/CLionProjects.dir/global/Solution.cpp.o: ../localSearchCloseFac/LSCloseFac.h
-CMakeFiles/CLionProjects.dir/global/Solution.cpp.o: ../tabuSearch/TabuSearch.h
 
 CMakeFiles/CLionProjects.dir/greedy/Greedy.cpp.o: ../global/Instance.h
 CMakeFiles/CLionProjects.dir/greedy/Greedy.cpp.o: ../global/Solution.h
 CMakeFiles/CLionProjects.dir/greedy/Greedy.cpp.o: ../greedy/Greedy.cpp
 CMakeFiles/CLionProjects.dir/greedy/Greedy.cpp.o: ../greedy/Greedy.h
-CMakeFiles/CLionProjects.dir/greedy/Greedy.cpp.o: ../lateAcceptance/LateAcceptance.h
-CMakeFiles/CLionProjects.dir/greedy/Greedy.cpp.o: ../localSearch/LocalSearch.h
-CMakeFiles/CLionProjects.dir/greedy/Greedy.cpp.o: ../localSearchCloseFac/LSCloseFac.h
-CMakeFiles/CLionProjects.dir/greedy/Greedy.cpp.o: ../tabuSearch/TabuSearch.h
 
 CMakeFiles/CLionProjects.dir/greedy/handlesInput.cpp.o: ../global/Instance.h
 CMakeFiles/CLionProjects.dir/greedy/handlesInput.cpp.o: ../global/Solution.h
 CMakeFiles/CLionProjects.dir/greedy/handlesInput.cpp.o: ../greedy/Greedy.h
 CMakeFiles/CLionProjects.dir/greedy/handlesInput.cpp.o: ../greedy/handlesInput.cpp
-CMakeFiles/CLionProjects.dir/greedy/handlesInput.cpp.o: ../lateAcceptance/LateAcceptance.h
-CMakeFiles/CLionProjects.dir/greedy/handlesInput.cpp.o: ../localSearch/LocalSearch.h
-CMakeFiles/CLionProjects.dir/greedy/handlesInput.cpp.o: ../localSearchCloseFac/LSCloseFac.h
-CMakeFiles/CLionProjects.dir/greedy/handlesInput.cpp.o: ../tabuSearch/TabuSearch.h
 
 CMakeFiles/CLionProjects.dir/lateAcceptance/LateAcceptance.cpp.o: ../global/Instance.h
 CMakeFiles/CLionProjects.dir/lateAcceptance/LateAcceptance.cpp.o: ../global/Solution.h
 CMakeFiles/CLionProjects.dir/lateAcceptance/LateAcceptance.cpp.o: ../lateAcceptance/LateAcceptance.cpp
 CMakeFiles/CLionProjects.dir/lateAcceptance/LateAcceptance.cpp.o: ../lateAcceptance/LateAcceptance.h
-CMakeFiles/CLionProjects.dir/lateAcceptance/LateAcceptance.cpp.o: ../localSearch/LocalSearch.h
-CMakeFiles/CLionProjects.dir/lateAcceptance/LateAcceptance.cpp.o: ../localSearchCloseFac/LSCloseFac.h
-CMakeFiles/CLionProjects.dir/lateAcceptance/LateAcceptance.cpp.o: ../tabuSearch/TabuSearch.h
 
 CMakeFiles/CLionProjects.dir/lateAcceptance/handlesInput.cpp.o: ../global/Instance.h
 CMakeFiles/CLionProjects.dir/lateAcceptance/handlesInput.cpp.o: ../global/Solution.h
 CMakeFiles/CLionProjects.dir/lateAcceptance/handlesInput.cpp.o: ../lateAcceptance/LateAcceptance.h
 CMakeFiles/CLionProjects.dir/lateAcceptance/handlesInput.cpp.o: ../lateAcceptance/handlesInput.cpp
-CMakeFiles/CLionProjects.dir/lateAcceptance/handlesInput.cpp.o: ../localSearch/LocalSearch.h
-CMakeFiles/CLionProjects.dir/lateAcceptance/handlesInput.cpp.o: ../localSearchCloseFac/LSCloseFac.h
-CMakeFiles/CLionProjects.dir/lateAcceptance/handlesInput.cpp.o: ../tabuSearch/TabuSearch.h
 
 CMakeFiles/CLionProjects.dir/lateAcceptanceTabuSearch/LATabuSearch.cpp.o: ../global/Instance.h
 CMakeFiles/CLionProjects.dir/lateAcceptanceTabuSearch/LATabuSearch.cpp.o: ../global/Solution.h
-CMakeFiles/CLionProjects.dir/lateAcceptanceTabuSearch/LATabuSearch.cpp.o: ../lateAcceptance/LateAcceptance.h
 CMakeFiles/CLionProjects.dir/lateAcceptanceTabuSearch/LATabuSearch.cpp.o: ../lateAcceptanceTabuSearch/LATabuSearch.cpp
 CMakeFiles/CLionProjects.dir/lateAcceptanceTabuSearch/LATabuSearch.cpp.o: ../lateAcceptanceTabuSearch/LATabuSearch.h
-CMakeFiles/CLionProjects.dir/lateAcceptanceTabuSearch/LATabuSearch.cpp.o: ../localSearch/LocalSearch.h
-CMakeFiles/CLionProjects.dir/lateAcceptanceTabuSearch/LATabuSearch.cpp.o: ../localSearchCloseFac/LSCloseFac.h
-CMakeFiles/CLionProjects.dir/lateAcceptanceTabuSearch/LATabuSearch.cpp.o: ../tabuSearch/TabuSearch.h
 
 CMakeFiles/CLionProjects.dir/lateAcceptanceTabuSearch/handlesInput.cpp.o: ../global/Instance.h
 CMakeFiles/CLionProjects.dir/lateAcceptanceTabuSearch/handlesInput.cpp.o: ../global/Solution.h
-CMakeFiles/CLionProjects.dir/lateAcceptanceTabuSearch/handlesInput.cpp.o: ../lateAcceptance/LateAcceptance.h
 CMakeFiles/CLionProjects.dir/lateAcceptanceTabuSearch/handlesInput.cpp.o: ../lateAcceptanceTabuSearch/LATabuSearch.h
 CMakeFiles/CLionProjects.dir/lateAcceptanceTabuSearch/handlesInput.cpp.o: ../lateAcceptanceTabuSearch/handlesInput.cpp
-CMakeFiles/CLionProjects.dir/lateAcceptanceTabuSearch/handlesInput.cpp.o: ../localSearch/LocalSearch.h
-CMakeFiles/CLionProjects.dir/lateAcceptanceTabuSearch/handlesInput.cpp.o: ../localSearchCloseFac/LSCloseFac.h
-CMakeFiles/CLionProjects.dir/lateAcceptanceTabuSearch/handlesInput.cpp.o: ../tabuSearch/TabuSearch.h
 
 CMakeFiles/CLionProjects.dir/localSearch/LocalSearch.cpp.o: ../global/Instance.h
 CMakeFiles/CLionProjects.dir/localSearch/LocalSearch.cpp.o: ../global/Solution.h
-CMakeFiles/CLionProjects.dir/localSearch/LocalSearch.cpp.o: ../lateAcceptance/LateAcceptance.h
 CMakeFiles/CLionProjects.dir/localSearch/LocalSearch.cpp.o: ../localSearch/LocalSearch.cpp
 CMakeFiles/CLionProjects.dir/localSearch/LocalSearch.cpp.o: ../localSearch/LocalSearch.h
-CMakeFiles/CLionProjects.dir/localSearch/LocalSearch.cpp.o: ../localSearchCloseFac/LSCloseFac.h
-CMakeFiles/CLionProjects.dir/localSearch/LocalSearch.cpp.o: ../tabuSearch/TabuSearch.h
 
 CMakeFiles/CLionProjects.dir/localSearch/handlesInput.cpp.o: ../global/Instance.h
 CMakeFiles/CLionProjects.dir/localSearch/handlesInput.cpp.o: ../global/Solution.h
-CMakeFiles/CLionProjects.dir/localSearch/handlesInput.cpp.o: ../lateAcceptance/LateAcceptance.h
 CMakeFiles/CLionProjects.dir/localSearch/handlesInput.cpp.o: ../localSearch/LocalSearch.h
 CMakeFiles/CLionProjects.dir/localSearch/handlesInput.cpp.o: ../localSearch/handlesInput.cpp
-CMakeFiles/CLionProjects.dir/localSearch/handlesInput.cpp.o: ../localSearchCloseFac/LSCloseFac.h
-CMakeFiles/CLionProjects.dir/localSearch/handlesInput.cpp.o: ../tabuSearch/TabuSearch.h
 
 CMakeFiles/CLionProjects.dir/localSearchCloseFac/LSCloseFac.cpp.o: ../global/Instance.h
 CMakeFiles/CLionProjects.dir/localSearchCloseFac/LSCloseFac.cpp.o: ../global/Solution.h
-CMakeFiles/CLionProjects.dir/localSearchCloseFac/LSCloseFac.cpp.o: ../lateAcceptance/LateAcceptance.h
-CMakeFiles/CLionProjects.dir/localSearchCloseFac/LSCloseFac.cpp.o: ../localSearch/LocalSearch.h
 CMakeFiles/CLionProjects.dir/localSearchCloseFac/LSCloseFac.cpp.o: ../localSearchCloseFac/LSCloseFac.cpp
 CMakeFiles/CLionProjects.dir/localSearchCloseFac/LSCloseFac.cpp.o: ../localSearchCloseFac/LSCloseFac.h
-CMakeFiles/CLionProjects.dir/localSearchCloseFac/LSCloseFac.cpp.o: ../tabuSearch/TabuSearch.h
 
 CMakeFiles/CLionProjects.dir/localSearchCloseFac/handlesInput.cpp.o: ../global/Instance.h
 CMakeFiles/CLionProjects.dir/localSearchCloseFac/handlesInput.cpp.o: ../global/Solution.h
-CMakeFiles/CLionProjects.dir/localSearchCloseFac/handlesInput.cpp.o: ../lateAcceptance/LateAcceptance.h
-CMakeFiles/CLionProjects.dir/localSearchCloseFac/handlesInput.cpp.o: ../localSearch/LocalSearch.h
 CMakeFiles/CLionProjects.dir/localSearchCloseFac/handlesInput.cpp.o: ../localSearchCloseFac/LSCloseFac.h
 CMakeFiles/CLionProjects.dir/localSearchCloseFac/handlesInput.cpp.o: ../localSearchCloseFac/handlesInput.cpp
-CMakeFiles/CLionProjects.dir/localSearchCloseFac/handlesInput.cpp.o: ../tabuSearch/TabuSearch.h
 
 CMakeFiles/CLionProjects.dir/main.cpp.o: ../main.cpp
 
 CMakeFiles/CLionProjects.dir/memetic/Memetic.cpp.o: ../global/Instance.h
 CMakeFiles/CLionProjects.dir/memetic/Memetic.cpp.o: ../global/Solution.h
+CMakeFiles/CLionProjects.dir/memetic/Memetic.cpp.o: ../greedy/Greedy.h
 CMakeFiles/CLionProjects.dir/memetic/Memetic.cpp.o: ../lateAcceptance/LateAcceptance.h
 CMakeFiles/CLionProjects.dir/memetic/Memetic.cpp.o: ../localSearch/LocalSearch.h
 CMakeFiles/CLionProjects.dir/memetic/Memetic.cpp.o: ../localSearchCloseFac/LSCloseFac.h
@@ -120,6 +83,7 @@ CMakeFiles/CLionProjects.dir/memetic/Tree.cpp.o: ../tabuSearch/TabuSearch.h
 
 CMakeFiles/CLionProjects.dir/memetic/handlesInput.cpp.o: ../global/Instance.h
 CMakeFiles/CLionProjects.dir/memetic/handlesInput.cpp.o: ../global/Solution.h
+CMakeFiles/CLionProjects.dir/memetic/handlesInput.cpp.o: ../greedy/Greedy.h
 CMakeFiles/CLionProjects.dir/memetic/handlesInput.cpp.o: ../lateAcceptance/LateAcceptance.h
 CMakeFiles/CLionProjects.dir/memetic/handlesInput.cpp.o: ../localSearch/LocalSearch.h
 CMakeFiles/CLionProjects.dir/memetic/handlesInput.cpp.o: ../localSearchCloseFac/LSCloseFac.h
@@ -130,17 +94,11 @@ CMakeFiles/CLionProjects.dir/memetic/handlesInput.cpp.o: ../tabuSearch/TabuSearc
 
 CMakeFiles/CLionProjects.dir/tabuSearch/TabuSearch.cpp.o: ../global/Instance.h
 CMakeFiles/CLionProjects.dir/tabuSearch/TabuSearch.cpp.o: ../global/Solution.h
-CMakeFiles/CLionProjects.dir/tabuSearch/TabuSearch.cpp.o: ../lateAcceptance/LateAcceptance.h
-CMakeFiles/CLionProjects.dir/tabuSearch/TabuSearch.cpp.o: ../localSearch/LocalSearch.h
-CMakeFiles/CLionProjects.dir/tabuSearch/TabuSearch.cpp.o: ../localSearchCloseFac/LSCloseFac.h
 CMakeFiles/CLionProjects.dir/tabuSearch/TabuSearch.cpp.o: ../tabuSearch/TabuSearch.cpp
 CMakeFiles/CLionProjects.dir/tabuSearch/TabuSearch.cpp.o: ../tabuSearch/TabuSearch.h
 
 CMakeFiles/CLionProjects.dir/tabuSearch/handlesInput.cpp.o: ../global/Instance.h
 CMakeFiles/CLionProjects.dir/tabuSearch/handlesInput.cpp.o: ../global/Solution.h
-CMakeFiles/CLionProjects.dir/tabuSearch/handlesInput.cpp.o: ../lateAcceptance/LateAcceptance.h
-CMakeFiles/CLionProjects.dir/tabuSearch/handlesInput.cpp.o: ../localSearch/LocalSearch.h
-CMakeFiles/CLionProjects.dir/tabuSearch/handlesInput.cpp.o: ../localSearchCloseFac/LSCloseFac.h
 CMakeFiles/CLionProjects.dir/tabuSearch/handlesInput.cpp.o: ../tabuSearch/TabuSearch.h
 CMakeFiles/CLionProjects.dir/tabuSearch/handlesInput.cpp.o: ../tabuSearch/handlesInput.cpp
 

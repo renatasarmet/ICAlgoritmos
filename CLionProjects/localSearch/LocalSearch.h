@@ -35,9 +35,9 @@ private:
 public:
     virtual ~LocalSearch();
 
-    void initialize(Solution * solution, int ls_type);
+    void initialize(Solution * solution, int lsType);
 
-    void run(Solution * solution, int ls_type);
+    void run(Solution * solution, int lsType);
 
 };
 

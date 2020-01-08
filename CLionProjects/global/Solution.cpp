@@ -29,10 +29,10 @@ void Solution::resetSolution() {
     instance.setDestroyed(true);
 }
 
-//void Solution::initializeInstance(const Instance& _instance) {
-//    setInstance(_instance);
-//    resetSolution();
-//}
+void Solution::initializeInstance(const Instance& _instance) {
+    setInstance(_instance);
+    resetSolution();
+}
 
 void Solution::allocateMemory() {
     assigned_facilities = new int[instance.getQtyClients()];
@@ -225,19 +225,6 @@ void Solution::copySolution(Solution *model) {
     }
 }
 
-// Chama o local search nele mesmo
-void Solution::callLocalSearch(int ls_type) {
-    LocalSearch localSearch;
-
-    localSearch.initialize(this, ls_type); // chamando local search do tipo ls_type
-}
-
-// Chama o late acceptance nele mesmo
-void Solution::callLateAcceptance() {
-    LateAcceptance lateAcceptance;
-
-    lateAcceptance.initialize(this, true, 2.5, 0.02, 10); // best_fit = true, a1 = 2.5, limit_idle = 0.02, lh = 10
-}
 
 // Verifica quantas instalacoes estao abertas
 int Solution::getQtyOpenFacilities() {
@@ -250,32 +237,32 @@ int Solution::getQtyOpenFacilities() {
     return qty;
 }
 
-// Conecta os clientes à instalacao aberta mais proxima. É importante que sorted_cijID e costA sejam realmente compativeis
-void Solution::connectNearest(int **sorted_cijID) {
+// Conecta os clientes à instalacao aberta mais proxima. É importante que sortedCijID e costA sejam realmente compativeis
+void Solution::connectNearest(int **sortedCijID) {
     int cont;
     for(int i=0;i<instance.getQtyClients();i++){
         cont = 0;
         // Percorrendo pelo vetor ordenado de ID do cij, quando encontrar a primeira inst que estiver aberta, para
-        while(!open_facilities[sorted_cijID[i][cont]]){
+        while(!open_facilities[sortedCijID[i][cont]]){
             cont+=1;
         }
         // Atribui essa inst como inst aberta mais proxima
-        assigned_facilities[i] = sorted_cijID[i][cont];
+        assigned_facilities[i] = sortedCijID[i][cont];
 
         // Aumenta no custo total final
-        final_total_cost += instance.getCostAIJ(i,sorted_cijID[i][cont]);
+        final_total_cost += instance.getCostAIJ(i, sortedCijID[i][cont]);
     }
 }
 
 // Chama a função que conecta os clientes à instalacao aberta mais proxima, fecha as instalacoes que nao tem ninguem conectado e atualiza o final_total_cost
-void Solution::connectAndUpdateFacilities(int **sorted_cijID) {
+void Solution::connectAndUpdateFacilities(int **sortedCijID) {
     bool used;
 
     // Zera o custo total final
     final_total_cost = 0;
 
     // Conectando cada cliente com a instalacao aberta mais proxima
-    connectNearest(sorted_cijID);
+    connectNearest(sortedCijID);
 
     // Fechar as instalacoes que nao foram conectadas a ninguem
     for(int i=0; i<instance.getQtyFacilities(); i++){
@@ -301,17 +288,8 @@ void Solution::connectAndUpdateFacilities(int **sorted_cijID) {
     }
 }
 
-void Solution::call_tabu_search() {
-    int lc1 = 0.01 * instance.getQtyFacilities();
-    int lc2 = 0.05 * instance.getQtyFacilities();
 
-    TabuSearch tabuSearch;
-
-    // Chamando a funcao que resolve o problema de fato
-    tabuSearch.initialize(this, true, 0.5, lc1, lc2, lc1, lc2, 0);  // best_fit = true, a1 = 0.5, (lc1 = lo1 = 0.01 * qty_facilities), (lc2 = lo2 = 0.05 * qty_facilities), seed = 0
-}
-
-void Solution::print_individual() {
+void Solution::printIndividual() {
     cout << endl;
 
     for(int i=0;i<instance.getQtyFacilities();i++){
@@ -320,7 +298,7 @@ void Solution::print_individual() {
     cout << endl << endl;
 }
 
-void Solution::print_open_facilities() {
+void Solution::printOpenFacilities() {
     cout << endl << "Open facilities: ";
 
     for(int i=0;i<instance.getQtyFacilities() ;i++){
@@ -329,10 +307,4 @@ void Solution::print_open_facilities() {
         }
     }
     cout << endl << endl;
-}
-
-void Solution::call_local_search_close_fac() {
-    LSCloseFac lsCloseFac;
-
-    lsCloseFac.initialize(this);
 }

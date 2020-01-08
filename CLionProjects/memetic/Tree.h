@@ -1,11 +1,12 @@
-//
-// Created by Renata Sarmet Smiderle Mendes on 8/1/20.
-//
-
 #ifndef CLIONPROJECTS_TREE_H
 #define CLIONPROJECTS_TREE_H
 
 #include "../global/Solution.h"
+#include "../localSearch/LocalSearch.h"
+#include "../lateAcceptance/LateAcceptance.h"
+#include "../tabuSearch/TabuSearch.h"
+#include "../localSearchCloseFac/LSCloseFac.h"
+#include "../greedy/Greedy.h"
 
 #define QTY_NODES_TREE 13
 #define QTY_SOLUTIONS_NODE 2 // inclui 1 pocket e 1 current
@@ -15,11 +16,6 @@
 
 #define LA_INITIAL_POP false // indica se quer fazer LA na pop inicial gerada pelo random
 #define OPEN_RANDOM_RATE 10 //1.5 // 10% // probabilidade de abrir uma instalacao na geração de solucoes random
-#define MUTATION_RATE 0.01 // 1% 0.1// 10% //0.05 // 5% * qty_facilities
-#define CROSSOVER_TYPE 4 // 1 para uniform, 2 para one-point, 3 para union, 4 para groups 0 para aleatorio cada vez
-#define PROB_LA_RATE 50 // 50%
-#define MAX_GEN_NO_IMPROVEMENT 5 // quantidade de geracoes sem melhora, para atualizar o root
-#define MAX_CHANGES_ROOT 2 // indica a quantidade de vezes seguidas que pode atualizar o root sem melhorar a best salva
 #define SHUFFLED_FACILITIES true // indica se vai gerar as solucoes iniciais garantindo que todas as instalacoes estarao presentes nas solucoes
 
 #define DISPLAY_BASIC 1 // corresponde a exibicao da quantidade de movimentos
@@ -35,16 +31,12 @@ private:
     int qty_nodes; // indica quantos nodes tem na arvore
     int qty_solutions_node; // indica quantas solucoes/individuos tem em cada node
     Solution **nodes; // Cada nó é um agente, que possui 1 pocket e 1 current
-    Instance instance;
+    Instance * instance;
 
     Solution aux_sol;
 
     int * shuffled_facilities;
     int **sorted_cijID;
-public:
-    int **getSortedCijId() const;
-
-private:
 
     int qty_shuf_made;
     int SLICE_SHUF;
@@ -55,12 +47,10 @@ private:
 //    Instance * map_instance;
 
     int QTY_SUBS;  // Quantidade de pais que existem (quantidade de sub arvores)
-public:
-    int getQtySubs() const;
 
 public:
 
-    Tree(int qtyNodes, int qtySolutionsNode, const Instance &_instance);
+    explicit Tree(Instance * _instance);
 
     virtual ~Tree();
 
@@ -75,6 +65,10 @@ public:
     Solution getNodeJPosI(int j, int i) const;
 
     Solution * getPointerNodeJPosI(int j, int i);
+
+    int **getSortedCijId() const;
+
+    int getQtySubs() const;
 
     const Instance &getInstance() const;
 
@@ -96,44 +90,52 @@ public:
 
     static void mergeSortID(double *vector, int *vectorID, int startPosition, int endPosition);
 
-    void call_greedy(int posNode, int posIndividual);
+    void callGreedy(int posNode, int posIndividual);
 
-    void map_and_call_G(int posNode, int posIndividual);
+    void mapAndCallG(int posNode, int posIndividual);
 
-    void map_and_call_TS(int posNode, int posIndividual);
+    void mapAndCallTS(int posNode, int posIndividual);
 
     void mapping(int posNode, int posIndividual);
 
     void unmapping(int posNode, int posIndividual);
 
-    void print_count_open_facilities();
+    void printCountOpenFacilities();
 
-    void print_tree_complete();
+    void printTreeComplete();
 
-    void update_sub_pop(int id_parent);
+    void updateSubPop(int idParent);
 
-    void invert_nodes(int posNode1, int posIndividual1, int posNode2, int posIndividual2);
+    void invertNodes(int posNode1, int posIndividual1, int posNode2, int posIndividual2);
 
-    void update_population();
+    void updatePopulation();
 
-    void print_tree();
+    void printTree();
 
-    void change_root(Solution * solution, int * qty_changes_root);
+    void changeRoot(Solution * solution, int * qtyChangesRoot);
 
-    void update_pop_change_root(int id_parent);
+    void updatePopChangeRoot(int id_parent);
 
-    void update_refset();
+    void updateRefset();
 
-    double compare_pocket_current(int posNode);
+    double comparePocketCurrent(int posNode);
 
-    bool are_different(int posNode1, int posIndividual1, int posNode2, int posIndividual2);
+    bool areDifferent(int posNode1, int posIndividual1, int posNode2, int posIndividual2);
 
-    int qty_diversity(bool * n1_open_facilities, bool * n2_open_facilities);
+    int qtyDiversity(bool * n1OpenFacilities, bool * n2OpenFacilities);
 
-    void swap_pocket_current(int posNode);
+    void swapPocketCurrent(int posNode);
 
-    void print_tree_best();
-}
+    void printTreeBest();
+
+    void callLocalSearch(int posNode, int posIndividual, int lsType);
+
+    void callLateAcceptance(int posNode, int posIndividual);
+
+    void callTabuSearch(int posNode, int posIndividual);
+
+    void callLocalSearchCloseFac(int posNode, int posIndividual);
+};
 
 
 #endif //CLIONPROJECTS_TREE_H

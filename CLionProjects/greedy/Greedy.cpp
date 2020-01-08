@@ -11,46 +11,46 @@
 
 using namespace std;
 
-void Greedy::mergeSort(double *vector, int *vector_ID, int start_position, int end_position) {
+void Greedy::mergeSort(double *vector, int *vectorID, int startPosition, int endPosition) {
 
     int i, j, k, half_size, *temp_vector_ID;
     double *temp_vector;
-    if(start_position == end_position) return;
-    half_size = (start_position + end_position ) / 2;
+    if(startPosition == endPosition) return;
+    half_size = (startPosition + endPosition ) / 2;
 
-    mergeSort(vector, vector_ID, start_position, half_size);
-    mergeSort(vector, vector_ID, half_size + 1, end_position);
+    mergeSort(vector, vectorID, startPosition, half_size);
+    mergeSort(vector, vectorID, half_size + 1, endPosition);
 
-    i = start_position;
+    i = startPosition;
     j = half_size + 1;
     k = 0;
-    temp_vector = new double[end_position - start_position + 1];
-    temp_vector_ID = new int[end_position - start_position + 1];
+    temp_vector = new double[endPosition - startPosition + 1];
+    temp_vector_ID = new int[endPosition - startPosition + 1];
 
-    while(i < half_size + 1 || j < end_position + 1) {
+    while(i < half_size + 1 || j < endPosition + 1) {
         if (i == half_size + 1 ) {
             temp_vector[k] = vector[j];
-            temp_vector_ID[k] = vector_ID[j];
+            temp_vector_ID[k] = vectorID[j];
             j++;
             k++;
         }
         else {
-            if (j == end_position + 1) {
+            if (j == endPosition + 1) {
                 temp_vector[k] = vector[i];
-                temp_vector_ID[k] = vector_ID[i];
+                temp_vector_ID[k] = vectorID[i];
                 i++;
                 k++;
             }
             else {
                 if (vector[i] < vector[j]) {
                     temp_vector[k] = vector[i];
-                    temp_vector_ID[k] = vector_ID[i];
+                    temp_vector_ID[k] = vectorID[i];
                     i++;
                     k++;
                 }
                 else {
                     temp_vector[k] = vector[j];
-                    temp_vector_ID[k] = vector_ID[j];
+                    temp_vector_ID[k] = vectorID[j];
                     j++;
                     k++;
                 }
@@ -58,24 +58,24 @@ void Greedy::mergeSort(double *vector, int *vector_ID, int start_position, int e
         }
 
     }
-    for(i = start_position; i <= end_position; i++) {
-        vector[i] = temp_vector[i - start_position];
-        vector_ID[i] = temp_vector_ID[i - start_position];
+    for(i = startPosition; i <= endPosition; i++) {
+        vector[i] = temp_vector[i - startPosition];
+        vectorID[i] = temp_vector_ID[i - startPosition];
     }
     delete [] temp_vector;
     delete [] temp_vector_ID;
 }
 
-void Greedy::deletingNonActiveClients(int index_fac, int qty_cli_delete){
-    int qty_remaining = qty_cli_delete;
+void Greedy::deletingNonActiveClients(int indexFac, int qtyCliDelete){
+    int qty_remaining = qtyCliDelete;
     for(int i=0;i<qty_clients;i++){
         if(qty_remaining == 0){
             break;
         }
 
-        for(int j=0;j<qty_cli_delete;j++){
-            if(sorted_cijID[index_fac][i] == delete_clients[j]){
-                sorted_cij[index_fac][i] = -1; // coloca cij = -1, indicando que ja foi atribuido
+        for(int j=0; j < qtyCliDelete; j++){
+            if(sorted_cijID[indexFac][i] == delete_clients[j]){
+                sorted_cij[indexFac][i] = -1; // coloca cij = -1, indicando que ja foi atribuido
                 qty_remaining -= 1;
                 break;
             }
@@ -83,33 +83,33 @@ void Greedy::deletingNonActiveClients(int index_fac, int qty_cli_delete){
     }
 
     // Colocando novamente em ordem
-    mergeSort(sorted_cij[index_fac], sorted_cijID[index_fac], 0, (qty_clients - 1));
+    mergeSort(sorted_cij[indexFac], sorted_cijID[indexFac], 0, (qty_clients - 1));
 }
 
 
 // Por referencia diz qual o melhor tamanho para Y e seu respectivo custo
-void Greedy::bestSubset(int &best_size, double &best_cost, int index_fac, double fi, double gain, int start_index){
+void Greedy::bestSubset(int &bestSize, double &bestCost, int indexFac, double fi, double gain, int startIndex){
     int current_size = 1;
     double sum_current_cost = 0;
     double current_cost = 0;
-    best_cost = fi + biggest_cij + 1; // limitante superior
+    bestCost = fi + biggest_cij + 1; // limitante superior
 
     // inicializando só para nao ficar nulo se algo der errado
-    best_size = 1;
+    bestSize = 1;
 
-    // ira criar (vector_size - start_index) subconjuntos
-    for(int i=start_index;i<qty_clients;i++){
+    // ira criar (vector_size - startIndex) subconjuntos
+    for(int i=startIndex; i < qty_clients; i++){
         sum_current_cost = fi - gain;
         // vendo a soma dos custos desse subconjunto
-        for(int j=start_index;j<=i;j++){
-            sum_current_cost += sorted_cij[index_fac][j];
+        for(int j=startIndex; j <= i; j++){
+            sum_current_cost += sorted_cij[indexFac][j];
         }
 
         current_cost = sum_current_cost / current_size;
 
-        if(current_cost <= best_cost){
-            best_cost = current_cost;
-            best_size = current_size;
+        if(current_cost <= bestCost){
+            bestCost = current_cost;
+            bestSize = current_size;
         }
         current_size += 1;
     }

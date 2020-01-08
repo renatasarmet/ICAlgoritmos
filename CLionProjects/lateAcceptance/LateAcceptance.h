@@ -55,7 +55,7 @@ private:
     double * temp_c2_minX; // temp_c2_minX - será correnpondente ao custo c2_min do temp nearest2
 
 public:
-    void initialize(Solution * solution, bool _best_fit, double _a1, double _limit_idle, int _lh);
+    void initialize(Solution * solution, bool _bestFit, double _a1, double _limitIdle, int _lh);
 
     void run(Solution * solution);
 

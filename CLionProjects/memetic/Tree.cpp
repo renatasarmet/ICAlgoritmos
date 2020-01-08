@@ -3,52 +3,53 @@
 //
 
 #include "Tree.h"
-#include "../greedy/Greedy.h"
 
-Tree::Tree(int qtyNodes, int qtySolutionsNode, const Instance& _instance) : qty_nodes(qtyNodes), qty_solutions_node(qtySolutionsNode) {
+Tree::Tree(Instance * _instance) {
     instance = _instance;
+    qty_nodes = QTY_NODES_TREE;
+    qty_solutions_node = QTY_SOLUTIONS_NODE;
 
     nodes = new Solution*[qty_nodes];
     for(int i = 0; i < qty_nodes; i++) {
         nodes[i] = new Solution[qty_solutions_node];
 
         for(int j=0;j<qty_solutions_node;j++){
-            nodes[i][j].initializeInstance(instance); // tambem ja inicia tudo o que faria no construtor padrao de Solution
+            nodes[i][j].initializeInstance(*instance); // tambem ja inicia tudo o que faria no construtor padrao de Solution
         }
     }
 
 
     // Indicara a ordem pra preencher os
-    shuffled_facilities = new int[instance.getQtyFacilities()];
+    shuffled_facilities = new int[instance->getQtyFacilities()];
 
     // sorted_cijID - será o ID das instalacoes ordenadas pelo cij àquele cliente
-    sorted_cijID = new int*[instance.getQtyClients()];
+    sorted_cijID = new int*[instance->getQtyClients()];
 
-    for(int i = 0; i < instance.getQtyClients(); i++) {
-        sorted_cijID[i] = new int[instance.getQtyFacilities()];
+    for(int i = 0; i < instance->getQtyClients(); i++) {
+        sorted_cijID[i] = new int[instance->getQtyFacilities()];
     }
 
     // colocar valores ainda nao ordenados no sorted_cijID
-    for(int i=0;i<instance.getQtyClients();i++){
-        for(int j=0;j<instance.getQtyFacilities();j++){
+    for(int i=0;i<instance->getQtyClients();i++){
+        for(int j=0;j<instance->getQtyFacilities();j++){
             sorted_cijID[i][j] = j;
         }
 
         // Ordenar sorted_cijID
-        mergeSortID(instance.getCostA()[i], sorted_cijID[i], 0, instance.getQtyFacilities() - 1);
+        mergeSortID(instance->getCostA()[i], sorted_cijID[i], 0, instance->getQtyFacilities() - 1);
     }
 
     qty_shuf_made = -1; // quantos individuos ja foram feitos com esse vetor embaralhado // inicia indicando invalidez, para criar o vetor
-    SLICE_SHUF = (OPEN_RANDOM_RATE * instance.getQtyFacilities())/100; // quantas solucoes abrir em cada individuo
-    MAX_QTY_SHUF_MADE = instance.getQtyFacilities() / SLICE_SHUF; // maximo de individuos possiveis de se formar com 1 embaralhada
+    SLICE_SHUF = (OPEN_RANDOM_RATE * instance->getQtyFacilities())/100; // quantas solucoes abrir em cada individuo
+    MAX_QTY_SHUF_MADE = instance->getQtyFacilities() / SLICE_SHUF; // maximo de individuos possiveis de se formar com 1 embaralhada
 
     // Alocando memoria para os auxiliares do mapping
-    map = new int[instance.getQtyFacilities()];
-    temp_open_facilities = new int[instance.getQtyFacilities()];
+    map = new int[instance->getQtyFacilities()];
+    temp_open_facilities = new int[instance->getQtyFacilities()];
 
-    aux_sol.initializeInstance(instance);
+    aux_sol.initializeInstance(*instance);
 
-//    map_instance = new Instance(instance.getQtyFacilities(), instance.getQtyClients(), instance.getInputName(), instance.getSolutionName());
+//    map_instance = new Instance(instance->getQtyFacilities(), instance->getQtyClients(), instance->getInputName(), instance->getSolutionName());
 
     // Quantidade de pais que existem (quantidade de sub arvores)
     QTY_SUBS = (QTY_NODES_TREE - 1) / QTY_CHILDREN;
@@ -63,7 +64,7 @@ Tree::~Tree() {
 
     delete [] shuffled_facilities;
 
-    for(int i = 0; i < instance.getQtyClients(); i++) {
+    for(int i = 0; i < instance->getQtyClients(); i++) {
         delete [] sorted_cijID[i];
     }
     delete [] sorted_cijID;
@@ -127,7 +128,7 @@ void Tree::mergeSortID(double *vector, int *vectorID, int startPosition, int end
     free(tempVectorID);
 }
 
-void Tree::call_greedy(int posNode, int posIndividual) {
+void Tree::callGreedy(int posNode, int posIndividual) {
     Greedy greedy;
 
     // Chamando a funcao que resolve o problema de fato
@@ -147,7 +148,7 @@ Solution **Tree::getNodes() const {
 }
 
 const Instance &Tree::getInstance() const {
-    return instance;
+    return *instance;
 }
 
 Solution *Tree::getNodeJ(int j) const {
@@ -186,7 +187,7 @@ void Tree::initializePopulation() {
 
     clock_gettime(CLOCK_REALTIME, &start_part);
 
-    call_greedy(1, INDEX_POCKET); // solucao com greedy
+    callGreedy(1, INDEX_POCKET); // solucao com greedy
 
     clock_gettime(CLOCK_REALTIME, &finish_part);
 
@@ -201,9 +202,9 @@ void Tree::initializePopulation() {
     // colocando a solucao do greedy no LS_G
 
     copySolutions(0, INDEX_POCKET,1, INDEX_POCKET);
-    nodes[0][INDEX_POCKET].callLocalSearch(1); // solucao com local search completo com solucao inicial do greedy
+    callLocalSearch(0, INDEX_POCKET, 1); // solucao com local search completo com solucao inicial do greedy
 
-//    nodes[0][INDEX_POCKET].callLateAcceptance(); // solucao com late acceptance com solucao inicial do greedy
+//    callLateAcceptance(0, INDEX_POCKET);// solucao com late acceptance com solucao inicial do greedy
     clock_gettime(CLOCK_REALTIME, &finish_part);
 
     // Calculando o tempo gasto até agora
@@ -239,7 +240,7 @@ void Tree::initializePopulation() {
             setInitialSolRandom(j, INDEX_CURRENT); // preenche o current
         }
 
-        map_and_call_G(j,INDEX_CURRENT);
+        mapAndCallG(j, INDEX_CURRENT);
 
         clock_gettime(CLOCK_REALTIME, &finish_part);
 
@@ -257,7 +258,7 @@ void Tree::initializePopulation() {
             clock_gettime(CLOCK_REALTIME, &start_part);
 
             // Roda LA completo para todas as solucoes geradas com random
-             nodes[j][INDEX_CURRENT].callLateAcceptance();
+             callLateAcceptance(j, INDEX_CURRENT);
 
             clock_gettime(CLOCK_REALTIME, &finish_part);
 
@@ -294,7 +295,7 @@ void Tree::initializePopulation() {
                 setInitialSolRandom(i,j);
             }
 
-            map_and_call_G(i, j);
+            mapAndCallG(i, j);
 
             if(DEBUG >= DISPLAY_DETAILS){
                 cout << "Random - node[" << i << "][" << j << "]:" << nodes[i][j].getFinalTotalCost() << endl;
@@ -302,7 +303,7 @@ void Tree::initializePopulation() {
 
             if(LA_INITIAL_POP){
                 // Roda LA completo para todas as solucoes geradas com random
-                nodes[i][j].callLateAcceptance();
+                callLateAcceptance(i,j);
 
                 if(DEBUG >= DISPLAY_DETAILS){
                     cout << "LS_R -> node[" << i << "][" << j << "]:" <<nodes[i][j].getFinalTotalCost() << endl << endl;
@@ -323,7 +324,7 @@ void Tree::setInitialSolRandom(int posNode, int posIndividual) {
     int qtd_open = 0;
 
     // Verificando quais instalacoes estarão abertas: OPEN_RANDOM_RATE% de chance de cada uma
-    for(int i=0; i<instance.getQtyFacilities(); i++){
+    for(int i=0; i<instance->getQtyFacilities(); i++){
         randNum = rand() % 100; // Generate a random number between 0 and 99
 
         if(randNum < OPEN_RANDOM_RATE){ // se ficou entre os OPEN_RANDOM_RATE%, abre essa instalacao
@@ -337,7 +338,7 @@ void Tree::setInitialSolRandom(int posNode, int posIndividual) {
 
     // Se nao abriu nenhuma, abre pelo menos uma qualquer aleatoria
     if(qtd_open == 0){
-        randNum = rand() % instance.getQtyFacilities(); // Generate a random number between 0 and qty_facilities
+        randNum = rand() % instance->getQtyFacilities(); // Generate a random number between 0 and qty_facilities
 
         nodes[posNode][posIndividual].setOpenFacilityJ(randNum, true);
     }
@@ -359,10 +360,10 @@ void Tree::setInitialSolRandom(int posNode, int posIndividual) {
 void Tree::setInitialSolShuffled(int posNode, int posIndividual) {
 
     // Primeiramente verifica se precisa embaralhar de novo
-    checkShuffed(shuffled_facilities, instance.getQtyFacilities());
+    checkShuffed(shuffled_facilities, instance->getQtyFacilities());
 
     // Abrindo SLICE_SHUF facilities, iniciando na posicao (qty_shuf_made * SLICE_SHUF)
-    int start = *qty_shuf_made * SLICE_SHUF;
+    int start = qty_shuf_made * SLICE_SHUF;
     int end = start + SLICE_SHUF; // nao inclui o valor end (intervalo aberto)
 
     if(DEBUG >= DISPLAY_MOVES){
@@ -378,7 +379,7 @@ void Tree::setInitialSolShuffled(int posNode, int posIndividual) {
         nodes[posNode][posIndividual].setOpenFacilityJ(shuffled_facilities[i], true);
     }
     // Todas as últimas instalacoes estarao fechadas
-    for(int i=end;i<instance.getQtyFacilities();i++){
+    for(int i=end;i<instance->getQtyFacilities();i++){
         nodes[posNode][posIndividual].setOpenFacilityJ(shuffled_facilities[i], false);
     }
 
@@ -460,11 +461,11 @@ void Tree::shuffle(int *vet, int vetSize) {
 
 
 
-void Tree::map_and_call_G(int posNode, int posIndividual) {
+void Tree::mapAndCallG(int posNode, int posIndividual) {
     if(DEBUG >= DISPLAY_MOVES){
         cout << "Initial G_MAP solution = " << nodes[posNode][posIndividual].getFinalTotalCost() << endl;
         if(DEBUG >= DISPLAY_DETAILS){
-            nodes[posNode][posIndividual].print_open_facilities();
+            nodes[posNode][posIndividual].printOpenFacilities();
         }
     }
 
@@ -474,24 +475,24 @@ void Tree::map_and_call_G(int posNode, int posIndividual) {
         cout << "Calling G mapping with " << nodes[posNode][posIndividual].getQtyFacilities() << " open facilities" << endl;
     }
 
-    call_greedy(posNode, posIndividual);
+    callGreedy(posNode, posIndividual);
 
     unmapping(posNode, posIndividual);
 
     if(DEBUG >= DISPLAY_MOVES){
         cout << "Final G_MAP solution = " << nodes[posNode][posIndividual].getFinalTotalCost() << endl;
         if(DEBUG >= DISPLAY_DETAILS){
-            nodes[posNode][posIndividual].print_open_facilities();
+            nodes[posNode][posIndividual].printOpenFacilities();
         }
     }
 }
 
-void Tree::map_and_call_TS(int posNode, int posIndividual) {
+void Tree::mapAndCallTS(int posNode, int posIndividual) {
 
     if(DEBUG >= DISPLAY_MOVES){
         cout << "Initial TS_MAP solution = " << nodes[posNode][posIndividual].getFinalTotalCost() << endl;
         if(DEBUG >= DISPLAY_DETAILS){
-            nodes[posNode][posIndividual].print_open_facilities();
+            nodes[posNode][posIndividual].printOpenFacilities();
         }
     }
 
@@ -501,14 +502,14 @@ void Tree::map_and_call_TS(int posNode, int posIndividual) {
         cout << "Calling TS mapping with " << nodes[posNode][posIndividual].getQtyFacilities()  << " open facilities" << endl;
     }
 
-    nodes[posNode][posIndividual].call_tabu_search();
+    callTabuSearch(posNode, posIndividual);
 
     unmapping(posNode, posIndividual);
 
     if(DEBUG >= DISPLAY_MOVES){
         cout << "Final TS_MAP solution = " << nodes[posNode][posIndividual].getFinalTotalCost() << endl;
         if(DEBUG >= DISPLAY_DETAILS){
-            nodes[posNode][posIndividual].print_open_facilities();
+            nodes[posNode][posIndividual].printOpenFacilities();
         }
     }
 }
@@ -520,26 +521,26 @@ void Tree::mapping(int posNode, int posIndividual) {
     int cont = 0;
     bool update_assigned = false;
     // Mapear costF e open_facilities, salvando o map
-    for(int i=0; i< instance.getQtyFacilities(); i++){
+    for(int i=0; i< instance->getQtyFacilities(); i++){
         // se a instalacao está aberta, ela vai entrar nesse conjunto para chamar
         if(nodes[posNode][posIndividual].getOpenFacilityJ(i)){
             map[cont] = i; // indica que na verdade essa inst será correspondente à i
-            nodes[posNode][posIndividual].getInstance().setCostFJ(cont, instance.getCostFJ(i));
+            nodes[posNode][posIndividual].getInstance().setCostFJ(cont, instance->getCostFJ(i));
             nodes[posNode][posIndividual].setOpenFacilityJ(cont, true);
             cont += 1;
         }
     }
     // marcar as que nao foram mapeadas, como fechadas
-    for(int i=cont;i<instance.getQtyFacilities();i++){
+    for(int i=cont;i<instance->getQtyFacilities();i++){
         // map[i] = -1;
         nodes[posNode][posIndividual].setOpenFacilityJ(i, false);
     }
 
     // Mapear costA e assigned_facilities
-    for(int j=0;j < instance.getQtyClients(); j++){
+    for(int j=0;j < instance->getQtyClients(); j++){
         update_assigned = false;
         for(int i=0;i<cont;i++){
-            nodes[posNode][posIndividual].getInstance().setCostAIJ(j,i, instance.getCostAIJ(j,map[i]));
+            nodes[posNode][posIndividual].getInstance().setCostAIJ(j,i, instance->getCostAIJ(j,map[i]));
             if(!update_assigned){
                 if(nodes[posNode][posIndividual].getAssignedFacilityJ(j) == map[i]){
                     nodes[posNode][posIndividual].setAssignedFacilityJ(j, i);
@@ -566,7 +567,7 @@ void Tree::unmapping(int posNode, int posIndividual) {
         temp_open_facilities[i] = nodes[posNode][posIndividual].getOpenFacilityJ(i);
     }
     // zera todas as instalacoes de solution->open_facilities
-    for(int i=0; i<instance.getQtyFacilities(); i++){
+    for(int i=0; i<instance->getQtyFacilities(); i++){
         nodes[posNode][posIndividual].setOpenFacilityJ(i, false);
     }
     // Coloca de volta as instalacoes aberta em solution->open_facilities
@@ -577,20 +578,20 @@ void Tree::unmapping(int posNode, int posIndividual) {
         nodes[posNode][posIndividual].setOpenFacilityJ(map[i], temp_open_facilities[i]);
     }
     // Atualizando as atribuicoes dos clientes
-    for(int j=0; j<instance.getQtyClients(); j++){
+    for(int j=0; j<instance->getQtyClients(); j++){
         nodes[posNode][posIndividual].setAssignedFacilityJ(j, map[nodes[posNode][posIndividual].getAssignedFacilityJ(j)]);
     }
 
     // Voltando à instancia original
-    nodes[posNode][posIndividual].getInstance().copyInstance(&instance);
+    nodes[posNode][posIndividual].getInstance().copyInstance(instance);
 }
 
 // Imprime um vetor com do tamanho de intalacoes. Cada posicao é um inteiro indicando em quantas solucoes essa instalacao estava aberta.
-void Tree::print_count_open_facilities() {
+void Tree::printCountOpenFacilities() {
 
     int qty_fac_open_all = 0;
     int qty_solutions = QTY_SOLUTIONS_NODE * QTY_NODES_TREE;
-    int * count_open_facilities = (int*) malloc((instance.getQtyFacilities()) * sizeof(int));
+    int * count_open_facilities = (int*) malloc((instance->getQtyFacilities()) * sizeof(int));
 
     if(!count_open_facilities){
         cout << "Memory Allocation Failed";
@@ -598,14 +599,14 @@ void Tree::print_count_open_facilities() {
     }
 
     // Zerando todas as posicoes
-    for(int i=0; i<instance.getQtyFacilities(); i++){
+    for(int i=0; i<instance->getQtyFacilities(); i++){
         count_open_facilities[i] = 0;
     }
 
     // Contando para cada nó
     for(int i = 0; i < QTY_NODES_TREE; i++){
         for(int k = 0; k < QTY_SOLUTIONS_NODE; k++){ // percorre o pocket e o current
-            for(int j=0;j<instance.getQtyFacilities();j++){
+            for(int j=0;j<instance->getQtyFacilities();j++){
                 count_open_facilities[j] += nodes[i][k].getOpenFacilityJ(j);
             }
         }
@@ -614,7 +615,7 @@ void Tree::print_count_open_facilities() {
 
     // Imprimindo o resultado
     cout << endl << "Number of sulutions each facility was open" << endl;
-    for(int i=0; i<instance.getQtyFacilities(); i++){
+    for(int i=0; i<instance->getQtyFacilities(); i++){
         cout << count_open_facilities[i] << " ";
         if(count_open_facilities[i] == qty_solutions){
             qty_fac_open_all += 1;
@@ -626,7 +627,7 @@ void Tree::print_count_open_facilities() {
     free(count_open_facilities);
 }
 
-void Tree::print_tree_complete() {
+void Tree::printTreeComplete() {
     int index_child;
 
     cout.precision(0);
@@ -655,28 +656,28 @@ void Tree::print_tree_complete() {
     cout.precision(5);
 }
 
-void Tree::update_sub_pop(int id_parent) {
+void Tree::updateSubPop(int idParent) {
 
     int index_child;
     int randNum;
     for(int i=0; i< QTY_CHILDREN; i++){ // para todos os filhos
-        index_child = id_parent * 3 + i + 1; // encontra o indice correto do filho
-        if(nodes[index_child][INDEX_POCKET].getFinalTotalCost() < nodes[id_parent][INDEX_POCKET].getFinalTotalCost()){ // Se o best do filho for menor que o best do pai (pocket com pocket)
+        index_child = idParent * 3 + i + 1; // encontra o indice correto do filho
+        if(nodes[index_child][INDEX_POCKET].getFinalTotalCost() < nodes[idParent][INDEX_POCKET].getFinalTotalCost()){ // Se o best do filho for menor que o best do pai (pocket com pocket)
             if(DEBUG >= DISPLAY_MOVES){
-                cout << "Swapping child " << index_child << "(" << nodes[index_child][INDEX_POCKET].getFinalTotalCost() << ") with parent " << id_parent << " (" << nodes[id_parent][INDEX_POCKET].getFinalTotalCost() << ")" << endl;
+                cout << "Swapping child " << index_child << "(" << nodes[index_child][INDEX_POCKET].getFinalTotalCost() << ") with parent " << idParent << " (" << nodes[idParent][INDEX_POCKET].getFinalTotalCost() << ")" << endl;
             }
 
             // Inverte
-            invert_nodes(id_parent, INDEX_POCKET, index_child, INDEX_POCKET);
+            invertNodes(idParent, INDEX_POCKET, index_child, INDEX_POCKET);
 
             // Update indice de pocket/current do filho (pocket sempre deve ser melhor que o current)
             if(nodes[index_child][INDEX_CURRENT].getFinalTotalCost() < nodes[index_child][INDEX_POCKET].getFinalTotalCost()){ // se agora o current é melhor que o pocket, atualiza
                 // Inverte
-                invert_nodes(index_child, INDEX_POCKET, index_child, INDEX_CURRENT);
+                invertNodes(index_child, INDEX_POCKET, index_child, INDEX_CURRENT);
             }
 
             // Se o que inverteu, o pai era a raiz (nodes[0][0]), então roda o tabu_search nele
-            if(id_parent == 0){
+            if(idParent == 0){
 
                 // randNum = rand() % QTY_NODES_TREE; // Generate a random number between 0 and QTY_NODES_TREE
                 randNum = 0;
@@ -685,7 +686,7 @@ void Tree::update_sub_pop(int id_parent) {
                     cout << "Calling TS for nodes[" << randNum << "][" << INDEX_POCKET << "] (" << nodes[randNum][INDEX_POCKET].getFinalTotalCost() <<")" << endl;
                 }
 
-                nodes[randNum][INDEX_POCKET].call_tabu_search();
+                callTabuSearch(randNum, INDEX_POCKET);
 
                 if(DEBUG >= DISPLAY_MOVES){
                     cout << "New value for nodes[" << randNum << "][" << INDEX_POCKET << "] = " << nodes[randNum][INDEX_POCKET].getFinalTotalCost() << endl;
@@ -693,30 +694,30 @@ void Tree::update_sub_pop(int id_parent) {
 
                 if(DEBUG >= DISPLAY_ACTIONS){
                     cout << "Nodes[" << randNum << "][" << INDEX_POCKET << "] after tabu search: ";
-                    nodes[randNum][INDEX_POCKET].print_individual();
+                    nodes[randNum][INDEX_POCKET].printIndividual();
                 }
             }
         }
     }
 }
 
-void Tree::invert_nodes(int posNode1, int posIndividual1, int posNode2, int posIndividual2) {
+void Tree::invertNodes(int posNode1, int posIndividual1, int posNode2, int posIndividual2) {
     // Inverte
     aux_sol.copySolution(&nodes[posNode1][posIndividual1]);
     nodes[posNode1][posIndividual1].copySolution(&nodes[posNode2][posIndividual2]);
     nodes[posNode2][posIndividual2].copySolution(&aux_sol);
 }
 
-void Tree::update_population() {
+void Tree::updatePopulation() {
 
     // compara o pocket do filho com o pocket do pai (best com best)
     // Para cada pai, chama para atualizar essa sub populacao
     for(int i = QTY_SUBS-1; i>=0; i--){
-        update_sub_pop(i);
+        updateSubPop(i);
     }
 }
 
-void Tree::print_tree() {
+void Tree::printTree() {
     for(int i=0;i<QTY_NODES_TREE;i++){
         for(int j=0; j<QTY_SOLUTIONS_NODE; j++){
             cout << "node[" << i << "][" << j << "]:" << nodes[i][j].getFinalTotalCost() << endl;
@@ -727,7 +728,7 @@ void Tree::print_tree() {
 
 // Recebe por referencia, entao as alteracoes sao salvas.
 // Armazena a root em solution se ela for melhor que a que está lá e sobe a próxima para a root, atualizando o resto da populacao
-void Tree::change_root(Solution *solution, int *qty_changes_root) {
+void Tree::changeRoot(Solution *solution, int *qtyChangesRoot) {
 
     if(DEBUG >= DISPLAY_MOVES){
         cout << "----------------------------------- Changing root " << endl;
@@ -737,14 +738,14 @@ void Tree::change_root(Solution *solution, int *qty_changes_root) {
     if(nodes[0][INDEX_POCKET].getFinalTotalCost() < solution->getFinalTotalCost()){
         solution->copySolution(&nodes[0][INDEX_POCKET]); // atualiza a melhor encontrada até agora
 
-        *qty_changes_root = 0; // zera o contador
+        *qtyChangesRoot = 0; // zera o contador
 
         if(DEBUG >= DISPLAY_MOVES){
             cout << "Updating best solution found so far: " << solution->getFinalTotalCost() << endl;
         }
     }
     else{
-        *qty_changes_root += 1; // aumenta o contador
+        *qtyChangesRoot += 1; // aumenta o contador
     }
 
     // Escolhe qual filho vai substituir a raiz
@@ -761,7 +762,7 @@ void Tree::change_root(Solution *solution, int *qty_changes_root) {
 
     // Verifica se o pocket da raiz continua melhor que o current, senao inverte
     if(nodes[0][INDEX_POCKET].getFinalTotalCost() > nodes[0][INDEX_CURRENT].getFinalTotalCost()){ // se o pocket for pior que o current, inverte
-        invert_nodes(0, INDEX_POCKET, 0, INDEX_CURRENT);
+        invertNodes(0, INDEX_POCKET, 0, INDEX_CURRENT);
     }
 
     // Atualiza o espaço que vagou no melhor filho escolhido com uma solucao vinda do random + LA
@@ -772,18 +773,18 @@ void Tree::change_root(Solution *solution, int *qty_changes_root) {
     }
 
     // Roda LA ou LS completo para a solucao gerada com random
-//    nodes[child_root][INDEX_POCKET].callLocalSearch(1);
-    nodes[child_root][INDEX_POCKET].callLateAcceptance();
+//    callLocalSearch(child_root, INDEX_POCKET, 1);
+    callLateAcceptance(child_root, INDEX_POCKET);
 
     if(DEBUG >= DISPLAY_DETAILS){
         cout << "LS_R:" << nodes[child_root][INDEX_POCKET].getFinalTotalCost() << endl << endl;
     }
 
     // Update população, levando esse novo gerado para o seu devido lugar
-    update_pop_change_root(child_root);
+    updatePopChangeRoot(child_root);
 }
 
-void Tree::update_pop_change_root(int id_parent) {
+void Tree::updatePopChangeRoot(int id_parent) {
 
     int index_child;
 
@@ -794,17 +795,17 @@ void Tree::update_pop_change_root(int id_parent) {
         }
 
         // Inverte
-        invert_nodes(id_parent, INDEX_POCKET, 0, INDEX_POCKET);
+        invertNodes(id_parent, INDEX_POCKET, 0, INDEX_POCKET);
     }
     else{ // se aconteceu o caso anterior, eu sei que o resto já está ordenado, pois só voltou pro mesmo lugar (ou veio um melhor ainda). Senao, entao tenho que ordenar essa subarvore
 
         // Atualiza o POCKET e CURRENT do pai primeiro. só esse novo que entrou pode ser pior do que o que ja era
         if(nodes[id_parent][INDEX_POCKET].getFinalTotalCost() > nodes[id_parent][INDEX_CURRENT].getFinalTotalCost()){ // se esse que chegou é pior que o current, atualiza
             // Inverte
-            invert_nodes(id_parent, INDEX_POCKET, id_parent, INDEX_CURRENT);
+            invertNodes(id_parent, INDEX_POCKET, id_parent, INDEX_CURRENT);
         }
 
-        update_sub_pop(id_parent);
+        updateSubPop(id_parent);
     }
 }
 
@@ -812,7 +813,7 @@ int Tree::getQtySubs() const {
     return QTY_SUBS;
 }
 
-void Tree::update_refset() {
+void Tree::updateRefset() {
 
     double aux_comparison;
     bool ok = false;
@@ -825,19 +826,19 @@ void Tree::update_refset() {
     */
     while(!ok){
         ok = true;
-        aux_comparison = compare_pocket_current(0);
+        aux_comparison = comparePocketCurrent(0);
 
         // Se o current for menor que o pocket, atualiza invertendo e pronto
         if(aux_comparison < 0){
-            swap_pocket_current(0);
+            swapPocketCurrent(0);
         }
             // Senao, se for diferentes, o current é menor que o pocket entao está ok
             // Senao se forem iguais, se só o custo for igual, ta ok mantem como está
             // Senão se realmente forem iguais
-        else if(!are_different(0, INDEX_CURRENT, 0, INDEX_POCKET)){
+        else if(!areDifferent(0, INDEX_CURRENT, 0, INDEX_POCKET)){
             // Gera uma solução aleatória e repete o processo
             setInitialSolRandom(0, INDEX_CURRENT);
-            map_and_call_G(0, INDEX_CURRENT);
+            mapAndCallG(0, INDEX_CURRENT);
 
             if(DEBUG >= DISPLAY_DETAILS){
                 cout << "Random - node[" << 0 << "][" << INDEX_CURRENT << "]:" << nodes[0][INDEX_CURRENT].getFinalTotalCost() << endl;
@@ -858,16 +859,16 @@ void Tree::update_refset() {
             ok = true;
 
             // Compara com seu próprio pocket
-            aux_comparison = compare_pocket_current(i);
+            aux_comparison = comparePocketCurrent(i);
 
             // Se o custo for igual
             if(aux_comparison == 0){
                 // Se só o custo for igual mas a solução for diferente, ta ok, pode deixar assim mesmo.. verificar com os outros pais intermediarios
                 // Se realmente forem iguais
-                if(!are_different(i, INDEX_CURRENT, i, INDEX_POCKET)){
+                if(!areDifferent(i, INDEX_CURRENT, i, INDEX_POCKET)){
                     // Gera uma solução aleatória e repete o processo
                     setInitialSolRandom(i, INDEX_CURRENT);
-                    map_and_call_G(i, INDEX_CURRENT);
+                    mapAndCallG(i, INDEX_CURRENT);
 
                     if(DEBUG >= DISPLAY_DETAILS){
                         cout << "Random - node[" << i << "][" << INDEX_CURRENT << "]:" << nodes[i][INDEX_CURRENT].getFinalTotalCost() << endl;
@@ -887,10 +888,10 @@ void Tree::update_refset() {
                     // se for maior que o pocket, compara com o current
                     if(nodes[i][INDEX_CURRENT].getFinalTotalCost() > nodes[j][INDEX_POCKET].getFinalTotalCost()){
                         // se for igual ao current, gera aleatoria
-                        if(!are_different(i, INDEX_CURRENT, j, INDEX_CURRENT)){
+                        if(!areDifferent(i, INDEX_CURRENT, j, INDEX_CURRENT)){
                             // Gera uma solução aleatória e repete o processo
                             setInitialSolRandom(i, INDEX_CURRENT);
-                            map_and_call_G(i, INDEX_CURRENT);
+                            mapAndCallG(i, INDEX_CURRENT);
 
                             if(DEBUG >= DISPLAY_DETAILS){
                                 cout << "Random - node[" << i << "][" << INDEX_CURRENT << "]:" << nodes[i][INDEX_CURRENT].getFinalTotalCost() << endl;
@@ -901,10 +902,10 @@ void Tree::update_refset() {
                         }
                     }
                         // se for igual o pocket, ver se é igual mesmo, e gerar aletaroia
-                    else if(!are_different(i, INDEX_CURRENT, j, INDEX_POCKET)){
+                    else if(!areDifferent(i, INDEX_CURRENT, j, INDEX_POCKET)){
                         // Gera uma solução aleatória e repete o processo
                         setInitialSolRandom(i, INDEX_CURRENT);
-                        map_and_call_G(i, INDEX_CURRENT);
+                        mapAndCallG(i, INDEX_CURRENT);
 
                         if(DEBUG >= DISPLAY_DETAILS){
                             cout << "Random - node[" << i << "][" << INDEX_CURRENT << "]:" << nodes[i][INDEX_CURRENT].getFinalTotalCost() << endl;
@@ -923,15 +924,15 @@ void Tree::update_refset() {
                     if(nodes[i][INDEX_CURRENT].getFinalTotalCost() < nodes[0][INDEX_POCKET].getFinalTotalCost()){
 
                         // Se sim, atualiza pocket <-> current
-                        swap_pocket_current(i);
+                        swapPocketCurrent(i);
                     }
                         // se for maior
                     else if(nodes[i][INDEX_CURRENT].getFinalTotalCost() > nodes[0][INDEX_POCKET].getFinalTotalCost()){
                         // se for igual ao current, gera aleatoria
-                        if(!are_different(i, INDEX_CURRENT, 0, INDEX_CURRENT)){
+                        if(!areDifferent(i, INDEX_CURRENT, 0, INDEX_CURRENT)){
                             // Gera uma solução aleatória e repete o processo
                             setInitialSolRandom(i, INDEX_CURRENT);
-                            map_and_call_G(i, INDEX_CURRENT);
+                            mapAndCallG(i, INDEX_CURRENT);
 
                             if(DEBUG >= DISPLAY_DETAILS){
                                 cout << "Random - node[" << i << "][" << INDEX_CURRENT << "]:" << nodes[i][INDEX_CURRENT].getFinalTotalCost() << endl;
@@ -942,14 +943,14 @@ void Tree::update_refset() {
                             // se for diferente, atualiza
                         else {
                             // atualiza pocket <-> current
-                            swap_pocket_current(i);
+                            swapPocketCurrent(i);
                         }
                     }
                         // se for igual mesmo ao pocket da raiz
-                    else if(!are_different(i, INDEX_CURRENT, 0, INDEX_POCKET)){
+                    else if(!areDifferent(i, INDEX_CURRENT, 0, INDEX_POCKET)){
                         // Gera uma solução aleatória e repete o processo
                         setInitialSolRandom(i, INDEX_CURRENT);
-                        map_and_call_G(i, INDEX_CURRENT);
+                        mapAndCallG(i, INDEX_CURRENT);
 
                         if(DEBUG >= DISPLAY_DETAILS){
                             cout << "Random - node[" << i << "][" << INDEX_CURRENT << "]:" << nodes[i][INDEX_CURRENT].getFinalTotalCost() << endl;
@@ -961,10 +962,10 @@ void Tree::update_refset() {
                     // se for pior ou igual, só precisa confirmar que ele não é igual ao current da raiz
                 else {
                     // se for igual ao current, gera aleatoria
-                    if(!are_different(i, INDEX_CURRENT, 0, INDEX_CURRENT)){
+                    if(!areDifferent(i, INDEX_CURRENT, 0, INDEX_CURRENT)){
                         // Gera uma solução aleatória e repete o processo
                         setInitialSolRandom(i, INDEX_CURRENT);
-                        map_and_call_G(i, INDEX_CURRENT);
+                        mapAndCallG(i, INDEX_CURRENT);
 
                         if(DEBUG >= DISPLAY_DETAILS){
                             cout << "Random - node[" << i << "][" << INDEX_CURRENT << "]:" << nodes[i][INDEX_CURRENT].getFinalTotalCost() << endl;
@@ -988,16 +989,16 @@ void Tree::update_refset() {
             ok = true;
 
             // Compara com seu próprio pocket
-            aux_comparison = compare_pocket_current(i);
+            aux_comparison = comparePocketCurrent(i);
 
             // Se o custo for igual
             if(aux_comparison == 0){
                 // Se só o custo for igual mas a solução for diferente, ta ok, pode deixar assim mesmo.. verificar com os outros filhos folhas anteriores
                 // Se realmente forem iguais
-                if(!are_different(i, INDEX_CURRENT, i, INDEX_POCKET)){
+                if(!areDifferent(i, INDEX_CURRENT, i, INDEX_POCKET)){
                     // Gera uma solução aleatória e repete o processo
                     setInitialSolRandom(i, INDEX_CURRENT);
-                    map_and_call_G(i, INDEX_CURRENT);
+                    mapAndCallG(i, INDEX_CURRENT);
 
                     if(DEBUG >= DISPLAY_DETAILS){
                         cout << "Random - node[" << i << "][" << INDEX_CURRENT << "]:" << nodes[i][INDEX_CURRENT].getFinalTotalCost() << endl;
@@ -1018,10 +1019,10 @@ void Tree::update_refset() {
                     // se for maior que o pocket, compara com o current
                     if(nodes[i][INDEX_CURRENT].getFinalTotalCost() > nodes[j][INDEX_POCKET].getFinalTotalCost()){
                         // se for igual ao current, gera aleatoria
-                        if(!are_different(i, INDEX_CURRENT, j, INDEX_CURRENT)){
+                        if(!areDifferent(i, INDEX_CURRENT, j, INDEX_CURRENT)){
                             // Gera uma solução aleatória e repete o processo
                             setInitialSolRandom(i, INDEX_CURRENT);
-                            map_and_call_G(i, INDEX_CURRENT);
+                            mapAndCallG(i, INDEX_CURRENT);
 
                             if(DEBUG >= DISPLAY_DETAILS){
                                 cout << "Random - node[" << i << "][" << INDEX_CURRENT << "]:" << nodes[i][INDEX_CURRENT].getFinalTotalCost() << endl;
@@ -1032,10 +1033,10 @@ void Tree::update_refset() {
                         }
                     }
                         // se for igual o pocket, ver se é igual mesmo, e gerar aletaroia
-                    else if(!are_different(i, INDEX_CURRENT, j, INDEX_POCKET)){
+                    else if(!areDifferent(i, INDEX_CURRENT, j, INDEX_POCKET)){
                         // Gera uma solução aleatória e repete o processo
                         setInitialSolRandom(i, INDEX_CURRENT);
-                        map_and_call_G(i, INDEX_CURRENT);
+                        mapAndCallG(i, INDEX_CURRENT);
 
                         if(DEBUG >= DISPLAY_DETAILS){
                             cout << "Random - node[" << i << "][" << INDEX_CURRENT << "]:" << nodes[i][INDEX_CURRENT].getFinalTotalCost() << endl;
@@ -1056,10 +1057,10 @@ void Tree::update_refset() {
                     // se for maior
                     if(nodes[i][INDEX_CURRENT].getFinalTotalCost() > nodes[j][INDEX_POCKET].getFinalTotalCost()){
                         // compara com o current desse nó
-                        if(!are_different(i, INDEX_CURRENT, j, INDEX_CURRENT)){
+                        if(!areDifferent(i, INDEX_CURRENT, j, INDEX_CURRENT)){
                             // Gera uma solução aleatória e repete o processo
                             setInitialSolRandom(i, INDEX_CURRENT);
-                            map_and_call_G(i, INDEX_CURRENT);
+                            mapAndCallG(i, INDEX_CURRENT);
 
                             if(DEBUG >= DISPLAY_DETAILS){
                                 cout << "Random - node[" << i << "][" << INDEX_CURRENT << "]:" << nodes[i][INDEX_CURRENT].getFinalTotalCost() << endl;
@@ -1070,10 +1071,10 @@ void Tree::update_refset() {
                         }
                     }
                     // se nao, compara se sao iguais
-                    if(!are_different(i, INDEX_CURRENT, j, INDEX_POCKET)){
+                    if(!areDifferent(i, INDEX_CURRENT, j, INDEX_POCKET)){
                         // Gera uma solução aleatória e repete o processo
                         setInitialSolRandom(i, INDEX_CURRENT);
-                        map_and_call_G(i, INDEX_CURRENT);
+                        mapAndCallG(i, INDEX_CURRENT);
 
                         if(DEBUG >= DISPLAY_DETAILS){
                             cout << "Random - node[" << i << "][" << INDEX_CURRENT << "]:" << nodes[i][INDEX_CURRENT].getFinalTotalCost() << endl;
@@ -1092,15 +1093,15 @@ void Tree::update_refset() {
                     // Verifica se é melhor que o pocket da raiz
                     if(nodes[i][INDEX_CURRENT].getFinalTotalCost() < nodes[0][INDEX_POCKET].getFinalTotalCost()){
                         // Se sim, atualiza pocket <-> current
-                        swap_pocket_current(i);
+                        swapPocketCurrent(i);
                     }
                         // se for maior
                     else if(nodes[i][INDEX_CURRENT].getFinalTotalCost() > nodes[0][INDEX_POCKET].getFinalTotalCost()){
                         // se for igual ao current, gera aleatoria
-                        if(!are_different(i, INDEX_CURRENT, 0, INDEX_CURRENT)){
+                        if(!areDifferent(i, INDEX_CURRENT, 0, INDEX_CURRENT)){
                             // Gera uma solução aleatória e repete o processo
                             setInitialSolRandom(i, INDEX_CURRENT);
-                            map_and_call_G(i, INDEX_CURRENT);
+                            mapAndCallG(i, INDEX_CURRENT);
 
                             if(DEBUG >= DISPLAY_DETAILS){
                                 cout << "Random - node[" << i << "][" << INDEX_CURRENT << "]:" << nodes[i][INDEX_CURRENT].getFinalTotalCost() << endl;
@@ -1111,14 +1112,14 @@ void Tree::update_refset() {
                             // se forem diferentes, atualiza
                         else{
                             // atualiza pocket <-> current
-                            swap_pocket_current(i);
+                            swapPocketCurrent(i);
                         }
                     }
                         // se for igual mesmo ao pocket da raiz
-                    else if(!are_different(i, INDEX_CURRENT, 0, INDEX_POCKET)){
+                    else if(!areDifferent(i, INDEX_CURRENT, 0, INDEX_POCKET)){
                         // Gera uma solução aleatória e repete o processo
                         setInitialSolRandom(i, INDEX_CURRENT);
-                        map_and_call_G(i, INDEX_CURRENT);
+                        mapAndCallG(i, INDEX_CURRENT);
 
                         if(DEBUG >= DISPLAY_DETAILS){
                             cout << "Random - node[" << i << "][" << INDEX_CURRENT << "]:" << nodes[i][INDEX_CURRENT].getFinalTotalCost() << endl;
@@ -1130,10 +1131,10 @@ void Tree::update_refset() {
                     // se for pior ou igual, só precisa confirmar que ele não é igual ao current da raiz
                 else {
                     // se for igual ao current, gera aleatoria
-                    if(!are_different(i, INDEX_CURRENT, 0, INDEX_CURRENT)){
+                    if(!areDifferent(i, INDEX_CURRENT, 0, INDEX_CURRENT)){
                         // Gera uma solução aleatória e repete o processo
                         setInitialSolRandom(i, INDEX_CURRENT);
-                        map_and_call_G(i, INDEX_CURRENT);
+                        mapAndCallG(i, INDEX_CURRENT);
                         
                         if(DEBUG >= DISPLAY_DETAILS){
                             cout << "Random - node[" << i << "][" << INDEX_CURRENT << "]:" << nodes[i][INDEX_CURRENT].getFinalTotalCost() << endl;
@@ -1151,17 +1152,18 @@ void Tree::update_refset() {
 // se o current for menor que o pocket, retorna negativo
 // se for igual, fica 0
 // se o current for maior, retorna positivo
-double Tree::compare_pocket_current(int posNode) {
+double Tree::comparePocketCurrent(int posNode) {
     return nodes[posNode][INDEX_CURRENT].getFinalTotalCost() - nodes[posNode][INDEX_POCKET].getFinalTotalCost();
 }
 
 
 // Indica se dois individuos são diferentes
-bool Tree::are_different(int posNode1, int posIndividual1, int posNode2, int posIndividual2) {
+bool Tree::areDifferent(int posNode1, int posIndividual1, int posNode2, int posIndividual2) {
     if(nodes[posNode1][posIndividual1].getFinalTotalCost() != nodes[posNode2][posIndividual2].getFinalTotalCost()){
         return true;
     }
-    else if(qty_diversity(nodes[posNode1][posIndividual1].getOpenFacilities(), nodes[posNode2][posIndividual2].getOpenFacilities()) > 0){
+    else if(qtyDiversity(nodes[posNode1][posIndividual1].getOpenFacilities(),
+                         nodes[posNode2][posIndividual2].getOpenFacilities()) > 0){
         if(DEBUG >= DISPLAY_MOVES){
             cout << "***** It has the same cost (" << nodes[posNode1][posIndividual1].getFinalTotalCost() << "), but the config is different *****" << endl;
         }
@@ -1175,10 +1177,10 @@ bool Tree::are_different(int posNode1, int posIndividual1, int posNode2, int pos
 }
 
 // Indica quantas instalacoes possuem valores diferentes, dado dois individuos
-int Tree::qty_diversity(bool *n1_open_facilities, bool *n2_open_facilities) {
+int Tree::qtyDiversity(bool *n1OpenFacilities, bool *n2OpenFacilities) {
     int qty = 0;
-    for(int i=0; i< instance.getQtyFacilities(); i++){
-        if(n1_open_facilities[i] != n2_open_facilities[i]){
+    for(int i=0; i< instance->getQtyFacilities(); i++){
+        if(n1OpenFacilities[i] != n2OpenFacilities[i]){
             qty += 1;
 
             if(DEBUG >= DISPLAY_ACTIONS){
@@ -1190,16 +1192,16 @@ int Tree::qty_diversity(bool *n1_open_facilities, bool *n2_open_facilities) {
     return qty;
 }
 
-void Tree::swap_pocket_current(int posNode) {
+void Tree::swapPocketCurrent(int posNode) {
     // Inverte
-    invert_nodes(posNode, INDEX_POCKET, posNode, INDEX_CURRENT);
+    invertNodes(posNode, INDEX_POCKET, posNode, INDEX_CURRENT);
 }
 
 int **Tree::getSortedCijId() const {
     return sorted_cijID;
 }
 
-void Tree::print_tree_best() {
+void Tree::printTreeBest() {
 
     int index_child;
 
@@ -1225,4 +1227,36 @@ void Tree::print_tree_best() {
     cout << endl << endl;
 }
 
+void Tree::callLocalSearch(int posNode, int posIndividual, int lsType) {
+    LocalSearch localSearch;
+
+    localSearch.initialize(&nodes[posNode][posIndividual], lsType); // chamando local search do tipo lsType
+}
+
+
+
+void Tree::callLateAcceptance(int posNode, int posIndividual) {
+    LateAcceptance lateAcceptance;
+
+    lateAcceptance.initialize(&nodes[posNode][posIndividual], true, 2.5, 0.02, 10); // best_fit = true, a1 = 2.5, limit_idle = 0.02, lh = 10
+
+}
+
+void Tree::callTabuSearch(int posNode, int posIndividual) {
+    int lc1 = 0.01 * instance->getQtyFacilities();
+    int lc2 = 0.05 * instance->getQtyFacilities();
+
+    TabuSearch tabuSearch;
+
+    // Chamando a funcao que resolve o problema de fato
+    tabuSearch.initialize(&nodes[posNode][posIndividual], true, 0.5, lc1, lc2, lc1, lc2, 0);  // best_fit = true, a1 = 0.5, (lc1 = lo1 = 0.01 * qty_facilities), (lc2 = lo2 = 0.05 * qty_facilities), seed = 0
+
+}
+
+
+void Tree::callLocalSearchCloseFac(int posNode, int posIndividual) {
+    LSCloseFac lsCloseFac;
+
+    lsCloseFac.initialize(&nodes[posNode][posIndividual]);
+}
 

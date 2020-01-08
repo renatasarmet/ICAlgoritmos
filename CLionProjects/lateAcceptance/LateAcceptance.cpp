@@ -18,7 +18,7 @@
 #define DEBUG 1 // OPCOES DE DEBUG: 1 - MOSTRAR A QTD DE MOVIMENTOS, 2 PARA EXIBIR OS MOVIMENTOS REALIZADOS, 3 PARA EXIBIR ACOES, 4 PARA EXIBIR DETALHES DAS ACOES, 5 PARA EXIBIR TEMPO
 
 // Alocando memoria e inicializando valores
-void LateAcceptance::initialize(Solution *solution, bool _best_fit, double _a1, double _limit_idle, int _lh) {
+void LateAcceptance::initialize(Solution *solution, bool _bestFit, double _a1, double _limitIdle, int _lh) {
 
     qty_facilities = solution->getQtyFacilities();
     qty_clients = solution->getQtyClients();
@@ -37,8 +37,8 @@ void LateAcceptance::initialize(Solution *solution, bool _best_fit, double _a1, 
 
     a1 = _a1;
     lh = _lh;
-    limit_idle = _limit_idle;
-    best_fit = _best_fit;
+    limit_idle = _limitIdle;
+    best_fit = _bestFit;
 
     // Vetor que vai indicar se a instalacao está flagged
     flag = new bool[qty_facilities];

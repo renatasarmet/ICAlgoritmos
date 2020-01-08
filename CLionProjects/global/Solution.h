@@ -3,10 +3,6 @@
 
 #include <iostream>
 #include "Instance.h"
-#include "../localSearch/LocalSearch.h"
-#include "../lateAcceptance/LateAcceptance.h"
-#include "../tabuSearch/TabuSearch.h"
-#include "../localSearchCloseFac/LSCloseFac.h"
 
 using namespace std;
 
@@ -21,7 +17,7 @@ private:
 public:
     Solution();
 
-    explicit Solution(const Instance &instance);
+    Solution(const Instance &instance);
 
     virtual ~Solution();
 
@@ -87,24 +83,15 @@ public:
 
     void copySolution(Solution *model);
 
-    void callLocalSearch(int ls_type);
-
-    void callLateAcceptance();
-
     int getQtyOpenFacilities();
 
-    void connectAndUpdateFacilities(int ** sorted_cijID);
+    void connectAndUpdateFacilities(int ** sortedCijID);
 
-    void connectNearest(int ** sorted_cijID);
+    void connectNearest(int ** sortedCijID);
 
-    void call_tabu_search();
+    void printIndividual();
 
-    void print_individual();
-
-    void print_open_facilities();
-
-    void call_local_search_close_fac();
-
+    void printOpenFacilities();
 };
 
 

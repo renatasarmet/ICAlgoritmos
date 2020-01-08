@@ -19,7 +19,7 @@
 
 // Alocando memoria e inicializando valores
 void LATabuSearch::initialize(Solution *solution, double _a1, int _lc1, int _lc2, int _lo1, int _lo2, int seed,
-                              double _limit_idle, int _lh) {
+                              double _limitIdle, int _lh) {
     // Semente do numero aleatorio
     srand(seed);
 
@@ -41,7 +41,7 @@ void LATabuSearch::initialize(Solution *solution, double _a1, int _lc1, int _lc2
     lo1 = _lo1;
     lo2 = _lo2;
     lh = _lh;
-    limit_idle = _limit_idle;
+    limit_idle = _limitIdle;
 
     // Vetor da short term memory que representa o numero do movimento
     t = new int[qty_facilities];

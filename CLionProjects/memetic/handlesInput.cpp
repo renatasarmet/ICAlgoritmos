@@ -36,12 +36,6 @@ int main(int argc, char *argv[]){
 
     Solution solution(instance);
 
-    // Lendo solucao inicial
-    solution.readFileInitialSol(argv[2]);
-
-//    cout << "Initial solution:" << endl;
-//    solution.showSolution();
-
     Memetic memetic;
 
     // Chamando a funcao que resolve o problema de fato
