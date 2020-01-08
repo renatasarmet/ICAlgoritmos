@@ -161,7 +161,7 @@ void set_initial_sol_G(solutionType * node, int qty_facilities, int qty_clients,
 
 
 // Recebe node por referencia. Modificacoes feitas no node aqui refletem diretamente la
-void set_initial_sol_RANDOM(solutionType * node, int qty_facilities, int qty_clients, double * costF, double ** assignment_cost, int ** sorted_cijID){ // type: 0 para greedy, 1 para LS_G, 2 para aleatorio
+void set_initial_sol_RANDOM(solutionType * node, int qty_facilities, int qty_clients, double * costF, double ** assignment_cost, int ** sorted_cijID){ 
 
 	int randNum;
 	int qtd_open = 0;

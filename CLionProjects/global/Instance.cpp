@@ -35,8 +35,8 @@ double Instance::getCostFJ(int j) const {
     return cost_f[j];
 }
 
-void Instance::setCostFJ(int j, double costF) {
-    Instance::cost_f[j] = costF;
+void Instance::setCostFJ(int j, double cost) {
+    Instance::cost_f[j] = cost;
 }
 
 double **Instance::getCostA() const {
@@ -49,6 +49,10 @@ void Instance::setCostA(double **costA) {
 
 double Instance::getCostAIJ(int i, int j) const {
     return cost_a[i][j];
+}
+
+void Instance::setCostAIJ(int i, int j, double cost) {
+    Instance::cost_a[i][j] = cost;
 }
 
 const string &Instance::getInputName() const {
@@ -69,6 +73,11 @@ void Instance::setSolutionName(const string &solutionName) {
 
 void Instance::setDestroyed(bool destroyed) {
     Instance::destroyed = destroyed;
+}
+
+Instance::Instance() {
+    input_name = "";
+    solution_name = "";
 }
 
 Instance::Instance(const string &inputName, const string &solutionName) : input_name(inputName),
@@ -232,6 +241,25 @@ void Instance::showInstance() const {
         cout << endl;
     }
 }
+
+// Copia os valores de uma instancia modelo para essa
+void Instance::copyInstance(const Instance *model) {
+    qty_facilities = model->qty_facilities;
+    qty_clients = model->qty_clients;
+    input_name = model->getInputName();
+    solution_name = model->getSolutionName();
+
+    for(int j=0;j<qty_facilities;++j){
+        cost_f[j] = model->getCostFJ(j);
+
+        for(int i=0;i<qty_clients;i++){
+            cost_a[i][j] = model->getCostAIJ(i,j);
+        }
+    }
+}
+
+
+
 
 
 

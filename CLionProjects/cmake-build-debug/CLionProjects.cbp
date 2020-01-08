@@ -140,6 +140,21 @@
 		<Unit filename="/Users/renatasarmet/Documents/CLionProjects/main.cpp">
 			<Option target="CLionProjects"/>
 		</Unit>
+		<Unit filename="/Users/renatasarmet/Documents/CLionProjects/memetic/Memetic.cpp">
+			<Option target="CLionProjects"/>
+		</Unit>
+		<Unit filename="/Users/renatasarmet/Documents/CLionProjects/memetic/Memetic.h">
+			<Option target="CLionProjects"/>
+		</Unit>
+		<Unit filename="/Users/renatasarmet/Documents/CLionProjects/memetic/Tree.cpp">
+			<Option target="CLionProjects"/>
+		</Unit>
+		<Unit filename="/Users/renatasarmet/Documents/CLionProjects/memetic/Tree.h">
+			<Option target="CLionProjects"/>
+		</Unit>
+		<Unit filename="/Users/renatasarmet/Documents/CLionProjects/memetic/handlesInput.cpp">
+			<Option target="CLionProjects"/>
+		</Unit>
 		<Unit filename="/Users/renatasarmet/Documents/CLionProjects/tabuSearch/TabuSearch.cpp">
 			<Option target="CLionProjects"/>
 		</Unit>

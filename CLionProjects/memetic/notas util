@@ -1,0 +1,77 @@
+#include <iostream>
+#include <ctime>
+#include <fstream>
+#include <cfloat>
+#include "definitions.hpp"
+#include "../greedy/definitions.hpp"
+#include "../localSearch/definitions.hpp"
+#include "../lateAcceptance/definitions.hpp"
+#include "../tabuSearch/definitions.hpp"
+#include "../localSearchCloseFac/definitions.hpp"
+
+using namespace std;
+
+#define DEBUG 2 // OPCOES DE DEBUG: 1 - MOSTRAR A QTD DE MOVIMENTOS, 2 PARA EXIBIR OS MOVIMENTOS REALIZADOS, 3 PARA EXIBIR ACOES, 4 PARA EXIBIR DETALHES DAS ACOES, 5 PARA EXIBIR TEMPO, 6 PARA EXIBIR AS MUDANÇAS NO GRAFO
+
+
+
+
+
+void test_wrong_answer(solutionType solution, int qty_clients, int qty_facilities, double * costF, double ** assignment_cost){
+
+	cout << "TEST WRONG ANSWER: " << solution.finalTotalCost << endl;
+
+	for(int i=0;i < qty_clients;i++){
+		if(solution.open_facilities[solution.assigned_facilities[i]]){
+			cout << "ok" << endl;
+		}
+		else{
+			cout << "******************************************************** WRONG!!!!!!!!!!!!! " << endl;
+		}
+	}
+
+	bool found = false;
+
+	for(int i=0;i<qty_facilities;i++){
+		found = false;
+		for(int j=0;j<qty_clients;j++){
+			if(solution.assigned_facilities[j] == i){
+				found = true;
+				break;
+			}
+		}
+		if(found)
+			cout << "ACHEI ESSA: " << i << endl;
+		if(((found) && (!solution.open_facilities[i])) || ((!found) && (solution.open_facilities[i]))){
+			cout << "COMPLETE TEST ******************************************************** WRONG!!!!!!!!!!!!! " << endl;
+		}
+	}
+
+	cout << "TESTING IF THE SOLUTION IS CORRECT" << endl;
+	double coost = 0;
+
+	for(int i=0;i<qty_facilities;i++){
+		if(solution.open_facilities[i]){
+			coost += costF[i];
+		}
+	}
+
+	for(int j=0;j<qty_clients;j++){		// percorre as instalacoes
+		coost += assignment_cost[j][solution.assigned_facilities[j]];
+	}
+
+	cout << "SOL VALUE IN FACT: " << coost << endl;
+
+	if(solution.finalTotalCost != coost){
+		cout << "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA" << endl;
+	}
+}
+
+
+
+
+
+
+
+
+

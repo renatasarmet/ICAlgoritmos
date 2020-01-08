@@ -474,6 +474,87 @@ main.cpp.s:
 	$(MAKE) -f CMakeFiles/CLionProjects.dir/build.make CMakeFiles/CLionProjects.dir/main.cpp.s
 .PHONY : main.cpp.s
 
+memetic/Memetic.o: memetic/Memetic.cpp.o
+
+.PHONY : memetic/Memetic.o
+
+# target to build an object file
+memetic/Memetic.cpp.o:
+	$(MAKE) -f CMakeFiles/CLionProjects.dir/build.make CMakeFiles/CLionProjects.dir/memetic/Memetic.cpp.o
+.PHONY : memetic/Memetic.cpp.o
+
+memetic/Memetic.i: memetic/Memetic.cpp.i
+
+.PHONY : memetic/Memetic.i
+
+# target to preprocess a source file
+memetic/Memetic.cpp.i:
+	$(MAKE) -f CMakeFiles/CLionProjects.dir/build.make CMakeFiles/CLionProjects.dir/memetic/Memetic.cpp.i
+.PHONY : memetic/Memetic.cpp.i
+
+memetic/Memetic.s: memetic/Memetic.cpp.s
+
+.PHONY : memetic/Memetic.s
+
+# target to generate assembly for a file
+memetic/Memetic.cpp.s:
+	$(MAKE) -f CMakeFiles/CLionProjects.dir/build.make CMakeFiles/CLionProjects.dir/memetic/Memetic.cpp.s
+.PHONY : memetic/Memetic.cpp.s
+
+memetic/Tree.o: memetic/Tree.cpp.o
+
+.PHONY : memetic/Tree.o
+
+# target to build an object file
+memetic/Tree.cpp.o:
+	$(MAKE) -f CMakeFiles/CLionProjects.dir/build.make CMakeFiles/CLionProjects.dir/memetic/Tree.cpp.o
+.PHONY : memetic/Tree.cpp.o
+
+memetic/Tree.i: memetic/Tree.cpp.i
+
+.PHONY : memetic/Tree.i
+
+# target to preprocess a source file
+memetic/Tree.cpp.i:
+	$(MAKE) -f CMakeFiles/CLionProjects.dir/build.make CMakeFiles/CLionProjects.dir/memetic/Tree.cpp.i
+.PHONY : memetic/Tree.cpp.i
+
+memetic/Tree.s: memetic/Tree.cpp.s
+
+.PHONY : memetic/Tree.s
+
+# target to generate assembly for a file
+memetic/Tree.cpp.s:
+	$(MAKE) -f CMakeFiles/CLionProjects.dir/build.make CMakeFiles/CLionProjects.dir/memetic/Tree.cpp.s
+.PHONY : memetic/Tree.cpp.s
+
+memetic/handlesInput.o: memetic/handlesInput.cpp.o
+
+.PHONY : memetic/handlesInput.o
+
+# target to build an object file
+memetic/handlesInput.cpp.o:
+	$(MAKE) -f CMakeFiles/CLionProjects.dir/build.make CMakeFiles/CLionProjects.dir/memetic/handlesInput.cpp.o
+.PHONY : memetic/handlesInput.cpp.o
+
+memetic/handlesInput.i: memetic/handlesInput.cpp.i
+
+.PHONY : memetic/handlesInput.i
+
+# target to preprocess a source file
+memetic/handlesInput.cpp.i:
+	$(MAKE) -f CMakeFiles/CLionProjects.dir/build.make CMakeFiles/CLionProjects.dir/memetic/handlesInput.cpp.i
+.PHONY : memetic/handlesInput.cpp.i
+
+memetic/handlesInput.s: memetic/handlesInput.cpp.s
+
+.PHONY : memetic/handlesInput.s
+
+# target to generate assembly for a file
+memetic/handlesInput.cpp.s:
+	$(MAKE) -f CMakeFiles/CLionProjects.dir/build.make CMakeFiles/CLionProjects.dir/memetic/handlesInput.cpp.s
+.PHONY : memetic/handlesInput.cpp.s
+
 tabuSearch/TabuSearch.o: tabuSearch/TabuSearch.cpp.o
 
 .PHONY : tabuSearch/TabuSearch.o
@@ -576,6 +657,15 @@ help:
 	@echo "... main.o"
 	@echo "... main.i"
 	@echo "... main.s"
+	@echo "... memetic/Memetic.o"
+	@echo "... memetic/Memetic.i"
+	@echo "... memetic/Memetic.s"
+	@echo "... memetic/Tree.o"
+	@echo "... memetic/Tree.i"
+	@echo "... memetic/Tree.s"
+	@echo "... memetic/handlesInput.o"
+	@echo "... memetic/handlesInput.i"
+	@echo "... memetic/handlesInput.s"
 	@echo "... tabuSearch/TabuSearch.o"
 	@echo "... tabuSearch/TabuSearch.i"
 	@echo "... tabuSearch/TabuSearch.s"

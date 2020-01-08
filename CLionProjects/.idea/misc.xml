@@ -9,6 +9,7 @@
       <file path="$PROJECT_DIR$/lateAcceptanceTabuSearch" />
       <file path="$PROJECT_DIR$/localSearch" />
       <file path="$PROJECT_DIR$/localSearchCloseFac" />
+      <file path="$PROJECT_DIR$/memetic" />
       <file path="$PROJECT_DIR$/tabuSearch" />
     </sourceRoots>
   </component>

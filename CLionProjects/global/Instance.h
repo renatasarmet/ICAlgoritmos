@@ -17,6 +17,7 @@ public:
     void setDestroyed(bool destroyed);
 
 public:
+    Instance();
     Instance(const string &inputName, const string &solutionName);
     Instance(int qtyFacilities, int qtyClients, const string &inputName, const string &solutionName);
     virtual ~Instance();
@@ -35,13 +36,15 @@ public:
 
     double getCostFJ(int j) const;
 
-    void setCostFJ(int j, double costF);
+    void setCostFJ(int j, double cost);
 
     double **getCostA() const;
 
     void setCostA(double **costA);
 
     double getCostAIJ(int i, int j) const;
+
+    void setCostAIJ(int i, int j, double cost);
 
     const string &getInputName() const;
 
@@ -56,6 +59,8 @@ public:
     void allocateCosts();
 
     void showInstance() const;
+
+    void copyInstance(const Instance *model);
 };
 
 
