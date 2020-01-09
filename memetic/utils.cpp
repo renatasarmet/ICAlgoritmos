@@ -11,7 +11,7 @@
 
 using namespace std;
 
-#define DEBUG 2 // OPCOES DE DEBUG: 1 - MOSTRAR A QTD DE MOVIMENTOS, 2 PARA EXIBIR OS MOVIMENTOS REALIZADOS, 3 PARA EXIBIR ACOES, 4 PARA EXIBIR DETALHES DAS ACOES, 5 PARA EXIBIR TEMPO, 6 PARA EXIBIR AS MUDANÇAS NO GRAFO
+#define DEBUG 1 // OPCOES DE DEBUG: 1 - MOSTRAR A QTD DE MOVIMENTOS, 2 PARA EXIBIR OS MOVIMENTOS REALIZADOS, 3 PARA EXIBIR ACOES, 4 PARA EXIBIR DETALHES DAS ACOES, 5 PARA EXIBIR TEMPO, 6 PARA EXIBIR AS MUDANÇAS NO GRAFO
 
 void mergeSortID(double *vector, int *vectorID, int startPosition, int endPosition) {
 
@@ -89,6 +89,9 @@ void connect_nearest(solutionType * node, int qty_clients, int ** sorted_cijID, 
 		while(!node->open_facilities[sorted_cijID[i][cont]]){
 			cont+=1;
 		}
+
+		// cout << "hmm olha so pro cli " << i << " achei: " << sorted_cijID[i][cont] << endl;
+
 		// Atribui essa inst como inst aberta mais proxima
 		node->assigned_facilities[i] = sorted_cijID[i][cont];
 
@@ -481,6 +484,7 @@ void mutation(solutionType * child, int qty_facilities, int QTY_INST_MUTATION){
 		cout << "Child after mutation: ";
 		print_individual(child->open_facilities, qty_facilities);
 	}
+
 }
 
 
@@ -620,7 +624,7 @@ void groups_crossover(solutionType * child, solutionType mother, solutionType fa
 		}
 	}
 
-	// cout << "ACHEI " << qty_groups << " GRUPOS" << endl;
+	cout << "ACHEI " << qty_groups << " GRUPOS" << endl;
 
 
 	// Começa todas as instalacoes fechadas
@@ -677,9 +681,9 @@ void groups_crossover(solutionType * child, solutionType mother, solutionType fa
 				}
 			}
 
-			// if(DEBUG >= DISPLAY_DETAILS){
-				// cout << "Facility " << chosen_fac << ": " << child->open_facilities[chosen_fac] << endl;
-			// }
+			if(DEBUG >= DISPLAY_DETAILS){
+				cout << "Facility " << chosen_fac << ": " << child->open_facilities[chosen_fac] << endl;
+			}
 		}
 	}
 
@@ -725,10 +729,19 @@ void crossover_mutation(solutionType * child, solutionType mother, solutionType 
 		groups_crossover(child, mother, father, qty_facilities, qty_clients, cli_cli, costF, assignment_cost);
 	}
 
-	// mutation 
-	if(!((CROSSOVER_TYPE == 4)||(type_crossover == 4))){
-		mutation(child, qty_facilities, QTY_INST_MUTATION);
-	}
+	cout << "Olha o filho DEPOIS DO CROSSOVER: " << child->finalTotalCost << endl;
+
+
+	// // mutation 
+	// if(!((CROSSOVER_TYPE == 4)||(type_crossover == 4))){
+	// 	mutation(child, qty_facilities, QTY_INST_MUTATION);
+	// }
+
+	// cout << "Olha o filho DEPOIS DO MUTATION: " << child->finalTotalCost << endl;
+
+	cout << "FILHO LOGO DEPOIS DO CROSSOVER:" << endl;
+	print_open_facilities(child->open_facilities, qty_facilities);
+
 
 	if(DEBUG >= DISPLAY_ACTIONS){
 		cout << "ASSIGNING CLIENTS" << endl;
@@ -737,21 +750,27 @@ void crossover_mutation(solutionType * child, solutionType mother, solutionType 
 	// Conectando cada cliente com a instalacao aberta mais proxima e fechando as instalacoes que nao foram conectadas a ninguem. Custo final também é atualizado
 	connect_and_update_facilities(child, qty_facilities, qty_clients, sorted_cijID, costF, assignment_cost);
 
+
+	cout << "Olha o filho DEPOIS DO connecting: " << child->finalTotalCost << endl;
+
 	if(DEBUG >= DISPLAY_ACTIONS){
 		cout << "Child after connecting clients: ";
 		print_individual(child->open_facilities, qty_facilities);
 	}
 
-	// if(DEBUG >= DISPLAY_MOVES){
-	// 	cout << "Child after connecting clients: ";
-	// 	print_open_facilities(child->open_facilities, qty_facilities);
-	// }
+	if(DEBUG >= DISPLAY_MOVES){
+		cout << "Child after connecting clients: ";
+		print_open_facilities(child->open_facilities, qty_facilities);
+	}
 }
 
 
 // Recebe node child por referencia. Modificacoes feitas no node aqui refletem diretamente la.
 void recombine(solutionType * child, solutionType mother, solutionType father, int qty_facilities, int QTY_INST_MUTATION, int qty_clients, int ** sorted_cijID, double * costF, double * costA, double ** assignment_cost, char * solutionName, int * map, double * new_costF, double * new_costA, int * temp_open_facilities, int ** cli_cli){
 	
+	cout << "Olha a mae: " << mother.finalTotalCost << endl;
+	cout << "Olha o pai: " << father.finalTotalCost << endl;
+
 	crossover_mutation(child, mother, father, qty_facilities, QTY_INST_MUTATION, qty_clients, sorted_cijID, costF, assignment_cost, cli_cli);
 
 	// Se for do tipo uniform ou one-point crossover, entao chama o Late Acceptance
@@ -802,6 +821,9 @@ void recombine(solutionType * child, solutionType mother, solutionType father, i
 			print_individual(child->open_facilities, qty_facilities);
 		}
 	}
+
+	cout << "Olha o filho: " << child->finalTotalCost << endl;
+
 }
 
 
@@ -1342,6 +1364,7 @@ int mapping(solutionType * solution, int qty_facilities, int qty_clients, double
 		if(solution->open_facilities[i]){
 			map[cont] = i; // indica que na verdade essa inst será correspondente à i
 			new_costF[cont] = costF[i];
+			// cout << "to colocando em " << cont << ": " << new_costF[cont] << endl;
 			solution->open_facilities[cont] = true;
 			cont += 1;
 		}
@@ -1417,7 +1440,9 @@ void map_and_call_TS(solutionType * solution, int qty_facilities, int qty_client
 		cout << "Calling TS mapping with " << cont_facilities << " open facilities" << endl;
 	}
 
+
 	call_tabu_search(solution, solutionName, cont_facilities, qty_clients, new_costF, new_costA, *solution);
+
 
 	unmapping(solution, cont_facilities, qty_facilities, qty_clients, map, temp_open_facilities);
 
@@ -1440,11 +1465,13 @@ void map_and_call_G(solutionType * solution, int qty_facilities, int qty_clients
 		}
 	}
 
+
 	int cont_facilities = mapping(solution, qty_facilities, qty_clients, costF, assignment_cost, map, new_costF, new_costA);
 
 	if(DEBUG >= DISPLAY_MOVES){
 		cout << "Calling G mapping with " << cont_facilities << " open facilities" << endl;
 	}
+
 
 	call_greedy(solution, cont_facilities, qty_clients, new_costF, new_costA);
 

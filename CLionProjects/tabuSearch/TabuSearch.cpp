@@ -14,18 +14,26 @@
 #define DISPLAY_DETAILS 4 // corresponde a todos os cout mais detalhados quando uma acao é feita.
 #define DISPLAY_TIME 5 // corresponde aos calculos de tempo
 
-#define DEBUG 2 // OPCOES DE DEBUG: 1 - MOSTRAR A QTD DE MOVIMENTOS, 2 PARA EXIBIR OS MOVIMENTOS REALIZADOS, 3 PARA EXIBIR ACOES, 4 PARA EXIBIR DETALHES DAS ACOES, 5 PARA EXIBIR TEMPO
+#define DEBUG 0 // OPCOES DE DEBUG: 1 - MOSTRAR A QTD DE MOVIMENTOS, 2 PARA EXIBIR OS MOVIMENTOS REALIZADOS, 3 PARA EXIBIR ACOES, 4 PARA EXIBIR DETALHES DAS ACOES, 5 PARA EXIBIR TEMPO
 
 
 using namespace std;
 
 // Alocando memoria e inicializando valores
 void TabuSearch::initialize(Solution *solution, bool _best_fit, double _a1, int _lc1, int _lc2, int _lo1, int _lo2, int seed) {
+
     // Semente do numero aleatorio
     srand(seed);
 
     qty_facilities = solution->getQtyFacilities();
     qty_clients = solution->getQtyClients();
+
+    best_fit = _best_fit;
+    a1 = _a1;
+    lc1 = _lc1;
+    lc2 = _lc2;
+    lo1 = _lo1;
+    lo2 = _lo2;
 
     // Variavel que armazena o maior valor cij dado na entrada, para uso posterior
     biggest_cij = 0;
@@ -66,13 +74,6 @@ void TabuSearch::initialize(Solution *solution, bool _best_fit, double _a1, int 
     temp_nearest2_fac = new int[qty_clients];
     temp_c_minX = new double[qty_clients];
     temp_c2_minX = new double[qty_clients];
-
-    best_fit = _best_fit;
-    a1 = _a1;
-    lc1 = _lc1;
-    lc2 = _lc2;
-    lo1 = _lo1;
-    lo2 = _lo2;
 
     for(int i=0;i<qty_clients;i++){
         temp_nearest_fac[i] = -1; // indica que nao há nenhuma inst temporaria ainda
@@ -150,7 +151,6 @@ void TabuSearch::initialize(Solution *solution, bool _best_fit, double _a1, int 
     nearest3_open_fac = -1;
     aux_cij3 = -1;
 
-//
 //    cout << "antes de comecar: " << endl;
 //    solution->showSolution();
 //    solution->getInstance().showInstance();

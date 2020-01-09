@@ -351,6 +351,40 @@ solutionType tabuSearch(char * solutionName, int qty_facilities, int qty_clients
 	int nearest3_open_fac = -1;
 	double aux_cij3 = -1;
 
+
+
+
+ //    cout << "antes de comecar: " << endl;
+
+ // 	cout << "Final total cost: " << solution.finalTotalCost << endl;
+ //    cout << "Open facilities: ";
+ //    for(int i=0; i<qty_facilities; ++i){
+ //        if(solution.open_facilities[i]){
+ //            cout <<  i << " ";
+ //        }
+ //    }
+ //    cout << endl;
+ //    cout << "Assigned Facilities: ";
+ //    for(int i=0;i<qty_clients;++i){
+ //        cout << solution.assigned_facilities[i] << " ";
+ //    }
+ //    cout << endl;
+
+
+	// // Inicializando o vetor extra_cost[0] correspondente a delta z
+	// for(ListBpGraph::BlueNodeIt n(g); n != INVALID; ++n){		// percorre as instalacoes
+	// 	cout << "Facility " << g.id(n) << ": " << f[n] << endl;
+	// 	for (ListBpGraph::IncEdgeIt e(g, n); e != INVALID; ++e) { 
+ //        	cout << "Client " << g.id(g.u(e)) << ": " << assignment_cost[e] << endl;
+ //    	}
+ //    	cout << endl;
+ //    }
+
+
+
+
+
+
 	// cout <<"Initial assigned facilities" << endl;
 	// for(ListBpGraph::RedNodeIt n_cli(g); n_cli != INVALID; ++n_cli){		// percorre os clientes
 	// 	cout << "Client " << name[n_cli] << ": " << solution.assigned_facilities[name[n_cli]] << endl; 
@@ -998,13 +1032,13 @@ solutionType tabuSearch(char * solutionName, int qty_facilities, int qty_clients
 	}
 
 	// Exibir quais instalacoes foram abertas
-	if(DEBUG >= DISPLAY_ACTIONS){
+	// if(DEBUG >= DISPLAY_ACTIONS){
 		cout << "OPEN FACILITIES: " << endl;
 		for (itr = open_facilities.begin(); itr != open_facilities.end(); ++itr) { // percorrer todas as inst abertas
 			cout << *itr << " ";
 		}
 		cout << endl;
-	}
+	// }
 
 	if(DEBUG >= DISPLAY_BASIC){
 		cout << "Total moves: " << qty_moves << endl;

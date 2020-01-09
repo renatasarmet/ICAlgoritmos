@@ -262,10 +262,10 @@ void Memetic::run(Solution *solution) {
 
 void Memetic::recombine(Solution *child, Solution *mother, Solution *father, int posNodeChild, int posIndividualChild) {
 
-    cout << "Olha a mae: " << mother->getFinalTotalCost() << endl;
-    mother->showSolution();
-    cout << "Olha o pai: " << father->getFinalTotalCost() << endl;
-    father->showSolution();
+//    cout << "Olha a mae: " << mother->getFinalTotalCost() << endl;
+//    mother->showSolution();
+//    cout << "Olha o pai: " << father->getFinalTotalCost() << endl;
+//    father->showSolution();
 
 
     crossoverMutation(child, mother, father);
@@ -358,7 +358,7 @@ void Memetic::crossoverMutation(Solution *child, Solution *mother, Solution *fat
 //    if(!((CROSSOVER_TYPE == 4)||(type_crossover == 4))){
 //        mutation(child);
 //    }
-//
+
 //    cout << "Olha o filho DEPOIS DO MUTATION: " << child->getFinalTotalCost() << endl;
 
     if(DEBUG >= DISPLAY_ACTIONS){
@@ -469,12 +469,6 @@ void Memetic::unionCrossover(Solution *child, Solution *mother, Solution *father
 
 // crossover grupos: identifica quais clientes estao conectados tanto no pai e na mae na mesma instalacao e mantem esse grupos pós-crossover.
 void Memetic::groupsCrossover(Solution *child, Solution *mother, Solution *father) {
-
-    cout << "VAMOS VER O PAI E A MAE " << endl;
-    mother->showSolution();
-    father->showSolution();
-
-
 
     bool found_group;
     int qty_groups = 0;

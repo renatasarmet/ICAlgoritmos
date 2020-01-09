@@ -6,6 +6,12 @@
 
 #IncludeRegexTransform: 
 
+/Users/renatasarmet/Documents/CLionProjects/global/Instance.cpp
+Instance.h
+/Users/renatasarmet/Documents/CLionProjects/global/Instance.h
+fstream
+-
+
 /Users/renatasarmet/Documents/CLionProjects/global/Instance.h
 iostream
 -
@@ -22,6 +28,16 @@ iostream
 Instance.h
 /Users/renatasarmet/Documents/CLionProjects/global/Instance.h
 
+/Users/renatasarmet/Documents/CLionProjects/greedy/Greedy.cpp
+Greedy.h
+/Users/renatasarmet/Documents/CLionProjects/greedy/Greedy.h
+algorithm
+-
+iostream
+-
+ctime
+-
+
 /Users/renatasarmet/Documents/CLionProjects/greedy/Greedy.h
 ../global/Instance.h
 /Users/renatasarmet/Documents/CLionProjects/global/Instance.h
@@ -34,22 +50,6 @@ set
 ../global/Solution.h
 /Users/renatasarmet/Documents/CLionProjects/global/Solution.h
 
-/Users/renatasarmet/Documents/CLionProjects/localSearch/LocalSearch.cpp
-LocalSearch.h
-/Users/renatasarmet/Documents/CLionProjects/localSearch/LocalSearch.h
-algorithm
--
-iostream
--
-iterator
--
-ctime
--
-fstream
--
-cstring
--
-
 /Users/renatasarmet/Documents/CLionProjects/localSearch/LocalSearch.h
 ../global/Solution.h
 /Users/renatasarmet/Documents/CLionProjects/global/Solution.h
@@ -60,6 +60,18 @@ set
 ../global/Solution.h
 /Users/renatasarmet/Documents/CLionProjects/global/Solution.h
 set
+-
+
+/Users/renatasarmet/Documents/CLionProjects/memetic/Memetic.cpp
+Memetic.h
+/Users/renatasarmet/Documents/CLionProjects/memetic/Memetic.h
+
+/Users/renatasarmet/Documents/CLionProjects/memetic/Memetic.h
+../global/Solution.h
+/Users/renatasarmet/Documents/CLionProjects/global/Solution.h
+Tree.h
+/Users/renatasarmet/Documents/CLionProjects/memetic/Tree.h
+cfloat
 -
 
 /Users/renatasarmet/Documents/CLionProjects/memetic/Tree.cpp
@@ -80,9 +92,45 @@ Tree.h
 ../greedy/Greedy.h
 /Users/renatasarmet/Documents/CLionProjects/greedy/Greedy.h
 
+/Users/renatasarmet/Documents/CLionProjects/memetic/handlesInput.cpp
+iostream
+-
+cstdlib
+-
+fstream
+-
+iomanip
+-
+../global/Instance.h
+/Users/renatasarmet/Documents/CLionProjects/global/Instance.h
+../global/Solution.h
+/Users/renatasarmet/Documents/CLionProjects/global/Solution.h
+Memetic.h
+/Users/renatasarmet/Documents/CLionProjects/memetic/Memetic.h
+
+/Users/renatasarmet/Documents/CLionProjects/tabuSearch/TabuSearch.cpp
+TabuSearch.h
+/Users/renatasarmet/Documents/CLionProjects/tabuSearch/TabuSearch.h
+algorithm
+-
+iostream
+-
+iterator
+-
+ctime
+-
+fstream
+-
+cstring
+-
+cfloat
+-
+
 /Users/renatasarmet/Documents/CLionProjects/tabuSearch/TabuSearch.h
 ../global/Solution.h
 /Users/renatasarmet/Documents/CLionProjects/global/Solution.h
 set
 -
+
+/Users/renatasarmet/Documents/CLionProjects/tabuSearch/handlesInput.cpp
 

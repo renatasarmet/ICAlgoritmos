@@ -507,16 +507,13 @@ void Tree::mapAndCallTS(int posNode, int posIndividual) {
 
     callTabuSearch(posNode, posIndividual);
 
-    cout << "DEPOISSS DO TABU SEARCH " << endl;
-    nodes[posNode][posIndividual].printOpenFacilities();
-
     unmapping(posNode, posIndividual, cont_facilities);
 
     if(DEBUG >= DISPLAY_MOVES){
         cout << "Final TS_MAP solution = " << nodes[posNode][posIndividual].getFinalTotalCost() << endl;
-//        if(DEBUG >= DISPLAY_DETAILS){
+        if(DEBUG >= DISPLAY_DETAILS){
             nodes[posNode][posIndividual].printOpenFacilities();
-//        }
+        }
     }
 }
 
@@ -532,10 +529,12 @@ int Tree::mapping(int posNode, int posIndividual) {
         if(nodes[posNode][posIndividual].getOpenFacilityJ(i)){
             map[cont] = i; // indica que na verdade essa inst será correspondente à i
             nodes[posNode][posIndividual].getInstance().setCostFJ(cont, instance->getCostFJ(i));
+//            cout << "to colocando em " << cont << ": " << nodes[posNode][posIndividual].getInstance().getCostFJ(cont) << endl;
             nodes[posNode][posIndividual].setOpenFacilityJ(cont, true);
             cont += 1;
         }
     }
+
     // marcar as que nao foram mapeadas, como fechadas
     for(int i=cont;i<instance->getQtyFacilities();i++){
         // map[i] = -1;
@@ -1264,8 +1263,8 @@ void Tree::callLateAcceptance(int posNode, int posIndividual) {
 }
 
 void Tree::callTabuSearch(int posNode, int posIndividual) {
-    int lc1 = 0.01 * instance->getQtyFacilities();
-    int lc2 = 0.05 * instance->getQtyFacilities();
+    int lc1 = 0.01 * nodes[posNode][posIndividual].getInstance().getQtyFacilities();
+    int lc2 = 0.05 * nodes[posNode][posIndividual].getInstance().getQtyFacilities();
 
     TabuSearch tabuSearch;
 

@@ -285,6 +285,7 @@ solutionType greedy(int qty_clients, int qty_facilities, double * costF, double 
 	}
 
 
+
 	if(DEBUG >= DISPLAY_ACTIONS){
 		cout << "biggestCij from input : " << biggestCij << " biggestFi from input : " << biggestFi << endl;
 	}
