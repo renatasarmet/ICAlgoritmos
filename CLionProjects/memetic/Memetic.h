@@ -5,6 +5,25 @@
 #include "Tree.h"
 #include <cfloat>
 
+
+
+
+// DESCOMENTAR
+
+// MUTATION E CALL TABU SEARCH
+
+// VOLTAR MEMETIC PRA USAR COM TESTER (argv)
+
+
+
+
+
+
+
+
+
+
+
 #define INDEX_POCKET 0
 #define INDEX_CURRENT 1 // ocupa o segundo espaço de cada nó
 

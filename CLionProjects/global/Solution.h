@@ -29,7 +29,7 @@ public:
 
     void initializeArrays();
 
-    void setInstance(const Instance &instance);
+    void setInstance(Instance * instance);
 
     int *getAssignedFacilities() const;
 
@@ -79,7 +79,7 @@ public:
 
     void showSolution() const;
 
-    void initializeInstance(const Instance &_instance);
+    void initializeInstance(Instance * _instance);
 
     void copySolution(Solution *model);
 

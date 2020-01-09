@@ -18,7 +18,7 @@ using namespace std;
 #define DISPLAY_TIME 4 // corresponde aos calculos de tempo
 #define DISPLAY_DETAILS 5 // corresponde a descricao dos clientes, instalacoes e arcos
 
-#define DEBUG 2 // OPCOES DE DEBUG: 1 - MOSTRAR A QTD DE MOVIMENTOS, 2 PARA EXIBIR OS MOVIMENTOS REALIZADOS, 3 PARA EXIBIR ACOES, 4 PARA EXIBIR TEMPO, 5 PARA EXIBIR DETALHES
+#define DEBUG 1 // OPCOES DE DEBUG: 1 - MOSTRAR A QTD DE MOVIMENTOS, 2 PARA EXIBIR OS MOVIMENTOS REALIZADOS, 3 PARA EXIBIR ACOES, 4 PARA EXIBIR TEMPO, 5 PARA EXIBIR DETALHES
 
 #define TIME_LIMIT 900 //15 minutos
 
@@ -135,10 +135,6 @@ void LocalSearch::run(Solution *solution, int lsType) {
     // Declaracao da variavel que vai indicar o contador para salvar a solucao atual
     double timeCounter = 0;
 
-
-
-
-
     // // Declaracao de variavel auxiliar para formacao do arquivo .log
     // char completeLogSolName[250] = "";
 
@@ -150,8 +146,6 @@ void LocalSearch::run(Solution *solution, int lsType) {
 
     // //Salvando o cabecalho
     // solLog << "time spent so far, current solution cost, current qty moves" << endl;
-
-
 
 
 

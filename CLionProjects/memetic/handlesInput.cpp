@@ -16,14 +16,17 @@ using namespace std;
 
 int main(int argc, char *argv[]){
 
-    if(argc < 4){
-        cout << "Error in the parameters. You must enter 3 parameters" << endl;
-        return 0;
-    }
+//    if(argc < 4){
+//        cout << "Error in the parameters. You must enter 3 parameters" << endl;
+//        return 0;
+//    }
+//
+//    Instance instance(argv[1], argv[2]);
+//
+//    string input_type = argv[3];
 
-    Instance instance(argv[1], argv[2]);
-
-    string input_type = argv[3];
+    Instance instance("../baseDeTestes/facilityTestCases/tests/ga250a-1", "solutions/ga250a-1.sol" );
+    string input_type = "2";
 
     // Arquivo para salvar a solucao
     ofstream solutionTXT;

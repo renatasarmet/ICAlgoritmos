@@ -29,7 +29,7 @@ void Solution::resetSolution() {
     instance.setDestroyed(true);
 }
 
-void Solution::initializeInstance(const Instance& _instance) {
+void Solution::initializeInstance(Instance * _instance) {
     setInstance(_instance);
     resetSolution();
 }
@@ -113,8 +113,8 @@ Instance &Solution::getInstance() {
     return instance;
 }
 
-void Solution::setInstance(const Instance &instance) {
-    Solution::instance = instance;
+void Solution::setInstance(Instance * _instance) {
+    instance.copyInstance(_instance);
 }
 
 int Solution::getQtyFacilities() const {
@@ -246,6 +246,7 @@ void Solution::connectNearest(int **sortedCijID) {
         while(!open_facilities[sortedCijID[i][cont]]){
             cont+=1;
         }
+//        cout << "hmm olha so pro cli " << i << " achei: " << sortedCijID[i][cont] << endl;
         // Atribui essa inst como inst aberta mais proxima
         assigned_facilities[i] = sortedCijID[i][cont];
 

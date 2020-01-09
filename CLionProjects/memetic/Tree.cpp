@@ -14,28 +14,27 @@ Tree::Tree(Instance * _instance) {
         nodes[i] = new Solution[qty_solutions_node];
 
         for(int j=0;j<qty_solutions_node;j++){
-            nodes[i][j].initializeInstance(*instance); // tambem ja inicia tudo o que faria no construtor padrao de Solution
+            nodes[i][j].initializeInstance(instance); // tambem ja inicia tudo o que faria no construtor padrao de Solution
         }
     }
 
-
-    // Indicara a ordem pra preencher os
+    // Indicara a ordem pra preencher osc
     shuffled_facilities = new int[instance->getQtyFacilities()];
 
-    // sorted_cijID - será o ID das instalacoes ordenadas pelo cij àquele cliente
+    // sorted_cij_ID_g - será o ID das instalacoes ordenadas pelo cij àquele cliente
     sorted_cijID = new int*[instance->getQtyClients()];
 
     for(int i = 0; i < instance->getQtyClients(); i++) {
         sorted_cijID[i] = new int[instance->getQtyFacilities()];
     }
 
-    // colocar valores ainda nao ordenados no sorted_cijID
+    // colocar valores ainda nao ordenados no sorted_cij_ID_g
     for(int i=0;i<instance->getQtyClients();i++){
         for(int j=0;j<instance->getQtyFacilities();j++){
             sorted_cijID[i][j] = j;
         }
 
-        // Ordenar sorted_cijID
+        // Ordenar sorted_cij_ID_g
         mergeSortID(instance->getCostA()[i], sorted_cijID[i], 0, instance->getQtyFacilities() - 1);
     }
 
@@ -47,7 +46,7 @@ Tree::Tree(Instance * _instance) {
     map = new int[instance->getQtyFacilities()];
     temp_open_facilities = new int[instance->getQtyFacilities()];
 
-    aux_sol.initializeInstance(*instance);
+    aux_sol.initializeInstance(instance);
 
 //    map_instance = new Instance(instance->getQtyFacilities(), instance->getQtyClients(), instance->getInputName(), instance->getSolutionName());
 
@@ -133,6 +132,8 @@ void Tree::callGreedy(int posNode, int posIndividual) {
 
     // Chamando a funcao que resolve o problema de fato
     greedy.initialize(&nodes[posNode][posIndividual]);
+
+    nodes[posNode][posIndividual].setInstance(instance);
 }
 
 int Tree::getQtyNodes() const {
@@ -155,8 +156,8 @@ Solution *Tree::getNodeJ(int j) const {
     return nodes[j];
 }
 
-Solution Tree::getNodeJPosI(int j, int i) const {
-    return nodes[j][i];
+Solution * Tree::getNodeJPosI(int j, int i) const {
+    return &nodes[j][i];
 }
 
 Solution *Tree::getPointerNodeJPosI(int j, int i) {
@@ -196,11 +197,11 @@ void Tree::initializePopulation() {
     timeSpent += (finish_part.tv_nsec - start_part.tv_nsec) / 1000000000.0; // Necessario para obter uma precisao maior
 
     cout << "Time generate greedy: " << timeSpent << " seconds" << endl;
+    cout << "Value: " << nodes[1][INDEX_POCKET].getFinalTotalCost() << endl;
 
     clock_gettime(CLOCK_REALTIME, &start_part);
 
     // colocando a solucao do greedy no LS_G
-
     copySolutions(0, INDEX_POCKET,1, INDEX_POCKET);
     callLocalSearch(0, INDEX_POCKET, 1); // solucao com local search completo com solucao inicial do greedy
 
@@ -212,6 +213,7 @@ void Tree::initializePopulation() {
     timeSpent += (finish_part.tv_nsec - start_part.tv_nsec) / 1000000000.0; // Necessario para obter uma precisao maior
 
     cout << "Time LS greedy: " << timeSpent << " seconds" << endl;
+    cout << "Value: " << nodes[0][INDEX_POCKET].getFinalTotalCost() << endl;
 
     if(DEBUG >= DISPLAY_MOVES){
         cout << "LS_G: ";
@@ -469,7 +471,8 @@ void Tree::mapAndCallG(int posNode, int posIndividual) {
         }
     }
 
-    mapping(posNode, posIndividual);
+    int cont_facilities = mapping(posNode, posIndividual);
+
 
     if(DEBUG >= DISPLAY_MOVES){
         cout << "Calling G mapping with " << nodes[posNode][posIndividual].getQtyFacilities() << " open facilities" << endl;
@@ -477,7 +480,7 @@ void Tree::mapAndCallG(int posNode, int posIndividual) {
 
     callGreedy(posNode, posIndividual);
 
-    unmapping(posNode, posIndividual);
+    unmapping(posNode, posIndividual, cont_facilities);
 
     if(DEBUG >= DISPLAY_MOVES){
         cout << "Final G_MAP solution = " << nodes[posNode][posIndividual].getFinalTotalCost() << endl;
@@ -496,7 +499,7 @@ void Tree::mapAndCallTS(int posNode, int posIndividual) {
         }
     }
 
-    mapping(posNode, posIndividual);
+    int cont_facilities = mapping(posNode, posIndividual);
 
     if(DEBUG >= DISPLAY_MOVES){
         cout << "Calling TS mapping with " << nodes[posNode][posIndividual].getQtyFacilities()  << " open facilities" << endl;
@@ -504,20 +507,23 @@ void Tree::mapAndCallTS(int posNode, int posIndividual) {
 
     callTabuSearch(posNode, posIndividual);
 
-    unmapping(posNode, posIndividual);
+    cout << "DEPOISSS DO TABU SEARCH " << endl;
+    nodes[posNode][posIndividual].printOpenFacilities();
+
+    unmapping(posNode, posIndividual, cont_facilities);
 
     if(DEBUG >= DISPLAY_MOVES){
         cout << "Final TS_MAP solution = " << nodes[posNode][posIndividual].getFinalTotalCost() << endl;
-        if(DEBUG >= DISPLAY_DETAILS){
+//        if(DEBUG >= DISPLAY_DETAILS){
             nodes[posNode][posIndividual].printOpenFacilities();
-        }
+//        }
     }
 }
 
 // Mapeando para chamar o TS ou o G com menos instalacoes que o total
 // map[i] indica o valor que realmente corresponde
 // retorna cont
-void Tree::mapping(int posNode, int posIndividual) {
+int Tree::mapping(int posNode, int posIndividual) {
     int cont = 0;
     bool update_assigned = false;
     // Mapear costF e open_facilities, salvando o map
@@ -535,6 +541,7 @@ void Tree::mapping(int posNode, int posIndividual) {
         // map[i] = -1;
         nodes[posNode][posIndividual].setOpenFacilityJ(i, false);
     }
+
 
     // Mapear costA e assigned_facilities
     for(int j=0;j < instance->getQtyClients(); j++){
@@ -557,13 +564,15 @@ void Tree::mapping(int posNode, int posIndividual) {
     }
 
     nodes[posNode][posIndividual].getInstance().setQtyFacilities(cont);
+
+    return cont;
 }
 
 // Desmapeando, depois que retornou do TS ou G com menos instalacoes
 // map[i] indica o valor que realmente corresponde
-void Tree::unmapping(int posNode, int posIndividual) {
+void Tree::unmapping(int posNode, int posIndividual, int cont_facilities) {
     // salva todos os valores em temp_open_facilities
-    for(int i=0;i<nodes[posNode][posIndividual].getQtyFacilities();i++){
+    for(int i=0;i<cont_facilities;i++){
         temp_open_facilities[i] = nodes[posNode][posIndividual].getOpenFacilityJ(i);
     }
     // zera todas as instalacoes de solution->open_facilities
@@ -571,7 +580,7 @@ void Tree::unmapping(int posNode, int posIndividual) {
         nodes[posNode][posIndividual].setOpenFacilityJ(i, false);
     }
     // Coloca de volta as instalacoes aberta em solution->open_facilities
-    for(int i = 0; i < nodes[posNode][posIndividual].getQtyFacilities(); i++){
+    for(int i = 0; i < cont_facilities; i++){
         if(DEBUG >= DISPLAY_DETAILS){
             cout << "Unmap " << i << " = " << map[i] << endl;
         }
@@ -725,6 +734,18 @@ void Tree::printTree() {
         cout << endl;
     }
 }
+
+
+void Tree::printSolutions() {
+    for(int i=0;i<QTY_NODES_TREE;i++){
+        for(int j=0; j<QTY_SOLUTIONS_NODE; j++){
+            cout << "node[" << i << "][" << j << "]:" << endl;
+            nodes[i][j].showSolution();
+        }
+        cout << endl;
+    }
+}
+
 
 // Recebe por referencia, entao as alteracoes sao salvas.
 // Armazena a root em solution se ela for melhor que a que está lá e sobe a próxima para a root, atualizando o resto da populacao

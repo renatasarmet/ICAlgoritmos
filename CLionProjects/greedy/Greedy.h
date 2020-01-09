@@ -12,8 +12,8 @@ private:
     int * delete_clients;
     int qty_non_active_cli;
     int qty_non_active_cli_g;
-    double **sorted_cij;
-    int **sorted_cijID;
+    double **sorted_cij_g;
+    int **sorted_cij_ID_g;
     double biggest_cij;
     double biggest_fi;
 

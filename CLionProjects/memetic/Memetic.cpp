@@ -3,13 +3,14 @@
 
 // Alocando memoria e inicializando valores
 void Memetic::initialize(Solution *solution) {
+
     // Semente dos numeros aleatorios
     srand(0);
 
     qty_facilities = solution->getQtyFacilities();
     qty_clients = solution->getQtyClients();
 
-    instance = solution->getInstance();
+    instance.copyInstance(&solution->getInstance());
 
     // cli_cli - matriz cliente x cliente, indica se estao conectados à mesma instalacao nos dois pais
     cli_cli = new int*[qty_clients];
@@ -61,7 +62,6 @@ void Memetic::run(Solution *solution) {
     // Inicializando a populacao
     tree->initializePopulation();
 
-
     if(DEBUG >= DISPLAY_MOVES){
         // Imprimindo a quantidade de vezes que cada inst estava aberta nessas solucoes iniciais
         tree->printCountOpenFacilities();
@@ -78,7 +78,6 @@ void Memetic::run(Solution *solution) {
     // Levando as melhores solucoes para cima -> Update Population
     tree->updatePopulation();
 
-
     if(DEBUG >= DISPLAY_MOVES){
         cout << endl << "Tree after updating population:";
         tree->printTreeComplete();
@@ -93,7 +92,7 @@ void Memetic::run(Solution *solution) {
     tree->copyNodeToPointer(solution, 0, INDEX_POCKET);
 
     // Atualiza o best para o valor desse root
-    temp_best_total_cost = tree->getNodeJPosI(0, INDEX_POCKET).getFinalTotalCost();
+    temp_best_total_cost = tree->getNodeJPosI(0, INDEX_POCKET)->getFinalTotalCost();
 
     // A partir daqui estará em um loop até um número de iterações sem melhora for atingido
     while(qty_changes_root < MAX_CHANGES_ROOT){
@@ -110,7 +109,7 @@ void Memetic::run(Solution *solution) {
 
 
             // Atualiza o best para o valor desse root
-            temp_best_total_cost = tree->getNodeJPosI(0, INDEX_POCKET).getFinalTotalCost();
+            temp_best_total_cost = tree->getNodeJPosI(0, INDEX_POCKET)->getFinalTotalCost();
         }
 
         // crossover
@@ -200,14 +199,14 @@ void Memetic::run(Solution *solution) {
         }
 
         // Verificando se houve melhora
-        if(tree->getNodeJPosI(0, INDEX_POCKET).getFinalTotalCost() < temp_best_total_cost){ // se houve melhora, atualiza o temp_best_total_cost e zera o qty_gen_no_improv
-            temp_best_total_cost = tree->getNodeJPosI(0, INDEX_POCKET).getFinalTotalCost();
+        if(tree->getNodeJPosI(0, INDEX_POCKET)->getFinalTotalCost() < temp_best_total_cost){ // se houve melhora, atualiza o temp_best_total_cost e zera o qty_gen_no_improv
+            temp_best_total_cost = tree->getNodeJPosI(0, INDEX_POCKET)->getFinalTotalCost();
             qty_gen_no_improv = 0;
 
             if(DEBUG >= DISPLAY_MOVES){
                 cout << "Updating the best cost in this tree (" << temp_best_total_cost << ")!!" << endl;
             }
-            if(tree->getNodeJPosI(0, INDEX_POCKET).getFinalTotalCost() < solution->getFinalTotalCost()){ // se houve melhora na melhor solução encontrada até agora
+            if(tree->getNodeJPosI(0, INDEX_POCKET)->getFinalTotalCost() < solution->getFinalTotalCost()){ // se houve melhora na melhor solução encontrada até agora
                 qty_changes_root = 0; // zera a quantidade de mudanças para garantir que vai continuar a busca, pois sabe que logo vai alterar a raiz e zerar de qualquer forma
 
                 if(DEBUG >= DISPLAY_MOVES){
@@ -228,7 +227,7 @@ void Memetic::run(Solution *solution) {
     if(DEBUG >= DISPLAY_MOVES){
         for(int j=0;j<tree->getQtyNodes();j++){
             for(int i=0;i<tree->getQtySolutionsNode();i++){
-                cout << tree->getNodeJPosI(j,i).getQtyOpenFacilities() << " ";
+                cout << tree->getNodeJPosI(j,i)->getQtyOpenFacilities() << " ";
             }
             cout << " open facilities" << endl;
         }
@@ -243,7 +242,7 @@ void Memetic::run(Solution *solution) {
 
 
     // Atualizando valor de solution
-    if(tree->getNodeJPosI(0, INDEX_POCKET).getFinalTotalCost() < solution->getFinalTotalCost()){
+    if(tree->getNodeJPosI(0, INDEX_POCKET)->getFinalTotalCost() < solution->getFinalTotalCost()){
         tree->copyNodeToPointer(solution,0,INDEX_POCKET);
     }
 
@@ -262,6 +261,12 @@ void Memetic::run(Solution *solution) {
 }
 
 void Memetic::recombine(Solution *child, Solution *mother, Solution *father, int posNodeChild, int posIndividualChild) {
+
+    cout << "Olha a mae: " << mother->getFinalTotalCost() << endl;
+    mother->showSolution();
+    cout << "Olha o pai: " << father->getFinalTotalCost() << endl;
+    father->showSolution();
+
 
     crossoverMutation(child, mother, father);
 
@@ -295,14 +300,14 @@ void Memetic::recombine(Solution *child, Solution *mother, Solution *father, int
         // 	child->printIndividual();
         // }
 
-//        tree->callTabuSearch(posNodeChild, posIndividualChild);
+        tree->callTabuSearch(posNodeChild, posIndividualChild);
 
         // if(DEBUG >= DISPLAY_ACTIONS){
         // 	cout << "Child after tabu search: ";
         // 	child->printIndividual();
         // }
 
-        tree->mapAndCallTS(posNodeChild, posIndividualChild);
+//        tree->mapAndCallTS(posNodeChild, posIndividualChild);
 
         if(DEBUG >= DISPLAY_MOVES){
             child->printOpenFacilities();
@@ -313,6 +318,8 @@ void Memetic::recombine(Solution *child, Solution *mother, Solution *father, int
             child->printIndividual();
         }
     }
+
+    cout << "Olha o filho: " << child->getFinalTotalCost() << endl;
 }
 
 void Memetic::crossoverMutation(Solution *child, Solution *mother, Solution *father) {
@@ -345,14 +352,21 @@ void Memetic::crossoverMutation(Solution *child, Solution *mother, Solution *fat
         groupsCrossover(child, mother, father);
     }
 
-    // mutation
-    if(!((CROSSOVER_TYPE == 4)||(type_crossover == 4))){
-        mutation(child);
-    }
+    cout << "Olha o filho DEPOIS DO CROSSOVER: " << child->getFinalTotalCost() << endl;
+
+//    // mutation
+//    if(!((CROSSOVER_TYPE == 4)||(type_crossover == 4))){
+//        mutation(child);
+//    }
+//
+//    cout << "Olha o filho DEPOIS DO MUTATION: " << child->getFinalTotalCost() << endl;
 
     if(DEBUG >= DISPLAY_ACTIONS){
         cout << "ASSIGNING CLIENTS" << endl;
     }
+
+    cout << "FILHO LOGO DEPOIS DO CROSSOVER:" << endl;
+    child->printOpenFacilities();
 
     // Conectando cada cliente com a instalacao aberta mais proxima e fechando as instalacoes que nao foram conectadas a ninguem. Custo final também é atualizado
     child->connectAndUpdateFacilities(tree->getSortedCijId());
@@ -362,10 +376,12 @@ void Memetic::crossoverMutation(Solution *child, Solution *mother, Solution *fat
         child->printIndividual();
     }
 
-    // if(DEBUG >= DISPLAY_MOVES){
-    // 	cout << "Child after connecting clients: ";
-    //  child->printOpenFacilities();
-    // }
+    cout << "Olha o filho DEPOIS DO connecting: " << child->getFinalTotalCost() << endl;
+
+     if(DEBUG >= DISPLAY_MOVES){
+     	cout << "Child after connecting clients: ";
+        child->printOpenFacilities();
+     }
 }
 
 // crossover uniforme: copia para o filho o que é igual e sorteia o que for diferente
@@ -454,6 +470,12 @@ void Memetic::unionCrossover(Solution *child, Solution *mother, Solution *father
 // crossover grupos: identifica quais clientes estao conectados tanto no pai e na mae na mesma instalacao e mantem esse grupos pós-crossover.
 void Memetic::groupsCrossover(Solution *child, Solution *mother, Solution *father) {
 
+    cout << "VAMOS VER O PAI E A MAE " << endl;
+    mother->showSolution();
+    father->showSolution();
+
+
+
     bool found_group;
     int qty_groups = 0;
     int i, j, k;
@@ -506,7 +528,7 @@ void Memetic::groupsCrossover(Solution *child, Solution *mother, Solution *fathe
         }
     }
 
-    // cout << "ACHEI " << qty_groups << " GRUPOS" << endl;
+     cout << "ACHEI " << qty_groups << " GRUPOS" << endl;
 
 
     // Começa todas as instalacoes fechadas
@@ -526,8 +548,7 @@ void Memetic::groupsCrossover(Solution *child, Solution *mother, Solution *fathe
                 // escolhe essa instalacao mesmo
                 chosen_fac = mother->getAssignedFacilityJ(i);
 
-
-                // cout << "CASO SIMPLES (2)" << endl;
+//                 cout << "CASO SIMPLES (2)" << endl;
             }
             else{ // esse grupo nao tem bem definido qual instalacao vai se atribuido. Portanto devemos percorrer todas e ver qual minimiza o custo de atribuir esses clientes + custo de abrir aquela inst
                 // inicialmente nenhuma inst escolhida
@@ -563,9 +584,9 @@ void Memetic::groupsCrossover(Solution *child, Solution *mother, Solution *fathe
                 }
             }
 
-//             if(DEBUG >= DISPLAY_DETAILS){
-//             cout << "Facility " << chosen_fac << ": " << child->getOpenFacilityJ(chosen_fac) << endl;
-//             }
+             if(DEBUG >= DISPLAY_DETAILS){
+                cout << "Facility " << chosen_fac << ": " << child->getOpenFacilityJ(chosen_fac) << endl;
+             }
         }
     }
 

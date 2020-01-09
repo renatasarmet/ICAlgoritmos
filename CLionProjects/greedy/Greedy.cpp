@@ -8,7 +8,6 @@
 
 #define DEBUG 0 // OPCOES DE DEBUG: 1 PARA EXIBIR ACOES, 2 PARA EXIBIR TEMPO
 
-
 using namespace std;
 
 void Greedy::mergeSort(double *vector, int *vectorID, int startPosition, int endPosition) {
@@ -74,8 +73,8 @@ void Greedy::deletingNonActiveClients(int indexFac, int qtyCliDelete){
         }
 
         for(int j=0; j < qtyCliDelete; j++){
-            if(sorted_cijID[indexFac][i] == delete_clients[j]){
-                sorted_cij[indexFac][i] = -1; // coloca cij = -1, indicando que ja foi atribuido
+            if(sorted_cij_ID_g[indexFac][i] == delete_clients[j]){
+                sorted_cij_g[indexFac][i] = -1; // coloca cij = -1, indicando que ja foi atribuido
                 qty_remaining -= 1;
                 break;
             }
@@ -83,7 +82,7 @@ void Greedy::deletingNonActiveClients(int indexFac, int qtyCliDelete){
     }
 
     // Colocando novamente em ordem
-    mergeSort(sorted_cij[indexFac], sorted_cijID[indexFac], 0, (qty_clients - 1));
+    mergeSort(sorted_cij_g[indexFac], sorted_cij_ID_g[indexFac], 0, (qty_clients - 1));
 }
 
 
@@ -102,7 +101,7 @@ void Greedy::bestSubset(int &bestSize, double &bestCost, int indexFac, double fi
         sum_current_cost = fi - gain;
         // vendo a soma dos custos desse subconjunto
         for(int j=startIndex; j <= i; j++){
-            sum_current_cost += sorted_cij[indexFac][j];
+            sum_current_cost += sorted_cij_g[indexFac][j];
         }
 
         current_cost = sum_current_cost / current_size;
@@ -127,15 +126,15 @@ void Greedy::initialize(Solution *solution) {
     // Indica quantos clientes ja foram conectados a alguma instalacao
     qty_non_active_cli = 0;
 
-    // sorted_cij - será os clientes ativos ordenados pelo cij àquela instalação
-    sorted_cij = new double*[qty_facilities];
+    // sorted_cij_g - será os clientes ativos ordenados pelo cij àquela instalação
+    sorted_cij_g = new double*[qty_facilities];
 
-    // sorted_cijID - indica os ID dos clientes ativos ordenados pelo cij àquela instalação
-    sorted_cijID = new int*[qty_facilities];
+    // sorted_cij_ID_g - indica os ID dos clientes ativos ordenados pelo cij àquela instalação
+    sorted_cij_ID_g = new int*[qty_facilities];
 
     for(int i = 0; i < qty_facilities; i++) {
-        sorted_cij[i] = new double[qty_clients];
-        sorted_cijID[i] = new int[qty_clients];
+        sorted_cij_g[i] = new double[qty_clients];
+        sorted_cij_ID_g[i] = new int[qty_clients];
     }
 
     // c_minX - será correnpondente a c(j,X) = min_{i \in X} cij, sendo X as inst abertas
@@ -181,22 +180,24 @@ void Greedy::initialize(Solution *solution) {
     for(int j=0; j< qty_facilities; ++j){ // percorre as instalacoes
         // colocando no vetor que sera ordenado
         for(int i=0; i< qty_clients; ++i){ // percorre todos os clientes
-            sorted_cijID[j][i] = i; // linha da instalacao, coluna do cliente
-            sorted_cij[j][i] = solution->getCostAIJ(i,j); // linha da instalacao, coluna do cliente
+            sorted_cij_ID_g[j][i] = i; // linha da instalacao, coluna do cliente
+            sorted_cij_g[j][i] = solution->getCostAIJ(i, j); // linha da instalacao, coluna do cliente
         }
 
         // ordenando o vetor
-        mergeSort(sorted_cij[j], sorted_cijID[j], 0, (qty_clients-1));
+        mergeSort(sorted_cij_g[j], sorted_cij_ID_g[j], 0, (qty_clients - 1));
 
         if (DEBUG >= DISPLAY_TIME){
             cout << "sorted to facility " << j << endl;
             for(int i=0;i<qty_clients;i++){
-                cout << sorted_cij[j][i] << endl; // Adicionar o cliente j no conjunto de
+                cout << sorted_cij_g[j][i] << endl; // Adicionar o cliente j no conjunto de
             }
             cout << "-------" << endl;
         }
     }
 
+    // Resetando o final total cost
+    solution->setFinalTotalCost(0);
 
     // Executa o programa
     run(solution);
@@ -277,13 +278,13 @@ void Greedy::run(Solution * solution) {
 
         // criando o conjunto de clientes que serao apagados. inicia no primeiro ativo ate o tamanho escolhido na iteracao.
         for(int i = qty_non_active_cli; i < qty_non_active_cli + best_size_chosen; i++){
-            delete_clients[i - qty_non_active_cli] = sorted_cijID[id_chosen_fac][i]; // delete_clients inicia na posicao 0.
+            delete_clients[i - qty_non_active_cli] = sorted_cij_ID_g[id_chosen_fac][i]; // delete_clients inicia na posicao 0.
         }
 
         qty_non_active_cli += best_size_chosen;
         qty_non_active_cli_g -= best_size_chosen;
 
-        // Alterando o valor correspondente em sorted_cij e sorted_cijID para -1 em todas as instalacoes
+        // Alterando o valor correspondente em sorted_cij_g e sorted_cij_ID_g para -1 em todas as instalacoes
         for(int j=0; j< qty_facilities; ++j){ // percorre as instalacoes
              deletingNonActiveClients(j, best_size_chosen);
         }
@@ -334,11 +335,11 @@ Greedy::~Greedy() {
     delete [] delete_clients;
 
     for (int i = 0; i < qty_facilities; ++i) {
-        delete[] sorted_cij[i];
-        delete[] sorted_cijID[i];
+        delete[] sorted_cij_g[i];
+        delete[] sorted_cij_ID_g[i];
     }
-    delete [] sorted_cij;
-    delete [] sorted_cijID;
+    delete [] sorted_cij_g;
+    delete [] sorted_cij_ID_g;
 
     delete [] c_minX;
     delete [] active;

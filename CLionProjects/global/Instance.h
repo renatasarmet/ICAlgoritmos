@@ -16,7 +16,6 @@ private:
 public:
     void setDestroyed(bool destroyed);
 
-public:
     Instance();
     Instance(const string &inputName, const string &solutionName);
     Instance(int qtyFacilities, int qtyClients, const string &inputName, const string &solutionName);

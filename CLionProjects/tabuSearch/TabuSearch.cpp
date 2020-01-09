@@ -14,7 +14,7 @@
 #define DISPLAY_DETAILS 4 // corresponde a todos os cout mais detalhados quando uma acao é feita.
 #define DISPLAY_TIME 5 // corresponde aos calculos de tempo
 
-#define DEBUG 0 // OPCOES DE DEBUG: 1 - MOSTRAR A QTD DE MOVIMENTOS, 2 PARA EXIBIR OS MOVIMENTOS REALIZADOS, 3 PARA EXIBIR ACOES, 4 PARA EXIBIR DETALHES DAS ACOES, 5 PARA EXIBIR TEMPO
+#define DEBUG 2 // OPCOES DE DEBUG: 1 - MOSTRAR A QTD DE MOVIMENTOS, 2 PARA EXIBIR OS MOVIMENTOS REALIZADOS, 3 PARA EXIBIR ACOES, 4 PARA EXIBIR DETALHES DAS ACOES, 5 PARA EXIBIR TEMPO
 
 
 using namespace std;
@@ -149,6 +149,11 @@ void TabuSearch::initialize(Solution *solution, bool _best_fit, double _a1, int 
     c3_minX = -1;
     nearest3_open_fac = -1;
     aux_cij3 = -1;
+
+//
+//    cout << "antes de comecar: " << endl;
+//    solution->showSolution();
+//    solution->getInstance().showInstance();
 
     run(solution);
 }
@@ -801,13 +806,13 @@ void TabuSearch::run(Solution *solution) {
     }
 
     // Exibir quais instalacoes foram abertas
-    if(DEBUG >= DISPLAY_ACTIONS){
+//    if(DEBUG >= DISPLAY_ACTIONS){
         cout << "OPEN FACILITIES: " << endl;
         for (itr = open_facs.begin(); itr != open_facs.end(); ++itr) { // percorrer todas as inst abertas
             cout << *itr << " ";
         }
         cout << endl;
-    }
+//    }
 
     if(DEBUG >= DISPLAY_BASIC){
         cout << "Total moves: " << qty_moves << endl;

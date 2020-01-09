@@ -16,62 +16,62 @@ using namespace std;
 
 int main(int argc, char *argv[]){
 
-    if(argc < 6){
-        cout << "Error in the parameters. You must enter 5 parameters" << endl;
-        return 0;
-    }
+   if(argc < 6){
+       cout << "Error in the parameters. You must enter 5 parameters" << endl;
+       return 0;
+   }
 
-    int ls_type = stoi(argv[5],nullptr,10); // convertendo argv[5] para inteiro
+   int ls_type = stoi(argv[5],nullptr,10); // convertendo argv[5] para inteiro
 
-    Instance instance(argv[1], argv[3]);
+   Instance instance(argv[1], argv[3]);
 
-    string input_type = argv[4];
+   string input_type = argv[4];
 
-    // Arquivo para salvar a solucao
-    ofstream solutionTXT;
+   // Arquivo para salvar a solucao
+   ofstream solutionTXT;
 
-    cout << fixed;
-    cout.precision(5);
+   cout << fixed;
+   cout.precision(5);
 
-    // Lendo o arquivo de entrada
-    instance.readFileInstance(input_type);
+   // Lendo o arquivo de entrada
+   instance.readFileInstance(input_type);
 
-    Solution solution(instance);
+   Solution solution(instance);
 
-    // Lendo solucao inicial
-    solution.readFileInitialSol(argv[2]);
+   // Lendo solucao inicial
+   solution.readFileInitialSol(argv[2]);
 
 //    cout << "Initial solution:" << endl;
 //    solution.showSolution();
 
-    LocalSearch localSearch;
+   LocalSearch localSearch;
 
-    // Chamando a funcao que resolve o problema de fato
-    localSearch.initialize(&solution, ls_type);
+   // Chamando a funcao que resolve o problema de fato
+   localSearch.initialize(&solution, ls_type);
 
-    if(DEBUG >= DISPLAY_BASIC){
-        cout << "Final total cost: " << solution.getFinalTotalCost() << endl;
-    }
+   if(DEBUG >= DISPLAY_BASIC){
+       cout << "Final total cost: " << solution.getFinalTotalCost() << endl;
+   }
 
-    //Abertura de arquivo para leitura e escrita do .sol .
-    solutionTXT.open(instance.getSolutionName(), std::ofstream::out | std::ofstream::trunc);
+   //Abertura de arquivo para leitura e escrita do .sol .
+   solutionTXT.open(instance.getSolutionName(), std::ofstream::out | std::ofstream::trunc);
 
-    // Colocando no solutionTXT o valor do custo da solucao
-    solutionTXT << fixed << setprecision(5) << solution.getFinalTotalCost() << " ";
+   // Colocando no solutionTXT o valor do custo da solucao
+   solutionTXT << fixed << setprecision(5) << solution.getFinalTotalCost() << " ";
 
-    // Colocando no solutionTXT o tempo gasto
-    solutionTXT << solution.getTimeSpent() << " ";
+   // Colocando no solutionTXT o tempo gasto
+   solutionTXT << solution.getTimeSpent() << " ";
 
-    // Colocando no solutionTXT se o otimo local foi encontrado
-    solutionTXT << solution.isLocalOptimum();
+   // Colocando no solutionTXT se o otimo local foi encontrado
+   solutionTXT << solution.isLocalOptimum();
 
-    // Colocando no solutionsTXT as instalacoes finais conectadas
-    for(int i=0; i < instance.getQtyClients(); i++){
-        solutionTXT << " " << solution.getAssignedFacilityJ(i);
-    }
+   // Colocando no solutionsTXT as instalacoes finais conectadas
+   for(int i=0; i < instance.getQtyClients(); i++){
+       solutionTXT << " " << solution.getAssignedFacilityJ(i);
+   }
 
-    // Fechando o arquivo
-    solutionTXT.close();
+   // Fechando o arquivo
+   solutionTXT.close();
 
-    return 0;
+   return 0;
 }

@@ -10,6 +10,12 @@
 iostream
 -
 
+/Users/renatasarmet/Documents/CLionProjects/global/Solution.cpp
+Solution.h
+/Users/renatasarmet/Documents/CLionProjects/global/Solution.h
+fstream
+-
+
 /Users/renatasarmet/Documents/CLionProjects/global/Solution.h
 iostream
 -
@@ -27,6 +33,22 @@ set
 -
 ../global/Solution.h
 /Users/renatasarmet/Documents/CLionProjects/global/Solution.h
+
+/Users/renatasarmet/Documents/CLionProjects/localSearch/LocalSearch.cpp
+LocalSearch.h
+/Users/renatasarmet/Documents/CLionProjects/localSearch/LocalSearch.h
+algorithm
+-
+iostream
+-
+iterator
+-
+ctime
+-
+fstream
+-
+cstring
+-
 
 /Users/renatasarmet/Documents/CLionProjects/localSearch/LocalSearch.h
 ../global/Solution.h

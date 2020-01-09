@@ -232,10 +232,19 @@ void Instance::readFileInstance(string inputType) {
 }
 
 void Instance::showInstance() const {
-    for(int i=0; i<qty_facilities; ++i){
+//    for(int i=0; i<qty_facilities; ++i){
+//        cout << "Facility " << i << ": " << cost_f[i] << endl;
+//
+//        for(int j=0; j<qty_clients; ++j){
+//            cout << "Client " << j << ": " << cost_a[j][i] << endl;
+//        }
+//        cout << endl;
+//    }
+
+    for(int i=qty_facilities-1; i>=0; --i){
         cout << "Facility " << i << ": " << cost_f[i] << endl;
 
-        for(int j=0; j<qty_clients; ++j){
+        for(int j=qty_clients-1; j>=0; --j){
             cout << "Client " << j << ": " << cost_a[j][i] << endl;
         }
         cout << endl;
@@ -248,6 +257,8 @@ void Instance::copyInstance(const Instance *model) {
     qty_clients = model->qty_clients;
     input_name = model->getInputName();
     solution_name = model->getSolutionName();
+
+    allocateCosts();
 
     for(int j=0;j<qty_facilities;++j){
         cost_f[j] = model->getCostFJ(j);

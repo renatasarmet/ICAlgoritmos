@@ -62,7 +62,7 @@ public:
 
     Solution *getNodeJ(int j) const;
 
-    Solution getNodeJPosI(int j, int i) const;
+    Solution * getNodeJPosI(int j, int i) const;
 
     Solution * getPointerNodeJPosI(int j, int i);
 
@@ -96,13 +96,15 @@ public:
 
     void mapAndCallTS(int posNode, int posIndividual);
 
-    void mapping(int posNode, int posIndividual);
+    int mapping(int posNode, int posIndividual);
 
-    void unmapping(int posNode, int posIndividual);
+    void unmapping(int posNode, int posIndividual, int cont_facilities);
 
     void printCountOpenFacilities();
 
     void printTreeComplete();
+
+    void printSolutions();
 
     void updateSubPop(int idParent);
 
