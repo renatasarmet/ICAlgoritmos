@@ -8,38 +8,38 @@
 		<Option virtualFolders="CMake Files\;"/>
 		<Build>
 			<Target title="all">
-				<Option working_dir="/Users/renatasarmet/Documents/CLionProjects/cmake-build-debug"/>
+				<Option working_dir="/Users/renatasarmet/Documents/GitKrakenProjects/ICAlgoritmos/CLionProjects/cmake-build-debug"/>
 				<Option type="4"/>
 				<MakeCommands>
-					<Build command="/usr/bin/make -j8 -f &quot;/Users/renatasarmet/Documents/CLionProjects/cmake-build-debug/Makefile&quot;  VERBOSE=1 all"/>
-					<CompileFile command="/usr/bin/make -j8 -f &quot;/Users/renatasarmet/Documents/CLionProjects/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
-					<Clean command="/usr/bin/make -j8 -f &quot;/Users/renatasarmet/Documents/CLionProjects/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
-					<DistClean command="/usr/bin/make -j8 -f &quot;/Users/renatasarmet/Documents/CLionProjects/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<Build command="/usr/bin/make -j8 -f &quot;/Users/renatasarmet/Documents/GitKrakenProjects/ICAlgoritmos/CLionProjects/cmake-build-debug/Makefile&quot;  VERBOSE=1 all"/>
+					<CompileFile command="/usr/bin/make -j8 -f &quot;/Users/renatasarmet/Documents/GitKrakenProjects/ICAlgoritmos/CLionProjects/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j8 -f &quot;/Users/renatasarmet/Documents/GitKrakenProjects/ICAlgoritmos/CLionProjects/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j8 -f &quot;/Users/renatasarmet/Documents/GitKrakenProjects/ICAlgoritmos/CLionProjects/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
 				</MakeCommands>
 			</Target>
 			<Target title="rebuild_cache">
-				<Option working_dir="/Users/renatasarmet/Documents/CLionProjects/cmake-build-debug"/>
+				<Option working_dir="/Users/renatasarmet/Documents/GitKrakenProjects/ICAlgoritmos/CLionProjects/cmake-build-debug"/>
 				<Option type="4"/>
 				<MakeCommands>
-					<Build command="/usr/bin/make -j8 -f &quot;/Users/renatasarmet/Documents/CLionProjects/cmake-build-debug/Makefile&quot;  VERBOSE=1 rebuild_cache"/>
-					<CompileFile command="/usr/bin/make -j8 -f &quot;/Users/renatasarmet/Documents/CLionProjects/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
-					<Clean command="/usr/bin/make -j8 -f &quot;/Users/renatasarmet/Documents/CLionProjects/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
-					<DistClean command="/usr/bin/make -j8 -f &quot;/Users/renatasarmet/Documents/CLionProjects/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<Build command="/usr/bin/make -j8 -f &quot;/Users/renatasarmet/Documents/GitKrakenProjects/ICAlgoritmos/CLionProjects/cmake-build-debug/Makefile&quot;  VERBOSE=1 rebuild_cache"/>
+					<CompileFile command="/usr/bin/make -j8 -f &quot;/Users/renatasarmet/Documents/GitKrakenProjects/ICAlgoritmos/CLionProjects/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j8 -f &quot;/Users/renatasarmet/Documents/GitKrakenProjects/ICAlgoritmos/CLionProjects/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j8 -f &quot;/Users/renatasarmet/Documents/GitKrakenProjects/ICAlgoritmos/CLionProjects/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
 				</MakeCommands>
 			</Target>
 			<Target title="edit_cache">
-				<Option working_dir="/Users/renatasarmet/Documents/CLionProjects/cmake-build-debug"/>
+				<Option working_dir="/Users/renatasarmet/Documents/GitKrakenProjects/ICAlgoritmos/CLionProjects/cmake-build-debug"/>
 				<Option type="4"/>
 				<MakeCommands>
-					<Build command="/usr/bin/make -j8 -f &quot;/Users/renatasarmet/Documents/CLionProjects/cmake-build-debug/Makefile&quot;  VERBOSE=1 edit_cache"/>
-					<CompileFile command="/usr/bin/make -j8 -f &quot;/Users/renatasarmet/Documents/CLionProjects/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
-					<Clean command="/usr/bin/make -j8 -f &quot;/Users/renatasarmet/Documents/CLionProjects/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
-					<DistClean command="/usr/bin/make -j8 -f &quot;/Users/renatasarmet/Documents/CLionProjects/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<Build command="/usr/bin/make -j8 -f &quot;/Users/renatasarmet/Documents/GitKrakenProjects/ICAlgoritmos/CLionProjects/cmake-build-debug/Makefile&quot;  VERBOSE=1 edit_cache"/>
+					<CompileFile command="/usr/bin/make -j8 -f &quot;/Users/renatasarmet/Documents/GitKrakenProjects/ICAlgoritmos/CLionProjects/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j8 -f &quot;/Users/renatasarmet/Documents/GitKrakenProjects/ICAlgoritmos/CLionProjects/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j8 -f &quot;/Users/renatasarmet/Documents/GitKrakenProjects/ICAlgoritmos/CLionProjects/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
 				</MakeCommands>
 			</Target>
 			<Target title="CLionProjects">
-				<Option output="/Users/renatasarmet/Documents/CLionProjects/cmake-build-debug/CLionProjects" prefix_auto="0" extension_auto="0"/>
-				<Option working_dir="/Users/renatasarmet/Documents/CLionProjects/cmake-build-debug"/>
+				<Option output="/Users/renatasarmet/Documents/GitKrakenProjects/ICAlgoritmos/CLionProjects/cmake-build-debug/CLionProjects" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/Users/renatasarmet/Documents/GitKrakenProjects/ICAlgoritmos/CLionProjects/cmake-build-debug"/>
 				<Option object_output="./"/>
 				<Option type="1"/>
 				<Option compiler="gcc"/>
@@ -52,15 +52,15 @@
 					<Add directory="/Library/Frameworks"/>
 				</Compiler>
 				<MakeCommands>
-					<Build command="/usr/bin/make -j8 -f &quot;/Users/renatasarmet/Documents/CLionProjects/cmake-build-debug/Makefile&quot;  VERBOSE=1 CLionProjects"/>
-					<CompileFile command="/usr/bin/make -j8 -f &quot;/Users/renatasarmet/Documents/CLionProjects/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
-					<Clean command="/usr/bin/make -j8 -f &quot;/Users/renatasarmet/Documents/CLionProjects/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
-					<DistClean command="/usr/bin/make -j8 -f &quot;/Users/renatasarmet/Documents/CLionProjects/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<Build command="/usr/bin/make -j8 -f &quot;/Users/renatasarmet/Documents/GitKrakenProjects/ICAlgoritmos/CLionProjects/cmake-build-debug/Makefile&quot;  VERBOSE=1 CLionProjects"/>
+					<CompileFile command="/usr/bin/make -j8 -f &quot;/Users/renatasarmet/Documents/GitKrakenProjects/ICAlgoritmos/CLionProjects/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j8 -f &quot;/Users/renatasarmet/Documents/GitKrakenProjects/ICAlgoritmos/CLionProjects/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j8 -f &quot;/Users/renatasarmet/Documents/GitKrakenProjects/ICAlgoritmos/CLionProjects/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
 				</MakeCommands>
 			</Target>
 			<Target title="CLionProjects/fast">
-				<Option output="/Users/renatasarmet/Documents/CLionProjects/cmake-build-debug/CLionProjects" prefix_auto="0" extension_auto="0"/>
-				<Option working_dir="/Users/renatasarmet/Documents/CLionProjects/cmake-build-debug"/>
+				<Option output="/Users/renatasarmet/Documents/GitKrakenProjects/ICAlgoritmos/CLionProjects/cmake-build-debug/CLionProjects" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/Users/renatasarmet/Documents/GitKrakenProjects/ICAlgoritmos/CLionProjects/cmake-build-debug"/>
 				<Option object_output="./"/>
 				<Option type="1"/>
 				<Option compiler="gcc"/>
@@ -73,98 +73,98 @@
 					<Add directory="/Library/Frameworks"/>
 				</Compiler>
 				<MakeCommands>
-					<Build command="/usr/bin/make -j8 -f &quot;/Users/renatasarmet/Documents/CLionProjects/cmake-build-debug/Makefile&quot;  VERBOSE=1 CLionProjects/fast"/>
-					<CompileFile command="/usr/bin/make -j8 -f &quot;/Users/renatasarmet/Documents/CLionProjects/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
-					<Clean command="/usr/bin/make -j8 -f &quot;/Users/renatasarmet/Documents/CLionProjects/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
-					<DistClean command="/usr/bin/make -j8 -f &quot;/Users/renatasarmet/Documents/CLionProjects/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<Build command="/usr/bin/make -j8 -f &quot;/Users/renatasarmet/Documents/GitKrakenProjects/ICAlgoritmos/CLionProjects/cmake-build-debug/Makefile&quot;  VERBOSE=1 CLionProjects/fast"/>
+					<CompileFile command="/usr/bin/make -j8 -f &quot;/Users/renatasarmet/Documents/GitKrakenProjects/ICAlgoritmos/CLionProjects/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j8 -f &quot;/Users/renatasarmet/Documents/GitKrakenProjects/ICAlgoritmos/CLionProjects/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j8 -f &quot;/Users/renatasarmet/Documents/GitKrakenProjects/ICAlgoritmos/CLionProjects/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
 				</MakeCommands>
 			</Target>
 		</Build>
-		<Unit filename="/Users/renatasarmet/Documents/CLionProjects/global/Instance.cpp">
+		<Unit filename="/Users/renatasarmet/Documents/GitKrakenProjects/ICAlgoritmos/CLionProjects/global/Instance.cpp">
 			<Option target="CLionProjects"/>
 		</Unit>
-		<Unit filename="/Users/renatasarmet/Documents/CLionProjects/global/Instance.h">
+		<Unit filename="/Users/renatasarmet/Documents/GitKrakenProjects/ICAlgoritmos/CLionProjects/global/Instance.h">
 			<Option target="CLionProjects"/>
 		</Unit>
-		<Unit filename="/Users/renatasarmet/Documents/CLionProjects/global/Solution.cpp">
+		<Unit filename="/Users/renatasarmet/Documents/GitKrakenProjects/ICAlgoritmos/CLionProjects/global/Solution.cpp">
 			<Option target="CLionProjects"/>
 		</Unit>
-		<Unit filename="/Users/renatasarmet/Documents/CLionProjects/global/Solution.h">
+		<Unit filename="/Users/renatasarmet/Documents/GitKrakenProjects/ICAlgoritmos/CLionProjects/global/Solution.h">
 			<Option target="CLionProjects"/>
 		</Unit>
-		<Unit filename="/Users/renatasarmet/Documents/CLionProjects/greedy/Greedy.cpp">
+		<Unit filename="/Users/renatasarmet/Documents/GitKrakenProjects/ICAlgoritmos/CLionProjects/greedy/Greedy.cpp">
 			<Option target="CLionProjects"/>
 		</Unit>
-		<Unit filename="/Users/renatasarmet/Documents/CLionProjects/greedy/Greedy.h">
+		<Unit filename="/Users/renatasarmet/Documents/GitKrakenProjects/ICAlgoritmos/CLionProjects/greedy/Greedy.h">
 			<Option target="CLionProjects"/>
 		</Unit>
-		<Unit filename="/Users/renatasarmet/Documents/CLionProjects/greedy/handlesInput.cpp">
+		<Unit filename="/Users/renatasarmet/Documents/GitKrakenProjects/ICAlgoritmos/CLionProjects/greedy/handlesInput.cpp">
 			<Option target="CLionProjects"/>
 		</Unit>
-		<Unit filename="/Users/renatasarmet/Documents/CLionProjects/lateAcceptance/LateAcceptance.cpp">
+		<Unit filename="/Users/renatasarmet/Documents/GitKrakenProjects/ICAlgoritmos/CLionProjects/lateAcceptance/LateAcceptance.cpp">
 			<Option target="CLionProjects"/>
 		</Unit>
-		<Unit filename="/Users/renatasarmet/Documents/CLionProjects/lateAcceptance/LateAcceptance.h">
+		<Unit filename="/Users/renatasarmet/Documents/GitKrakenProjects/ICAlgoritmos/CLionProjects/lateAcceptance/LateAcceptance.h">
 			<Option target="CLionProjects"/>
 		</Unit>
-		<Unit filename="/Users/renatasarmet/Documents/CLionProjects/lateAcceptance/handlesInput.cpp">
+		<Unit filename="/Users/renatasarmet/Documents/GitKrakenProjects/ICAlgoritmos/CLionProjects/lateAcceptance/handlesInput.cpp">
 			<Option target="CLionProjects"/>
 		</Unit>
-		<Unit filename="/Users/renatasarmet/Documents/CLionProjects/lateAcceptanceTabuSearch/LATabuSearch.cpp">
+		<Unit filename="/Users/renatasarmet/Documents/GitKrakenProjects/ICAlgoritmos/CLionProjects/lateAcceptanceTabuSearch/LATabuSearch.cpp">
 			<Option target="CLionProjects"/>
 		</Unit>
-		<Unit filename="/Users/renatasarmet/Documents/CLionProjects/lateAcceptanceTabuSearch/LATabuSearch.h">
+		<Unit filename="/Users/renatasarmet/Documents/GitKrakenProjects/ICAlgoritmos/CLionProjects/lateAcceptanceTabuSearch/LATabuSearch.h">
 			<Option target="CLionProjects"/>
 		</Unit>
-		<Unit filename="/Users/renatasarmet/Documents/CLionProjects/lateAcceptanceTabuSearch/handlesInput.cpp">
+		<Unit filename="/Users/renatasarmet/Documents/GitKrakenProjects/ICAlgoritmos/CLionProjects/lateAcceptanceTabuSearch/handlesInput.cpp">
 			<Option target="CLionProjects"/>
 		</Unit>
-		<Unit filename="/Users/renatasarmet/Documents/CLionProjects/localSearch/LocalSearch.cpp">
+		<Unit filename="/Users/renatasarmet/Documents/GitKrakenProjects/ICAlgoritmos/CLionProjects/localSearch/LocalSearch.cpp">
 			<Option target="CLionProjects"/>
 		</Unit>
-		<Unit filename="/Users/renatasarmet/Documents/CLionProjects/localSearch/LocalSearch.h">
+		<Unit filename="/Users/renatasarmet/Documents/GitKrakenProjects/ICAlgoritmos/CLionProjects/localSearch/LocalSearch.h">
 			<Option target="CLionProjects"/>
 		</Unit>
-		<Unit filename="/Users/renatasarmet/Documents/CLionProjects/localSearch/handlesInput.cpp">
+		<Unit filename="/Users/renatasarmet/Documents/GitKrakenProjects/ICAlgoritmos/CLionProjects/localSearch/handlesInput.cpp">
 			<Option target="CLionProjects"/>
 		</Unit>
-		<Unit filename="/Users/renatasarmet/Documents/CLionProjects/localSearchCloseFac/LSCloseFac.cpp">
+		<Unit filename="/Users/renatasarmet/Documents/GitKrakenProjects/ICAlgoritmos/CLionProjects/localSearchCloseFac/LSCloseFac.cpp">
 			<Option target="CLionProjects"/>
 		</Unit>
-		<Unit filename="/Users/renatasarmet/Documents/CLionProjects/localSearchCloseFac/LSCloseFac.h">
+		<Unit filename="/Users/renatasarmet/Documents/GitKrakenProjects/ICAlgoritmos/CLionProjects/localSearchCloseFac/LSCloseFac.h">
 			<Option target="CLionProjects"/>
 		</Unit>
-		<Unit filename="/Users/renatasarmet/Documents/CLionProjects/localSearchCloseFac/handlesInput.cpp">
+		<Unit filename="/Users/renatasarmet/Documents/GitKrakenProjects/ICAlgoritmos/CLionProjects/localSearchCloseFac/handlesInput.cpp">
 			<Option target="CLionProjects"/>
 		</Unit>
-		<Unit filename="/Users/renatasarmet/Documents/CLionProjects/main.cpp">
+		<Unit filename="/Users/renatasarmet/Documents/GitKrakenProjects/ICAlgoritmos/CLionProjects/main.cpp">
 			<Option target="CLionProjects"/>
 		</Unit>
-		<Unit filename="/Users/renatasarmet/Documents/CLionProjects/memetic/Memetic.cpp">
+		<Unit filename="/Users/renatasarmet/Documents/GitKrakenProjects/ICAlgoritmos/CLionProjects/memetic/Memetic.cpp">
 			<Option target="CLionProjects"/>
 		</Unit>
-		<Unit filename="/Users/renatasarmet/Documents/CLionProjects/memetic/Memetic.h">
+		<Unit filename="/Users/renatasarmet/Documents/GitKrakenProjects/ICAlgoritmos/CLionProjects/memetic/Memetic.h">
 			<Option target="CLionProjects"/>
 		</Unit>
-		<Unit filename="/Users/renatasarmet/Documents/CLionProjects/memetic/Tree.cpp">
+		<Unit filename="/Users/renatasarmet/Documents/GitKrakenProjects/ICAlgoritmos/CLionProjects/memetic/Tree.cpp">
 			<Option target="CLionProjects"/>
 		</Unit>
-		<Unit filename="/Users/renatasarmet/Documents/CLionProjects/memetic/Tree.h">
+		<Unit filename="/Users/renatasarmet/Documents/GitKrakenProjects/ICAlgoritmos/CLionProjects/memetic/Tree.h">
 			<Option target="CLionProjects"/>
 		</Unit>
-		<Unit filename="/Users/renatasarmet/Documents/CLionProjects/memetic/handlesInput.cpp">
+		<Unit filename="/Users/renatasarmet/Documents/GitKrakenProjects/ICAlgoritmos/CLionProjects/memetic/handlesInput.cpp">
 			<Option target="CLionProjects"/>
 		</Unit>
-		<Unit filename="/Users/renatasarmet/Documents/CLionProjects/tabuSearch/TabuSearch.cpp">
+		<Unit filename="/Users/renatasarmet/Documents/GitKrakenProjects/ICAlgoritmos/CLionProjects/tabuSearch/TabuSearch.cpp">
 			<Option target="CLionProjects"/>
 		</Unit>
-		<Unit filename="/Users/renatasarmet/Documents/CLionProjects/tabuSearch/TabuSearch.h">
+		<Unit filename="/Users/renatasarmet/Documents/GitKrakenProjects/ICAlgoritmos/CLionProjects/tabuSearch/TabuSearch.h">
 			<Option target="CLionProjects"/>
 		</Unit>
-		<Unit filename="/Users/renatasarmet/Documents/CLionProjects/tabuSearch/handlesInput.cpp">
+		<Unit filename="/Users/renatasarmet/Documents/GitKrakenProjects/ICAlgoritmos/CLionProjects/tabuSearch/handlesInput.cpp">
 			<Option target="CLionProjects"/>
 		</Unit>
-		<Unit filename="/Users/renatasarmet/Documents/CLionProjects/CMakeLists.txt">
+		<Unit filename="/Users/renatasarmet/Documents/GitKrakenProjects/ICAlgoritmos/CLionProjects/CMakeLists.txt">
 			<Option virtualFolder="CMake Files\"/>
 		</Unit>
 	</Project>

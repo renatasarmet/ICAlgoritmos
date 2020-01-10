@@ -1,5 +1,13 @@
 #include "Memetic.h"
 
+#define DISPLAY_BASIC 1 // corresponde a exibicao da quantidade de movimentos
+#define DISPLAY_MOVES 2 // corresponde a todos os cout quando um movimento é realizado de fato
+#define DISPLAY_ACTIONS 3 // corresponde a todos os cout quando uma acao é feita.
+#define DISPLAY_DETAILS 4 // corresponde a todos os cout mais detalhados quando uma acao é feita.
+#define DISPLAY_TIME 5 // corresponde aos calculos de tempo
+
+#define DEBUG 0 // OPCOES DE DEBUG: 1 - MOSTRAR A QTD DE MOVIMENTOS, 2 PARA EXIBIR OS MOVIMENTOS REALIZADOS, 3 PARA EXIBIR ACOES, 4 PARA EXIBIR DETALHES DAS ACOES, 5 PARA EXIBIR TEMPO, 6 PARA EXIBIR AS MUDANÇAS NO GRAFO
+
 
 // Alocando memoria e inicializando valores
 void Memetic::initialize(Solution *solution) {
@@ -262,12 +270,6 @@ void Memetic::run(Solution *solution) {
 
 void Memetic::recombine(Solution *child, Solution *mother, Solution *father, int posNodeChild, int posIndividualChild) {
 
-//    cout << "Olha a mae: " << mother->getFinalTotalCost() << endl;
-//    mother->showSolution();
-//    cout << "Olha o pai: " << father->getFinalTotalCost() << endl;
-//    father->showSolution();
-
-
     crossoverMutation(child, mother, father);
 
     // Se for do tipo uniform ou one-point crossover, entao chama o Late Acceptance
@@ -318,8 +320,6 @@ void Memetic::recombine(Solution *child, Solution *mother, Solution *father, int
             child->printIndividual();
         }
     }
-
-    cout << "Olha o filho: " << child->getFinalTotalCost() << endl;
 }
 
 void Memetic::crossoverMutation(Solution *child, Solution *mother, Solution *father) {
@@ -352,21 +352,14 @@ void Memetic::crossoverMutation(Solution *child, Solution *mother, Solution *fat
         groupsCrossover(child, mother, father);
     }
 
-    cout << "Olha o filho DEPOIS DO CROSSOVER: " << child->getFinalTotalCost() << endl;
-
     // mutation
     if(!((CROSSOVER_TYPE == 4)||(type_crossover == 4))){
         mutation(child);
     }
 
-//    cout << "Olha o filho DEPOIS DO MUTATION: " << child->getFinalTotalCost() << endl;
-
     if(DEBUG >= DISPLAY_ACTIONS){
         cout << "ASSIGNING CLIENTS" << endl;
     }
-
-    cout << "FILHO LOGO DEPOIS DO CROSSOVER:" << endl;
-    child->printOpenFacilities();
 
     // Conectando cada cliente com a instalacao aberta mais proxima e fechando as instalacoes que nao foram conectadas a ninguem. Custo final também é atualizado
     child->connectAndUpdateFacilities(tree->getSortedCijId());
@@ -375,8 +368,6 @@ void Memetic::crossoverMutation(Solution *child, Solution *mother, Solution *fat
         cout << "Child after connecting clients: ";
         child->printIndividual();
     }
-
-    cout << "Olha o filho DEPOIS DO connecting: " << child->getFinalTotalCost() << endl;
 
      if(DEBUG >= DISPLAY_MOVES){
      	cout << "Child after connecting clients: ";
@@ -522,7 +513,7 @@ void Memetic::groupsCrossover(Solution *child, Solution *mother, Solution *fathe
         }
     }
 
-     cout << "ACHEI " << qty_groups << " GRUPOS" << endl;
+//     cout << "ACHEI " << qty_groups << " GRUPOS" << endl;
 
 
     // Começa todas as instalacoes fechadas
@@ -612,9 +603,9 @@ void Memetic::mutation(Solution *child) {
         randNum = rand() % child->getInstance().getQtyFacilities(); // Generate a random number between 0 and qty_facilities
         child->setOpenFacilityJ(randNum, !child->getOpenFacilityJ(randNum));
 
-//        if(DEBUG >= DISPLAY_DETAILS){
+        if(DEBUG >= DISPLAY_DETAILS){
             cout << "Facility " << randNum << " changes open to: " << child->getOpenFacilityJ(randNum) << endl;
-//        }
+        }
     }
 
     if(DEBUG >= DISPLAY_ACTIONS){

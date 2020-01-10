@@ -4,6 +4,15 @@
 
 #include "Tree.h"
 
+#define DISPLAY_BASIC 1 // corresponde a exibicao da quantidade de movimentos
+#define DISPLAY_MOVES 2 // corresponde a todos os cout quando um movimento é realizado de fato
+#define DISPLAY_ACTIONS 3 // corresponde a todos os cout quando uma acao é feita.
+#define DISPLAY_DETAILS 4 // corresponde a todos os cout mais detalhados quando uma acao é feita.
+#define DISPLAY_TIME 5 // corresponde aos calculos de tempo
+
+#define DEBUG 0 // OPCOES DE DEBUG: 1 - MOSTRAR A QTD DE MOVIMENTOS, 2 PARA EXIBIR OS MOVIMENTOS REALIZADOS, 3 PARA EXIBIR ACOES, 4 PARA EXIBIR DETALHES DAS ACOES, 5 PARA EXIBIR TEMPO, 6 PARA EXIBIR AS MUDANÇAS NO GRAFO
+
+
 Tree::Tree(Instance * _instance) {
     instance = _instance;
     qty_nodes = QTY_NODES_TREE;
@@ -186,34 +195,40 @@ void Tree::initializePopulation() {
 
     // Iniciando os nós 0 e 1, pocket 0
 
-    clock_gettime(CLOCK_REALTIME, &start_part);
+    if(DEBUG >= DISPLAY_TIME) {
+        clock_gettime(CLOCK_REALTIME, &start_part);
+    }
 
     callGreedy(1, INDEX_POCKET); // solucao com greedy
 
-    clock_gettime(CLOCK_REALTIME, &finish_part);
+    if(DEBUG >= DISPLAY_TIME) {
+        clock_gettime(CLOCK_REALTIME, &finish_part);
 
-    // Calculando o tempo gasto até agora
-    timeSpent =  (finish_part.tv_sec - start_part.tv_sec);
-    timeSpent += (finish_part.tv_nsec - start_part.tv_nsec) / 1000000000.0; // Necessario para obter uma precisao maior
+        // Calculando o tempo gasto até agora
+        timeSpent = (finish_part.tv_sec - start_part.tv_sec);
+        timeSpent +=
+                (finish_part.tv_nsec - start_part.tv_nsec) / 1000000000.0; // Necessario para obter uma precisao maior
 
-    cout << "Time generate greedy: " << timeSpent << " seconds" << endl;
-    cout << "Value: " << nodes[1][INDEX_POCKET].getFinalTotalCost() << endl;
+        cout << "Time generate greedy: " << timeSpent << " seconds" << endl;
 
-    clock_gettime(CLOCK_REALTIME, &start_part);
+        clock_gettime(CLOCK_REALTIME, &start_part);
+    }
 
     // colocando a solucao do greedy no LS_G
     copySolutions(0, INDEX_POCKET,1, INDEX_POCKET);
     callLocalSearch(0, INDEX_POCKET, 1); // solucao com local search completo com solucao inicial do greedy
 
 //    callLateAcceptance(0, INDEX_POCKET);// solucao com late acceptance com solucao inicial do greedy
-    clock_gettime(CLOCK_REALTIME, &finish_part);
 
-    // Calculando o tempo gasto até agora
-    timeSpent =  (finish_part.tv_sec - start_part.tv_sec);
-    timeSpent += (finish_part.tv_nsec - start_part.tv_nsec) / 1000000000.0; // Necessario para obter uma precisao maior
+    if(DEBUG >= DISPLAY_TIME) {
+        clock_gettime(CLOCK_REALTIME, &finish_part);
 
-    cout << "Time LS greedy: " << timeSpent << " seconds" << endl;
-    cout << "Value: " << nodes[0][INDEX_POCKET].getFinalTotalCost() << endl;
+        // Calculando o tempo gasto até agora
+        timeSpent = (finish_part.tv_sec - start_part.tv_sec);
+        timeSpent += (finish_part.tv_nsec - start_part.tv_nsec) / 1000000000.0; // Necessario para obter uma precisao maior
+
+        cout << "Time LS greedy: " << timeSpent << " seconds" << endl;
+    }
 
     if(DEBUG >= DISPLAY_MOVES){
         cout << "LS_G: ";
@@ -233,7 +248,9 @@ void Tree::initializePopulation() {
     // Preenchendo os currents dos nós 0 e 1
     for(int j=0;j<2;j++){ // para os nós 0 e 1
 
-        clock_gettime(CLOCK_REALTIME, &start_part);
+        if(DEBUG >= DISPLAY_TIME) {
+            clock_gettime(CLOCK_REALTIME, &start_part);
+        }
 
         if(SHUFFLED_FACILITIES){
             setInitialSolShuffled(j, INDEX_CURRENT);
@@ -244,31 +261,40 @@ void Tree::initializePopulation() {
 
         mapAndCallG(j, INDEX_CURRENT);
 
-        clock_gettime(CLOCK_REALTIME, &finish_part);
+        if(DEBUG >= DISPLAY_TIME) {
+            clock_gettime(CLOCK_REALTIME, &finish_part);
 
-        // Calculando o tempo gasto até agora
-        timeSpent =  (finish_part.tv_sec - start_part.tv_sec);
-        timeSpent += (finish_part.tv_nsec - start_part.tv_nsec) / 1000000000.0; // Necessario para obter uma precisao maior
+            // Calculando o tempo gasto até agora
+            timeSpent = (finish_part.tv_sec - start_part.tv_sec);
+            timeSpent += (finish_part.tv_nsec - start_part.tv_nsec) /
+                         1000000000.0; // Necessario para obter uma precisao maior
 
-        cout << "Time Random: " << timeSpent << " seconds" << endl;
+            cout << "Time Random: " << timeSpent << " seconds" << endl;
+        }
+
 
         if(DEBUG >= DISPLAY_DETAILS){
             cout << "Random - node[" << j << "] << [" << INDEX_CURRENT << "]:" << nodes[j][INDEX_CURRENT].getFinalTotalCost() << endl;
         }
 
         if(LA_INITIAL_POP){
-            clock_gettime(CLOCK_REALTIME, &start_part);
+            if(DEBUG >= DISPLAY_TIME) {
+                clock_gettime(CLOCK_REALTIME, &start_part);
+            }
 
             // Roda LA completo para todas as solucoes geradas com random
              callLateAcceptance(j, INDEX_CURRENT);
 
-            clock_gettime(CLOCK_REALTIME, &finish_part);
+            if(DEBUG >= DISPLAY_TIME) {
+                clock_gettime(CLOCK_REALTIME, &finish_part);
 
-            // Calculando o tempo gasto até agora
-            timeSpent =  (finish_part.tv_sec - start_part.tv_sec);
-            timeSpent += (finish_part.tv_nsec - start_part.tv_nsec) / 1000000000.0; // Necessario para obter uma precisao maior
+                // Calculando o tempo gasto até agora
+                timeSpent = (finish_part.tv_sec - start_part.tv_sec);
+                timeSpent += (finish_part.tv_nsec - start_part.tv_nsec) /
+                             1000000000.0; // Necessario para obter uma precisao maior
 
-            cout << "Time LA random: " << timeSpent << " seconds" << endl;
+                cout << "Time LA random: " << timeSpent << " seconds" << endl;
+            }
 
             if(DEBUG >= DISPLAY_DETAILS){
                 cout << "LS_R -> node[1][" << j << "]:" <<nodes[j][INDEX_CURRENT].getFinalTotalCost() << endl << endl;

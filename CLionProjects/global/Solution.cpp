@@ -278,9 +278,9 @@ void Solution::connectAndUpdateFacilities(int **sortedCijID) {
             if(!used){ // se nao tem ninguem conectado nela, vamos fecha-la
                 open_facilities[i] = false;
 
-                // if(DEBUG >= DISPLAY_DETAILS){
-                cout << "Closing facility " << i << " because no clients were assigned to it"<< endl;
-                // }
+                 if(DEBUG >= DISPLAY_ACTIONS){
+                    cout << "Closing facility " << i << " because no clients were assigned to it"<< endl;
+                 }
             }
             else{ // Se essa instalacao esta sendo usada, vai continuar aberta e devemos somar o custo
                 final_total_cost += instance.getCostFJ(i);

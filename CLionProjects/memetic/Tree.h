@@ -18,14 +18,6 @@
 #define OPEN_RANDOM_RATE 10 //1.5 // 10% // probabilidade de abrir uma instalacao na geração de solucoes random
 #define SHUFFLED_FACILITIES true // indica se vai gerar as solucoes iniciais garantindo que todas as instalacoes estarao presentes nas solucoes
 
-#define DISPLAY_BASIC 1 // corresponde a exibicao da quantidade de movimentos
-#define DISPLAY_MOVES 2 // corresponde a todos os cout quando um movimento é realizado de fato
-#define DISPLAY_ACTIONS 3 // corresponde a todos os cout quando uma acao é feita.
-#define DISPLAY_DETAILS 4 // corresponde a todos os cout mais detalhados quando uma acao é feita.
-#define DISPLAY_TIME 5 // corresponde aos calculos de tempo
-
-#define DEBUG 2 // OPCOES DE DEBUG: 1 - MOSTRAR A QTD DE MOVIMENTOS, 2 PARA EXIBIR OS MOVIMENTOS REALIZADOS, 3 PARA EXIBIR ACOES, 4 PARA EXIBIR DETALHES DAS ACOES, 5 PARA EXIBIR TEMPO, 6 PARA EXIBIR AS MUDANÇAS NO GRAFO
-
 class Tree {
 private:
     int qty_nodes; // indica quantos nodes tem na arvore

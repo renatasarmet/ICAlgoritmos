@@ -9,18 +9,10 @@
 #define INDEX_CURRENT 1 // ocupa o segundo espaço de cada nó
 
 #define MUTATION_RATE 0.01 // 1% 0.1// 10% //0.05 // 5% * qty_facilities
-#define CROSSOVER_TYPE 4 // 1 para uniform, 2 para one-point, 3 para union, 4 para groups 0 para aleatorio cada vez
+#define CROSSOVER_TYPE 1 // 1 para uniform, 2 para one-point, 3 para union, 4 para groups 0 para aleatorio cada vez
 #define PROB_LA_RATE 50 // 50%
 #define MAX_GEN_NO_IMPROVEMENT 5 // quantidade de geracoes sem melhora, para atualizar o root
 #define MAX_CHANGES_ROOT 2 // indica a quantidade de vezes seguidas que pode atualizar o root sem melhorar a best salva
-
-#define DISPLAY_BASIC 1 // corresponde a exibicao da quantidade de movimentos
-#define DISPLAY_MOVES 2 // corresponde a todos os cout quando um movimento é realizado de fato
-#define DISPLAY_ACTIONS 3 // corresponde a todos os cout quando uma acao é feita.
-#define DISPLAY_DETAILS 4 // corresponde a todos os cout mais detalhados quando uma acao é feita.
-#define DISPLAY_TIME 5 // corresponde aos calculos de tempo
-
-#define DEBUG 2 // OPCOES DE DEBUG: 1 - MOSTRAR A QTD DE MOVIMENTOS, 2 PARA EXIBIR OS MOVIMENTOS REALIZADOS, 3 PARA EXIBIR ACOES, 4 PARA EXIBIR DETALHES DAS ACOES, 5 PARA EXIBIR TEMPO, 6 PARA EXIBIR AS MUDANÇAS NO GRAFO
 
 class Memetic {
 private:

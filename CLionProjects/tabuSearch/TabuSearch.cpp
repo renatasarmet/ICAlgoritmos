@@ -806,13 +806,13 @@ void TabuSearch::run(Solution *solution) {
     }
 
     // Exibir quais instalacoes foram abertas
-//    if(DEBUG >= DISPLAY_ACTIONS){
+   if(DEBUG >= DISPLAY_ACTIONS){
         cout << "OPEN FACILITIES: " << endl;
         for (itr = open_facs.begin(); itr != open_facs.end(); ++itr) { // percorrer todas as inst abertas
             cout << *itr << " ";
         }
         cout << endl;
-//    }
+   }
 
     if(DEBUG >= DISPLAY_BASIC){
         cout << "Total moves: " << qty_moves << endl;

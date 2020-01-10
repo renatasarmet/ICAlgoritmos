@@ -28,7 +28,7 @@ if __name__ == '__main__':
 			bc2 = bo2 = "0.05" 
 			seed = "0"
 			limit_idle = "0.02"
-			lh = "50"
+			lh = "500"
 
 		n_tests = 1
 		initial_sol_rr = False
