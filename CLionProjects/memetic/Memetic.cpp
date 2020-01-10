@@ -300,14 +300,14 @@ void Memetic::recombine(Solution *child, Solution *mother, Solution *father, int
         // 	child->printIndividual();
         // }
 
-        tree->callTabuSearch(posNodeChild, posIndividualChild);
+//        tree->callTabuSearch(posNodeChild, posIndividualChild);
 
         // if(DEBUG >= DISPLAY_ACTIONS){
         // 	cout << "Child after tabu search: ";
         // 	child->printIndividual();
         // }
 
-//        tree->mapAndCallTS(posNodeChild, posIndividualChild);
+        tree->mapAndCallTS(posNodeChild, posIndividualChild);
 
         if(DEBUG >= DISPLAY_MOVES){
             child->printOpenFacilities();
@@ -354,10 +354,10 @@ void Memetic::crossoverMutation(Solution *child, Solution *mother, Solution *fat
 
     cout << "Olha o filho DEPOIS DO CROSSOVER: " << child->getFinalTotalCost() << endl;
 
-//    // mutation
-//    if(!((CROSSOVER_TYPE == 4)||(type_crossover == 4))){
-//        mutation(child);
-//    }
+    // mutation
+    if(!((CROSSOVER_TYPE == 4)||(type_crossover == 4))){
+        mutation(child);
+    }
 
 //    cout << "Olha o filho DEPOIS DO MUTATION: " << child->getFinalTotalCost() << endl;
 
@@ -609,12 +609,12 @@ void Memetic::mutation(Solution *child) {
 
     // QTY_INST_MUTATION instalacoes sofrerao mutação
     for(int i=0; i<QTY_INST_MUTATION; i++){
-        randNum = rand() % qty_facilities; // Generate a random number between 0 and qty_facilities
+        randNum = rand() % child->getInstance().getQtyFacilities(); // Generate a random number between 0 and qty_facilities
         child->setOpenFacilityJ(randNum, !child->getOpenFacilityJ(randNum));
 
-        if(DEBUG >= DISPLAY_DETAILS){
+//        if(DEBUG >= DISPLAY_DETAILS){
             cout << "Facility " << randNum << " changes open to: " << child->getOpenFacilityJ(randNum) << endl;
-        }
+//        }
     }
 
     if(DEBUG >= DISPLAY_ACTIONS){

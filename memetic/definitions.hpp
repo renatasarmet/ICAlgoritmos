@@ -10,7 +10,7 @@
 #define LA_INITIAL_POP false // indica se quer fazer LA na pop inicial gerada pelo random
 #define OPEN_RANDOM_RATE 10 //1.5 // 10% // probabilidade de abrir uma instalacao na geração de solucoes random
 #define MUTATION_RATE 0.01 // 1% 0.1// 10% //0.05 // 5% * qty_facilities
-#define CROSSOVER_TYPE 1 // 1 para uniform, 2 para one-point, 3 para union, 4 para groups 0 para aleatorio cada vez
+#define CROSSOVER_TYPE 4 // 1 para uniform, 2 para one-point, 3 para union, 4 para groups 0 para aleatorio cada vez
 #define PROB_LA_RATE 50 // 50%
 #define MAX_GEN_NO_IMPROVEMENT 5 // quantidade de geracoes sem melhora, para atualizar o root
 #define MAX_CHANGES_ROOT 2 // indica a quantidade de vezes seguidas que pode atualizar o root sem melhorar a best salva

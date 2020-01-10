@@ -5,30 +5,11 @@
 #include "Tree.h"
 #include <cfloat>
 
-
-
-
-// DESCOMENTAR
-
-// MUTATION
-
-// VOLTAR MEMETIC PRA USAR COM TESTER (argv)
-
-
-
-
-
-
-
-
-
-
-
 #define INDEX_POCKET 0
 #define INDEX_CURRENT 1 // ocupa o segundo espaço de cada nó
 
 #define MUTATION_RATE 0.01 // 1% 0.1// 10% //0.05 // 5% * qty_facilities
-#define CROSSOVER_TYPE 1 // 1 para uniform, 2 para one-point, 3 para union, 4 para groups 0 para aleatorio cada vez
+#define CROSSOVER_TYPE 4 // 1 para uniform, 2 para one-point, 3 para union, 4 para groups 0 para aleatorio cada vez
 #define PROB_LA_RATE 50 // 50%
 #define MAX_GEN_NO_IMPROVEMENT 5 // quantidade de geracoes sem melhora, para atualizar o root
 #define MAX_CHANGES_ROOT 2 // indica a quantidade de vezes seguidas que pode atualizar o root sem melhorar a best salva

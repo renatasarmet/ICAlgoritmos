@@ -475,9 +475,9 @@ void mutation(solutionType * child, int qty_facilities, int QTY_INST_MUTATION){
 		randNum = rand() % qty_facilities; // Generate a random number between 0 and qty_facilities
 		child->open_facilities[randNum] = !child->open_facilities[randNum];
 
-		if(DEBUG >= DISPLAY_DETAILS){
+		// if(DEBUG >= DISPLAY_DETAILS){
 			cout << "Facility " << randNum << " changes open to: " << child->open_facilities[randNum] << endl;
-		}
+		// }
 	}
 
 	if(DEBUG >= DISPLAY_ACTIONS){
@@ -732,10 +732,10 @@ void crossover_mutation(solutionType * child, solutionType mother, solutionType 
 	cout << "Olha o filho DEPOIS DO CROSSOVER: " << child->finalTotalCost << endl;
 
 
-	// // mutation 
-	// if(!((CROSSOVER_TYPE == 4)||(type_crossover == 4))){
-	// 	mutation(child, qty_facilities, QTY_INST_MUTATION);
-	// }
+	// mutation 
+	if(!((CROSSOVER_TYPE == 4)||(type_crossover == 4))){
+		mutation(child, qty_facilities, QTY_INST_MUTATION);
+	}
 
 	// cout << "Olha o filho DEPOIS DO MUTATION: " << child->finalTotalCost << endl;
 
@@ -758,10 +758,10 @@ void crossover_mutation(solutionType * child, solutionType mother, solutionType 
 		print_individual(child->open_facilities, qty_facilities);
 	}
 
-	if(DEBUG >= DISPLAY_MOVES){
+	// if(DEBUG >= DISPLAY_MOVES){
 		cout << "Child after connecting clients: ";
 		print_open_facilities(child->open_facilities, qty_facilities);
-	}
+	// }
 }
 
 
@@ -808,6 +808,7 @@ void recombine(solutionType * child, solutionType mother, solutionType father, i
 		// 	cout << "Child after tabu search: ";
 		// 	print_individual(child->open_facilities, qty_facilities);
 		// }
+
 
 		map_and_call_TS(child, qty_facilities, qty_clients, costF, assignment_cost, map, new_costF, new_costA, solutionName, temp_open_facilities);
 

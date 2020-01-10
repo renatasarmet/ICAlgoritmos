@@ -491,7 +491,6 @@ void Tree::mapAndCallG(int posNode, int posIndividual) {
 }
 
 void Tree::mapAndCallTS(int posNode, int posIndividual) {
-
     if(DEBUG >= DISPLAY_MOVES){
         cout << "Initial TS_MAP solution = " << nodes[posNode][posIndividual].getFinalTotalCost() << endl;
         if(DEBUG >= DISPLAY_DETAILS){
