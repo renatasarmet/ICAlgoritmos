@@ -295,21 +295,25 @@ void Memetic::recombine(Solution *child, Solution *mother, Solution *father, int
         // Senão, se for do tipo union ou groups
     else if((CROSSOVER_TYPE == 3)||(CROSSOVER_TYPE == 4)){
 
-//        tree->callLocalSearchCloseFac(posNodeChild, posIndividualChild);
+       // tree->callLocalSearchCloseFac(posNodeChild, posIndividualChild);
+
+        // tree->mapAndCallG(posNodeChild, posIndividualChild);
+
+       // tree->callLateAcceptance(posNodeChild, posIndividualChild);
 
         // if(DEBUG >= DISPLAY_ACTIONS){
         // 	cout << "Child after local search close fac: ";
         // 	child->printIndividual();
         // }
 
-//        tree->callTabuSearch(posNodeChild, posIndividualChild);
+       tree->callTabuSearch(posNodeChild, posIndividualChild);
 
         // if(DEBUG >= DISPLAY_ACTIONS){
         // 	cout << "Child after tabu search: ";
         // 	child->printIndividual();
         // }
 
-        tree->mapAndCallTS(posNodeChild, posIndividualChild);
+        // tree->mapAndCallTS(posNodeChild, posIndividualChild);
 
         if(DEBUG >= DISPLAY_MOVES){
             child->printOpenFacilities();
