@@ -279,7 +279,11 @@ void Memetic::recombine(Solution *child, Solution *mother, Solution *father, int
 //
 //         if(prob_la < PROB_LA_RATE){	 // se o numero foi menor que o prob_la_rate, entao chama
 //         LA em cada filho gerado
-        tree->callLateAcceptance(posNodeChild, posIndividualChild);
+        // tree->callLateAcceptance(posNodeChild, posIndividualChild);
+
+        // tree->mapAndCallTS(posNodeChild, posIndividualChild);
+
+         tree->callTabuSearch(posNodeChild, posIndividualChild);
 
         if(DEBUG >= DISPLAY_ACTIONS){
             cout << "Child after late acceptance: ";
