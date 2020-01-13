@@ -303,14 +303,14 @@ void Memetic::recombine(Solution *child, Solution *mother, Solution *father, int
 
         // tree->mapAndCallG(posNodeChild, posIndividualChild);
 
-       // tree->callLateAcceptance(posNodeChild, posIndividualChild);
+       tree->callLateAcceptance(posNodeChild, posIndividualChild);
 
         // if(DEBUG >= DISPLAY_ACTIONS){
         // 	cout << "Child after local search close fac: ";
         // 	child->printIndividual();
         // }
 
-       tree->callTabuSearch(posNodeChild, posIndividualChild);
+       // tree->callTabuSearch(posNodeChild, posIndividualChild);
 
         // if(DEBUG >= DISPLAY_ACTIONS){
         // 	cout << "Child after tabu search: ";
