@@ -281,9 +281,9 @@ void Memetic::recombine(Solution *child, Solution *mother, Solution *father, int
 //         LA em cada filho gerado
         // tree->callLateAcceptance(posNodeChild, posIndividualChild);
 
-        // tree->mapAndCallTS(posNodeChild, posIndividualChild);
+        tree->mapAndCallTS(posNodeChild, posIndividualChild);
 
-         tree->callTabuSearch(posNodeChild, posIndividualChild);
+         // tree->callTabuSearch(posNodeChild, posIndividualChild);
 
         if(DEBUG >= DISPLAY_ACTIONS){
             cout << "Child after late acceptance: ";
