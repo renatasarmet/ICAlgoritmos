@@ -10,7 +10,9 @@
 
 #define MUTATION_RATE 0.01 // 1% 0.1// 10% //0.05 // 5% * qty_facilities
 #define CROSSOVER_TYPE 1 // 1 para uniform, 2 para one-point, 3 para union, 4 para groups 0 para aleatorio cada vez
-#define PROB_LA_RATE 50 // 50%
+#define PROB_MAP_TS_RATE 60 // 60%
+#define PROB_LA_RATE 30 // 50%
+#define STRATEGY_RECOMBINE 2 // 1 para rodar LA na sub da raiz e mapTS no resto ou 2 para rodar com probabilidade mapTS, LA ou TS
 #define MAX_GEN_NO_IMPROVEMENT 5 // quantidade de geracoes sem melhora, para atualizar o root
 #define MAX_CHANGES_ROOT 2 // indica a quantidade de vezes seguidas que pode atualizar o root sem melhorar a best salva
 
@@ -41,7 +43,7 @@ public:
 
     void run(Solution * solution);
 
-    void recombine(Solution * child, Solution *mother, Solution *father, int posNodeChild, int posIndividualChild);
+    void recombine(Solution * child, Solution *mother, Solution *father, int posNodeChild, int posIndividualChild, int id_parent);
 
     void crossoverMutation(Solution * child, Solution *mother, Solution *father);
 

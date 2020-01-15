@@ -12,538 +12,271 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="7aceef00-4371-4af9-a754-093df3b02196" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CLionProjects.cbp" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CLionProjects.cbp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeCache.txt" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeCache.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/CLionProjects.dir/CXX.includecache" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/CLionProjects.dir/CXX.includecache" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/CLionProjects.dir/DependInfo.cmake" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/CLionProjects.dir/DependInfo.cmake" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/CLionProjects.dir/build.make" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/CLionProjects.dir/build.make" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/CLionProjects.dir/depend.internal" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/CLionProjects.dir/depend.internal" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/CLionProjects.dir/global/Instance.cpp.o" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/CLionProjects.dir/global/Instance.cpp.o" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/CLionProjects.dir/global/Solution.cpp.o" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/CLionProjects.dir/global/Solution.cpp.o" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/CLionProjects.dir/greedy/Greedy.cpp.o" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/CLionProjects.dir/greedy/Greedy.cpp.o" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/CLionProjects.dir/greedy/handlesInput.cpp.o" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/CLionProjects.dir/greedy/handlesInput.cpp.o" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/CLionProjects.dir/lateAcceptance/LateAcceptance.cpp.o" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/CLionProjects.dir/lateAcceptance/LateAcceptance.cpp.o" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/CLionProjects.dir/lateAcceptance/handlesInput.cpp.o" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/CLionProjects.dir/lateAcceptance/handlesInput.cpp.o" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/CLionProjects.dir/lateAcceptanceTabuSearch/LATabuSearch.cpp.o" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/CLionProjects.dir/lateAcceptanceTabuSearch/LATabuSearch.cpp.o" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/CLionProjects.dir/lateAcceptanceTabuSearch/handlesInput.cpp.o" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/CLionProjects.dir/lateAcceptanceTabuSearch/handlesInput.cpp.o" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/CLionProjects.dir/localSearch/LocalSearch.cpp.o" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/CLionProjects.dir/localSearch/LocalSearch.cpp.o" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/CLionProjects.dir/localSearch/handlesInput.cpp.o" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/CLionProjects.dir/localSearch/handlesInput.cpp.o" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/CLionProjects.dir/localSearchCloseFac/LSCloseFac.cpp.o" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/CLionProjects.dir/localSearchCloseFac/LSCloseFac.cpp.o" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/CLionProjects.dir/localSearchCloseFac/handlesInput.cpp.o" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/CLionProjects.dir/localSearchCloseFac/handlesInput.cpp.o" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/CLionProjects.dir/main.cpp.o" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/CLionProjects.dir/main.cpp.o" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/CLionProjects.dir/memetic/Memetic.cpp.o" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/CLionProjects.dir/memetic/Memetic.cpp.o" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/CLionProjects.dir/memetic/Tree.cpp.o" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/CLionProjects.dir/memetic/Tree.cpp.o" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/CLionProjects.dir/memetic/handlesInput.cpp.o" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/CLionProjects.dir/memetic/handlesInput.cpp.o" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/CLionProjects.dir/tabuSearch/TabuSearch.cpp.o" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/CLionProjects.dir/tabuSearch/TabuSearch.cpp.o" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/CLionProjects.dir/tabuSearch/handlesInput.cpp.o" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/CLionProjects.dir/tabuSearch/handlesInput.cpp.o" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/CMakeDirectoryInformation.cmake" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/CMakeDirectoryInformation.cmake" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/CMakeOutput.log" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/CMakeOutput.log" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/Makefile.cmake" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/Makefile.cmake" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/Makefile2" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/Makefile2" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/TargetDirectories.txt" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/TargetDirectories.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/clion-log.txt" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/clion-log.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/Makefile" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/Makefile" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/cmake_install.cmake" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/cmake_install.cmake" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/global/Solution.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/global/Solution.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/greedy/g" beforeDir="false" afterPath="$PROJECT_DIR$/greedy/g" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/greedy/solutions/B1.1.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/greedy/solutions/B1.10.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/greedy/solutions/B1.2.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/greedy/solutions/B1.3.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/greedy/solutions/B1.4.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/greedy/solutions/B1.5.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/greedy/solutions/B1.6.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/greedy/solutions/B1.7.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/greedy/solutions/B1.8.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/greedy/solutions/B1.9.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/greedy/solutions/C1.1.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/greedy/solutions/C1.10.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/greedy/solutions/C1.2.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/greedy/solutions/C1.3.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/greedy/solutions/C1.4.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/greedy/solutions/C1.5.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/greedy/solutions/C1.6.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/greedy/solutions/C1.7.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/greedy/solutions/C1.8.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/greedy/solutions/C1.9.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/greedy/solutions/D1.1.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/greedy/solutions/D1.10.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/greedy/solutions/D1.2.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/greedy/solutions/D1.3.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/greedy/solutions/D1.4.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/greedy/solutions/D1.5.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/greedy/solutions/D1.6.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/greedy/solutions/D1.7.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/greedy/solutions/D1.8.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/greedy/solutions/D1.9.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/greedy/solutions/D10.1.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/greedy/solutions/D10.10.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/greedy/solutions/D10.2.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/greedy/solutions/D10.3.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/greedy/solutions/D10.4.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/greedy/solutions/D10.5.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/greedy/solutions/D10.6.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/greedy/solutions/D10.7.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/greedy/solutions/D10.8.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/greedy/solutions/D10.9.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/greedy/solutions/D2.1.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/greedy/solutions/D2.10.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/greedy/solutions/D2.2.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/greedy/solutions/D2.3.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/greedy/solutions/D2.4.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/greedy/solutions/D2.5.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/greedy/solutions/D2.6.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/greedy/solutions/D2.7.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/greedy/solutions/D2.8.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/greedy/solutions/D2.9.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/greedy/solutions/D3.1.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/greedy/solutions/D3.10.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/greedy/solutions/D3.2.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/greedy/solutions/D3.3.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/greedy/solutions/D3.4.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/greedy/solutions/D3.5.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/greedy/solutions/D3.6.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/greedy/solutions/D3.7.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/greedy/solutions/D3.8.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/greedy/solutions/D3.9.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/greedy/solutions/D4.1.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/greedy/solutions/D4.10.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/greedy/solutions/D4.2.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/greedy/solutions/D4.3.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/greedy/solutions/D4.4.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/greedy/solutions/D4.5.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/greedy/solutions/D4.6.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/greedy/solutions/D4.7.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/greedy/solutions/D4.8.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/greedy/solutions/D4.9.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/greedy/solutions/D5.1.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/greedy/solutions/D5.10.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/greedy/solutions/D5.2.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/greedy/solutions/D5.3.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/greedy/solutions/D5.4.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/greedy/solutions/D5.5.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/greedy/solutions/D5.6.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/greedy/solutions/D5.7.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/greedy/solutions/D5.8.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/greedy/solutions/D5.9.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/greedy/solutions/D6.1.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/greedy/solutions/D6.10.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/greedy/solutions/D6.2.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/greedy/solutions/D6.3.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/greedy/solutions/D6.4.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/greedy/solutions/D6.5.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/greedy/solutions/D6.6.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/greedy/solutions/D6.7.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/greedy/solutions/D6.8.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/greedy/solutions/D6.9.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/greedy/solutions/D7.1.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/greedy/solutions/D7.10.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/greedy/solutions/D7.2.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/greedy/solutions/D7.3.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/greedy/solutions/D7.4.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/greedy/solutions/D7.5.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/greedy/solutions/D7.6.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/greedy/solutions/D7.7.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/greedy/solutions/D7.8.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/greedy/solutions/D7.9.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/greedy/solutions/D8.1.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/greedy/solutions/D8.10.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/greedy/solutions/D8.2.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/greedy/solutions/D8.3.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/greedy/solutions/D8.4.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/greedy/solutions/D8.5.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/greedy/solutions/D8.6.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/greedy/solutions/D8.7.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/greedy/solutions/D8.8.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/greedy/solutions/D8.9.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/greedy/solutions/D9.1.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/greedy/solutions/D9.10.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/greedy/solutions/D9.2.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/greedy/solutions/D9.3.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/greedy/solutions/D9.4.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/greedy/solutions/D9.5.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/greedy/solutions/D9.6.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/greedy/solutions/D9.7.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/greedy/solutions/D9.8.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/greedy/solutions/D9.9.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/greedy/solutions/E1.1.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/greedy/solutions/E1.10.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/greedy/solutions/E1.2.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/greedy/solutions/E1.3.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/greedy/solutions/E1.4.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/greedy/solutions/E1.5.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/greedy/solutions/E1.6.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/greedy/solutions/E1.7.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/greedy/solutions/E1.8.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/greedy/solutions/E1.9.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/greedy/solutions/E10.1.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/greedy/solutions/E10.10.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/greedy/solutions/E10.2.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/greedy/solutions/E10.3.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/greedy/solutions/E10.4.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/greedy/solutions/E10.5.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/greedy/solutions/E10.6.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/greedy/solutions/E10.7.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/greedy/solutions/E10.8.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/greedy/solutions/E10.9.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/greedy/solutions/E2.1.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/greedy/solutions/E2.10.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/greedy/solutions/E2.2.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/greedy/solutions/E2.3.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/greedy/solutions/E2.4.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/greedy/solutions/E2.5.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/greedy/solutions/E2.6.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/greedy/solutions/E2.7.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/greedy/solutions/E2.8.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/greedy/solutions/E2.9.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/greedy/solutions/E3.1.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/greedy/solutions/E3.10.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/greedy/solutions/E3.2.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/greedy/solutions/E3.3.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/greedy/solutions/E3.4.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/greedy/solutions/E3.5.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/greedy/solutions/E3.6.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/greedy/solutions/E3.7.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/greedy/solutions/E3.8.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/greedy/solutions/E3.9.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/greedy/solutions/E4.1.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/greedy/solutions/E4.10.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/greedy/solutions/E4.2.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/greedy/solutions/E4.3.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/greedy/solutions/E4.4.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/greedy/solutions/E4.5.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/greedy/solutions/E4.6.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/greedy/solutions/E4.7.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/greedy/solutions/E4.8.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/greedy/solutions/E4.9.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/greedy/solutions/E5.1.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/greedy/solutions/E5.10.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/greedy/solutions/E5.2.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/greedy/solutions/E5.3.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/greedy/solutions/E5.4.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/greedy/solutions/E5.5.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/greedy/solutions/E5.6.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/greedy/solutions/E5.7.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/greedy/solutions/E5.8.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/greedy/solutions/E5.9.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/greedy/solutions/E6.1.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/greedy/solutions/E6.10.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/greedy/solutions/E6.2.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/greedy/solutions/E6.3.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/greedy/solutions/E6.4.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/greedy/solutions/E6.5.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/greedy/solutions/E6.6.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/greedy/solutions/E6.7.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/greedy/solutions/E6.8.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/greedy/solutions/E6.9.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/greedy/solutions/E7.1.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/greedy/solutions/E7.10.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/greedy/solutions/E7.2.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/greedy/solutions/E7.3.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/greedy/solutions/E7.4.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/greedy/solutions/E7.5.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/greedy/solutions/E7.6.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/greedy/solutions/E7.7.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/greedy/solutions/E7.8.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/greedy/solutions/E7.9.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/greedy/solutions/E8.1.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/greedy/solutions/E8.10.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/greedy/solutions/E8.2.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/greedy/solutions/E8.3.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/greedy/solutions/E8.4.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/greedy/solutions/E8.5.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/greedy/solutions/E8.6.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/greedy/solutions/E8.7.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/greedy/solutions/E8.8.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/greedy/solutions/E8.9.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/greedy/solutions/E9.1.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/greedy/solutions/E9.10.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/greedy/solutions/E9.2.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/greedy/solutions/E9.3.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/greedy/solutions/E9.4.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/greedy/solutions/E9.5.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/greedy/solutions/E9.6.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/greedy/solutions/E9.7.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/greedy/solutions/E9.8.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/greedy/solutions/E9.9.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/greedy/solutions/cap101.txt.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/greedy/solutions/cap102.txt.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/greedy/solutions/cap103.txt.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/greedy/solutions/cap104.txt.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/greedy/solutions/cap131.txt.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/greedy/solutions/cap132.txt.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/greedy/solutions/cap133.txt.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/greedy/solutions/cap134.txt.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/greedy/solutions/cap71.txt.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/greedy/solutions/cap72.txt.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/greedy/solutions/cap73.txt.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/greedy/solutions/cap74.txt.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/greedy/solutions/capa.txt.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/greedy/solutions/capb.txt.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/greedy/solutions/capc.txt.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/greedy/solutions/ga250a-1.sol" beforeDir="false" afterPath="$PROJECT_DIR$/greedy/solutions/ga250a-1.sol" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/greedy/solutions/ga250a-2.sol" beforeDir="false" afterPath="$PROJECT_DIR$/greedy/solutions/ga250a-2.sol" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/greedy/solutions/ga250a-3.sol" beforeDir="false" afterPath="$PROJECT_DIR$/greedy/solutions/ga250a-3.sol" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/greedy/solutions/ga250a-4.sol" beforeDir="false" afterPath="$PROJECT_DIR$/greedy/solutions/ga250a-4.sol" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/greedy/solutions/ga250a-5.sol" beforeDir="false" afterPath="$PROJECT_DIR$/greedy/solutions/ga250a-5.sol" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/greedy/solutions/ga250b-1.sol" beforeDir="false" afterPath="$PROJECT_DIR$/greedy/solutions/ga250b-1.sol" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/greedy/solutions/ga250b-2.sol" beforeDir="false" afterPath="$PROJECT_DIR$/greedy/solutions/ga250b-2.sol" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/greedy/solutions/ga250b-3.sol" beforeDir="false" afterPath="$PROJECT_DIR$/greedy/solutions/ga250b-3.sol" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/greedy/solutions/ga250b-4.sol" beforeDir="false" afterPath="$PROJECT_DIR$/greedy/solutions/ga250b-4.sol" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/greedy/solutions/ga250b-5.sol" beforeDir="false" afterPath="$PROJECT_DIR$/greedy/solutions/ga250b-5.sol" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/greedy/solutions/ga250c-1.sol" beforeDir="false" afterPath="$PROJECT_DIR$/greedy/solutions/ga250c-1.sol" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/greedy/solutions/ga250c-2.sol" beforeDir="false" afterPath="$PROJECT_DIR$/greedy/solutions/ga250c-2.sol" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/greedy/solutions/ga250c-3.sol" beforeDir="false" afterPath="$PROJECT_DIR$/greedy/solutions/ga250c-3.sol" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/greedy/solutions/ga250c-4.sol" beforeDir="false" afterPath="$PROJECT_DIR$/greedy/solutions/ga250c-4.sol" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/greedy/solutions/ga250c-5.sol" beforeDir="false" afterPath="$PROJECT_DIR$/greedy/solutions/ga250c-5.sol" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/greedy/solutions/ga500a-1.sol" beforeDir="false" afterPath="$PROJECT_DIR$/greedy/solutions/ga500a-1.sol" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/greedy/solutions/ga500a-2.sol" beforeDir="false" afterPath="$PROJECT_DIR$/greedy/solutions/ga500a-2.sol" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/greedy/solutions/ga500a-3.sol" beforeDir="false" afterPath="$PROJECT_DIR$/greedy/solutions/ga500a-3.sol" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/greedy/solutions/ga500a-4.sol" beforeDir="false" afterPath="$PROJECT_DIR$/greedy/solutions/ga500a-4.sol" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/greedy/solutions/ga500a-5.sol" beforeDir="false" afterPath="$PROJECT_DIR$/greedy/solutions/ga500a-5.sol" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/greedy/solutions/ga500b-1.sol" beforeDir="false" afterPath="$PROJECT_DIR$/greedy/solutions/ga500b-1.sol" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/greedy/solutions/ga500b-2.sol" beforeDir="false" afterPath="$PROJECT_DIR$/greedy/solutions/ga500b-2.sol" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/greedy/solutions/ga500b-3.sol" beforeDir="false" afterPath="$PROJECT_DIR$/greedy/solutions/ga500b-3.sol" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/greedy/solutions/ga500b-4.sol" beforeDir="false" afterPath="$PROJECT_DIR$/greedy/solutions/ga500b-4.sol" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/greedy/solutions/ga500b-5.sol" beforeDir="false" afterPath="$PROJECT_DIR$/greedy/solutions/ga500b-5.sol" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/greedy/solutions/ga500c-1.sol" beforeDir="false" afterPath="$PROJECT_DIR$/greedy/solutions/ga500c-1.sol" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/greedy/solutions/ga500c-2.sol" beforeDir="false" afterPath="$PROJECT_DIR$/greedy/solutions/ga500c-2.sol" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/greedy/solutions/ga500c-3.sol" beforeDir="false" afterPath="$PROJECT_DIR$/greedy/solutions/ga500c-3.sol" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/greedy/solutions/ga500c-4.sol" beforeDir="false" afterPath="$PROJECT_DIR$/greedy/solutions/ga500c-4.sol" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/greedy/solutions/ga500c-5.sol" beforeDir="false" afterPath="$PROJECT_DIR$/greedy/solutions/ga500c-5.sol" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/greedy/solutions/ga750a-1.sol" beforeDir="false" afterPath="$PROJECT_DIR$/greedy/solutions/ga750a-1.sol" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/greedy/solutions/ga750a-2.sol" beforeDir="false" afterPath="$PROJECT_DIR$/greedy/solutions/ga750a-2.sol" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/greedy/solutions/ga750a-3.sol" beforeDir="false" afterPath="$PROJECT_DIR$/greedy/solutions/ga750a-3.sol" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/greedy/solutions/ga750a-4.sol" beforeDir="false" afterPath="$PROJECT_DIR$/greedy/solutions/ga750a-4.sol" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/greedy/solutions/ga750a-5.sol" beforeDir="false" afterPath="$PROJECT_DIR$/greedy/solutions/ga750a-5.sol" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/greedy/solutions/ga750b-1.sol" beforeDir="false" afterPath="$PROJECT_DIR$/greedy/solutions/ga750b-1.sol" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/greedy/solutions/ga750b-2.sol" beforeDir="false" afterPath="$PROJECT_DIR$/greedy/solutions/ga750b-2.sol" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/greedy/testCases2.txt" beforeDir="false" afterPath="$PROJECT_DIR$/greedy/testCases2.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lateAcceptance/LateAcceptance.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/lateAcceptance/LateAcceptance.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lateAcceptance/handlesInput.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/lateAcceptance/handlesInput.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lateAcceptance/initialSolutions/cap71.txt.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lateAcceptance/initialSolutions/ga250a-1.sol" beforeDir="false" afterPath="$PROJECT_DIR$/lateAcceptance/initialSolutions/ga250a-1.sol" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lateAcceptance/initialSolutions/ga500a-1.sol" beforeDir="false" afterPath="$PROJECT_DIR$/lateAcceptance/initialSolutions/ga500a-1.sol" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lateAcceptance/initialSolutions/ga750a-1.sol" beforeDir="false" afterPath="$PROJECT_DIR$/lateAcceptance/initialSolutions/ga750a-1.sol" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lateAcceptance/la" beforeDir="false" afterPath="$PROJECT_DIR$/lateAcceptance/la" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lateAcceptance/solutions/cap71.txt__bf-1_a1-2.5_idle-0.02_lh-10.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lateAcceptance/solutions/ga250a-1__bf-1_a1-2.5_idle-0.02_lh-10.sol" beforeDir="false" afterPath="$PROJECT_DIR$/lateAcceptance/solutions/ga250a-1__bf-1_a1-2.5_idle-0.02_lh-10.sol" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lateAcceptance/solutions/ga500a-1__bf-1_a1-2.5_idle-0.02_lh-10.sol" beforeDir="false" afterPath="$PROJECT_DIR$/lateAcceptance/solutions/ga500a-1__bf-1_a1-2.5_idle-0.02_lh-10.sol" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lateAcceptance/solutions/ga750a-1__bf-1_a1-2.5_idle-0.02_lh-10.sol" beforeDir="false" afterPath="$PROJECT_DIR$/lateAcceptance/solutions/ga750a-1__bf-1_a1-2.5_idle-0.02_lh-10.sol" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lateAcceptance/testCases2.txt" beforeDir="false" afterPath="$PROJECT_DIR$/lateAcceptance/testCases2.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lateAcceptanceTabuSearch/handlesInput.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/lateAcceptanceTabuSearch/handlesInput.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lateAcceptanceTabuSearch/initialSolutions/cap71.txt.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lateAcceptanceTabuSearch/initialSolutions/ga250a-1.sol" beforeDir="false" afterPath="$PROJECT_DIR$/lateAcceptanceTabuSearch/initialSolutions/ga250a-1.sol" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lateAcceptanceTabuSearch/initialSolutions/ga500a-1.sol" beforeDir="false" afterPath="$PROJECT_DIR$/lateAcceptanceTabuSearch/initialSolutions/ga500a-1.sol" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lateAcceptanceTabuSearch/initialSolutions/ga750a-1.sol" beforeDir="false" afterPath="$PROJECT_DIR$/lateAcceptanceTabuSearch/initialSolutions/ga750a-1.sol" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lateAcceptanceTabuSearch/lats" beforeDir="false" afterPath="$PROJECT_DIR$/lateAcceptanceTabuSearch/lats" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lateAcceptanceTabuSearch/solutions/cap71.txt__a1-2.5_l-0.01-0.05_idle-0.02_lh50.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lateAcceptanceTabuSearch/solutions/ga250a-1__a1-2.5_l-0.01-0.05_idle-0.02_lh50.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lateAcceptanceTabuSearch/solutions/ga500a-1__a1-2.5_l-0.01-0.05_idle-0.02_lh50.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lateAcceptanceTabuSearch/solutions/ga750a-1__a1-2.5_l-0.01-0.05_idle-0.02_lh50.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lateAcceptanceTabuSearch/testCases2.txt" beforeDir="false" afterPath="$PROJECT_DIR$/lateAcceptanceTabuSearch/testCases2.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lateAcceptanceTabuSearch/tester.py" beforeDir="false" afterPath="$PROJECT_DIR$/lateAcceptanceTabuSearch/tester.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/localSearch/initialSolutions/cap71.txt.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/localSearch/initialSolutions/ga250a-1.sol" beforeDir="false" afterPath="$PROJECT_DIR$/localSearch/initialSolutions/ga250a-1.sol" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/localSearch/initialSolutions/ga500a-1.sol" beforeDir="false" afterPath="$PROJECT_DIR$/localSearch/initialSolutions/ga500a-1.sol" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/localSearch/initialSolutions/ga750a-1.sol" beforeDir="false" afterPath="$PROJECT_DIR$/localSearch/initialSolutions/ga750a-1.sol" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/localSearch/lsr" beforeDir="false" afterPath="$PROJECT_DIR$/localSearch/lsr" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/localSearch/solutions/ga250a-1.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/localSearch/solutions/ga500a-1.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/localSearch/solutions/ga750a-1.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/localSearch/testCases2.txt" beforeDir="false" afterPath="$PROJECT_DIR$/localSearch/testCases2.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/memetic/Memetic.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/memetic/Memetic.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/memetic/Memetic.h" beforeDir="false" afterPath="$PROJECT_DIR$/memetic/Memetic.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/memetic/Tree.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/memetic/Tree.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/memetic/Tree.h" beforeDir="false" afterPath="$PROJECT_DIR$/memetic/Tree.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/memetic/handlesInput.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/memetic/handlesInput.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/memetic/initialSolutions/cap71.txt.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/memetic/initialSolutions/ga250a-1.sol" beforeDir="false" afterPath="$PROJECT_DIR$/memetic/initialSolutions/ga250a-1.sol" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/memetic/initialSolutions/ga500a-1.sol" beforeDir="false" afterPath="$PROJECT_DIR$/memetic/initialSolutions/ga500a-1.sol" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/memetic/initialSolutions/ga750a-1.sol" beforeDir="false" afterPath="$PROJECT_DIR$/memetic/initialSolutions/ga750a-1.sol" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/memetic/ma" beforeDir="false" afterPath="$PROJECT_DIR$/memetic/ma" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/memetic/solutions/cap71.txt.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/memetic/solutions/ga250a-1.sol" beforeDir="false" afterPath="$PROJECT_DIR$/memetic/solutions/ga250a-1.sol" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/memetic/testCases2.txt" beforeDir="false" afterPath="$PROJECT_DIR$/memetic/testCases2.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/TabuSearch.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/tabuSearch/TabuSearch.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/handlesInput.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/tabuSearch/handlesInput.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/initialSolutions/cap71.txt.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/initialSolutions/ga250a-1.sol" beforeDir="false" afterPath="$PROJECT_DIR$/tabuSearch/initialSolutions/ga250a-1.sol" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/initialSolutions/ga250a-2.sol" beforeDir="false" afterPath="$PROJECT_DIR$/tabuSearch/initialSolutions/ga250a-2.sol" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/initialSolutions/ga250a-3.sol" beforeDir="false" afterPath="$PROJECT_DIR$/tabuSearch/initialSolutions/ga250a-3.sol" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/initialSolutions/ga250a-4.sol" beforeDir="false" afterPath="$PROJECT_DIR$/tabuSearch/initialSolutions/ga250a-4.sol" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/initialSolutions/ga250a-5.sol" beforeDir="false" afterPath="$PROJECT_DIR$/tabuSearch/initialSolutions/ga250a-5.sol" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/initialSolutions/ga250b-1.sol" beforeDir="false" afterPath="$PROJECT_DIR$/tabuSearch/initialSolutions/ga250b-1.sol" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/initialSolutions/ga250b-2.sol" beforeDir="false" afterPath="$PROJECT_DIR$/tabuSearch/initialSolutions/ga250b-2.sol" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/initialSolutions/ga250b-3.sol" beforeDir="false" afterPath="$PROJECT_DIR$/tabuSearch/initialSolutions/ga250b-3.sol" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/initialSolutions/ga250b-4.sol" beforeDir="false" afterPath="$PROJECT_DIR$/tabuSearch/initialSolutions/ga250b-4.sol" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/initialSolutions/ga250b-5.sol" beforeDir="false" afterPath="$PROJECT_DIR$/tabuSearch/initialSolutions/ga250b-5.sol" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/initialSolutions/ga250c-1.sol" beforeDir="false" afterPath="$PROJECT_DIR$/tabuSearch/initialSolutions/ga250c-1.sol" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/initialSolutions/ga250c-2.sol" beforeDir="false" afterPath="$PROJECT_DIR$/tabuSearch/initialSolutions/ga250c-2.sol" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/initialSolutions/ga250c-3.sol" beforeDir="false" afterPath="$PROJECT_DIR$/tabuSearch/initialSolutions/ga250c-3.sol" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/initialSolutions/ga250c-4.sol" beforeDir="false" afterPath="$PROJECT_DIR$/tabuSearch/initialSolutions/ga250c-4.sol" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/initialSolutions/ga250c-5.sol" beforeDir="false" afterPath="$PROJECT_DIR$/tabuSearch/initialSolutions/ga250c-5.sol" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/initialSolutions/ga500a-1.sol" beforeDir="false" afterPath="$PROJECT_DIR$/tabuSearch/initialSolutions/ga500a-1.sol" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/initialSolutions/ga500a-2.sol" beforeDir="false" afterPath="$PROJECT_DIR$/tabuSearch/initialSolutions/ga500a-2.sol" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/initialSolutions/ga500a-3.sol" beforeDir="false" afterPath="$PROJECT_DIR$/tabuSearch/initialSolutions/ga500a-3.sol" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/initialSolutions/ga500a-4.sol" beforeDir="false" afterPath="$PROJECT_DIR$/tabuSearch/initialSolutions/ga500a-4.sol" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/initialSolutions/ga500a-5.sol" beforeDir="false" afterPath="$PROJECT_DIR$/tabuSearch/initialSolutions/ga500a-5.sol" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/initialSolutions/ga500b-1.sol" beforeDir="false" afterPath="$PROJECT_DIR$/tabuSearch/initialSolutions/ga500b-1.sol" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/initialSolutions/ga500b-2.sol" beforeDir="false" afterPath="$PROJECT_DIR$/tabuSearch/initialSolutions/ga500b-2.sol" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/initialSolutions/ga500b-3.sol" beforeDir="false" afterPath="$PROJECT_DIR$/tabuSearch/initialSolutions/ga500b-3.sol" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/initialSolutions/ga500b-4.sol" beforeDir="false" afterPath="$PROJECT_DIR$/tabuSearch/initialSolutions/ga500b-4.sol" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/initialSolutions/ga500b-5.sol" beforeDir="false" afterPath="$PROJECT_DIR$/tabuSearch/initialSolutions/ga500b-5.sol" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/initialSolutions/ga500c-1.sol" beforeDir="false" afterPath="$PROJECT_DIR$/tabuSearch/initialSolutions/ga500c-1.sol" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/initialSolutions/ga500c-2.sol" beforeDir="false" afterPath="$PROJECT_DIR$/tabuSearch/initialSolutions/ga500c-2.sol" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/initialSolutions/ga500c-3.sol" beforeDir="false" afterPath="$PROJECT_DIR$/tabuSearch/initialSolutions/ga500c-3.sol" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/initialSolutions/ga500c-4.sol" beforeDir="false" afterPath="$PROJECT_DIR$/tabuSearch/initialSolutions/ga500c-4.sol" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/initialSolutions/ga500c-5.sol" beforeDir="false" afterPath="$PROJECT_DIR$/tabuSearch/initialSolutions/ga500c-5.sol" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/initialSolutions/ga750a-1.sol" beforeDir="false" afterPath="$PROJECT_DIR$/tabuSearch/initialSolutions/ga750a-1.sol" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/initialSolutions/ga750a-2.sol" beforeDir="false" afterPath="$PROJECT_DIR$/tabuSearch/initialSolutions/ga750a-2.sol" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/initialSolutions/ga750a-3.sol" beforeDir="false" afterPath="$PROJECT_DIR$/tabuSearch/initialSolutions/ga750a-3.sol" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/initialSolutions/ga750a-4.sol" beforeDir="false" afterPath="$PROJECT_DIR$/tabuSearch/initialSolutions/ga750a-4.sol" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/initialSolutions/ga750a-5.sol" beforeDir="false" afterPath="$PROJECT_DIR$/tabuSearch/initialSolutions/ga750a-5.sol" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/initialSolutions/ga750b-1.sol" beforeDir="false" afterPath="$PROJECT_DIR$/tabuSearch/initialSolutions/ga750b-1.sol" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/initialSolutions/ga750b-2.sol" beforeDir="false" afterPath="$PROJECT_DIR$/tabuSearch/initialSolutions/ga750b-2.sol" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/initialSolutions/ga750b-3.sol" beforeDir="false" afterPath="$PROJECT_DIR$/tabuSearch/initialSolutions/ga750b-3.sol" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/initialSolutions/ga750b-4.sol" beforeDir="false" afterPath="$PROJECT_DIR$/tabuSearch/initialSolutions/ga750b-4.sol" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/initialSolutions/ga750b-5.sol" beforeDir="false" afterPath="$PROJECT_DIR$/tabuSearch/initialSolutions/ga750b-5.sol" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/initialSolutions/ga750c-1.sol" beforeDir="false" afterPath="$PROJECT_DIR$/tabuSearch/initialSolutions/ga750c-1.sol" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/initialSolutions/ga750c-2.sol" beforeDir="false" afterPath="$PROJECT_DIR$/tabuSearch/initialSolutions/ga750c-2.sol" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/initialSolutions/ga750c-3.sol" beforeDir="false" afterPath="$PROJECT_DIR$/tabuSearch/initialSolutions/ga750c-3.sol" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/initialSolutions/ga750c-4.sol" beforeDir="false" afterPath="$PROJECT_DIR$/tabuSearch/initialSolutions/ga750c-4.sol" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/initialSolutions/ga750c-5.sol" beforeDir="false" afterPath="$PROJECT_DIR$/tabuSearch/initialSolutions/ga750c-5.sol" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/initialSolutions/gs250a-1.sol" beforeDir="false" afterPath="$PROJECT_DIR$/tabuSearch/initialSolutions/gs250a-1.sol" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/initialSolutions/gs250a-2.sol" beforeDir="false" afterPath="$PROJECT_DIR$/tabuSearch/initialSolutions/gs250a-2.sol" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/initialSolutions/gs250a-3.sol" beforeDir="false" afterPath="$PROJECT_DIR$/tabuSearch/initialSolutions/gs250a-3.sol" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/initialSolutions/gs250a-4.sol" beforeDir="false" afterPath="$PROJECT_DIR$/tabuSearch/initialSolutions/gs250a-4.sol" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/initialSolutions/gs250a-5.sol" beforeDir="false" afterPath="$PROJECT_DIR$/tabuSearch/initialSolutions/gs250a-5.sol" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/initialSolutions/gs250b-1.sol" beforeDir="false" afterPath="$PROJECT_DIR$/tabuSearch/initialSolutions/gs250b-1.sol" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/initialSolutions/gs250b-2.sol" beforeDir="false" afterPath="$PROJECT_DIR$/tabuSearch/initialSolutions/gs250b-2.sol" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/initialSolutions/gs250b-3.sol" beforeDir="false" afterPath="$PROJECT_DIR$/tabuSearch/initialSolutions/gs250b-3.sol" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/initialSolutions/gs250b-4.sol" beforeDir="false" afterPath="$PROJECT_DIR$/tabuSearch/initialSolutions/gs250b-4.sol" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/initialSolutions/gs250b-5.sol" beforeDir="false" afterPath="$PROJECT_DIR$/tabuSearch/initialSolutions/gs250b-5.sol" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/initialSolutions/gs250c-1.sol" beforeDir="false" afterPath="$PROJECT_DIR$/tabuSearch/initialSolutions/gs250c-1.sol" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/initialSolutions/gs250c-2.sol" beforeDir="false" afterPath="$PROJECT_DIR$/tabuSearch/initialSolutions/gs250c-2.sol" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/initialSolutions/gs250c-3.sol" beforeDir="false" afterPath="$PROJECT_DIR$/tabuSearch/initialSolutions/gs250c-3.sol" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/initialSolutions/gs250c-4.sol" beforeDir="false" afterPath="$PROJECT_DIR$/tabuSearch/initialSolutions/gs250c-4.sol" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/initialSolutions/gs250c-5.sol" beforeDir="false" afterPath="$PROJECT_DIR$/tabuSearch/initialSolutions/gs250c-5.sol" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/initialSolutions/gs500a-1.sol" beforeDir="false" afterPath="$PROJECT_DIR$/tabuSearch/initialSolutions/gs500a-1.sol" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/initialSolutions/gs500a-2.sol" beforeDir="false" afterPath="$PROJECT_DIR$/tabuSearch/initialSolutions/gs500a-2.sol" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/initialSolutions/gs500a-3.sol" beforeDir="false" afterPath="$PROJECT_DIR$/tabuSearch/initialSolutions/gs500a-3.sol" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/initialSolutions/gs500a-4.sol" beforeDir="false" afterPath="$PROJECT_DIR$/tabuSearch/initialSolutions/gs500a-4.sol" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/initialSolutions/gs500a-5.sol" beforeDir="false" afterPath="$PROJECT_DIR$/tabuSearch/initialSolutions/gs500a-5.sol" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/initialSolutions/gs500b-1.sol" beforeDir="false" afterPath="$PROJECT_DIR$/tabuSearch/initialSolutions/gs500b-1.sol" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/initialSolutions/gs500b-2.sol" beforeDir="false" afterPath="$PROJECT_DIR$/tabuSearch/initialSolutions/gs500b-2.sol" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/initialSolutions/gs500b-3.sol" beforeDir="false" afterPath="$PROJECT_DIR$/tabuSearch/initialSolutions/gs500b-3.sol" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/initialSolutions/gs500b-4.sol" beforeDir="false" afterPath="$PROJECT_DIR$/tabuSearch/initialSolutions/gs500b-4.sol" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/initialSolutions/gs500b-5.sol" beforeDir="false" afterPath="$PROJECT_DIR$/tabuSearch/initialSolutions/gs500b-5.sol" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/initialSolutions/gs500c-1.sol" beforeDir="false" afterPath="$PROJECT_DIR$/tabuSearch/initialSolutions/gs500c-1.sol" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/initialSolutions/gs500c-2.sol" beforeDir="false" afterPath="$PROJECT_DIR$/tabuSearch/initialSolutions/gs500c-2.sol" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/initialSolutions/gs500c-3.sol" beforeDir="false" afterPath="$PROJECT_DIR$/tabuSearch/initialSolutions/gs500c-3.sol" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/initialSolutions/gs500c-4.sol" beforeDir="false" afterPath="$PROJECT_DIR$/tabuSearch/initialSolutions/gs500c-4.sol" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/initialSolutions/gs500c-5.sol" beforeDir="false" afterPath="$PROJECT_DIR$/tabuSearch/initialSolutions/gs500c-5.sol" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/initialSolutions/gs750a-1.sol" beforeDir="false" afterPath="$PROJECT_DIR$/tabuSearch/initialSolutions/gs750a-1.sol" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/initialSolutions/gs750a-2.sol" beforeDir="false" afterPath="$PROJECT_DIR$/tabuSearch/initialSolutions/gs750a-2.sol" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/initialSolutions/gs750a-3.sol" beforeDir="false" afterPath="$PROJECT_DIR$/tabuSearch/initialSolutions/gs750a-3.sol" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/initialSolutions/gs750a-4.sol" beforeDir="false" afterPath="$PROJECT_DIR$/tabuSearch/initialSolutions/gs750a-4.sol" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/initialSolutions/gs750a-5.sol" beforeDir="false" afterPath="$PROJECT_DIR$/tabuSearch/initialSolutions/gs750a-5.sol" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/initialSolutions/gs750b-1.sol" beforeDir="false" afterPath="$PROJECT_DIR$/tabuSearch/initialSolutions/gs750b-1.sol" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/initialSolutions/gs750b-2.sol" beforeDir="false" afterPath="$PROJECT_DIR$/tabuSearch/initialSolutions/gs750b-2.sol" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/initialSolutions/gs750b-3.sol" beforeDir="false" afterPath="$PROJECT_DIR$/tabuSearch/initialSolutions/gs750b-3.sol" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/initialSolutions/gs750b-4.sol" beforeDir="false" afterPath="$PROJECT_DIR$/tabuSearch/initialSolutions/gs750b-4.sol" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/initialSolutions/gs750b-5.sol" beforeDir="false" afterPath="$PROJECT_DIR$/tabuSearch/initialSolutions/gs750b-5.sol" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/initialSolutions/gs750c-1.sol" beforeDir="false" afterPath="$PROJECT_DIR$/tabuSearch/initialSolutions/gs750c-1.sol" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/initialSolutions/gs750c-2.sol" beforeDir="false" afterPath="$PROJECT_DIR$/tabuSearch/initialSolutions/gs750c-2.sol" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/initialSolutions/gs750c-3.sol" beforeDir="false" afterPath="$PROJECT_DIR$/tabuSearch/initialSolutions/gs750c-3.sol" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/initialSolutions/gs750c-4.sol" beforeDir="false" afterPath="$PROJECT_DIR$/tabuSearch/initialSolutions/gs750c-4.sol" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/initialSolutions/gs750c-5.sol" beforeDir="false" afterPath="$PROJECT_DIR$/tabuSearch/initialSolutions/gs750c-5.sol" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions/ga250a-1__bf-1_a1-0.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions/ga250a-2__bf-1_a1-0.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions/ga250a-3__bf-1_a1-0.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions/ga250a-4__bf-1_a1-0.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions/ga250a-5__bf-1_a1-0.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions/ga250b-1__bf-1_a1-0.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions/ga250b-2__bf-1_a1-0.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions/ga250b-3__bf-1_a1-0.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions/ga250b-4__bf-1_a1-0.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions/ga250b-5__bf-1_a1-0.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions/ga250c-1__bf-1_a1-0.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions/ga250c-2__bf-1_a1-0.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions/ga250c-3__bf-1_a1-0.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions/ga250c-4__bf-1_a1-0.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions/ga250c-5__bf-1_a1-0.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions/ga500a-1__bf-1_a1-0.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions/ga500a-2__bf-1_a1-0.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions/ga500a-3__bf-1_a1-0.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions/ga500a-4__bf-1_a1-0.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions/ga500a-5__bf-1_a1-0.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions/ga500b-1__bf-1_a1-0.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions/ga500b-2__bf-1_a1-0.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions/ga500b-3__bf-1_a1-0.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions/ga500b-4__bf-1_a1-0.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions/ga500b-5__bf-1_a1-0.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions/ga500c-1__bf-1_a1-0.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions/ga500c-2__bf-1_a1-0.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions/ga500c-3__bf-1_a1-0.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions/ga500c-4__bf-1_a1-0.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions/ga500c-5__bf-1_a1-0.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions/ga750a-1__bf-1_a1-0.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions/ga750a-2__bf-1_a1-0.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions/ga750a-3__bf-1_a1-0.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions/ga750a-4__bf-1_a1-0.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions/ga750a-5__bf-1_a1-0.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions/ga750b-1__bf-1_a1-0.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions/ga750b-2__bf-1_a1-0.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions/ga750b-3__bf-1_a1-0.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions/ga750b-4__bf-1_a1-0.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions/ga750b-5__bf-1_a1-0.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions/ga750c-1__bf-1_a1-0.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions/ga750c-2__bf-1_a1-0.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions/ga750c-3__bf-1_a1-0.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions/ga750c-4__bf-1_a1-0.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions/ga750c-5__bf-1_a1-0.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions/gs250a-1__bf-1_a1-0.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions/gs250a-2__bf-1_a1-0.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions/gs250a-3__bf-1_a1-0.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions/gs250a-4__bf-1_a1-0.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions/gs250a-5__bf-1_a1-0.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions/gs250b-1__bf-1_a1-0.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions/gs250b-2__bf-1_a1-0.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions/gs250b-3__bf-1_a1-0.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions/gs250b-4__bf-1_a1-0.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions/gs250b-5__bf-1_a1-0.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions/gs250c-1__bf-1_a1-0.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions/gs250c-2__bf-1_a1-0.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions/gs250c-3__bf-1_a1-0.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions/gs250c-4__bf-1_a1-0.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions/gs250c-5__bf-1_a1-0.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions/gs500a-1__bf-1_a1-0.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions/gs500a-2__bf-1_a1-0.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions/gs500a-3__bf-1_a1-0.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions/gs500a-4__bf-1_a1-0.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions/gs500a-5__bf-1_a1-0.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions/gs500b-1__bf-1_a1-0.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions/gs500b-2__bf-1_a1-0.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions/gs500b-3__bf-1_a1-0.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions/gs500b-4__bf-1_a1-0.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions/gs500b-5__bf-1_a1-0.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions/gs500c-1__bf-1_a1-0.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions/gs500c-2__bf-1_a1-0.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions/gs500c-3__bf-1_a1-0.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions/gs500c-4__bf-1_a1-0.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions/gs500c-5__bf-1_a1-0.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions/gs750a-1__bf-1_a1-0.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions/gs750a-2__bf-1_a1-0.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions/gs750a-3__bf-1_a1-0.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions/gs750a-4__bf-1_a1-0.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions/gs750a-5__bf-1_a1-0.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions/gs750b-1__bf-1_a1-0.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions/gs750b-2__bf-1_a1-0.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/tester.py" beforeDir="false" afterPath="$PROJECT_DIR$/tabuSearch/tester.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/ts" beforeDir="false" afterPath="$PROJECT_DIR$/tabuSearch/ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/memetic/solutions(type1)/ga250a-1.sol" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/memetic/solutions(type1)/ga250a-2.sol" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/memetic/solutions(type1)/ga250a-3.sol" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/memetic/solutions(type1)/ga250a-4.sol" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/memetic/solutions(type1)/ga250a-5.sol" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/memetic/solutions(type1)/ga250b-1.sol" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/memetic/solutions(type1)/ga250b-2.sol" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/memetic/solutions(type1)/ga250b-3.sol" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/memetic/solutions(type1)/ga250b-4.sol" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/memetic/solutions(type1)/ga250b-5.sol" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/memetic/solutions(type1)/ga250c-1.sol" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/memetic/solutions(type1)/ga250c-2.sol" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/memetic/solutions(type1)/ga250c-3.sol" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/memetic/solutions(type1)/ga250c-4.sol" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/memetic/solutions(type1)/ga250c-5.sol" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/memetic/solutions(type1)/ga500a-1.sol" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/memetic/solutions(type1)/ga500a-2.sol" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/memetic/solutions(type1)/ga500a-3.sol" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/memetic/solutions(type1)/ga500a-4.sol" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/memetic/solutions(type1)/ga500a-5.sol" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/memetic/solutions-1-false-LA.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/memetic/solutions-1-false-LA/ga250a-1.sol" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/memetic/solutions-1-false-LA/ga250a-2.sol" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/memetic/solutions-1-false-LA/ga250a-3.sol" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/memetic/solutions-1-false-LA/ga250a-4.sol" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/memetic/solutions-1-false-LA/ga250a-5.sol" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/memetic/solutions-1-false-LA/ga500b-1.sol" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/memetic/solutions-1-false-LA/gs750c-1.sol" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/memetic/solutions-1-false-TS.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/memetic/solutions-1-false-TS/ga250a-1.sol" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/memetic/solutions-1-false-TS/ga250a-2.sol" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/memetic/solutions-1-false-TS/ga250a-3.sol" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/memetic/solutions-1-false-TS/ga250a-4.sol" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/memetic/solutions-1-false-TS/ga250a-5.sol" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/memetic/solutions-1-false-TS/ga500b-1.sol" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/memetic/solutions-1-false-TS/gs750c-1.sol" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/memetic/solutions-1-false-mapTS.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/memetic/solutions-1-false-mapTS/ga250a-1.sol" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/memetic/solutions-1-false-mapTS/ga250a-2.sol" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/memetic/solutions-1-false-mapTS/ga250a-3.sol" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/memetic/solutions-1-false-mapTS/ga250a-4.sol" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/memetic/solutions-1-false-mapTS/ga250a-5.sol" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/memetic/solutions-1-false-mapTS/ga500b-1.sol" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/memetic/solutions-1-false-mapTS/gs750c-1.sol" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/memetic/solutions-1-true-LA.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/memetic/solutions-1-true-LA/ga250a-1.sol" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/memetic/solutions-1-true-LA/ga250a-2.sol" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/memetic/solutions-1-true-LA/ga250a-3.sol" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/memetic/solutions-1-true-LA/ga250a-4.sol" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/memetic/solutions-1-true-LA/ga250a-5.sol" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/memetic/solutions-1-true-LA/ga500b-1.sol" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/memetic/solutions-1-true-LA/gs750c-1.sol" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/memetic/solutions-1-true-TS.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/memetic/solutions-1-true-TS/ga250a-1.sol" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/memetic/solutions-1-true-TS/ga250a-2.sol" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/memetic/solutions-1-true-TS/ga250a-3.sol" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/memetic/solutions-1-true-TS/ga250a-4.sol" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/memetic/solutions-1-true-TS/ga250a-5.sol" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/memetic/solutions-1-true-TS/ga500b-1.sol" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/memetic/solutions-1-true-TS/gs750c-1.sol" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/memetic/solutions-1-true-mapTS.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/memetic/solutions-1-true-mapTS/ga250a-1.sol" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/memetic/solutions-1-true-mapTS/ga250a-2.sol" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/memetic/solutions-1-true-mapTS/ga250a-3.sol" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/memetic/solutions-1-true-mapTS/ga250a-4.sol" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/memetic/solutions-1-true-mapTS/ga250a-5.sol" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/memetic/solutions-1-true-mapTS/ga500b-1.sol" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/memetic/solutions-1-true-mapTS/gs750c-1.sol" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/memetic/solutions-2-false-LA.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/memetic/solutions-2-false-LA/ga250a-1.sol" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/memetic/solutions-2-false-LA/ga250a-2.sol" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/memetic/solutions-2-false-LA/ga250a-3.sol" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/memetic/solutions-2-false-LA/ga250a-4.sol" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/memetic/solutions-2-false-LA/ga250a-5.sol" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/memetic/solutions-2-false-LA/ga500b-1.sol" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/memetic/solutions-2-false-LA/gs750c-1.sol" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/memetic/solutions-2-false-TS.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/memetic/solutions-2-false-TS/ga250a-1.sol" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/memetic/solutions-2-false-TS/ga250a-2.sol" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/memetic/solutions-2-false-TS/ga250a-3.sol" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/memetic/solutions-2-false-TS/ga250a-4.sol" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/memetic/solutions-2-false-TS/ga250a-5.sol" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/memetic/solutions-2-false-TS/ga500b-1.sol" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/memetic/solutions-2-false-TS/gs750c-1.sol" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/memetic/solutions-2-false-mapTS.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/memetic/solutions-2-false-mapTS/ga250a-1.sol" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/memetic/solutions-2-false-mapTS/ga250a-2.sol" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/memetic/solutions-2-false-mapTS/ga250a-3.sol" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/memetic/solutions-2-false-mapTS/ga250a-4.sol" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/memetic/solutions-2-false-mapTS/ga250a-5.sol" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/memetic/solutions-2-false-mapTS/ga500b-1.sol" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/memetic/solutions-2-false-mapTS/gs750c-1.sol" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/memetic/solutions-2-true-LA.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/memetic/solutions-2-true-LA/ga250a-1.sol" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/memetic/solutions-2-true-LA/ga250a-2.sol" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/memetic/solutions-2-true-LA/ga250a-3.sol" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/memetic/solutions-2-true-LA/ga250a-4.sol" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/memetic/solutions-2-true-LA/ga250a-5.sol" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/memetic/solutions-2-true-LA/ga500b-1.sol" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/memetic/solutions-2-true-LA/gs750c-1.sol" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/memetic/solutions-2-true-TS.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/memetic/solutions-2-true-TS/ga250a-1.sol" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/memetic/solutions-2-true-TS/ga250a-2.sol" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/memetic/solutions-2-true-TS/ga250a-3.sol" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/memetic/solutions-2-true-TS/ga250a-4.sol" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/memetic/solutions-2-true-TS/ga250a-5.sol" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/memetic/solutions-2-true-TS/ga500b-1.sol" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/memetic/solutions-2-true-TS/gs750c-1.sol" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/memetic/solutions-2-true-mapTS.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/memetic/solutions-2-true-mapTS/ga250a-1.sol" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/memetic/solutions-2-true-mapTS/ga250a-2.sol" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/memetic/solutions-2-true-mapTS/ga250a-3.sol" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/memetic/solutions-2-true-mapTS/ga250a-4.sol" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/memetic/solutions-2-true-mapTS/ga250a-5.sol" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/memetic/solutions-2-true-mapTS/ga500b-1.sol" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/memetic/solutions-2-true-mapTS/gs750c-1.sol" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/memetic/solutions-3-false-LA.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/memetic/solutions-3-false-LA/ga250a-1.sol" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/memetic/solutions-3-false-LA/ga250a-2.sol" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/memetic/solutions-3-false-LA/ga250a-3.sol" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/memetic/solutions-3-false-LA/ga250a-4.sol" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/memetic/solutions-3-false-LA/ga250a-5.sol" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/memetic/solutions-3-false-LA/ga500b-1.sol" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/memetic/solutions-3-false-LA/gs750c-1.sol" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/memetic/solutions-3-false-LS_CF.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/memetic/solutions-3-false-LS_CF/ga250a-1.sol" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/memetic/solutions-3-false-LS_CF/ga250a-2.sol" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/memetic/solutions-3-false-LS_CF/ga250a-3.sol" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/memetic/solutions-3-false-LS_CF/ga250a-4.sol" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/memetic/solutions-3-false-LS_CF/ga250a-5.sol" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/memetic/solutions-3-false-LS_CF/ga500b-1.sol" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/memetic/solutions-3-false-LS_CF/gs750c-1.sol" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/memetic/solutions-3-false-TS.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/memetic/solutions-3-false-TS/ga250a-1.sol" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/memetic/solutions-3-false-TS/ga250a-2.sol" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/memetic/solutions-3-false-TS/ga250a-3.sol" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/memetic/solutions-3-false-TS/ga250a-4.sol" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/memetic/solutions-3-false-TS/ga250a-5.sol" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/memetic/solutions-3-false-TS/ga500b-1.sol" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/memetic/solutions-3-false-TS/gs750c-1.sol" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/memetic/solutions-3-false-mapG.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/memetic/solutions-3-false-mapG/ga250a-1.sol" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/memetic/solutions-3-false-mapG/ga250a-2.sol" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/memetic/solutions-3-false-mapG/ga250a-3.sol" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/memetic/solutions-3-false-mapG/ga250a-4.sol" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/memetic/solutions-3-false-mapG/ga250a-5.sol" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/memetic/solutions-3-false-mapG/ga500b-1.sol" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/memetic/solutions-3-false-mapG/gs750c-1.sol" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/memetic/solutions-3-false-mapTS.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/memetic/solutions-3-false-mapTS/ga250a-1.sol" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/memetic/solutions-3-false-mapTS/ga250a-2.sol" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/memetic/solutions-3-false-mapTS/ga250a-3.sol" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/memetic/solutions-3-false-mapTS/ga250a-4.sol" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/memetic/solutions-3-false-mapTS/ga250a-5.sol" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/memetic/solutions-3-false-mapTS/ga500b-1.sol" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/memetic/solutions-3-false-mapTS/gs750c-1.sol" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/memetic/solutions-3-true-LA.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/memetic/solutions-3-true-LA/ga250a-1.sol" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/memetic/solutions-3-true-LA/ga250a-2.sol" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/memetic/solutions-3-true-LA/ga250a-3.sol" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/memetic/solutions-3-true-LA/ga250a-4.sol" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/memetic/solutions-3-true-LA/ga250a-5.sol" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/memetic/solutions-3-true-LA/ga500b-1.sol" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/memetic/solutions-3-true-LA/gs750c-1.sol" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/memetic/solutions-3-true-LS_CF.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/memetic/solutions-3-true-LS_CF/ga250a-1.sol" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/memetic/solutions-3-true-LS_CF/ga250a-2.sol" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/memetic/solutions-3-true-LS_CF/ga250a-3.sol" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/memetic/solutions-3-true-LS_CF/ga250a-4.sol" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/memetic/solutions-3-true-LS_CF/ga250a-5.sol" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/memetic/solutions-3-true-LS_CF/ga500b-1.sol" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/memetic/solutions-3-true-LS_CF/gs750c-1.sol" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/memetic/solutions-3-true-TS.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/memetic/solutions-3-true-TS/ga250a-1.sol" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/memetic/solutions-3-true-TS/ga250a-2.sol" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/memetic/solutions-3-true-TS/ga250a-3.sol" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/memetic/solutions-3-true-TS/ga250a-4.sol" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/memetic/solutions-3-true-TS/ga250a-5.sol" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/memetic/solutions-3-true-TS/ga500b-1.sol" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/memetic/solutions-3-true-TS/gs750c-1.sol" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/memetic/solutions-3-true-mapG.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/memetic/solutions-3-true-mapG/ga250a-1.sol" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/memetic/solutions-3-true-mapG/ga250a-2.sol" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/memetic/solutions-3-true-mapG/ga250a-3.sol" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/memetic/solutions-3-true-mapG/ga250a-4.sol" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/memetic/solutions-3-true-mapG/ga250a-5.sol" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/memetic/solutions-3-true-mapG/ga500b-1.sol" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/memetic/solutions-3-true-mapG/gs750c-1.sol" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/memetic/solutions-3-true-mapTS.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/memetic/solutions-3-true-mapTS/ga250a-1.sol" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/memetic/solutions-3-true-mapTS/ga250a-2.sol" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/memetic/solutions-3-true-mapTS/ga250a-3.sol" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/memetic/solutions-3-true-mapTS/ga250a-4.sol" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/memetic/solutions-3-true-mapTS/ga250a-5.sol" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/memetic/solutions-3-true-mapTS/ga500b-1.sol" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/memetic/solutions-3-true-mapTS/gs750c-1.sol" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/memetic/solutions-4-false-LA.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/memetic/solutions-4-false-LA/ga250a-1.sol" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/memetic/solutions-4-false-LA/ga250a-2.sol" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/memetic/solutions-4-false-LA/ga250a-3.sol" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/memetic/solutions-4-false-LA/ga250a-4.sol" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/memetic/solutions-4-false-LA/ga250a-5.sol" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/memetic/solutions-4-false-LA/ga500b-1.sol" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/memetic/solutions-4-false-LA/gs750c-1.sol" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/memetic/solutions-4-false-LS_CF.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/memetic/solutions-4-false-LS_CF/ga250a-1.sol" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/memetic/solutions-4-false-LS_CF/ga250a-2.sol" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/memetic/solutions-4-false-LS_CF/ga250a-3.sol" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/memetic/solutions-4-false-LS_CF/ga250a-4.sol" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/memetic/solutions-4-false-LS_CF/ga250a-5.sol" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/memetic/solutions-4-false-LS_CF/ga500b-1.sol" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/memetic/solutions-4-false-LS_CF/gs750c-1.sol" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/memetic/solutions-4-false-TS.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/memetic/solutions-4-false-TS/ga250a-1.sol" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/memetic/solutions-4-false-TS/ga250a-2.sol" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/memetic/solutions-4-false-TS/ga250a-3.sol" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/memetic/solutions-4-false-TS/ga250a-4.sol" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/memetic/solutions-4-false-TS/ga250a-5.sol" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/memetic/solutions-4-false-TS/ga500b-1.sol" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/memetic/solutions-4-false-TS/gs750c-1.sol" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/memetic/solutions-4-false-mapTS.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/memetic/solutions-4-false-mapTS/ga250a-1.sol" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/memetic/solutions-4-false-mapTS/ga250a-2.sol" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/memetic/solutions-4-false-mapTS/ga250a-3.sol" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/memetic/solutions-4-false-mapTS/ga250a-4.sol" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/memetic/solutions-4-false-mapTS/ga250a-5.sol" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/memetic/solutions-4-false-mapTS/ga500b-1.sol" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/memetic/solutions-4-false-mapTS/gs750c-1.sol" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/memetic/solutions-4-true-LA.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/memetic/solutions-4-true-LA/ga250a-1.sol" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/memetic/solutions-4-true-LA/ga250a-2.sol" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/memetic/solutions-4-true-LA/ga250a-3.sol" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/memetic/solutions-4-true-LA/ga250a-4.sol" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/memetic/solutions-4-true-LA/ga250a-5.sol" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/memetic/solutions-4-true-LA/ga500b-1.sol" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/memetic/solutions-4-true-LA/gs750c-1.sol" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/memetic/solutions-4-true-LS_CF.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/memetic/solutions-4-true-LS_CF/ga250a-1.sol" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/memetic/solutions-4-true-LS_CF/ga250a-2.sol" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/memetic/solutions-4-true-LS_CF/ga250a-3.sol" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/memetic/solutions-4-true-LS_CF/ga250a-4.sol" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/memetic/solutions-4-true-LS_CF/ga250a-5.sol" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/memetic/solutions-4-true-LS_CF/ga500b-1.sol" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/memetic/solutions-4-true-LS_CF/gs750c-1.sol" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/memetic/solutions-4-true-TS.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/memetic/solutions-4-true-TS/ga250a-1.sol" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/memetic/solutions-4-true-TS/ga250a-2.sol" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/memetic/solutions-4-true-TS/ga250a-3.sol" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/memetic/solutions-4-true-TS/ga250a-4.sol" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/memetic/solutions-4-true-TS/ga250a-5.sol" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/memetic/solutions-4-true-TS/ga500b-1.sol" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/memetic/solutions-4-true-TS/gs750c-1.sol" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/memetic/solutions-4-true-mapTS.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/memetic/solutions-4-true-mapTS/ga250a-1.sol" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/memetic/solutions-4-true-mapTS/ga250a-2.sol" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/memetic/solutions-4-true-mapTS/ga250a-3.sol" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/memetic/solutions-4-true-mapTS/ga250a-4.sol" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/memetic/solutions-4-true-mapTS/ga250a-5.sol" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/memetic/solutions-4-true-mapTS/ga500b-1.sol" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/memetic/solutions-4-true-mapTS/gs750c-1.sol" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/../solutions.numbers" beforeDir="false" afterPath="$PROJECT_DIR$/../solutions.numbers" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -647,6 +380,9 @@
       <workItem from="1578607578506" duration="2848000" />
       <workItem from="1578620129962" duration="2559000" />
       <workItem from="1578634185587" duration="404000" />
+      <workItem from="1579042453579" duration="145000" />
+      <workItem from="1579042709999" duration="418000" />
+      <workItem from="1579043585622" duration="379000" />
     </task>
     <servers />
   </component>
@@ -719,10 +455,10 @@
       <screen x="0" y="23" width="1440" height="877" />
     </state>
     <state width="537" height="445" key="SwitcherDM/0.23.1440.877@0.23.1440.877" timestamp="1578463867806" />
-    <state x="397" y="294" key="com.intellij.ide.util.TipDialog" timestamp="1578634187681">
+    <state x="397" y="294" key="com.intellij.ide.util.TipDialog" timestamp="1579043586282">
       <screen x="0" y="23" width="1440" height="877" />
     </state>
-    <state x="397" y="294" key="com.intellij.ide.util.TipDialog/0.23.1440.877@0.23.1440.877" timestamp="1578634187681" />
+    <state x="397" y="294" key="com.intellij.ide.util.TipDialog/0.23.1440.877@0.23.1440.877" timestamp="1579043586282" />
     <state x="378" y="87" width="683" height="729" key="find.popup" timestamp="1578634520564">
       <screen x="0" y="23" width="1440" height="877" />
     </state>

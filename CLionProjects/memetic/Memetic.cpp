@@ -140,7 +140,7 @@ void Memetic::run(Solution *solution) {
                 cout << "current[" << id_parent << "] = Recombine(pocket[" << id_parent << "], current[" << s1 << "]) " << endl;
             }
 
-            recombine(tree->getPointerNodeJPosI(id_parent, INDEX_CURRENT), tree->getPointerNodeJPosI(id_parent, INDEX_POCKET), tree->getPointerNodeJPosI(s1, INDEX_CURRENT), id_parent, INDEX_CURRENT);
+            recombine(tree->getPointerNodeJPosI(id_parent, INDEX_CURRENT), tree->getPointerNodeJPosI(id_parent, INDEX_POCKET), tree->getPointerNodeJPosI(s1, INDEX_CURRENT), id_parent, INDEX_CURRENT, id_parent);
 
             // current[s3] = Recombine(pocket[s3], current[id_parent])
 
@@ -148,7 +148,7 @@ void Memetic::run(Solution *solution) {
                 cout << "current[" << s3 << "] = Recombine(pocket[" << s3 << "], current[" << id_parent << "]) " << endl;
             }
 
-            recombine(tree->getPointerNodeJPosI(s3, INDEX_CURRENT), tree->getPointerNodeJPosI(s3, INDEX_POCKET), tree->getPointerNodeJPosI(id_parent, INDEX_CURRENT), s3, INDEX_CURRENT);
+            recombine(tree->getPointerNodeJPosI(s3, INDEX_CURRENT), tree->getPointerNodeJPosI(s3, INDEX_POCKET), tree->getPointerNodeJPosI(id_parent, INDEX_CURRENT), s3, INDEX_CURRENT, id_parent);
 
 
             // current[s1] = Recombine(pocket[s1], current[s2])
@@ -158,7 +158,7 @@ void Memetic::run(Solution *solution) {
             }
 
 
-            recombine(tree->getPointerNodeJPosI(s1, INDEX_CURRENT), tree->getPointerNodeJPosI(s1, INDEX_POCKET), tree->getPointerNodeJPosI(s2, INDEX_CURRENT), s1, INDEX_CURRENT);
+            recombine(tree->getPointerNodeJPosI(s1, INDEX_CURRENT), tree->getPointerNodeJPosI(s1, INDEX_POCKET), tree->getPointerNodeJPosI(s2, INDEX_CURRENT), s1, INDEX_CURRENT, id_parent);
 
 
             // current[s2] = Recombine(pocket[s2], current[s3])
@@ -167,7 +167,7 @@ void Memetic::run(Solution *solution) {
                 cout << "current[" << s2 << "] = Recombine(pocket[" << s2 << "], current[" << s3 << "]) " << endl;
             }
 
-            recombine(tree->getPointerNodeJPosI(s2, INDEX_CURRENT), tree->getPointerNodeJPosI(s2, INDEX_POCKET), tree->getPointerNodeJPosI(s3, INDEX_CURRENT), s2, INDEX_CURRENT);
+            recombine(tree->getPointerNodeJPosI(s2, INDEX_CURRENT), tree->getPointerNodeJPosI(s2, INDEX_POCKET), tree->getPointerNodeJPosI(s3, INDEX_CURRENT), s2, INDEX_CURRENT, id_parent);
 
         }
 
@@ -268,33 +268,43 @@ void Memetic::run(Solution *solution) {
 
 }
 
-void Memetic::recombine(Solution *child, Solution *mother, Solution *father, int posNodeChild, int posIndividualChild) {
+void Memetic::recombine(Solution *child, Solution *mother, Solution *father, int posNodeChild, int posIndividualChild, int idParent) {
 
     crossoverMutation(child, mother, father);
 
-    // Se for do tipo uniform ou one-point crossover, entao chama o Late Acceptance
+    // Se for do tipo uniform ou one-point crossover
     if((CROSSOVER_TYPE == 1) ||(CROSSOVER_TYPE == 2)){
-//         // Vai decidir se vai chamar o LA dessa vez ou não
-//         int prob_la = rand() % 100; // Generate a random number between 0 and 99
-//
-//         if(prob_la < PROB_LA_RATE){	 // se o numero foi menor que o prob_la_rate, entao chama
-//         LA em cada filho gerado
-        // tree->callLateAcceptance(posNodeChild, posIndividualChild);
 
-        tree->mapAndCallTS(posNodeChild, posIndividualChild);
+        // Estratégia 1 (S1).. Se for na sub árvore da raiz, roda LA, senao roda mapTS
+        if(STRATEGY_RECOMBINE == 1){
+            if(idParent == 0){
+                tree->callLateAcceptance(posNodeChild, posIndividualChild);
+            }
+            else{
+                tree->mapAndCallTS(posNodeChild, posIndividualChild);
+            }
+        }
+        // Estratégia 2 (S2).. Probabilidade de rodar cada alg de busca
+        else{
+            // Vai decidir qual algoritmo de busca chamar
+            int prob = rand() % 100; // Generate a random number between 0 and 99
 
-         // tree->callTabuSearch(posNodeChild, posIndividualChild);
+            if(prob < PROB_MAP_TS_RATE) {     // se o numero foi menor que o prob_map_ts_rate, entao chama mapTS em cada filho gerado
+                tree->mapAndCallTS(posNodeChild, posIndividualChild);
+            }
+            else if(prob < PROB_MAP_TS_RATE + PROB_LA_RATE) {     // se o numero foi menor que o prob_la_rate, entao chama LA em cada filho gerado
+                tree->callLateAcceptance(posNodeChild, posIndividualChild);
+            }
+            else{ // se nao, chama TS
+                tree->callTabuSearch(posNodeChild, posIndividualChild);
+            }
+        }
+
 
         if(DEBUG >= DISPLAY_ACTIONS){
-            cout << "Child after late acceptance: ";
+            cout << "Child after recombine: ";
             child->printIndividual();
         }
-        // }
-        // else{
-        // 	if(DEBUG >= DISPLAY_ACTIONS){
-        // 		cout << "We won't call LA this time. Random number: " << prob_la << " >= " << PROB_LA_RATE << endl;
-        // 	}
-        // }
     }
         // Senão, se for do tipo union ou groups
     else if((CROSSOVER_TYPE == 3)||(CROSSOVER_TYPE == 4)){
