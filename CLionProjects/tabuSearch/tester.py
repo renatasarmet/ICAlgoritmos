@@ -31,7 +31,7 @@ if __name__ == '__main__':
 
 		else: # se eu nao passei por parametro, coloca os padroes
 			best_fit = "1" # 1 para best fit 0 para first fit
-			a1 = "2.5" #"0.1" #"0.5" #"1" #"2.5"
+			a1 = "0.5" #"0.1" #"0.5" #"1" #"2.5"
 			bc1 = bo1 = "0.01" #"0.01" #"0.04" #0.01
 			bc2 = bo2 = "0.05" #"0.05" #"0.08" #0.08
 			seed = "0"
