@@ -70,7 +70,8 @@ int main(int argc, char *argv[]){
     TabuSearch tabuSearch;
 
     // Chamando a funcao que resolve o problema de fato
-    tabuSearch.allocate(&solution, best_fit, a1, lc1, lc2, lo1, lo2, seed);
+    tabuSearch.allocate(&solution);
+    tabuSearch.initialize(&solution, best_fit, a1, lc1, lc2, lo1, lo2, seed);
 
     if(DEBUG >= DISPLAY_BASIC){
         cout << "Final total cost: " << solution.getFinalTotalCost() << endl;

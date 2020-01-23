@@ -21,7 +21,7 @@
 // OBS: SE PERCEBER NO MEMETIC QUE O LH É MUDADO AO LONGO DAS CHAMADAS, TEM QUE TIRAR A ALOCACAO DO ALLOCATE OU ALOCA ALGUM UPPER BOUND
 
 // Alocando memoria
-void LateAcceptance::allocate(Solution *solution, bool _bestFit, double _a1, double _limitIdle, int _lh) {
+void LateAcceptance::allocate(Solution *solution, int _lh) {
     qty_facilities = solution->getQtyFacilities();
     qty_clients = solution->getQtyClients();
 
@@ -45,8 +45,6 @@ void LateAcceptance::allocate(Solution *solution, bool _bestFit, double _a1, dou
     temp_nearest2_fac = new int[qty_clients];
     temp_c_minX = new double[qty_clients];
     temp_c2_minX = new double[qty_clients];
-
-    initialize(solution, _bestFit, _a1, _limitIdle, _lh);
 }
 
 

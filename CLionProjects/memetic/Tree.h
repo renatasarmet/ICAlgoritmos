@@ -36,9 +36,16 @@ private:
 
     int * map;
     int * temp_open_facilities;
-//    Instance * map_instance;
 
     int QTY_SUBS;  // Quantidade de pais que existem (quantidade de sub arvores)
+
+    int LH; // usado para manter padrao do LA
+
+//    Greedy greedy;
+//    LocalSearch localSearch;
+//    LateAcceptance lateAcceptance;
+//    TabuSearch tabuSearch;
+//    LSCloseFac lsCloseFac;
 
 public:
 

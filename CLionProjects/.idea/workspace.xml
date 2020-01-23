@@ -14,408 +14,141 @@
     <list default="true" id="7aceef00-4371-4af9-a754-093df3b02196" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/greedy/Greedy.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/greedy/Greedy.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/greedy/Greedy.h" beforeDir="false" afterPath="$PROJECT_DIR$/greedy/Greedy.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/greedy/g" beforeDir="false" afterPath="$PROJECT_DIR$/greedy/g" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/greedy/handlesInput.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/greedy/handlesInput.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/greedy/testCases2.txt" beforeDir="false" afterPath="$PROJECT_DIR$/greedy/testCases2.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/lateAcceptance/LateAcceptance.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/lateAcceptance/LateAcceptance.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/lateAcceptance/LateAcceptance.h" beforeDir="false" afterPath="$PROJECT_DIR$/lateAcceptance/LateAcceptance.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/lateAcceptance/handlesInput.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/lateAcceptance/handlesInput.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lateAcceptance/la" beforeDir="false" afterPath="$PROJECT_DIR$/lateAcceptance/la" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lateAcceptance/testCases2.txt" beforeDir="false" afterPath="$PROJECT_DIR$/lateAcceptance/testCases2.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/lateAcceptanceTabuSearch/LATabuSearch.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/lateAcceptanceTabuSearch/LATabuSearch.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/lateAcceptanceTabuSearch/LATabuSearch.h" beforeDir="false" afterPath="$PROJECT_DIR$/lateAcceptanceTabuSearch/LATabuSearch.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/lateAcceptanceTabuSearch/handlesInput.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/lateAcceptanceTabuSearch/handlesInput.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lateAcceptanceTabuSearch/lats" beforeDir="false" afterPath="$PROJECT_DIR$/lateAcceptanceTabuSearch/lats" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lateAcceptanceTabuSearch/testCases2.txt" beforeDir="false" afterPath="$PROJECT_DIR$/lateAcceptanceTabuSearch/testCases2.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/localSearch/LocalSearch.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/localSearch/LocalSearch.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/localSearch/LocalSearch.h" beforeDir="false" afterPath="$PROJECT_DIR$/localSearch/LocalSearch.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/localSearch/handlesInput.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/localSearch/handlesInput.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/localSearch/lsr" beforeDir="false" afterPath="$PROJECT_DIR$/localSearch/lsr" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/localSearch/testCases2.txt" beforeDir="false" afterPath="$PROJECT_DIR$/localSearch/testCases2.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/localSearchCloseFac/LSCloseFac.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/localSearchCloseFac/LSCloseFac.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/localSearchCloseFac/LSCloseFac.h" beforeDir="false" afterPath="$PROJECT_DIR$/localSearchCloseFac/LSCloseFac.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/localSearchCloseFac/handlesInput.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/localSearchCloseFac/handlesInput.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/localSearchCloseFac/lscf" beforeDir="false" afterPath="$PROJECT_DIR$/localSearchCloseFac/lscf" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/localSearchCloseFac/testCases2.txt" beforeDir="false" afterPath="$PROJECT_DIR$/localSearchCloseFac/testCases2.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/memetic/Tree.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/memetic/Tree.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/memetic/Tree.h" beforeDir="false" afterPath="$PROJECT_DIR$/memetic/Tree.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/memetic/ma" beforeDir="false" afterPath="$PROJECT_DIR$/memetic/ma" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/memetic/solutions.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/memetic/solutions/B1.2.sol" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/memetic/solutions/B1.5.sol" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/memetic/solutions/B1.6.sol" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/memetic/solutions/B1.7.sol" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/memetic/solutions/B1.8.sol" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/memetic/solutions/C1.1.sol" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/memetic/solutions/C1.10.sol" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/memetic/solutions/C1.2.sol" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/memetic/solutions/C1.3.sol" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/memetic/solutions/C1.4.sol" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/memetic/solutions/C1.5.sol" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/memetic/solutions/C1.6.sol" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/memetic/solutions/C1.7.sol" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/memetic/solutions/C1.8.sol" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/memetic/solutions/C1.9.sol" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/memetic/solutions/D1.1.sol" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/memetic/solutions/D1.10.sol" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/memetic/solutions/D1.4.sol" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/memetic/solutions/D1.5.sol" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/memetic/solutions/D1.6.sol" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/memetic/solutions/D1.7.sol" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/memetic/solutions/D1.8.sol" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/memetic/solutions/D10.3.sol" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/memetic/solutions/D2.1.sol" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/memetic/solutions/D2.5.sol" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/memetic/solutions/D2.7.sol" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/memetic/solutions/D3.10.sol" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/memetic/solutions/D4.3.sol" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/memetic/solutions/D4.4.sol" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/memetic/solutions/D5.2.sol" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/memetic/solutions/D5.5.sol" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/memetic/solutions/D5.7.sol" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/memetic/solutions/D6.1.sol" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/memetic/solutions/D6.2.sol" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/memetic/solutions/D6.5.sol" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/memetic/solutions/D8.8.sol" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/memetic/solutions/D9.7.sol" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/memetic/solutions/E1.1.sol" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/memetic/solutions/E1.10.sol" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/memetic/solutions/E1.2.sol" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/memetic/solutions/E1.3.sol" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/memetic/solutions/E1.4.sol" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/memetic/solutions/E1.5.sol" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/memetic/solutions/E1.6.sol" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/memetic/solutions/E1.7.sol" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/memetic/solutions/E1.8.sol" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/memetic/solutions/E1.9.sol" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/memetic/solutions/E2.1.sol" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/memetic/solutions/E2.10.sol" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/memetic/solutions/E2.2.sol" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/memetic/solutions/E2.3.sol" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/memetic/solutions/E2.4.sol" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/memetic/solutions/E2.5.sol" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/memetic/solutions/E2.6.sol" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/memetic/solutions/E2.7.sol" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/memetic/solutions/E2.8.sol" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/memetic/solutions/E2.9.sol" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/memetic/solutions/E3.1.sol" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/memetic/solutions/E3.10.sol" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/memetic/solutions/E3.2.sol" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/memetic/solutions/E3.4.sol" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/memetic/solutions/E3.5.sol" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/memetic/solutions/E3.6.sol" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/memetic/solutions/E3.7.sol" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/memetic/solutions/E3.9.sol" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/memetic/solutions/E4.1.sol" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/memetic/solutions/E4.3.sol" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/memetic/solutions/E4.4.sol" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/memetic/solutions/E4.5.sol" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/memetic/solutions/E4.6.sol" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/memetic/solutions/E4.8.sol" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/memetic/solutions/E4.9.sol" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/memetic/solutions/E5.1.sol" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/memetic/solutions/E5.10.sol" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/memetic/solutions/E5.2.sol" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/memetic/solutions/E5.4.sol" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/memetic/solutions/E5.5.sol" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/memetic/solutions/E5.6.sol" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/memetic/solutions/E5.7.sol" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/memetic/solutions/E5.8.sol" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/memetic/solutions/E5.9.sol" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/memetic/solutions/E6.1.sol" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/memetic/solutions/E6.2.sol" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/memetic/solutions/E6.4.sol" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/memetic/solutions/E6.5.sol" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/memetic/solutions/E6.7.sol" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/memetic/solutions/E7.6.sol" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/memetic/solutions/E9.7.sol" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/memetic/solutions/MO1.sol" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/memetic/solutions/MO2.sol" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/memetic/solutions/MO3.sol" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/memetic/solutions/MO4.sol" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/memetic/solutions/MO5.sol" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/memetic/solutions/MP1.sol" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/memetic/solutions/MP2.sol" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/memetic/solutions/MP3.sol" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/memetic/solutions/MP4.sol" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/memetic/solutions/MP5.sol" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/memetic/solutions/MQ1.sol" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/memetic/solutions/MQ2.sol" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/memetic/solutions/MQ3.sol" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/memetic/solutions/MQ4.sol" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/memetic/solutions/MQ5.sol" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/memetic/solutions/MR1.sol" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/memetic/solutions/MR2.sol" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/memetic/solutions/MR3.sol" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/memetic/solutions/MR4.sol" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/memetic/solutions/MR5.sol" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/memetic/solutions/MS1.sol" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/memetic/solutions/MT1.sol" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/memetic/solutions/cap131.txt.sol" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/memetic/solutions/cap132.txt.sol" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/memetic/solutions/cap133.txt.sol" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/memetic/solutions/cap134.txt.sol" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/memetic/solutions/cap72.txt.sol" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/memetic/testCases2.txt" beforeDir="false" afterPath="$PROJECT_DIR$/memetic/testCases2.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/tabuSearch/TabuSearch.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/tabuSearch/TabuSearch.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/tabuSearch/TabuSearch.h" beforeDir="false" afterPath="$PROJECT_DIR$/tabuSearch/TabuSearch.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/tabuSearch/handlesInput.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/tabuSearch/handlesInput.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/readerSolParameters.py" beforeDir="false" afterPath="$PROJECT_DIR$/tabuSearch/readerSolParameters.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions/B1.10__bf-1_a1-0.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions/B1.1__bf-1_a1-0.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions/B1.2__bf-1_a1-0.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions/B1.3__bf-1_a1-0.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions/B1.4__bf-1_a1-0.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions/B1.5__bf-1_a1-0.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions/B1.6__bf-1_a1-0.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions/B1.7__bf-1_a1-0.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions/B1.8__bf-1_a1-0.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions/B1.9__bf-1_a1-0.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions/C1.10__bf-1_a1-0.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions/C1.1__bf-1_a1-0.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions/C1.2__bf-1_a1-0.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions/C1.3__bf-1_a1-0.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions/C1.4__bf-1_a1-0.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions/C1.5__bf-1_a1-0.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions/C1.6__bf-1_a1-0.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions/C1.7__bf-1_a1-0.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions/C1.8__bf-1_a1-0.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions/C1.9__bf-1_a1-0.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions/D1.10__bf-1_a1-0.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions/D1.1__bf-1_a1-0.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions/D1.2__bf-1_a1-0.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions/D1.3__bf-1_a1-0.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions/D1.4__bf-1_a1-0.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions/D1.5__bf-1_a1-0.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions/D1.6__bf-1_a1-0.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions/D1.7__bf-1_a1-0.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions/D1.8__bf-1_a1-0.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions/D1.9__bf-1_a1-0.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions/D10.10__bf-1_a1-0.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions/D10.1__bf-1_a1-0.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions/D10.2__bf-1_a1-0.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions/D10.3__bf-1_a1-0.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions/D10.4__bf-1_a1-0.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions/D10.5__bf-1_a1-0.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions/D10.6__bf-1_a1-0.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions/D10.7__bf-1_a1-0.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions/D10.8__bf-1_a1-0.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions/D10.9__bf-1_a1-0.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions/D2.10__bf-1_a1-0.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions/D2.1__bf-1_a1-0.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions/D2.2__bf-1_a1-0.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions/D2.3__bf-1_a1-0.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions/D2.4__bf-1_a1-0.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions/D2.5__bf-1_a1-0.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions/D2.6__bf-1_a1-0.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions/D2.7__bf-1_a1-0.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions/D2.8__bf-1_a1-0.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions/D2.9__bf-1_a1-0.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions/D3.10__bf-1_a1-0.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions/D3.1__bf-1_a1-0.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions/D3.2__bf-1_a1-0.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions/D3.3__bf-1_a1-0.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions/D3.4__bf-1_a1-0.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions/D3.5__bf-1_a1-0.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions/D3.6__bf-1_a1-0.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions/D3.7__bf-1_a1-0.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions/D3.8__bf-1_a1-0.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions/D3.9__bf-1_a1-0.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions/D4.10__bf-1_a1-0.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions/D4.1__bf-1_a1-0.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions/D4.2__bf-1_a1-0.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions/D4.3__bf-1_a1-0.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions/D4.4__bf-1_a1-0.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions/D4.5__bf-1_a1-0.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions/D4.6__bf-1_a1-0.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions/D4.7__bf-1_a1-0.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions/D4.8__bf-1_a1-0.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions/D4.9__bf-1_a1-0.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions/D5.10__bf-1_a1-0.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions/D5.1__bf-1_a1-0.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions/D5.2__bf-1_a1-0.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions/D5.3__bf-1_a1-0.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions/D5.4__bf-1_a1-0.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions/D5.5__bf-1_a1-0.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions/D5.6__bf-1_a1-0.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions/D5.7__bf-1_a1-0.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions/D5.8__bf-1_a1-0.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions/D5.9__bf-1_a1-0.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions/D6.10__bf-1_a1-0.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions/D6.1__bf-1_a1-0.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions/D6.2__bf-1_a1-0.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions/D6.3__bf-1_a1-0.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions/D6.4__bf-1_a1-0.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions/D6.5__bf-1_a1-0.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions/D6.6__bf-1_a1-0.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions/D6.7__bf-1_a1-0.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions/D6.8__bf-1_a1-0.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions/D6.9__bf-1_a1-0.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions/D7.10__bf-1_a1-0.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions/D7.1__bf-1_a1-0.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions/D7.2__bf-1_a1-0.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions/D7.3__bf-1_a1-0.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions/D7.4__bf-1_a1-0.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions/D7.5__bf-1_a1-0.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions/D7.6__bf-1_a1-0.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions/D7.7__bf-1_a1-0.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions/D7.8__bf-1_a1-0.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions/D7.9__bf-1_a1-0.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions/D8.10__bf-1_a1-0.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions/D8.1__bf-1_a1-0.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions/D8.2__bf-1_a1-0.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions/D8.3__bf-1_a1-0.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions/D8.4__bf-1_a1-0.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions/D8.5__bf-1_a1-0.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions/D8.6__bf-1_a1-0.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions/D8.7__bf-1_a1-0.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions/D8.8__bf-1_a1-0.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions/D8.9__bf-1_a1-0.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions/D9.10__bf-1_a1-0.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions/D9.1__bf-1_a1-0.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions/D9.2__bf-1_a1-0.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions/D9.3__bf-1_a1-0.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions/D9.4__bf-1_a1-0.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions/D9.5__bf-1_a1-0.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions/D9.6__bf-1_a1-0.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions/D9.7__bf-1_a1-0.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions/D9.8__bf-1_a1-0.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions/D9.9__bf-1_a1-0.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions/E1.10__bf-1_a1-0.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions/E1.1__bf-1_a1-0.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions/E1.2__bf-1_a1-0.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions/E1.3__bf-1_a1-0.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions/E1.4__bf-1_a1-0.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions/E1.5__bf-1_a1-0.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions/E1.6__bf-1_a1-0.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions/E1.7__bf-1_a1-0.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions/E1.8__bf-1_a1-0.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions/E1.9__bf-1_a1-0.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions/E10.10__bf-1_a1-0.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions/E10.1__bf-1_a1-0.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions/E10.2__bf-1_a1-0.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions/E10.3__bf-1_a1-0.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions/E10.4__bf-1_a1-0.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions/E10.5__bf-1_a1-0.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions/E10.6__bf-1_a1-0.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions/E10.7__bf-1_a1-0.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions/E10.8__bf-1_a1-0.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions/E10.9__bf-1_a1-0.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions/E2.10__bf-1_a1-0.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions/E2.1__bf-1_a1-0.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions/E2.2__bf-1_a1-0.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions/E2.3__bf-1_a1-0.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions/E2.4__bf-1_a1-0.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions/E2.5__bf-1_a1-0.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions/E2.6__bf-1_a1-0.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions/E2.7__bf-1_a1-0.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions/E2.8__bf-1_a1-0.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions/E2.9__bf-1_a1-0.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions/E3.10__bf-1_a1-0.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions/E3.1__bf-1_a1-0.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions/E3.2__bf-1_a1-0.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions/E3.3__bf-1_a1-0.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions/E3.4__bf-1_a1-0.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions/E3.5__bf-1_a1-0.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions/E3.6__bf-1_a1-0.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions/E3.7__bf-1_a1-0.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions/E3.8__bf-1_a1-0.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions/E3.9__bf-1_a1-0.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions/E4.10__bf-1_a1-0.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions/E4.1__bf-1_a1-0.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions/E4.2__bf-1_a1-0.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions/E4.3__bf-1_a1-0.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions/E4.4__bf-1_a1-0.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions/E4.5__bf-1_a1-0.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions/E4.6__bf-1_a1-0.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions/E4.7__bf-1_a1-0.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions/E4.8__bf-1_a1-0.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions/E4.9__bf-1_a1-0.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions/E5.10__bf-1_a1-0.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions/E5.1__bf-1_a1-0.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions/E5.2__bf-1_a1-0.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions/E5.3__bf-1_a1-0.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions/E5.4__bf-1_a1-0.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions/E5.5__bf-1_a1-0.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions/E5.6__bf-1_a1-0.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions/E5.7__bf-1_a1-0.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions/E5.8__bf-1_a1-0.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions/E5.9__bf-1_a1-0.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions/E6.10__bf-1_a1-0.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions/E6.1__bf-1_a1-0.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions/E6.2__bf-1_a1-0.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions/E6.3__bf-1_a1-0.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions/E6.4__bf-1_a1-0.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions/E6.5__bf-1_a1-0.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions/E6.6__bf-1_a1-0.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions/E6.7__bf-1_a1-0.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions/E6.8__bf-1_a1-0.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions/E6.9__bf-1_a1-0.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions/E7.10__bf-1_a1-0.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions/E7.1__bf-1_a1-0.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions/E7.2__bf-1_a1-0.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions/E7.3__bf-1_a1-0.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions/E7.4__bf-1_a1-0.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions/E7.5__bf-1_a1-0.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions/E7.6__bf-1_a1-0.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions/E7.7__bf-1_a1-0.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions/E7.8__bf-1_a1-0.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions/E7.9__bf-1_a1-0.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions/E8.10__bf-1_a1-0.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions/E8.1__bf-1_a1-0.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions/E8.2__bf-1_a1-0.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions/E8.3__bf-1_a1-0.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions/E8.4__bf-1_a1-0.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions/E8.5__bf-1_a1-0.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions/E8.6__bf-1_a1-0.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions/E8.7__bf-1_a1-0.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions/E8.8__bf-1_a1-0.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions/E8.9__bf-1_a1-0.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions/E9.10__bf-1_a1-0.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions/E9.1__bf-1_a1-0.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions/E9.2__bf-1_a1-0.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions/E9.3__bf-1_a1-0.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions/E9.4__bf-1_a1-0.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions/E9.5__bf-1_a1-0.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions/E9.6__bf-1_a1-0.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions/E9.7__bf-1_a1-0.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions/E9.8__bf-1_a1-0.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions/E9.9__bf-1_a1-0.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions/cap101.txt__bf-1_a1-0.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions/cap102.txt__bf-1_a1-0.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions/cap103.txt__bf-1_a1-0.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions/cap104.txt__bf-1_a1-0.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions/cap131.txt__bf-1_a1-0.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions/cap132.txt__bf-1_a1-0.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions/cap133.txt__bf-1_a1-0.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions/cap134.txt__bf-1_a1-0.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions/cap71.txt__bf-1_a1-0.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions/cap72.txt__bf-1_a1-0.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions/cap73.txt__bf-1_a1-0.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions/cap74.txt__bf-1_a1-0.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions/capa.txt__bf-1_a1-0.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions/capb.txt__bf-1_a1-0.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions/capc.txt__bf-1_a1-0.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions_0-5-M/MO1__bf-1_a1-0.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions_0-5-M/MO2__bf-1_a1-0.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions_0-5-M/MO3__bf-1_a1-0.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions_0-5-M/MO4__bf-1_a1-0.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions_0-5-M/MO5__bf-1_a1-0.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions_0-5-M/MP1__bf-1_a1-0.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions_0-5-M/MP2__bf-1_a1-0.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions_0-5-M/MP3__bf-1_a1-0.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions_0-5-M/MP4__bf-1_a1-0.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions_0-5-M/MP5__bf-1_a1-0.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions_0-5-M/MQ1__bf-1_a1-0.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions_0-5-M/MQ2__bf-1_a1-0.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions_0-5-M/MQ3__bf-1_a1-0.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions_0-5-M/MQ4__bf-1_a1-0.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions_0-5-M/MQ5__bf-1_a1-0.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions_0-5-M/MR1__bf-1_a1-0.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions_0-5-M/MR2__bf-1_a1-0.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions_0-5-M/MR3__bf-1_a1-0.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions_0-5-M/MR4__bf-1_a1-0.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions_0-5-M/MR5__bf-1_a1-0.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions_0-5-M/MS1__bf-1_a1-0.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions_0-5-M/MT1__bf-1_a1-0.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions_2-5-M/MO1__bf-1_a1-2.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions_2-5-M/MO2__bf-1_a1-2.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions_2-5-M/MO3__bf-1_a1-2.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions_2-5-M/MO4__bf-1_a1-2.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions_2-5-M/MO5__bf-1_a1-2.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions_2-5-M/MP1__bf-1_a1-2.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions_2-5-M/MP2__bf-1_a1-2.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions_2-5-M/MP3__bf-1_a1-2.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions_2-5-M/MP4__bf-1_a1-2.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions_2-5-M/MP5__bf-1_a1-2.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions_2-5-M/MQ1__bf-1_a1-2.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions_2-5-M/MQ2__bf-1_a1-2.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions_2-5-M/MQ3__bf-1_a1-2.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions_2-5-M/MQ4__bf-1_a1-2.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions_2-5-M/MQ5__bf-1_a1-2.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions_2-5-M/MR1__bf-1_a1-2.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions_2-5-M/MR2__bf-1_a1-2.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions_2-5-M/MR3__bf-1_a1-2.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions_2-5-M/MR4__bf-1_a1-2.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions_2-5-M/MR5__bf-1_a1-2.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions_2-5-M/MS1__bf-1_a1-2.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions_2-5-M/MT1__bf-1_a1-2.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions_2-5-M/capa.txt__bf-1_a1-2.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions_2-5-M/capb.txt__bf-1_a1-2.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions_2-5-M/capc.txt__bf-1_a1-2.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions_2-5-M/ga250a-1__bf-1_a1-2.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions_2-5-M/ga250a-2__bf-1_a1-2.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions_2-5-M/ga250a-3__bf-1_a1-2.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions_2-5-M/ga250a-4__bf-1_a1-2.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions_2-5-M/ga250a-5__bf-1_a1-2.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions_2-5-M/ga250b-1__bf-1_a1-2.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions_2-5-M/ga250b-2__bf-1_a1-2.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions_2-5-M/ga250b-3__bf-1_a1-2.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions_2-5-M/ga250b-4__bf-1_a1-2.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions_2-5-M/ga250b-5__bf-1_a1-2.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions_2-5-M/ga250c-1__bf-1_a1-2.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions_2-5-M/ga250c-2__bf-1_a1-2.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions_2-5-M/ga250c-3__bf-1_a1-2.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions_2-5-M/ga250c-4__bf-1_a1-2.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions_2-5-M/ga250c-5__bf-1_a1-2.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions_2-5-M/ga500a-1__bf-1_a1-2.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions_2-5-M/ga500a-2__bf-1_a1-2.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions_2-5-M/ga500a-3__bf-1_a1-2.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions_2-5-M/ga500a-4__bf-1_a1-2.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions_2-5-M/ga500a-5__bf-1_a1-2.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions_2-5-M/ga500b-1__bf-1_a1-2.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions_2-5-M/ga500b-2__bf-1_a1-2.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions_2-5-M/ga500b-3__bf-1_a1-2.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions_2-5-M/ga500b-4__bf-1_a1-2.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions_2-5-M/ga500b-5__bf-1_a1-2.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions_2-5-M/ga500c-1__bf-1_a1-2.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions_2-5-M/ga500c-2__bf-1_a1-2.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions_2-5-M/ga500c-3__bf-1_a1-2.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions_2-5-M/ga500c-4__bf-1_a1-2.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions_2-5-M/ga500c-5__bf-1_a1-2.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions_2-5-M/ga750a-1__bf-1_a1-2.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions_2-5-M/ga750a-2__bf-1_a1-2.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions_2-5-M/ga750a-3__bf-1_a1-2.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions_2-5-M/ga750a-4__bf-1_a1-2.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions_2-5-M/ga750a-5__bf-1_a1-2.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions_2-5-M/ga750b-1__bf-1_a1-2.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions_2-5-M/ga750b-2__bf-1_a1-2.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions_2-5-M/ga750b-3__bf-1_a1-2.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions_2-5-M/ga750b-4__bf-1_a1-2.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions_2-5-M/ga750b-5__bf-1_a1-2.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions_2-5-M/ga750c-1__bf-1_a1-2.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions_2-5-M/ga750c-2__bf-1_a1-2.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions_2-5-M/ga750c-3__bf-1_a1-2.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions_2-5-M/ga750c-4__bf-1_a1-2.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions_2-5-M/ga750c-5__bf-1_a1-2.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions_2-5-M/gs250a-1__bf-1_a1-2.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions_2-5-M/gs250a-2__bf-1_a1-2.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions_2-5-M/gs250a-3__bf-1_a1-2.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions_2-5-M/gs250a-4__bf-1_a1-2.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions_2-5-M/gs250a-5__bf-1_a1-2.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions_2-5-M/gs250b-1__bf-1_a1-2.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions_2-5-M/gs250b-2__bf-1_a1-2.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions_2-5-M/gs250b-3__bf-1_a1-2.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions_2-5-M/gs250b-4__bf-1_a1-2.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions_2-5-M/gs250b-5__bf-1_a1-2.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions_2-5-M/gs250c-1__bf-1_a1-2.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions_2-5-M/gs250c-2__bf-1_a1-2.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions_2-5-M/gs250c-3__bf-1_a1-2.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions_2-5-M/gs250c-4__bf-1_a1-2.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions_2-5-M/gs250c-5__bf-1_a1-2.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions_2-5-M/gs500a-1__bf-1_a1-2.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions_2-5-M/gs500a-2__bf-1_a1-2.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions_2-5-M/gs500a-3__bf-1_a1-2.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions_2-5-M/gs500a-4__bf-1_a1-2.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions_2-5-M/gs500a-5__bf-1_a1-2.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions_2-5-M/gs500b-1__bf-1_a1-2.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions_2-5-M/gs500b-2__bf-1_a1-2.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions_2-5-M/gs500b-3__bf-1_a1-2.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions_2-5-M/gs500b-4__bf-1_a1-2.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions_2-5-M/gs500b-5__bf-1_a1-2.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions_2-5-M/gs500c-1__bf-1_a1-2.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions_2-5-M/gs500c-2__bf-1_a1-2.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions_2-5-M/gs500c-3__bf-1_a1-2.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions_2-5-M/gs500c-4__bf-1_a1-2.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions_2-5-M/gs500c-5__bf-1_a1-2.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions_2-5-M/gs750a-1__bf-1_a1-2.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions_2-5-M/gs750a-2__bf-1_a1-2.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions_2-5-M/gs750a-3__bf-1_a1-2.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions_2-5-M/gs750a-4__bf-1_a1-2.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions_2-5-M/gs750a-5__bf-1_a1-2.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions_2-5-M/gs750b-1__bf-1_a1-2.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions_2-5-M/gs750b-2__bf-1_a1-2.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions_2-5-M/gs750b-3__bf-1_a1-2.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions_2-5-M/gs750b-4__bf-1_a1-2.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions_2-5-M/gs750b-5__bf-1_a1-2.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions_2-5-M/gs750c-1__bf-1_a1-2.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions_2-5-M/gs750c-2__bf-1_a1-2.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions_2-5-M/gs750c-3__bf-1_a1-2.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions_2-5-M/gs750c-4__bf-1_a1-2.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/solutions_2-5-M/gs750c-5__bf-1_a1-2.5_l-0.01-0.05.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/testCases2.txt" beforeDir="false" afterPath="$PROJECT_DIR$/tabuSearch/testCases2.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/tester.py" beforeDir="false" afterPath="$PROJECT_DIR$/tabuSearch/tester.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/tabuSearch/ts" beforeDir="false" afterPath="$PROJECT_DIR$/tabuSearch/ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -522,7 +255,8 @@
       <workItem from="1579042453579" duration="145000" />
       <workItem from="1579042709999" duration="418000" />
       <workItem from="1579043585622" duration="379000" />
-      <workItem from="1579754223984" duration="2980000" />
+      <workItem from="1579754223984" duration="5222000" />
+      <workItem from="1579819604823" duration="1125000" />
     </task>
     <servers />
   </component>
@@ -595,10 +329,10 @@
       <screen x="0" y="23" width="1440" height="877" />
     </state>
     <state width="537" height="445" key="SwitcherDM/0.23.1440.877@0.23.1440.877" timestamp="1578463867806" />
-    <state x="397" y="294" key="com.intellij.ide.util.TipDialog" timestamp="1579754224466">
+    <state x="397" y="294" key="com.intellij.ide.util.TipDialog" timestamp="1579819637384">
       <screen x="0" y="23" width="1440" height="877" />
     </state>
-    <state x="397" y="294" key="com.intellij.ide.util.TipDialog/0.23.1440.877@0.23.1440.877" timestamp="1579754224466" />
+    <state x="397" y="294" key="com.intellij.ide.util.TipDialog/0.23.1440.877@0.23.1440.877" timestamp="1579819637384" />
     <state x="378" y="87" width="683" height="729" key="find.popup" timestamp="1578634520564">
       <screen x="0" y="23" width="1440" height="877" />
     </state>

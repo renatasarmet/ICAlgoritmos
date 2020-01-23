@@ -37,8 +37,6 @@ void LSCloseFac::allocate(Solution *solution) {
     for(int i = 0; i < 2; i++) {
         extra_cost[i] = new double[qty_facilities];
     }
-
-    initialize(solution);
 }
 
 // inicializando valores

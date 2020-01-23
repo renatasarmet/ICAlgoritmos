@@ -37,7 +37,7 @@ using namespace std;
 // }
 
 // Alocando memoria
-void LocalSearch::allocate(Solution *solution, int lsType) {
+void LocalSearch::allocate(Solution *solution) {
     qty_facilities = solution->getQtyFacilities();
     qty_clients = solution->getQtyClients();
 
@@ -47,8 +47,6 @@ void LocalSearch::allocate(Solution *solution, int lsType) {
     nearest2_open_fac = new int[qty_clients];
     temp_nearest_fac = new int[qty_clients];
     temp2_nearest_fac = new int[qty_clients];
-
-    initialize(solution, lsType);
 }
 
 

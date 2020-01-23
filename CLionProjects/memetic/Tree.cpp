@@ -57,10 +57,17 @@ Tree::Tree(Instance * _instance) {
 
     aux_sol.initializeInstance(instance);
 
-//    map_instance = new Instance(instance->getQtyFacilities(), instance->getQtyClients(), instance->getInputName(), instance->getSolutionName());
-
     // Quantidade de pais que existem (quantidade de sub arvores)
     QTY_SUBS = (QTY_NODES_TREE - 1) / QTY_CHILDREN;
+
+    LH = 10;
+
+    // alocando os vetores para uso dos outros algoritmos dentro do memetic
+//    greedy.allocate(&nodes[0][0]);
+//    localSearch.allocate(&nodes[0][0]);
+//    lateAcceptance.allocate(&nodes[0][0], LH);
+//    tabuSearch.allocate(&nodes[0][0]);
+//    lsCloseFac.allocate(&nodes[0][0]);
 }
 
 Tree::~Tree() {
@@ -79,8 +86,6 @@ Tree::~Tree() {
 
     delete [] map;
     delete [] temp_open_facilities;
-
-//    delete [] map_instance;
 
 }
 
@@ -140,6 +145,7 @@ void Tree::callGreedy(int posNode, int posIndividual) {
     Greedy greedy;
 
     // Chamando a funcao que resolve o problema de fato
+    greedy.allocate(&nodes[posNode][posIndividual]);
     greedy.initialize(&nodes[posNode][posIndividual]);
 
     nodes[posNode][posIndividual].setInstance(instance);
@@ -1275,33 +1281,33 @@ void Tree::printTreeBest() {
 void Tree::callLocalSearch(int posNode, int posIndividual, int lsType) {
     LocalSearch localSearch;
 
+    localSearch.allocate(&nodes[posNode][posIndividual]);
     localSearch.initialize(&nodes[posNode][posIndividual], lsType); // chamando local search do tipo lsType
 }
-
 
 
 void Tree::callLateAcceptance(int posNode, int posIndividual) {
     LateAcceptance lateAcceptance;
 
-    lateAcceptance.initialize(&nodes[posNode][posIndividual], true, 2.5, 0.02, 10); // best_fit = true, a1 = 2.5, limit_idle = 0.02, lh = 10
-
+    lateAcceptance.allocate(&nodes[posNode][posIndividual], LH);
+    lateAcceptance.initialize(&nodes[posNode][posIndividual], true, 2.5, 0.02, LH); // best_fit = true, a1 = 2.5, limit_idle = 0.02, lh = 10
 }
 
 void Tree::callTabuSearch(int posNode, int posIndividual) {
+    TabuSearch tabuSearch;
+
     int lc1 = 0.01 * nodes[posNode][posIndividual].getInstance().getQtyFacilities();
     int lc2 = 0.05 * nodes[posNode][posIndividual].getInstance().getQtyFacilities();
 
-    TabuSearch tabuSearch;
-
     // Chamando a funcao que resolve o problema de fato
+    tabuSearch.allocate(&nodes[posNode][posIndividual]);
     tabuSearch.initialize(&nodes[posNode][posIndividual], true, 0.5, lc1, lc2, lc1, lc2, 0);  // best_fit = true, a1 = 0.5, (lc1 = lo1 = 0.01 * qty_facilities), (lc2 = lo2 = 0.05 * qty_facilities), seed = 0
-
 }
-
 
 void Tree::callLocalSearchCloseFac(int posNode, int posIndividual) {
     LSCloseFac lsCloseFac;
 
+    lsCloseFac.allocate(&nodes[posNode][posIndividual]);
     lsCloseFac.initialize(&nodes[posNode][posIndividual]);
 }
 

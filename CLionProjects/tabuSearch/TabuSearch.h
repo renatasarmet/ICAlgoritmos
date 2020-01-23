@@ -66,7 +66,7 @@ private:
 public:
     virtual ~TabuSearch();
 
-    void allocate(Solution * solution, bool _best_fit, double _a1, int _lc1, int _lc2, int _lo1, int _lo2, int seed);
+    void allocate(Solution * solution);
 
     void initialize(Solution * solution, bool _best_fit, double _a1, int _lc1, int _lc2, int _lo1, int _lo2, int seed);
 

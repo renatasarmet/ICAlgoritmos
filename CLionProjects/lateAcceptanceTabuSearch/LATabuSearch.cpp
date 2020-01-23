@@ -20,8 +20,7 @@
 
 
 // Alocando memoria
-void LATabuSearch::allocate(Solution *solution, double _a1, int _lc1, int _lc2, int _lo1, int _lo2, int seed,
-                            double _limitIdle, int _lh) {
+void LATabuSearch::allocate(Solution *solution, int _lh) {
     qty_facilities = solution->getQtyFacilities();
     qty_clients = solution->getQtyClients();
 
@@ -48,8 +47,6 @@ void LATabuSearch::allocate(Solution *solution, double _a1, int _lc1, int _lc2, 
     temp_nearest2_fac = new int[qty_clients];
     temp_c_minX = new double[qty_clients];
     temp_c2_minX = new double[qty_clients];
-
-    initialize(solution, _a1, _lc1, _lc2, _lo1, _lo2, seed, _limitIdle, _lh);
 }
 
 

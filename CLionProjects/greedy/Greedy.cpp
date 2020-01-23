@@ -138,8 +138,6 @@ void Greedy::allocate(Solution *solution) {
 
     // active - indica se o cliente está ativo ainda ou nao, isto é, se ele ainda nao foi conectado a nenhuma instalacao aberta. if j \in g
     active = new bool[qty_clients];
-
-    initialize(solution);
 }
 
 

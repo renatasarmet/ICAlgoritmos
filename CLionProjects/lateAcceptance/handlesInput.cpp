@@ -57,7 +57,8 @@ int main(int argc, char *argv[]){
     LateAcceptance lateAcceptance;
 
     // Chamando a funcao que resolve o problema de fato
-    lateAcceptance.allocate(&solution, best_fit, a1, limit_idle, lh);
+    lateAcceptance.allocate(&solution, lh);
+    lateAcceptance.initialize(&solution, best_fit, a1, limit_idle, lh);
 
     if(DEBUG >= DISPLAY_BASIC){
         cout << "Final total cost: " << solution.getFinalTotalCost() << endl;

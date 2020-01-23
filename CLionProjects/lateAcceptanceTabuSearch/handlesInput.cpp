@@ -72,7 +72,8 @@ int main(int argc, char *argv[]){
     LATabuSearch laTabuSearch;
 
     // Chamando a funcao que resolve o problema de fato
-    laTabuSearch.allocate(&solution, a1, lc1, lc2, lo1, lo2, seed, limit_idle, lh);
+    laTabuSearch.allocate(&solution, lh);
+    laTabuSearch.initialize(&solution, a1, lc1, lc2, lo1, lo2, seed, limit_idle, lh);
 
 
     if(DEBUG >= DISPLAY_BASIC){
