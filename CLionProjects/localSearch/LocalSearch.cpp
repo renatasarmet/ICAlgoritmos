@@ -36,10 +36,25 @@ using namespace std;
 // 	}
 // }
 
+// Alocando memoria
+void LocalSearch::allocate(Solution *solution, int lsType) {
+    qty_facilities = solution->getQtyFacilities();
+    qty_clients = solution->getQtyClients();
 
-// Alocando memoria e inicializando valores
+    c_minX = new double[qty_clients];
+    c2_minX = new double[qty_clients];
+    nearest_open_fac = new int[qty_clients];
+    nearest2_open_fac = new int[qty_clients];
+    temp_nearest_fac = new int[qty_clients];
+    temp2_nearest_fac = new int[qty_clients];
+
+    initialize(solution, lsType);
+}
+
+
+// inicializando valores
 void LocalSearch::initialize(Solution *solution, int lsType) {
-
+    // repetindo sim
     qty_facilities = solution->getQtyFacilities();
     qty_clients = solution->getQtyClients();
 
@@ -48,13 +63,6 @@ void LocalSearch::initialize(Solution *solution, int lsType) {
 
     // Variavel que marca quantas movimentacoes foram feitas de fato
     qty_moves = 0;
-
-    c_minX = new double[qty_clients];
-    c2_minX = new double[qty_clients];
-    nearest_open_fac = new int[qty_clients];
-    nearest2_open_fac = new int[qty_clients];
-    temp_nearest_fac = new int[qty_clients];
-    temp2_nearest_fac = new int[qty_clients];
 
     // Iniciando o conjunto de instalacoes abertas e fechadas
     for(int j=qty_facilities-1;j>=0;--j){
@@ -65,7 +73,6 @@ void LocalSearch::initialize(Solution *solution, int lsType) {
             closed_facs.insert(j);
         }
     }
-
 
     for(int i=qty_clients-1;i>=0;--i){
         temp_nearest_fac[i] = -1; // indica que nao há nenhuma inst temporaria ainda
@@ -82,7 +89,6 @@ void LocalSearch::initialize(Solution *solution, int lsType) {
             }
         }
     }
-
 
     // Atualizando valor c_minX para todos os clientes e iniciando c2_minX
     for(int i=qty_clients-1;i>=0;--i){
@@ -875,3 +881,4 @@ LocalSearch::~LocalSearch() {
     delete [] temp_nearest_fac;
     delete []  temp2_nearest_fac;
 }
+

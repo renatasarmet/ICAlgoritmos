@@ -23,6 +23,8 @@ private:
 public:
     virtual ~Greedy();
 
+    void allocate(Solution * solution);
+
     void initialize(Solution * solution);
 
     void run(Solution * solution);

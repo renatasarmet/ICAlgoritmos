@@ -23,10 +23,27 @@ using namespace std;
 
 #define TIME_COUNTER_STEP 5 // 5 segundos para testar as inst ga250a //30 // 30 segundos. Isso indicara que vai salvar a melhor solucao encontrada a cada minuto
 
+// Alocando memoria
+void LSCloseFac::allocate(Solution *solution) {
+    qty_facilities = solution->getQtyFacilities();
+    qty_clients = solution->getQtyClients();
 
-// Alocando memoria e inicializando valores
+    nearest2_open_fac = new int[qty_clients];
+    temp_nearest_fac = new int[qty_clients];
+    temp_nearest2_fac = new int[qty_clients];
+
+    // extra_cost - será o delta z para cada iteracao, para cada instalacao
+    extra_cost = new double*[2];
+    for(int i = 0; i < 2; i++) {
+        extra_cost[i] = new double[qty_facilities];
+    }
+
+    initialize(solution);
+}
+
+// inicializando valores
 void LSCloseFac::initialize(Solution *solution) {
-
+    // repetindo sim
     qty_facilities = solution->getQtyFacilities();
     qty_clients = solution->getQtyClients();
 
@@ -39,10 +56,6 @@ void LSCloseFac::initialize(Solution *solution) {
     // Variavel que marca quantas movimentacoes foram feitas de fato
     qty_moves = 0;
 
-    nearest2_open_fac = new int[qty_clients];
-    temp_nearest_fac = new int[qty_clients];
-    temp_nearest2_fac = new int[qty_clients];
-
     // Iniciando o conjunto de instalacoes abertas
     for(int j=qty_facilities-1;j>=0;--j){
         if(solution->getOpenFacilityJ(j)){
@@ -54,12 +67,6 @@ void LSCloseFac::initialize(Solution *solution) {
     // Serao utilizados para acessar o vetor extra_cost, funciona como modulo 2
     cur_index_extra = 0;
     old_index_extra = 0;
-
-    // extra_cost - será o delta z para cada iteracao, para cada instalacao
-    extra_cost = new double*[2];
-    for(int i = 0; i < 2; i++) {
-        extra_cost[i] = new double[qty_facilities];
-    }
 
     for(int i=qty_clients-1;i>=0;--i){
         temp_nearest_fac[i] = -1; // indica que nao há nenhuma inst temporaria ainda
@@ -420,3 +427,4 @@ LSCloseFac::~LSCloseFac() {
     }
     delete [] extra_cost;
 }
+

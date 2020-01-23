@@ -37,7 +37,7 @@ int main(int argc, char *argv[]){
     Greedy greedy;
 
     // Chamando a funcao que resolve o problema de fato
-    greedy.initialize(&solution);
+    greedy.allocate(&solution);
 
     if(DEBUG >= DISPLAY_BASIC){
         cout << "Final total cost: " << solution.getFinalTotalCost() << endl;

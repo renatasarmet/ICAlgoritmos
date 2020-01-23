@@ -19,12 +19,42 @@
 
 using namespace std;
 
-// Alocando memoria e inicializando valores
+// Alocando memoria
+void TabuSearch::allocate(Solution *solution, bool _best_fit, double _a1, int _lc1, int _lc2, int _lo1, int _lo2, int seed) {
+    qty_facilities = solution->getQtyFacilities();
+    qty_clients = solution->getQtyClients();
+
+    // Vetor da short term memory que representa o numero do movimento
+    t = new int[qty_facilities];
+
+    // Vetor que vai indicar se a instalacao está flagged
+    flag = new bool[qty_facilities];
+
+    // extra_cost - será o delta z para cada iteracao, para cada instalacao
+    extra_cost = new double*[2];
+    for(int i = 0; i < 2; i++) {
+        extra_cost[i] = new double[qty_facilities];
+    }
+
+    c_minX = new double[qty_clients];
+    c2_minX = new double[qty_clients];
+    nearest_open_fac = new int[qty_clients];
+    nearest2_open_fac = new int[qty_clients];
+    temp_nearest_fac = new int[qty_clients];
+    temp_nearest2_fac = new int[qty_clients];
+    temp_c_minX = new double[qty_clients];
+    temp_c2_minX = new double[qty_clients];
+
+    initialize(solution, _best_fit, _a1, _lc1, _lc2, _lo1, _lo2, seed);
+}
+
+// inicializando valores
 void TabuSearch::initialize(Solution *solution, bool _best_fit, double _a1, int _lc1, int _lc2, int _lo1, int _lo2, int seed) {
 
     // Semente do numero aleatorio
     srand(seed);
 
+    // repetindo sim
     qty_facilities = solution->getQtyFacilities();
     qty_clients = solution->getQtyClients();
 
@@ -41,21 +71,9 @@ void TabuSearch::initialize(Solution *solution, bool _best_fit, double _a1, int 
     // Variavel que marca quantas movimentacoes foram feitas de fato
     qty_moves = 0;
 
-    // Vetor da short term memory que representa o numero do movimento
-    t = new int[qty_facilities];
-
-    // Vetor que vai indicar se a instalacao está flagged
-    flag = new bool[qty_facilities];
-
     // Serao utilizados para acessar o vetor extra_cost, funciona como modulo 2
     cur_index_extra = 0;
     old_index_extra = 0;
-
-    // extra_cost - será o delta z para cada iteracao, para cada instalacao
-    extra_cost = new double*[2];
-    for(int i = 0; i < 2; i++) {
-        extra_cost[i] = new double[qty_facilities];
-    }
 
     // Each facility is kept closed for at least lc moves after it's closed unless aspiration criterion is satisfied
     lc = rand() % (lc2 - lc1 + 1) + lc1; // Generate the number between lc1 and lc2
@@ -66,14 +84,6 @@ void TabuSearch::initialize(Solution *solution, bool _best_fit, double _a1, int 
     // Represents the amount of open facilities
     n1 = 0;
 
-    c_minX = new double[qty_clients];
-    c2_minX = new double[qty_clients];
-    nearest_open_fac = new int[qty_clients];
-    nearest2_open_fac = new int[qty_clients];
-    temp_nearest_fac = new int[qty_clients];
-    temp_nearest2_fac = new int[qty_clients];
-    temp_c_minX = new double[qty_clients];
-    temp_c2_minX = new double[qty_clients];
 
     for(int i=0;i<qty_clients;i++){
         temp_nearest_fac[i] = -1; // indica que nao há nenhuma inst temporaria ainda
@@ -853,3 +863,5 @@ TabuSearch::~TabuSearch() {
     delete []  temp_c_minX;
     delete [] temp_c2_minX;
 }
+
+

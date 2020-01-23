@@ -41,6 +41,8 @@ private:
 public:
     virtual ~LSCloseFac();
 
+    void allocate(Solution * solution);
+
     void initialize(Solution * solution);
 
     void run(Solution * solution);

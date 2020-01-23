@@ -47,7 +47,7 @@ int main(int argc, char *argv[]){
    LocalSearch localSearch;
 
    // Chamando a funcao que resolve o problema de fato
-   localSearch.initialize(&solution, ls_type);
+   localSearch.allocate(&solution, ls_type);
 
    if(DEBUG >= DISPLAY_BASIC){
        cout << "Final total cost: " << solution.getFinalTotalCost() << endl;

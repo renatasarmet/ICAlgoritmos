@@ -114,17 +114,13 @@ void Greedy::bestSubset(int &bestSize, double &bestCost, int indexFac, double fi
     }
 }
 
-
-// Alocando memoria e inicializando valores
-void Greedy::initialize(Solution *solution) {
+// Alocando memoria
+void Greedy::allocate(Solution *solution) {
     qty_facilities = solution->getQtyFacilities();
     qty_clients = solution->getQtyClients();
 
     // conjunto de clientes a serem removidos de g na iteração, pois deixaram de ser ativos
     delete_clients = new int[qty_clients];
-
-    // Indica quantos clientes ja foram conectados a alguma instalacao
-    qty_non_active_cli = 0;
 
     // sorted_cij_g - será os clientes ativos ordenados pelo cij àquela instalação
     sorted_cij_g = new double*[qty_facilities];
@@ -142,6 +138,19 @@ void Greedy::initialize(Solution *solution) {
 
     // active - indica se o cliente está ativo ainda ou nao, isto é, se ele ainda nao foi conectado a nenhuma instalacao aberta. if j \in g
     active = new bool[qty_clients];
+
+    initialize(solution);
+}
+
+
+// inicializando valores
+void Greedy::initialize(Solution *solution) {
+    // repetindo sim, mas é pois as vezes nao vou ter chamado o allocate antes
+    qty_facilities = solution->getQtyFacilities();
+    qty_clients = solution->getQtyClients();
+
+    // Indica quantos clientes ja foram conectados a alguma instalacao
+    qty_non_active_cli = 0;
 
     qty_non_active_cli_g = qty_clients; // Indica a quantidade de clientes ainda em g, os clientes ativos.
 
@@ -206,7 +215,6 @@ void Greedy::initialize(Solution *solution) {
 
 // Retornar o valor da solucao por referencia
 void Greedy::run(Solution * solution) {
-
     cout << fixed;
     cout.precision(5);
 
@@ -344,4 +352,6 @@ Greedy::~Greedy() {
     delete [] c_minX;
     delete [] active;
 }
+
+
 

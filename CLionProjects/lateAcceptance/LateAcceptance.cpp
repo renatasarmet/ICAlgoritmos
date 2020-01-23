@@ -17,9 +17,43 @@
 
 #define DEBUG 0 // OPCOES DE DEBUG: 1 - MOSTRAR A QTD DE MOVIMENTOS, 2 PARA EXIBIR OS MOVIMENTOS REALIZADOS, 3 PARA EXIBIR ACOES, 4 PARA EXIBIR DETALHES DAS ACOES, 5 PARA EXIBIR TEMPO
 
-// Alocando memoria e inicializando valores
-void LateAcceptance::initialize(Solution *solution, bool _bestFit, double _a1, double _limitIdle, int _lh) {
 
+// OBS: SE PERCEBER NO MEMETIC QUE O LH É MUDADO AO LONGO DAS CHAMADAS, TEM QUE TIRAR A ALOCACAO DO ALLOCATE OU ALOCA ALGUM UPPER BOUND
+
+// Alocando memoria
+void LateAcceptance::allocate(Solution *solution, bool _bestFit, double _a1, double _limitIdle, int _lh) {
+    qty_facilities = solution->getQtyFacilities();
+    qty_clients = solution->getQtyClients();
+
+    // Vetor que vai indicar se a instalacao está flagged
+    flag = new bool[qty_facilities];
+
+    // Vetor fitness array que representa as solucoes anteriores, que vou usar para comparacao (tamanho lh)
+    fa = new double[_lh];
+
+    // extra_cost - será o delta z para cada iteracao, para cada instalacao
+    extra_cost = new double*[2];
+    for(int i = 0; i < 2; i++) {
+        extra_cost[i] = new double[qty_facilities];
+    }
+
+    c_minX = new double[qty_clients];
+    c2_minX = new double[qty_clients];
+    nearest_open_fac = new int[qty_clients];
+    nearest2_open_fac = new int[qty_clients];
+    temp_nearest_fac = new int[qty_clients];
+    temp_nearest2_fac = new int[qty_clients];
+    temp_c_minX = new double[qty_clients];
+    temp_c2_minX = new double[qty_clients];
+
+    initialize(solution, _bestFit, _a1, _limitIdle, _lh);
+}
+
+
+
+// inicializando valores
+void LateAcceptance::initialize(Solution *solution, bool _bestFit, double _a1, double _limitIdle, int _lh) {
+    // repetindo sim
     qty_facilities = solution->getQtyFacilities();
     qty_clients = solution->getQtyClients();
 
@@ -40,34 +74,12 @@ void LateAcceptance::initialize(Solution *solution, bool _bestFit, double _a1, d
     limit_idle = _limitIdle;
     best_fit = _bestFit;
 
-    // Vetor que vai indicar se a instalacao está flagged
-    flag = new bool[qty_facilities];
-
-    // Vetor fitness array que representa as solucoes anteriores, que vou usar para comparacao (tamanho lh)
-    fa = new double[lh];
-
     // Serao utilizados para acessar o vetor extra_cost, funciona como modulo 2
     cur_index_extra = 0;
     old_index_extra = 0;
 
-    // extra_cost - será o delta z para cada iteracao, para cada instalacao
-    extra_cost = new double*[2];
-    for(int i = 0; i < 2; i++) {
-        extra_cost[i] = new double[qty_facilities];
-    }
-
     // Represents the amount of open facilities
     n1 = 0;
-
-    c_minX = new double[qty_clients];
-    c2_minX = new double[qty_clients];
-    nearest_open_fac = new int[qty_clients];
-    nearest2_open_fac = new int[qty_clients];
-    temp_nearest_fac = new int[qty_clients];
-    temp_nearest2_fac = new int[qty_clients];
-    temp_c_minX = new double[qty_clients];
-    temp_c2_minX = new double[qty_clients];
-
 
     for(int i=0;i<qty_clients;i++){
         temp_nearest_fac[i] = -1; // indica que nao há nenhuma inst temporaria ainda
@@ -845,3 +857,4 @@ LateAcceptance::~LateAcceptance() {
     delete []  temp_c_minX;
     delete [] temp_c2_minX;
 }
+
