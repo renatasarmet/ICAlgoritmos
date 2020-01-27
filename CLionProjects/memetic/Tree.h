@@ -15,7 +15,7 @@
 #define QTY_CHILDREN 3 // quantos nós filhos cada nó pai tem
 
 #define LA_INITIAL_POP false // indica se quer fazer LA na pop inicial gerada pelo random
-#define OPEN_RANDOM_RATE 10 //1.5 // 10% // probabilidade de abrir uma instalacao na geração de solucoes random
+#define OPEN_RANDOM_RATE  10 //10 //50 //1.5 // 10% // probabilidade de abrir uma instalacao na geração de solucoes random
 #define SHUFFLED_FACILITIES true // indica se vai gerar as solucoes iniciais garantindo que todas as instalacoes estarao presentes nas solucoes
 
 class Tree {
