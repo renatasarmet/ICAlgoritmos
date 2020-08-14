@@ -1,3 +1,4 @@
+// instancias: https://www.ic.unicamp.br/~fusberti/problems/sstp/
 #include <iostream>
 #include <stdio.h>
 #include <stdlib.h>

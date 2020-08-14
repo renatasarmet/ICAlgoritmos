@@ -13,143 +13,45 @@
   <component name="ChangeListManager">
     <list default="true" id="7aceef00-4371-4af9-a754-093df3b02196" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/greedy/Greedy.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/greedy/Greedy.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/greedy/handlesInput.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/greedy/handlesInput.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lateAcceptance/LateAcceptance.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/lateAcceptance/LateAcceptance.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lateAcceptance/LateAcceptance.h" beforeDir="false" afterPath="$PROJECT_DIR$/lateAcceptance/LateAcceptance.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lateAcceptance/handlesInput.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/lateAcceptance/handlesInput.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lateAcceptanceTabuSearch/LATabuSearch.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/lateAcceptanceTabuSearch/LATabuSearch.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lateAcceptanceTabuSearch/LATabuSearch.h" beforeDir="false" afterPath="$PROJECT_DIR$/lateAcceptanceTabuSearch/LATabuSearch.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lateAcceptanceTabuSearch/handlesInput.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/lateAcceptanceTabuSearch/handlesInput.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/localSearch/LocalSearch.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/localSearch/LocalSearch.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/localSearch/LocalSearch.h" beforeDir="false" afterPath="$PROJECT_DIR$/localSearch/LocalSearch.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/localSearch/handlesInput.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/localSearch/handlesInput.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/localSearchCloseFac/LSCloseFac.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/localSearchCloseFac/LSCloseFac.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/localSearchCloseFac/handlesInput.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/localSearchCloseFac/handlesInput.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/memetic/Tree.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/memetic/Tree.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/memetic/Tree.h" beforeDir="false" afterPath="$PROJECT_DIR$/memetic/Tree.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/memetic/ma" beforeDir="false" afterPath="$PROJECT_DIR$/memetic/ma" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/memetic/solutions.csv" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/memetic/solutions/B1.2.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/memetic/solutions/B1.5.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/memetic/solutions/B1.6.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/memetic/solutions/B1.7.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/memetic/solutions/B1.8.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/memetic/solutions/C1.1.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/memetic/solutions/C1.10.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/memetic/solutions/C1.2.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/memetic/solutions/C1.3.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/memetic/solutions/C1.4.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/memetic/solutions/C1.5.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/memetic/solutions/C1.6.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/memetic/solutions/C1.7.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/memetic/solutions/C1.8.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/memetic/solutions/C1.9.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/memetic/solutions/D1.1.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/memetic/solutions/D1.10.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/memetic/solutions/D1.4.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/memetic/solutions/D1.5.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/memetic/solutions/D1.6.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/memetic/solutions/D1.7.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/memetic/solutions/D1.8.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/memetic/solutions/D10.3.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/memetic/solutions/D2.1.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/memetic/solutions/D2.5.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/memetic/solutions/D2.7.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/memetic/solutions/D3.10.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/memetic/solutions/D4.3.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/memetic/solutions/D4.4.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/memetic/solutions/D5.2.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/memetic/solutions/D5.5.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/memetic/solutions/D5.7.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/memetic/solutions/D6.1.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/memetic/solutions/D6.2.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/memetic/solutions/D6.5.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/memetic/solutions/D8.8.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/memetic/solutions/D9.7.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/memetic/solutions/E1.1.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/memetic/solutions/E1.10.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/memetic/solutions/E1.2.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/memetic/solutions/E1.3.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/memetic/solutions/E1.4.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/memetic/solutions/E1.5.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/memetic/solutions/E1.6.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/memetic/solutions/E1.7.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/memetic/solutions/E1.8.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/memetic/solutions/E1.9.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/memetic/solutions/E2.1.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/memetic/solutions/E2.10.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/memetic/solutions/E2.2.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/memetic/solutions/E2.3.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/memetic/solutions/E2.4.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/memetic/solutions/E2.5.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/memetic/solutions/E2.6.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/memetic/solutions/E2.7.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/memetic/solutions/E2.8.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/memetic/solutions/E2.9.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/memetic/solutions/E3.1.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/memetic/solutions/E3.10.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/memetic/solutions/E3.2.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/memetic/solutions/E3.4.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/memetic/solutions/E3.5.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/memetic/solutions/E3.6.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/memetic/solutions/E3.7.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/memetic/solutions/E3.9.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/memetic/solutions/E4.1.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/memetic/solutions/E4.3.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/memetic/solutions/E4.4.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/memetic/solutions/E4.5.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/memetic/solutions/E4.6.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/memetic/solutions/E4.8.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/memetic/solutions/E4.9.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/memetic/solutions/E5.1.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/memetic/solutions/E5.10.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/memetic/solutions/E5.2.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/memetic/solutions/E5.4.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/memetic/solutions/E5.5.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/memetic/solutions/E5.6.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/memetic/solutions/E5.7.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/memetic/solutions/E5.8.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/memetic/solutions/E5.9.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/memetic/solutions/E6.1.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/memetic/solutions/E6.2.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/memetic/solutions/E6.4.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/memetic/solutions/E6.5.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/memetic/solutions/E6.7.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/memetic/solutions/E7.6.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/memetic/solutions/E9.7.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/memetic/solutions/MO1.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/memetic/solutions/MO2.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/memetic/solutions/MO3.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/memetic/solutions/MO4.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/memetic/solutions/MO5.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/memetic/solutions/MP1.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/memetic/solutions/MP2.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/memetic/solutions/MP3.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/memetic/solutions/MP4.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/memetic/solutions/MP5.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/memetic/solutions/MQ1.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/memetic/solutions/MQ2.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/memetic/solutions/MQ3.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/memetic/solutions/MQ4.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/memetic/solutions/MQ5.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/memetic/solutions/MR1.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/memetic/solutions/MR2.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/memetic/solutions/MR3.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/memetic/solutions/MR4.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/memetic/solutions/MR5.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/memetic/solutions/MS1.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/memetic/solutions/MT1.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/memetic/solutions/cap131.txt.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/memetic/solutions/cap132.txt.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/memetic/solutions/cap133.txt.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/memetic/solutions/cap134.txt.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/memetic/solutions/cap72.txt.sol" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/memetic/testCases2.txt" beforeDir="false" afterPath="$PROJECT_DIR$/memetic/testCases2.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/TabuSearch.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/tabuSearch/TabuSearch.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/TabuSearch.h" beforeDir="false" afterPath="$PROJECT_DIR$/tabuSearch/TabuSearch.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/handlesInput.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/tabuSearch/handlesInput.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tabuSearch/ts" beforeDir="false" afterPath="$PROJECT_DIR$/tabuSearch/ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/global/Instance.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/global/Instance.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/global/Instance.h" beforeDir="false" afterPath="$PROJECT_DIR$/global/Instance.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/greedy/g" beforeDir="false" afterPath="$PROJECT_DIR$/greedy/g" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Framework/.cproject" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Framework/.project" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Framework/.settings/language.settings.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Framework/.settings/org.eclipse.cdt.codan.core.prefs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Framework/Release/makefile" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Framework/Release/objects.mk" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Framework/Release/sources.mk" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Framework/Release/src/EF_local_search_solver.d" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Framework/Release/src/EF_local_search_solver.o" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Framework/Release/src/EF_manager.d" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Framework/Release/src/EF_manager.o" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Framework/Release/src/aux/subdir.mk" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Framework/Release/src/auxi/myutils.d" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Framework/Release/src/auxi/myutils.o" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Framework/Release/src/auxi/subdir.mk" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Framework/Release/src/subdir.mk" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Framework/readme.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Framework/src/EF_generic_solver.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Framework/src/EF_local_search_solver.cpp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Framework/src/EF_local_search_solver.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Framework/src/EF_manager.cpp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Framework/src/EF_manager.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Framework/src/EF_second_stage_solver.cpp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Framework/src/EF_second_stage_solver.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Framework/src/Example_SSTP.cpp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Framework/src/SP_instance.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Framework/src/SP_solution.cpp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Framework/src/SP_solution.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Framework/src/auxi/BRKGA.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Framework/src/auxi/MTRand.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Framework/src/auxi/Population.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Framework/src/auxi/dijkstra_Steiner.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Framework/src/auxi/mylemonutils.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Framework/src/auxi/myutils.cpp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Framework/src/auxi/myutils.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Framework/src/auxi/timer.hpp" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -175,6 +77,7 @@
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="settings.editor.selected.configurable" value="editor.preferences.fonts.default" />
   </component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
@@ -257,6 +160,9 @@
       <workItem from="1579043585622" duration="379000" />
       <workItem from="1579754223984" duration="5222000" />
       <workItem from="1579819604823" duration="1125000" />
+      <workItem from="1596414548064" duration="6962000" />
+      <workItem from="1596495648891" duration="3973000" />
+      <workItem from="1597363474713" duration="260000" />
     </task>
     <servers />
   </component>
@@ -264,86 +170,22 @@
     <option name="version" value="1" />
   </component>
   <component name="WindowStateProjectService">
-    <state x="184" y="123" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1578525457225">
+    <state x="438" y="271" key="#com.intellij.fileTypes.FileTypeChooser" timestamp="1596419301561">
       <screen x="0" y="23" width="1440" height="877" />
     </state>
-    <state x="184" y="123" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.23.1440.877@0.23.1440.877" timestamp="1578525457225" />
-    <state x="438" y="271" key="#com.intellij.fileTypes.FileTypeChooser" timestamp="1578452199711">
+    <state x="438" y="271" key="#com.intellij.fileTypes.FileTypeChooser/0.23.1440.877@0.23.1440.877" timestamp="1596419301561" />
+    <state x="211" y="23" width="1229" height="877" key="SettingsEditor" timestamp="1596498487136">
       <screen x="0" y="23" width="1440" height="877" />
     </state>
-    <state x="438" y="271" key="#com.intellij.fileTypes.FileTypeChooser/0.23.1440.877@0.23.1440.877" timestamp="1578452199711" />
-    <state x="533" y="184" key="#com.intellij.ide.util.MemberChooser" timestamp="1578521390896">
+    <state x="211" y="23" width="1229" height="877" key="SettingsEditor/0.23.1440.877/1440.23.1360.745@0.23.1440.877" timestamp="1596498487136" />
+    <state x="397" y="294" key="com.intellij.ide.util.TipDialog" timestamp="1597363475159">
       <screen x="0" y="23" width="1440" height="877" />
     </state>
-    <state x="533" y="174" key="#com.intellij.ide.util.MemberChooser/0.23.1440.823@0.23.1440.823" timestamp="1578272149468" />
-    <state x="533" y="184" key="#com.intellij.ide.util.MemberChooser/0.23.1440.877@0.23.1440.877" timestamp="1578521390896" />
-    <state x="458" y="215" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog" timestamp="1578223359269">
+    <state x="397" y="294" key="com.intellij.ide.util.TipDialog/0.23.1440.877/1440.23.1360.745@0.23.1440.877" timestamp="1596495649035" />
+    <state x="397" y="294" key="com.intellij.ide.util.TipDialog/0.23.1440.877@0.23.1440.877" timestamp="1597363475159" />
+    <state x="378" y="218" width="683" height="486" key="find.popup" timestamp="1596419246974">
       <screen x="0" y="23" width="1440" height="877" />
     </state>
-    <state x="458" y="215" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog/0.23.1440.877@0.23.1440.877" timestamp="1578223359269" />
-    <state width="451" height="466" key="DebuggerActiveHint" timestamp="1578264736661">
-      <screen x="0" y="23" width="1440" height="877" />
-    </state>
-    <state width="451" height="466" key="DebuggerActiveHint/0.23.1440.877@0.23.1440.877" timestamp="1578264736661" />
-    <state width="1398" height="263" key="GridCell.Tab.0.bottom" timestamp="1578549651680">
-      <screen x="0" y="23" width="1440" height="877" />
-    </state>
-    <state width="1398" height="294" key="GridCell.Tab.0.bottom/0.23.1440.823@0.23.1440.823" timestamp="1578271386794" />
-    <state width="1398" height="263" key="GridCell.Tab.0.bottom/0.23.1440.877@0.23.1440.877" timestamp="1578549651680" />
-    <state width="1398" height="263" key="GridCell.Tab.0.center" timestamp="1578549651680">
-      <screen x="0" y="23" width="1440" height="877" />
-    </state>
-    <state width="1398" height="294" key="GridCell.Tab.0.center/0.23.1440.823@0.23.1440.823" timestamp="1578271386793" />
-    <state width="1398" height="263" key="GridCell.Tab.0.center/0.23.1440.877@0.23.1440.877" timestamp="1578549651680" />
-    <state width="1398" height="263" key="GridCell.Tab.0.left" timestamp="1578549651679">
-      <screen x="0" y="23" width="1440" height="877" />
-    </state>
-    <state width="1398" height="294" key="GridCell.Tab.0.left/0.23.1440.823@0.23.1440.823" timestamp="1578271386792" />
-    <state width="1398" height="263" key="GridCell.Tab.0.left/0.23.1440.877@0.23.1440.877" timestamp="1578549651679" />
-    <state width="1398" height="263" key="GridCell.Tab.0.right" timestamp="1578549651680">
-      <screen x="0" y="23" width="1440" height="877" />
-    </state>
-    <state width="1398" height="294" key="GridCell.Tab.0.right/0.23.1440.823@0.23.1440.823" timestamp="1578271386793" />
-    <state width="1398" height="263" key="GridCell.Tab.0.right/0.23.1440.877@0.23.1440.877" timestamp="1578549651680" />
-    <state width="1398" height="263" key="GridCell.Tab.1.bottom" timestamp="1578549651681">
-      <screen x="0" y="23" width="1440" height="877" />
-    </state>
-    <state width="1398" height="243" key="GridCell.Tab.1.bottom/0.23.1440.823@0.23.1440.823" timestamp="1578270928089" />
-    <state width="1398" height="263" key="GridCell.Tab.1.bottom/0.23.1440.877@0.23.1440.877" timestamp="1578549651681" />
-    <state width="1398" height="263" key="GridCell.Tab.1.center" timestamp="1578549651681">
-      <screen x="0" y="23" width="1440" height="877" />
-    </state>
-    <state width="1398" height="243" key="GridCell.Tab.1.center/0.23.1440.823@0.23.1440.823" timestamp="1578270928089" />
-    <state width="1398" height="263" key="GridCell.Tab.1.center/0.23.1440.877@0.23.1440.877" timestamp="1578549651681" />
-    <state width="1398" height="263" key="GridCell.Tab.1.left" timestamp="1578549651681">
-      <screen x="0" y="23" width="1440" height="877" />
-    </state>
-    <state width="1398" height="243" key="GridCell.Tab.1.left/0.23.1440.823@0.23.1440.823" timestamp="1578270928089" />
-    <state width="1398" height="263" key="GridCell.Tab.1.left/0.23.1440.877@0.23.1440.877" timestamp="1578549651681" />
-    <state width="1398" height="263" key="GridCell.Tab.1.right" timestamp="1578549651681">
-      <screen x="0" y="23" width="1440" height="877" />
-    </state>
-    <state width="1398" height="243" key="GridCell.Tab.1.right/0.23.1440.823@0.23.1440.823" timestamp="1578270928089" />
-    <state width="1398" height="263" key="GridCell.Tab.1.right/0.23.1440.877@0.23.1440.877" timestamp="1578549651681" />
-    <state width="537" height="445" key="SwitcherDM" timestamp="1578463867806">
-      <screen x="0" y="23" width="1440" height="877" />
-    </state>
-    <state width="537" height="445" key="SwitcherDM/0.23.1440.877@0.23.1440.877" timestamp="1578463867806" />
-    <state x="397" y="294" key="com.intellij.ide.util.TipDialog" timestamp="1579819637384">
-      <screen x="0" y="23" width="1440" height="877" />
-    </state>
-    <state x="397" y="294" key="com.intellij.ide.util.TipDialog/0.23.1440.877@0.23.1440.877" timestamp="1579819637384" />
-    <state x="378" y="87" width="683" height="729" key="find.popup" timestamp="1578634520564">
-      <screen x="0" y="23" width="1440" height="877" />
-    </state>
-    <state x="378" y="87" width="683" height="729" key="find.popup/0.23.1440.877@0.23.1440.877" timestamp="1578634520564" />
-    <state x="482" y="99" key="refactoring.ChangeSignatureDialog" timestamp="1578473412526">
-      <screen x="0" y="23" width="1440" height="877" />
-    </state>
-    <state x="482" y="99" key="refactoring.ChangeSignatureDialog/0.23.1440.877@0.23.1440.877" timestamp="1578473412526" />
-    <state x="385" y="208" width="670" height="676" key="search.everywhere.popup" timestamp="1578461090434">
-      <screen x="0" y="23" width="1440" height="877" />
-    </state>
-    <state x="385" y="208" width="670" height="676" key="search.everywhere.popup/0.23.1440.877@0.23.1440.877" timestamp="1578461090434" />
+    <state x="378" y="218" width="683" height="486" key="find.popup/0.23.1440.877@0.23.1440.877" timestamp="1596419246974" />
   </component>
 </project>
