@@ -280,8 +280,8 @@ int main(int argc, char ** argv) {
  	ef_manager.solve(&decode_Ap, solution_final);
 
   std::cout << std::endl;
-  std::cout << "Final time = " << timer.elapsed() << std::endl;
-  std::cout << "Final solution cost = " << ef_manager.get_solution_value() << std::endl;
+  std::cout << "@Final_time " << timer.elapsed() << std::endl;
+  std::cout << "@Final_solution_cost " << ef_manager.get_solution_value() << std::endl;
 
 
   return 0;

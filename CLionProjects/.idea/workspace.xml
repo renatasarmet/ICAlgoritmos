@@ -13,45 +13,11 @@
   <component name="ChangeListManager">
     <list default="true" id="7aceef00-4371-4af9-a754-093df3b02196" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/global/Instance.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/global/Instance.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/global/Instance.h" beforeDir="false" afterPath="$PROJECT_DIR$/global/Instance.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/greedy/g" beforeDir="false" afterPath="$PROJECT_DIR$/greedy/g" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Framework/.cproject" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Framework/.project" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Framework/.settings/language.settings.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Framework/.settings/org.eclipse.cdt.codan.core.prefs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Framework/Release/makefile" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Framework/Release/objects.mk" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Framework/Release/sources.mk" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Framework/Release/src/EF_local_search_solver.d" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Framework/Release/src/EF_local_search_solver.o" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Framework/Release/src/EF_manager.d" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Framework/Release/src/EF_manager.o" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Framework/Release/src/aux/subdir.mk" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Framework/Release/src/auxi/myutils.d" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Framework/Release/src/auxi/myutils.o" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Framework/Release/src/auxi/subdir.mk" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Framework/Release/src/subdir.mk" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Framework/readme.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Framework/src/EF_generic_solver.h" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Framework/src/EF_local_search_solver.cpp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Framework/src/EF_local_search_solver.h" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Framework/src/EF_manager.cpp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Framework/src/EF_manager.h" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Framework/src/EF_second_stage_solver.cpp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Framework/src/EF_second_stage_solver.h" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Framework/src/Example_SSTP.cpp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Framework/src/SP_instance.h" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Framework/src/SP_solution.cpp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Framework/src/SP_solution.h" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Framework/src/auxi/BRKGA.h" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Framework/src/auxi/MTRand.h" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Framework/src/auxi/Population.h" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Framework/src/auxi/dijkstra_Steiner.h" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Framework/src/auxi/mylemonutils.h" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Framework/src/auxi/myutils.cpp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Framework/src/auxi/myutils.h" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Framework/src/auxi/timer.hpp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Framework/Release/Framework" beforeDir="false" afterPath="$PROJECT_DIR$/Framework/Release/Framework" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Framework/Release/src/Example_SSTP.o" beforeDir="false" afterPath="$PROJECT_DIR$/Framework/Release/src/Example_SSTP.o" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Framework/createInstance/tester.py" beforeDir="false" afterPath="$PROJECT_DIR$/Framework/createInstance/tester.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Framework/readme.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Framework/readme.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Framework/src/Example_SSTP.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Framework/src/Example_SSTP.cpp" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -163,6 +129,8 @@
       <workItem from="1596414548064" duration="6962000" />
       <workItem from="1596495648891" duration="3973000" />
       <workItem from="1597363474713" duration="260000" />
+      <workItem from="1597448256491" duration="351000" />
+      <workItem from="1598017115211" duration="801000" />
     </task>
     <servers />
   </component>
@@ -178,11 +146,11 @@
       <screen x="0" y="23" width="1440" height="877" />
     </state>
     <state x="211" y="23" width="1229" height="877" key="SettingsEditor/0.23.1440.877/1440.23.1360.745@0.23.1440.877" timestamp="1596498487136" />
-    <state x="397" y="294" key="com.intellij.ide.util.TipDialog" timestamp="1597363475159">
+    <state x="397" y="294" key="com.intellij.ide.util.TipDialog" timestamp="1598017115386">
       <screen x="0" y="23" width="1440" height="877" />
     </state>
-    <state x="397" y="294" key="com.intellij.ide.util.TipDialog/0.23.1440.877/1440.23.1360.745@0.23.1440.877" timestamp="1596495649035" />
-    <state x="397" y="294" key="com.intellij.ide.util.TipDialog/0.23.1440.877@0.23.1440.877" timestamp="1597363475159" />
+    <state x="397" y="294" key="com.intellij.ide.util.TipDialog/0.23.1440.877/1440.23.1360.745@0.23.1440.877" timestamp="1598017115386" />
+    <state x="397" y="294" key="com.intellij.ide.util.TipDialog/0.23.1440.877@0.23.1440.877" timestamp="1597448256876" />
     <state x="378" y="218" width="683" height="486" key="find.popup" timestamp="1596419246974">
       <screen x="0" y="23" width="1440" height="877" />
     </state>

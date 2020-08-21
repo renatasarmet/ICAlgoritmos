@@ -1,3 +1,12 @@
+# Gerar uma tabela com os melhores resultados obtidos do exato e os melhores do EVFW com o guloso
+# time limit 10 minutos --> passar no parametro logo depois do nome da instancia, no lugar do -1
+# Colocar na tabela: tempo gasto, melhor solucao encontrada, gap (gurobi)
+# Tentar colocar um @ na linha que tem as infos
+# imprimir o upper bound tbm do EVFW
+# tentar ver sobre google cloud free trial
+# 
+
+
 import os
 import sys
 
@@ -36,10 +45,10 @@ if __name__ == '__main__':
 			chance_cli_scenario = float(sys.argv[5].strip()) # porcentagem de chance de cada cliente aparecer em cada cenario
 
 		else: # se eu nao passei por parametro, coloca os padroes
-			number_of_scenarios = 5
+			number_of_scenarios = 50 # [5,50]
 			inflation_start = 1.1 
 			inflation_end = 1.5
-			chance_cli_scenario = 0.5
+			chance_cli_scenario = 0.5 
 			
 
 		if ok:
