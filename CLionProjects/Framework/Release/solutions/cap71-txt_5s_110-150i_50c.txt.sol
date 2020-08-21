@@ -24,35 +24,35 @@ Upper bound = 439823.78106
  0(0.50000)  1(0.50000)  2(0.50000)  3(0.50000)  4(0.50000)  5(0.50000)  6(0.50000)  7(0.50000)  8(0.50000)  9(0.50000)  10(0.50000)  11(0.50000)  12(0.50000)  13(0.50000)  14(0.50000)  15(0.50000) 
  0(0.50000)  1(0.50000)  2(0.50000)  3(0.50000)  4(0.50000)  5(0.50000)  6(0.50000)  7(0.50000)  8(0.50000)  9(0.50000)  10(0.50000)  11(0.50000)  12(0.50000)  13(0.50000)  14(0.50000)  15(0.50000) 
 Local search solution cost = 437382.12495
-Local search time = 0.20694
-0.20697 local search - EF main loop cycle 0 solution cost 437382.12495
+Local search time = 0.21936
+0.21939 local search - EF main loop cycle 0 solution cost 437382.12495
  local search - EF main loop cycle 0 fixed resourced: 
-5(cost: 7500.00000) 7(cost: 7500.00000) 10(cost: 0.00000) 12(cost: 7500.00000) 7.60537s Cost of SP solution after second stage solver 437215.73232
+5(cost: 7500.00000) 7(cost: 7500.00000) 10(cost: 0.00000) 12(cost: 7500.00000) 8.13500s Cost of SP solution after second stage solver 437215.73232
 
 ** Determining the upper bound **
 Upper bound = 439816.49492
  0(0.47589)  1(0.45830)  2(0.44936)  3(0.50196)  4(0.52103)  5(0.44902)  6(0.51743)  7(0.46190)  8(0.49752)  9(0.57320)  10(0.47630)  11(0.53102)  12(0.42489)  13(0.56104)  14(0.46319)  15(0.46945) 
  12(0.42489)  5(0.44902)  2(0.44936)  1(0.45830)  7(0.46190)  14(0.46319)  15(0.46945)  0(0.47589)  10(0.47630)  8(0.49752)  3(0.50196)  6(0.51743)  4(0.52103)  11(0.53102)  13(0.56104)  9(0.57320) 
 Local search solution cost = 437215.73232
-Local search time = 0.20172
-7.80715 local search - EF main loop cycle 1 solution cost 437215.73232
+Local search time = 0.21358
+8.34864 local search - EF main loop cycle 1 solution cost 437215.73232
  local search - EF main loop cycle 1 fixed resourced: 
-5(cost: 7500.00000) 7(cost: 7500.00000) 10(cost: 0.00000) 12(cost: 7500.00000) 15.02820s Cost of SP solution after second stage solver 437215.73232
+5(cost: 7500.00000) 7(cost: 7500.00000) 10(cost: 0.00000) 12(cost: 7500.00000) 16.21250s Cost of SP solution after second stage solver 437215.73232
 
 ** Determining the upper bound **
 Upper bound = 439816.49492
  0(0.47589)  1(0.45830)  2(0.44936)  3(0.50196)  4(0.52103)  5(0.44902)  6(0.51743)  7(0.46190)  8(0.49752)  9(0.57320)  10(0.47630)  11(0.53102)  12(0.42489)  13(0.56104)  14(0.46319)  15(0.46945) 
  12(0.42489)  5(0.44902)  2(0.44936)  1(0.45830)  7(0.46190)  14(0.46319)  15(0.46945)  0(0.47589)  10(0.47630)  8(0.49752)  3(0.50196)  6(0.51743)  4(0.52103)  11(0.53102)  13(0.56104)  9(0.57320) 
 Local search solution cost = 437215.73232
-Local search time = 0.20014
-15.22839 local search - EF main loop cycle 2 solution cost 437215.73232
+Local search time = 0.21241
+16.42496 local search - EF main loop cycle 2 solution cost 437215.73232
  local search - EF main loop cycle 2 fixed resourced: 
-5(cost: 7500.00000) 7(cost: 7500.00000) 10(cost: 0.00000) 12(cost: 7500.00000) 22.42465s Cost of SP solution after second stage solver 437215.73232
+5(cost: 7500.00000) 7(cost: 7500.00000) 10(cost: 0.00000) 12(cost: 7500.00000) 24.20444s Cost of SP solution after second stage solver 437215.73232
 Number of cycles 3
-Time for each cycle 7.47490
-22.42469s current_cycle 3 | best_solution_cycle 0 | last_improvement_cycle 0
+Time for each cycle 8.06816
+24.20448s current_cycle 3 | best_solution_cycle 0 | last_improvement_cycle 0
 Running the tail step
-45.12845s Cost of SP solution after tail step 437215.73232
+46.36727s Cost of SP solution after tail step 437215.73232
 
-@Final_time 45.12997
+@Final_time 46.36812
 @Final_solution_cost 437215.73232
