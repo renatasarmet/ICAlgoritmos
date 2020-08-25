@@ -187,13 +187,13 @@ double solve(int num_facilities, int num_clients, int num_scenarios,
     if(verbose >= 1) {
       cout.precision(2);
       cout << fixed;
-      cout << "Solution: " << model.get(GRB_DoubleAttr_ObjVal) << endl;
-      cout << "Status: " << model.get(GRB_IntAttr_Status) << endl;
-      cout << "Gap: " << model.get(GRB_DoubleAttr_MIPGap) * 100 << "%" << endl;
-      cout << "Time gurobi solver: " << model.get(GRB_DoubleAttr_Runtime) << endl;
-      cout << "Number of explored nodes: " << (int) model.get(GRB_DoubleAttr_NodeCount) << endl << endl;
+      cout << "@Solution " << model.get(GRB_DoubleAttr_ObjVal) << endl;
+      cout << "@Status " << model.get(GRB_IntAttr_Status) << endl;
+      cout << "@Gap " << model.get(GRB_DoubleAttr_MIPGap) * 100 << "%" << endl;
+      cout << "@Time_gurobi_solver " << model.get(GRB_DoubleAttr_Runtime) << endl;
+      cout << "@Number_of_explored_nodes " << (int) model.get(GRB_DoubleAttr_NodeCount) << endl << endl;
 
-      cout << "Facilities first stage: ";
+      cout << "@Facilities first stage: ";
       for(int i = 0; i < num_facilities; i++)
         if(y[i].get(GRB_DoubleAttr_X) >= 1 - EPSL) cout << i << " ";
       cout << endl;
